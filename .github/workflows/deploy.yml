@@ -5,11 +5,12 @@ on:
     branches: [main]
   workflow_dispatch:        # lets you redeploy the current main by hand
 
-# One deploy at a time; a newer push supersedes an in-flight one rather than
-# racing it onto the same server.
+# One deploy at a time; queue rather than interrupt. An interrupted deploy can
+# leave the live hotel half-deployed (mid-migration, orphaned build). Queuing is
+# slower but safe — the next push waits for the current one to finish.
 concurrency:
   group: deploy-production
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -17,23 +18,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Load SSH key
+      - name: Load SSH key and configure host verification
         env:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_HOST_KEY: ${{ secrets.DEPLOY_HOST_KEY }}
         run: |
           [ -n "$DEPLOY_SSH_KEY" ] || { echo "::error::DEPLOY_SSH_KEY secret is not set — see docs/DEPLOYMENT.md"; exit 1; }
+          [ -n "$DEPLOY_HOST" ] || { echo "::error::DEPLOY_HOST secret is not set — see docs/DEPLOYMENT.md"; exit 1; }
+          [ -n "$DEPLOY_USER" ] || { echo "::error::DEPLOY_USER secret is not set — see docs/DEPLOYMENT.md"; exit 1; }
           mkdir -p ~/.ssh && chmod 700 ~/.ssh
           printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_deploy
           chmod 600 ~/.ssh/id_deploy
-          ssh-keyscan -p "${{ secrets.DEPLOY_PORT || 22 }}" -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+          if [ -n "$DEPLOY_HOST_KEY" ]; then
+            printf '%s\n' "$DEPLOY_HOST_KEY" >> ~/.ssh/known_hosts
+          else
+            echo "::warning::Host key verification not set. Using TOFU (trust-on-first-use) — the host key will be trusted once per run and is not verified against prior runs. For real verification, obtain the host key with 'ssh-keyscan -H $DEPLOY_HOST' and set the DEPLOY_HOST_KEY secret."
+            ssh-keyscan -p "${{ secrets.DEPLOY_PORT || 22 }}" -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          fi
 
       - name: Sync code to the server
         env:
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || '/opt/pixelrp' }}
         run: |
-          # Code only. Every exclude below is state that belongs to the server:
-          # data/ is the database and uploads, .env is its secrets, artifacts/
-          # is synced separately by `make sync-assets`, cms/src is cloned there.
+          # IMPORTANT: Everything outside these five excludes is wiped and replaced.
+          # data/, .env, artifacts/, and cms/src/ are the ONLY paths safe to hand-edit
+          # on the server — any file elsewhere will be silently deleted by the next deploy.
+          # data/ is the database and uploads, .env is its secrets, artifacts/ is synced
+          # separately by `make sync-assets`, cms/src is cloned there.
           # --delete keeps tracked files honest but can never reach an exclude.
           rsync -az --delete --info=stats2 \
             --exclude '.git/' \
