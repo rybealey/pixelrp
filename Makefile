@@ -53,6 +53,13 @@ fetch-ws-plugin:
 convert-assets:
 	$(COMPOSE) --profile tools build converter
 	$(COMPOSE) --profile tools run --rm converter
+	@# Restart nitro so it re-renders the client config with a fresh gamedata
+	@# cache-bust stamp — otherwise browsers keep serving the pre-conversion
+	@# gamedata and the new assets look like they never landed.
+	@if [ -n "$$($(COMPOSE) ps -q nitro)" ]; then \
+	  echo "convert-assets: restarting nitro to publish the new gamedata"; \
+	  $(COMPOSE) restart nitro; \
+	fi
 
 ## ─── DESTRUCTIVE ─── wipes every account, item, currency, room, upload, log.
 reset:
