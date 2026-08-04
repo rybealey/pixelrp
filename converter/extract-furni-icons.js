@@ -42,10 +42,34 @@ function readBundle(buf) {
     return files;
 }
 
-const [, , bundledDir, outDir] = process.argv;
+const [, , bundledDir, outDir, furniDataPath] = process.argv;
 if (!bundledDir || !outDir) {
-    console.error('usage: extract-furni-icons.js <bundledDir> <iconsOutDir>');
+    console.error('usage: extract-furni-icons.js <bundledDir> <iconsOutDir> [FurnitureData.json]');
     process.exit(1);
+}
+
+// Colour variants (`classname*2`) request their own icon file, but furni
+// bundles ship exactly ONE icon asset — Habbo recolours at render time, and
+// no per-colour icon exists in the bundle or on the CDN. Without an alias
+// every variant is a blank catalog tile, so point each colour at the base
+// icon: the shape is right even though the tint is the base colour.
+const coloursByLib = new Map();
+if (furniDataPath && fs.existsSync(furniDataPath)) {
+    try {
+        const fd = JSON.parse(fs.readFileSync(furniDataPath, 'utf8'));
+        for (const key of ['roomitemtypes', 'wallitemtypes']) {
+            for (const ft of ((fd[key] || {}).furnitype || [])) {
+                const cn = ft.classname || '';
+                if (!cn.includes('*')) continue;
+                const [lib, colour] = cn.split('*');
+                if (!/^\d+$/.test(colour)) continue;
+                if (!coloursByLib.has(lib)) coloursByLib.set(lib, new Set());
+                coloursByLib.get(lib).add(parseInt(colour, 10));
+            }
+        }
+    } catch (e) {
+        console.error(`converter: could not read furnidata for colour variants: ${e.message}`);
+    }
 }
 const furniDir = path.join(bundledDir, 'furniture');
 if (!fs.existsSync(furniDir)) {
@@ -76,6 +100,7 @@ fs.mkdirSync(outDir, { recursive: true });
 
             // Work out which outputs are missing before decoding the atlas —
             // decoding every PNG for an already-complete run is slow.
+            const haveLetters = new Set(iconAssets.map(n => n.charCodeAt(n.length - 1) - 96));
             const jobs = [];
             for (const assetName of iconAssets) {
                 const letter = assetName.slice(-1);
@@ -83,6 +108,14 @@ fs.mkdirSync(outDir, { recursive: true });
                 const targets = (colour === 1)
                     ? [`${libName}_icon.png`, `${libName}_1_icon.png`]
                     : [`${libName}_${colour}_icon.png`];
+
+                // Colour variants with no icon of their own alias the base icon.
+                if (colour === 1) {
+                    for (const c of (coloursByLib.get(libName) || [])) {
+                        if (c !== 1 && !haveLetters.has(c)) targets.push(`${libName}_${c}_icon.png`);
+                    }
+                }
+
                 const missing = targets.filter(t => !fs.existsSync(path.join(outDir, t)));
                 if (missing.length) jobs.push({ assetName, targets: missing });
                 else skipped++;

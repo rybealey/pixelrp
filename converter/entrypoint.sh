@@ -88,7 +88,7 @@ node /usr/local/lib/fix-bundle-sources.js assets/bundled
 # but the converter packs them inside each bundle — without this the catalog
 # is a grid of empty tiles. Extracting locally avoids scraping Habbo's CDN.
 NODE_PATH=/conv/node_modules node /usr/local/lib/extract-furni-icons.js \
-  assets/bundled assets/dcr/hof_furni/icons
+  assets/bundled assets/dcr/hof_furni/icons assets/gamedata/FurnitureData.json
 
 echo ""
 echo "──────────────────────────────────────────────────────"
