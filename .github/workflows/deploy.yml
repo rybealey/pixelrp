@@ -1,0 +1,58 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:        # lets you redeploy the current main by hand
+
+# One deploy at a time; a newer push supersedes an in-flight one rather than
+# racing it onto the same server.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Load SSH key
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          [ -n "$DEPLOY_SSH_KEY" ] || { echo "::error::DEPLOY_SSH_KEY secret is not set — see docs/DEPLOYMENT.md"; exit 1; }
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -p "${{ secrets.DEPLOY_PORT || 22 }}" -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Sync code to the server
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || '/opt/pixelrp' }}
+        run: |
+          # Code only. Every exclude below is state that belongs to the server:
+          # data/ is the database and uploads, .env is its secrets, artifacts/
+          # is synced separately by `make sync-assets`, cms/src is cloned there.
+          # --delete keeps tracked files honest but can never reach an exclude.
+          rsync -az --delete --info=stats2 \
+            --exclude '.git/' \
+            --exclude 'data/' \
+            --exclude '.env' \
+            --exclude 'artifacts/' \
+            --exclude 'cms/src/' \
+            -e "ssh -i ~/.ssh/id_deploy -p ${{ secrets.DEPLOY_PORT || 22 }} -o StrictHostKeyChecking=yes" \
+            ./ "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${DEPLOY_PATH}/"
+
+      - name: Run deploy script
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || '/opt/pixelrp' }}
+        run: |
+          ssh -i ~/.ssh/id_deploy -p "${{ secrets.DEPLOY_PORT || 22 }}" \
+            -o StrictHostKeyChecking=yes \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "cd ${DEPLOY_PATH} && bash scripts/deploy.sh"
+
+      - name: Remove SSH key
+        if: always()
+        run: rm -f ~/.ssh/id_deploy
