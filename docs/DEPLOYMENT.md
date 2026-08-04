@@ -97,11 +97,18 @@ over a live database is more dangerous than the failure it guards against.
 
 ```bash
 cd /opt/pixelrp
+set -a; . ./.env; set +a                  # load DB_ROOT_PASSWORD, DB_DATABASE
 docker compose stop emulator cms          # stop writers; leave db running
 gunzip -c data/backups/pixelrp-<STAMP>.sql.gz \
-  | docker compose exec -T db mariadb -uroot -p"$DB_ROOT_PASSWORD" arcturus
+  | docker compose exec -T -e MYSQL_PWD="$DB_ROOT_PASSWORD" db mariadb -uroot \
+      "${DB_DATABASE:-arcturus}"
 docker compose start cms emulator
 ```
+
+The password goes via `MYSQL_PWD` in the container's exec environment, not on
+argv — the same reason `scripts/deploy.sh` does it that way for the backup:
+an argv password is visible to any `ps`/`docker top` for the life of the
+command.
 
 This is a deploy-time safety net, **not a backup strategy**: it lives on the
 same disk and only runs when you deploy. Schedule off-box backups separately.
