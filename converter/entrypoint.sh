@@ -77,6 +77,12 @@ if [ -f assets/gamedata/FigureMap.json ]; then
   '
 fi
 
+# ── Repair cross-library `source` aliases (REQUIRED — see script header) ───
+# Same class of upstream bug as above: converter global state leaks asset
+# aliases between libraries, which silently blanks sprites (e.g. avatars
+# rendered with no nose or mouth). Safe and idempotent.
+node /usr/local/lib/fix-bundle-sources.js assets/bundled
+
 echo ""
 echo "──────────────────────────────────────────────────────"
 produced=$(find assets/bundled -name '*.nitro' 2>/dev/null | wc -l | tr -d ' ')

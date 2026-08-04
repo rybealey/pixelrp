@@ -11,6 +11,7 @@ RUN git clone https://github.com/billsonnn/nitro-converter.git /conv \
 WORKDIR /conv
 RUN yarn install --silent && yarn build
 
+COPY fix-bundle-sources.js /usr/local/lib/fix-bundle-sources.js
 COPY entrypoint.sh /usr/local/bin/pixelrp-converter-entrypoint
 RUN chmod +x /usr/local/bin/pixelrp-converter-entrypoint
 ENTRYPOINT ["pixelrp-converter-entrypoint"]
