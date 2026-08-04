@@ -16,12 +16,16 @@ DEPLOY_PATH="${DEPLOY_PATH:-/opt/pixelrp}"
 DEPLOY_PORT="${DEPLOY_PORT:-22}"
 
 echo "sync-assets: $(du -sh artifacts | cut -f1) -> ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/artifacts"
-echo "sync-assets: first run over a slow link can take a while; it resumes if interrupted."
+echo "sync-assets: first run over a slow link can take a while; resumption is safe and never leaves truncated files."
 
 # --delete keeps the server's artifacts identical to yours (a jar you removed
 # locally must not linger there). It is scoped to artifacts/ ONLY — data/ and
 # .env live outside this path and are never considered.
-rsync -az --info=progress2 --partial --delete \
+# --partial-dir and --delay-updates ensure interrupted transfers never leave
+# half-written files under their real names: incomplete transfers park in
+# .rsync-partial/ and are moved into place only when the full rsync succeeds.
+rsync -az --info=progress2 --partial-dir=.rsync-partial --delay-updates --delete \
+  --exclude='.rsync-partial/' \
   -e "ssh -p ${DEPLOY_PORT}" \
   artifacts/ "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/artifacts/"
 
