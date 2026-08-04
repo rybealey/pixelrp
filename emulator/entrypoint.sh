@@ -82,5 +82,10 @@ echo "emulator: waiting for database at ${ARC_DB_HOST}:3306 ..."
 until (echo > "/dev/tcp/${ARC_DB_HOST}/3306") 2>/dev/null; do sleep 2; done
 echo "emulator: database reachable — starting $(basename "$JAR")"
 
+# NOTE on Arcturus BETA builds: stock beta jars block forever on an interactive
+# 'Press "ENTER" if you agree' gate (Emulator.java promptEnterKey) — feeding a
+# newline through stdin does NOT reliably clear it (verified 2026-08). Use a
+# jar built by scripts/build-emulator.sh, which patches the gate out; the
+# stdin passthrough below keeps `docker attach` console commands usable.
 # shellcheck disable=SC2086  # ARC_JAVA_OPTS is intentionally word-split
-exec java ${ARC_JAVA_OPTS:--Xmx1g} -jar "$JAR"
+exec java ${ARC_JAVA_OPTS:--Xmx1g} -jar "$JAR" < <(cat)

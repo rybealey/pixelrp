@@ -100,7 +100,7 @@ services:
       MIN_STAFF_RANK: 4
       # Links the CMS renders for the game client + assets:
       NITRO_CLIENT_URL: "http://localhost:${NITRO_PORT:-3000}"
-      NITRO_STATIC_URL: "http://localhost:${NITRO_PORT:-3000}/assets"
+      NITRO_STATIC_URL: "http://localhost:${NITRO_PORT:-3000}/game-assets"
       # Local dev: external integrations off.
       TURNSTILE_ENABLED: "false"
       IP_API_ENABLED: "false"
@@ -122,15 +122,18 @@ services:
     environment:
       # Browser-facing URLs (the client runs on the HOST, so localhost + host ports).
       NITRO_WS_URL: "ws://localhost:${WS_PORT:-2096}"
-      NITRO_ASSET_URL: "http://localhost:${NITRO_PORT:-3000}/assets"
+      # /game-assets, NOT /assets: vite emits the client's own hashed JS/CSS
+      # into dist/assets, so mounting the game pack there would mask the
+      # client bundle (verified: the client 404s on its own chunks).
+      NITRO_ASSET_URL: "http://localhost:${NITRO_PORT:-3000}/game-assets"
       NITRO_CMS_URL: "http://localhost:${CMS_PORT:-8080}"
       # Optional overrides if your asset pack layout differs (artifacts/README.md):
-      # NITRO_IMAGE_LIBRARY_URL: "http://localhost:3000/assets/swf/c_images/"
-      # NITRO_HOF_FURNI_URL: "http://localhost:3000/assets/swf/dcr/hof_furni"
+      # NITRO_IMAGE_LIBRARY_URL: "http://localhost:3000/game-assets/swf/c_images/"
+      # NITRO_HOF_FURNI_URL: "http://localhost:3000/game-assets/swf/dcr/hof_furni"
     ports:
       - "127.0.0.1:${NITRO_PORT:-3000}:80"
     volumes:
-      - ./artifacts/nitro-assets:/usr/share/nginx/html/assets:ro
+      - ./artifacts/nitro-assets:/usr/share/nginx/html/game-assets:ro
     networks:
       pixelrp:
         ipv4_address: ${NITRO_IP:-172.28.0.40}

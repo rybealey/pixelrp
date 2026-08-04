@@ -10,12 +10,22 @@ Place **exactly one** emulator jar here:
 
     artifacts/arcturus/Habbo-4.0.1-beta-jar-with-dependencies.jar   (name may vary)
 
-Where to get it: Arcturus Morningstar 4.0.x has **no formal GitLab releases** —
-jars are distributed as GitLab CI artifacts (2-week expiry) on
-https://git.krews.org/morningstar/Arcturus-Community (branch `ms3-upgrade`) and
-via the 4.0.x announcement threads (DevBest) / Krews Discord. Any 4.0.1+ build
-for Java 21 works. If you drop more than one jar here the emulator refuses to
-guess and asks you to keep one.
+Easiest path — build it from the official source in one command:
+
+    ./scripts/build-emulator.sh
+
+(clones the official repo @ ms3-upgrade, patches out the beta build's
+interactive 'Press ENTER' gate — which otherwise blocks forever in a container
+— and Maven-builds with the same image as upstream CI.)
+
+Alternatively drop a downloaded jar: Arcturus Morningstar 4.0.x has **no formal
+GitLab releases** — jars are distributed as GitLab CI artifacts (2-week expiry)
+on https://git.krews.org/morningstar/Arcturus-Community (branch `ms3-upgrade`)
+and via the 4.0.x announcement threads (DevBest) / Krews Discord. Any 4.0.1+
+build for Java 21 works — but note a STOCK beta jar stops at the interactive
+gate on every container start (`docker attach pixelrp-emulator-1`, press ENTER,
+detach with Ctrl-P Ctrl-Q). If you drop more than one jar here the emulator
+refuses to guess and asks you to keep one.
 
 ## artifacts/arcturus/plugins/ — NitroWebsockets (REQUIRED)
 
@@ -62,10 +72,21 @@ Caveat: the updates are not idempotent. If `02` fails on an already-applied
 change, your base dump is newer than 3.5.4 — remove the already-applied update
 file(s), run `make reset`, and `make up` again.
 
-## artifacts/nitro-assets/ — game assets (served at http://localhost:3000/assets)
+## artifacts/nitro-assets/ — game assets (served at http://localhost:3000/game-assets)
 
 Drop your Nitro asset pack here (nitro-converter output, or a prebuilt default
-asset pack). Expected layout — this folder IS the client's `asset.url` root:
+asset pack). Two helpers cover the essentials:
+
+- the official Krews default-assets pack (`git.krews.org/nitro/default-assets`)
+  supplies `bundled/generic` (incl. the required preloads), basic furniture,
+  `images/` and `sounds/`;
+- `./scripts/fetch-gamedata.sh` generates the gamedata JSONs from Habbo's live
+  endpoints via the official nitro-converter.
+
+Clothing/effect/pet `.nitro` bundles are NOT covered by either — avatars render
+as placeholders until you add a full converted pack (your own nitro-converter
+run with the SWF conversions enabled). Expected layout — this folder IS the
+client's `asset.url` root:
 
     nitro-assets/
       bundled/

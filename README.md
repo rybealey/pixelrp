@@ -101,3 +101,9 @@ touch `./data`.
   remove the redundant update file(s), `make reset`, `make up`.
 - **Client stuck loading** → assets missing (`docker compose logs nitro`), or
   opened without an SSO ticket — enter through the CMS play button.
+- **CMS shows the Atom Installation wizard and asks for a key** → it's seeded
+  into the database on first migrate:
+  `make shell-db` → `SELECT installation_key FROM website_installation;`
+- **Refreshing Nitro gamedata** (new official clothes/furni metadata) →
+  `./scripts/fetch-gamedata.sh` regenerates the JSONs from Habbo's live
+  endpoints via the official nitro-converter.

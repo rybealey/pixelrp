@@ -31,7 +31,7 @@ echo "pixelrp-nitro: rendered renderer-config.json (socket.url=$NITRO_WS_URL, as
 
 # Assets are a user artifact — warn (don't block) when absent.
 # (! -name '.*' so the repo's .gitkeep placeholder doesn't count as content.)
-if [ -z "$(find "$HTML/assets" -mindepth 1 -maxdepth 1 ! -name '.*' 2>/dev/null | head -1)" ]; then
+if [ -z "$(find "$HTML/game-assets" -mindepth 1 -maxdepth 1 ! -name '.*' 2>/dev/null | head -1)" ]; then
   echo "pixelrp-nitro WARNING: ./artifacts/nitro-assets is empty — the client will" >&2
   echo "pixelrp-nitro WARNING: load forever without game assets. See artifacts/README.md." >&2
 fi

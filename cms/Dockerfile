@@ -10,8 +10,16 @@ WORKDIR /build
 COPY src/package.json ./
 RUN npm install
 COPY src/ ./
-# The default theme build, same as AtomCMS's own CI.
-RUN npm run build:atom
+# Two vite builds are needed: build:atom (the site theme, what upstream CI
+# runs) AND the base build (resources/css/app.css — the /installation wizard's
+# layout requires it; a theme-only build 500s there with a ViteException,
+# verified 2026-08). Both write public/build/manifest.json, each clobbering
+# the other — so build both and merge the manifests.
+RUN npm run build:atom \
+    && cp -r public/build /tmp/build-atom \
+    && npm run build \
+    && cp -r /tmp/build-atom/assets/. public/build/assets/ \
+    && node -e "const fs=require('fs');const a=JSON.parse(fs.readFileSync('/tmp/build-atom/manifest.json'));const b=JSON.parse(fs.readFileSync('public/build/manifest.json'));fs.writeFileSync('public/build/manifest.json',JSON.stringify({...a,...b}))"
 # Replicate `yarn link:atom` (theme images into public/) with a real copy —
 # a symlink would dangle across COPY --from.
 RUN if [ -d resources/themes/atom/images ]; then \
