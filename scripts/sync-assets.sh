@@ -18,13 +18,15 @@ DEPLOY_PORT="${DEPLOY_PORT:-22}"
 echo "sync-assets: $(du -sh artifacts | cut -f1) -> ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/artifacts"
 echo "sync-assets: first run over a slow link can take a while; resumption is safe and never leaves truncated files."
 
-# --delete keeps the server's artifacts identical to yours (a jar you removed
-# locally must not linger there). It is scoped to artifacts/ ONLY — data/ and
-# .env live outside this path and are never considered.
+# --delete-after keeps the server's artifacts identical to yours (a jar you
+# removed locally must not linger there). It is scoped to artifacts/ ONLY —
+# data/ and .env live outside this path and are never considered. Deletions
+# are deferred to the end so the destination is never left missing assets
+# mid-transfer if the sync is interrupted.
 # --partial-dir and --delay-updates ensure interrupted transfers never leave
 # half-written files under their real names: incomplete transfers park in
 # .rsync-partial/ and are moved into place only when the full rsync succeeds.
-rsync -az --info=progress2 --partial-dir=.rsync-partial --delay-updates --delete \
+rsync -az --info=progress2 --partial-dir=.rsync-partial --delay-updates --delete-after \
   --exclude='.rsync-partial/' \
   -e "ssh -p ${DEPLOY_PORT}" \
   artifacts/ "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/artifacts/"
