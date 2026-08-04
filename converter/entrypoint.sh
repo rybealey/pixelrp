@@ -56,6 +56,27 @@ LOG=/tmp/convert.log
 # what we want mid-run; the summary below makes sure none of them go unnoticed.
 yarn start 2>&1 | tee "$LOG" || true
 
+# ── Normalize FigureMap (REQUIRED — see comment) ───────────────────────────
+# nitro-converter emits library entries with NO `parts` key when the source
+# figuremap.xml has a library with no <part> children. nitro-renderer's
+# processFigureMap iterates `library.parts` unguarded, so ONE such entry
+# throws TypeError and aborts the whole figure-map load — every avatar in the
+# hotel then silently fails to render (verified 2026-08: 2 bad entries out of
+# 2954 made all avatars invisible). Give partless libraries an empty array.
+if [ -f assets/gamedata/FigureMap.json ]; then
+  node -e '
+    const fs = require("fs");
+    const p = "assets/gamedata/FigureMap.json";
+    const d = JSON.parse(fs.readFileSync(p, "utf8"));
+    let fixed = 0;
+    for (const lib of (d.libraries || [])) {
+      if (!Array.isArray(lib.parts)) { lib.parts = []; fixed++; }
+    }
+    if (fixed) fs.writeFileSync(p, JSON.stringify(d));
+    console.log(`converter: FigureMap normalized (${fixed} partless librar${fixed === 1 ? "y" : "ies"} given an empty parts array)`);
+  '
+fi
+
 echo ""
 echo "──────────────────────────────────────────────────────"
 produced=$(find assets/bundled -name '*.nitro' 2>/dev/null | wc -l | tr -d ' ')

@@ -13,14 +13,29 @@ HTML=/usr/share/nginx/html
 IMAGE_LIBRARY_URL="${NITRO_IMAGE_LIBRARY_URL:-$NITRO_ASSET_URL/c_images/}"
 HOF_FURNI_URL="${NITRO_HOF_FURNI_URL:-$NITRO_ASSET_URL/dcr/hof_furni}"
 
+# Cache-bust the gamedata JSONs. `make convert-assets` rewrites them in place
+# at a stable URL, and browsers happily serve a months-old cached copy —
+# which looks exactly like "the converter didn't work". Stamp = newest
+# gamedata mtime, so the query only changes when the data actually changes.
+STAMP=$(find "$HTML/game-assets/gamedata" -type f -name '*.json' -exec stat -c %Y {} + 2>/dev/null | sort -n | tail -1)
+STAMP=${STAMP:-0}
+
 jq --arg ws "$NITRO_WS_URL" \
    --arg asset "$NITRO_ASSET_URL" \
    --arg imglib "$IMAGE_LIBRARY_URL" \
    --arg hof "$HOF_FURNI_URL" \
+   --arg v "?v=$STAMP" \
    '."socket.url" = $ws
     | ."asset.url" = $asset
     | ."image.library.url" = $imglib
-    | ."hof.furni.url" = $hof' \
+    | ."hof.furni.url" = $hof
+    | ."furnidata.url" = "${gamedata.url}/FurnitureData.json\($v)"
+    | ."productdata.url" = "${gamedata.url}/ProductData.json\($v)"
+    | ."avatar.figuredata.url" = "${gamedata.url}/FigureData.json\($v)"
+    | ."avatar.figuremap.url" = "${gamedata.url}/FigureMap.json\($v)"
+    | ."avatar.effectmap.url" = "${gamedata.url}/EffectMap.json\($v)"
+    | ."avatar.actions.url" = "${gamedata.url}/HabboAvatarActions.json\($v)"
+    | ."external.texts.url" = ["${gamedata.url}/ExternalTexts.json\($v)", "${gamedata.url}/UITexts.json\($v)"]' \
    "$HTML/renderer-config.base.json" > "$HTML/renderer-config.json"
 
 jq --arg cms "$NITRO_CMS_URL" \
