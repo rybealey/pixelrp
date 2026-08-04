@@ -76,7 +76,7 @@ services:
       # Laravel reads real env vars (they override any .env file) — this block
       # IS the CMS configuration; edit the root .env, not files in the container.
       APP_NAME: ${APP_NAME:-PixelRP}
-      APP_ENV: local
+      APP_ENV: ${APP_ENV:-local}
       APP_KEY: ${APP_KEY:?run 'make env' first}
       APP_DEBUG: ${APP_DEBUG:-true}
       APP_TIMEZONE: UTC

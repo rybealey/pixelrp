@@ -15,6 +15,16 @@ set -a; . ./.env; set +a
 DEPLOY_PATH="${DEPLOY_PATH:-/opt/pixelrp}"
 DEPLOY_PORT="${DEPLOY_PORT:-22}"
 
+# Guard against a fresh/empty local checkout: --delete-after below mirrors
+# the server to whatever is here, so an empty artifacts/ (e.g. a clean clone
+# with DEPLOY_* already set, before ever running convert-assets or fetching
+# the jar) would delete ~570MB of real assets on the server. Mirrors the same
+# check scripts/deploy.sh does server-side before it will run at all.
+[ -n "$(find artifacts/sql -name '*.sql' 2>/dev/null | head -1)" ] \
+  || { echo >&2 $'sync-assets: artifacts/sql is empty locally — refusing to sync.\n  This guard exists so an empty checkout cannot wipe the server via --delete-after.'; exit 1; }
+[ -n "$(find artifacts/arcturus -maxdepth 1 -name '*.jar' 2>/dev/null | head -1)" ] \
+  || { echo >&2 $'sync-assets: artifacts/arcturus has no emulator jar locally — refusing to sync.\n  This guard exists so an empty checkout cannot wipe the server via --delete-after.'; exit 1; }
+
 echo "sync-assets: $(du -sh artifacts | cut -f1) -> ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/artifacts"
 echo "sync-assets: first run over a slow link can take a while; resumption is safe and never leaves truncated files."
 
@@ -26,8 +36,11 @@ echo "sync-assets: first run over a slow link can take a while; resumption is sa
 # --partial-dir and --delay-updates ensure interrupted transfers never leave
 # half-written files under their real names: incomplete transfers park in
 # .rsync-partial/ and are moved into place only when the full rsync succeeds.
+# flash-assets/ is excluded: it's converter INPUT only (~93MB of source SWFs)
+# with no use on the server, which only ever serves the converted output.
 rsync -az --info=progress2 --partial-dir=.rsync-partial --delay-updates --delete-after \
   --exclude='.rsync-partial/' \
+  --exclude='flash-assets/' \
   -e "ssh -p ${DEPLOY_PORT}" \
   artifacts/ "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/artifacts/"
 

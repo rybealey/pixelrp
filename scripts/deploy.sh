@@ -24,6 +24,8 @@ run_timeout() { # seconds, command-string (run via `bash -c`)
   elif command -v gtimeout >/dev/null 2>&1; then
     gtimeout "$secs" bash -c "$cmd"
   else
+    command -v perl >/dev/null 2>&1 \
+      || die "none of timeout, gtimeout, or perl is available — install one of these (coreutils/perl) so the health gate can bound its checks."
     perl -e 'alarm $ARGV[0]; exec("bash","-c",$ARGV[1]) or die "$!\n"' "$secs" "$cmd"
   fi
 }
@@ -37,12 +39,45 @@ set -a; . ./.env; set +a
   || die $'artifacts/sql is empty — the database schema is missing.\n  Sync assets from your workstation:  make sync-assets'
 [ -n "$(find artifacts/arcturus -maxdepth 1 -name '*.jar' 2>/dev/null | head -1)" ] \
   || die $'artifacts/arcturus has no emulator jar.\n  Sync assets from your workstation:  make sync-assets'
+[ -n "$(find artifacts/nitro-assets -mindepth 1 2>/dev/null | head -1)" ] \
+  || die $'artifacts/nitro-assets is empty — the game client would load with zero furni/badges/gamedata.\n  Sync assets from your workstation:  make sync-assets'
+
+# cms/src is gitignored (not vendored) and excluded from the deploy sync, so a
+# fresh server checkout never has it — only `make up` clones it, and this
+# script does not call make. Clone it here so cms/Dockerfile's
+# `COPY src/package.json ./` has something to find on a first deploy.
+if [ ! -d cms/src ]; then
+  say "cms/src is missing — cloning AtomCMS source (first deploy on this server)"
+  command -v git >/dev/null 2>&1 \
+    || die "git is not installed — required to clone cms/src on first deploy."
+  git clone https://github.com/atom-retros/atomcms.git cms/src \
+    || die "failed to clone cms/src from https://github.com/atom-retros/atomcms.git — check network access and try again."
+fi
 
 # ── 2. Pre-deploy database backup ──────────────────────────────────────────
 # The CMS entrypoint runs `artisan migrate --force` on every boot. Those
 # migrations are upstream AtomCMS code: normally additive, but a future one
 # could alter or drop a column. Never migrate without a dump.
-if [ -n "$($COMPOSE ps -q db 2>/dev/null)" ]; then
+#
+# Discriminate on the DATADIR, not on `compose ps` — compose v2 `ps` lists
+# only RUNNING containers, so a stopped-but-existing db (e.g. after `make
+# down`, or a previous deploy left it down) would otherwise take the "first
+# deploy" branch, skip the dump, and let `compose up` run `artisan migrate
+# --force` against live data with no backup on disk. Only a genuinely
+# empty/absent data/db may skip the backup.
+if [ -n "$(find data/db -mindepth 1 2>/dev/null | head -1)" ]; then
+  # A database already exists — a backup is mandatory. Bring db up if it
+  # isn't already, and wait for it to report healthy before dumping.
+  if [ -z "$($COMPOSE ps -q db 2>/dev/null)" ] || [ "$(docker inspect --format '{{.State.Running}}' "$($COMPOSE ps -q db)" 2>/dev/null)" != "true" ]; then
+    say "db container not running — starting it to take the pre-deploy backup"
+    $COMPOSE up -d db
+  fi
+  db_deadline=$(( $(date +%s) + 600 ))
+  until [ -n "$($COMPOSE ps -q db 2>/dev/null)" ] && [ "$(docker inspect --format '{{.State.Health.Status}}' "$($COMPOSE ps -q db)" 2>/dev/null)" = healthy ]; do
+    [ "$(date +%s)" -lt "$db_deadline" ] || die "db did not become healthy in time to take the pre-deploy backup — deploy aborted before any migration ran."
+    sleep 5
+  done
+
   mkdir -p data/backups
   stamp="$(date -u +%Y%m%dT%H%M%SZ)"
   dest="data/backups/pixelrp-${stamp}.sql.gz"
@@ -78,22 +113,31 @@ if [ -n "$($COMPOSE ps -q db 2>/dev/null)" ]; then
     rm -f "$old"
   done
 else
-  say "db container not running (first deploy?) — nothing to back up"
+  say "no existing database — nothing to back up"
 fi
 
 # ── 3. Build and start ─────────────────────────────────────────────────────
+# Capture the wall-clock time just before bringing the stack up so the
+# emulator health check below can scope its log grep to THIS deploy only.
+deploy_started="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 say "building and starting services"
 $COMPOSE up -d --build
 
 # ── 4. Health gate — a green deploy must mean a working stack ──────────────
 say "waiting for services to become healthy"
 deadline=$(( $(date +%s) + 300 ))
-check() { # name, command
+# db's own healthcheck start_period is 300s to allow a first-boot schema
+# import; give the db check a longer allowance of its own so a legitimately
+# slow first deploy doesn't fail red while the other, faster services keep
+# the default 300s budget.
+db_check_deadline=$(( $(date +%s) + 600 ))
+check() { # name, command, optional-deadline-var (defaults to `deadline`)
+  local dl="${3:-$deadline}"
   # Every check is run through run_timeout so a hung service (a stuck curl, a
   # blocked docker inspect) can never stall inside one iteration forever — the
   # loop always gets back to re-testing the deadline.
   until run_timeout 15 "$2" >/dev/null 2>&1; do
-    [ "$(date +%s)" -lt "$deadline" ] || {
+    [ "$(date +%s)" -lt "$dl" ] || {
       printf >&2 '\ndeploy FATAL: %s did not come up. Last 30 log lines:\n' "$1"
       $COMPOSE logs --tail 30 "$1" >&2 || true
       exit 1
@@ -103,9 +147,13 @@ check() { # name, command
   say "$1 OK"
 }
 
-check db  "[ \"\$(docker inspect --format '{{.State.Health.Status}}' \$($COMPOSE ps -q db))\" = healthy ]"
+check db  "[ \"\$(docker inspect --format '{{.State.Health.Status}}' \$($COMPOSE ps -q db))\" = healthy ]" "$db_check_deadline"
 check cms "curl -fsS --max-time 10 --connect-timeout 5 -o /dev/null http://127.0.0.1:${CMS_PORT:-8080}/"
 check nitro "curl -fsS --max-time 10 --connect-timeout 5 -o /dev/null http://127.0.0.1:${NITRO_PORT:-3000}/"
-check emulator "$COMPOSE logs emulator 2>&1 | grep -q 'successfully loaded'"
+# Must require BOTH that the emulator container is actually running (a
+# crash-looping container's log can still hold yesterday's success line,
+# which survives restarts) AND that the success line appears in logs scoped
+# to THIS deploy via --since, not the container's entire log history.
+check emulator "[ \"\$(docker inspect --format '{{.State.Running}}' \$($COMPOSE ps -q emulator))\" = true ] && $COMPOSE logs --since '$deploy_started' emulator 2>&1 | grep -q 'successfully loaded'"
 
 say "deploy complete — stack healthy"

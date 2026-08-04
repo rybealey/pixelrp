@@ -55,13 +55,23 @@ change it in the repo and let the deploy carry it — don't edit it in place.
    fetch the key from your own trusted connection to the box and use its
    output as the secret's value:
 
-       ssh-keyscan -H <host>
+       ssh-keyscan -p <port> -H <host>
 
-   Paste the full output of that command as the `DEPLOY_HOST_KEY` secret.
+   **The port must match `DEPLOY_PORT`.** Plain `ssh-keyscan -H <host>` scans
+   port 22 only and produces a known_hosts line that will NOT match a
+   non-default `DEPLOY_PORT` — every deploy would then fail with "Host key
+   verification failed". When `<port>` isn't 22, the output is keyed as
+   `[host]:port` instead of bare `host`; that's expected. Paste the full
+   output of the command as the `DEPLOY_HOST_KEY` secret.
 
 4. **Prepare the directory** on the server:
 
        sudo mkdir -p /opt/pixelrp && sudo chown "$USER" /opt/pixelrp
+
+   **`DEPLOY_USER` must be root or a member of the `docker` group.** The
+   deploy script runs `docker compose` directly (not via `sudo`); if the
+   deploy user can't talk to the Docker socket, the first deploy fails with
+   a permission error against `/var/run/docker.sock`.
 
 5. **Author the server `.env`.** It is never deployed — the server keeps its
    own. Copy `.env.example` there and set, at minimum:
@@ -131,3 +141,7 @@ imply any of them:
 - [ ] **Off-box backups** and monitoring.
 - [ ] **Pin `DEPLOY_HOST_KEY`** so CI verifies the server's identity instead
       of trusting it on first use every run.
+- [ ] **Tighten `websockets.whitelist`.** `db/init/01-arcturus.sh` seeds it as
+      `*`, which is fine on a local box but allows any origin to open a
+      websocket to the emulator on a public one — restrict it to your real
+      domain(s).

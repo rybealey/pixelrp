@@ -32,9 +32,14 @@ jobs:
           printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_deploy
           chmod 600 ~/.ssh/id_deploy
           if [ -n "$DEPLOY_HOST_KEY" ]; then
+            # Expected format: the full output of
+            #   ssh-keyscan -p <DEPLOY_PORT> -H <DEPLOY_HOST>
+            # When DEPLOY_PORT is not 22, entries are keyed as [host]:port —
+            # the port used here MUST match the DEPLOY_PORT secret used below,
+            # or every deploy fails with "Host key verification failed".
             printf '%s\n' "$DEPLOY_HOST_KEY" >> ~/.ssh/known_hosts
           else
-            echo "::warning::Host key verification not set. Using TOFU (trust-on-first-use) — the host key will be trusted once per run and is not verified against prior runs. For real verification, obtain the host key with 'ssh-keyscan -H $DEPLOY_HOST' and set the DEPLOY_HOST_KEY secret."
+            echo "::warning::Host key verification not set. Using TOFU (trust-on-first-use) — the host key will be trusted once per run and is not verified against prior runs. For real verification, obtain the host key with 'ssh-keyscan -p <DEPLOY_PORT> -H $DEPLOY_HOST' and set the DEPLOY_HOST_KEY secret."
             ssh-keyscan -p "${{ secrets.DEPLOY_PORT || 22 }}" -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
           fi
 
@@ -46,7 +51,8 @@ jobs:
           # data/, .env, artifacts/, and cms/src/ are the ONLY paths safe to hand-edit
           # on the server — any file elsewhere will be silently deleted by the next deploy.
           # data/ is the database and uploads, .env is its secrets, artifacts/ is synced
-          # separately by `make sync-assets`, cms/src is cloned there.
+          # separately by `make sync-assets`, cms/src is cloned there by scripts/deploy.sh
+          # on its first run on this server (it is gitignored, so rsync never carries it).
           # --delete keeps tracked files honest but can never reach an exclude.
           rsync -az --delete --info=stats2 \
             --exclude '.git/' \

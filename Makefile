@@ -81,6 +81,7 @@ reset:
 	@echo "  - ./data/db          (every account, currency, item, room, progression)"
 	@echo "  - ./data/emulator    (emulator config.ini and logs)"
 	@echo "  - ./data/cms         (CMS storage: uploads, logs, seed marker)"
+	@echo "  - ./data/backups     (every pre-deploy database dump — the deploy safety net)"
 	@echo "Your ./artifacts files and .env are NOT touched."
 	@read -p "Type 'yes-destroy-my-data' to proceed: " confirm && \
 	  [ "$$confirm" = "yes-destroy-my-data" ] || { echo "Aborted — nothing deleted."; exit 1; }
