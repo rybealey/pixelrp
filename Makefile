@@ -3,7 +3,7 @@ COMPOSE := docker compose
 -include .env
 export
 
-.PHONY: up down logs ps shell-db env fetch-ws-plugin convert-assets fetch-catalog-icons reset
+.PHONY: up down logs ps shell-db env fetch-ws-plugin convert-assets fetch-catalog-icons sync-assets reset
 
 ## Bring the whole stack up (builds images, clones AtomCMS source on first run).
 up: env cms/src
@@ -68,6 +68,11 @@ fetch-catalog-icons:
 	./scripts/fetch-catalog-icons.sh
 	@if [ -n "$$($(COMPOSE) ps -q nitro)" ]; then $(COMPOSE) restart nitro; fi
 
+## Push ./artifacts (assets, jar, SQL) to the server. Separate from deploys on
+## purpose: ~570MB that only changes when you re-convert.
+sync-assets:
+	./scripts/sync-assets.sh
+
 ## ─── DESTRUCTIVE ─── wipes every account, item, currency, room, upload, log.
 reset:
 	@echo "!!! DESTRUCTIVE RESET !!!"
@@ -76,6 +81,7 @@ reset:
 	@echo "  - ./data/db          (every account, currency, item, room, progression)"
 	@echo "  - ./data/emulator    (emulator config.ini and logs)"
 	@echo "  - ./data/cms         (CMS storage: uploads, logs, seed marker)"
+	@echo "  - ./data/backups     (every pre-deploy database dump — the deploy safety net)"
 	@echo "Your ./artifacts files and .env are NOT touched."
 	@read -p "Type 'yes-destroy-my-data' to proceed: " confirm && \
 	  [ "$$confirm" = "yes-destroy-my-data" ] || { echo "Aborted — nothing deleted."; exit 1; }
