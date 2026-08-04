@@ -99,5 +99,31 @@ dbq "SELECT DISTINCT page_headline FROM catalog_pages WHERE page_headline <> ''
   done \
 | fetch_pairs "front-page artwork"
 
+# ── D. camera filter overlays ──────────────────────────────────────────────
+# The in-client camera's texture effects load an overlay named after the
+# effect itself (c_images/Habbo-Stories/<effect>.png). The list lives in the
+# client's ui-config, so read it from the running nitro service rather than
+# hardcoding it — effects without an overlay simply 404 and are skipped.
+if curl -fsS --max-time 10 -o /tmp/pixelrp-ui-config.json \
+     "http://localhost:${NITRO_PORT:-3000}/ui-config.json" 2>/dev/null; then
+  mkdir -p artifacts/nitro-assets/c_images/Habbo-Stories
+  python3 - <<'PY' | fetch_pairs "camera filter overlays"
+import json, os
+try:
+    cfg = json.load(open('/tmp/pixelrp-ui-config.json'))
+except Exception:
+    raise SystemExit(0)
+out = 'artifacts/nitro-assets/c_images/Habbo-Stories'
+for eff in cfg.get('camera.available.effects', []):
+    name = eff.get('name')
+    if not name:
+        continue
+    print(f"https://images.habbo.com/c_images/Habbo-Stories/{name}.png {os.path.join(out, name + '.png')}")
+PY
+  rm -f /tmp/pixelrp-ui-config.json
+else
+  echo "fetch-catalog-icons: camera filter overlays: skipped (nitro not reachable)"
+fi
+
 echo "fetch-catalog-icons: done"
 echo "fetch-catalog-icons: restart nitro to serve them: docker compose restart nitro"

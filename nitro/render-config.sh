@@ -38,9 +38,30 @@ jq --arg ws "$NITRO_WS_URL" \
     | ."external.texts.url" = ["${gamedata.url}/ExternalTexts.json\($v)", "${gamedata.url}/UITexts.json\($v)"]' \
    "$HTML/renderer-config.base.json" > "$HTML/renderer-config.json"
 
+# The hotel view ships two pieces of stock Habbo demo content: the "What's
+# new?" promo articles (seeded into hotelview_news) and a promo box whose
+# copy comes from translation keys (2021NitroPromo) that no retro has, so it
+# renders as raw "landing.view.…" strings. Blank both slots by default —
+# this touches only client config, never the database, so restoring is just
+# NITRO_SHOW_PROMO_ARTICLES=1 in .env.
+if [ "${NITRO_SHOW_PROMO_ARTICLES:-0}" = "1" ]; then
+  PROMO_FILTER='.'
+else
+  PROMO_FILTER='
+    ( [ .hotelview.widgets | to_entries[]
+        | select((.key | endswith(".conf")) and (.value.texts? == "2021NitroPromo"))
+        | .key | sub("\\.conf$"; "") ] ) as $demo
+    | .hotelview.widgets |= with_entries(
+        if (.key | endswith(".widget"))
+           and ((.value == "promoarticle")
+                or ((.key | sub("\\.widget$"; "")) as $s | $demo | index($s)))
+        then .value = "" else . end)'
+fi
+
 jq --arg cms "$NITRO_CMS_URL" \
    '."url.prefix" = $cms' \
-   "$HTML/ui-config.base.json" > "$HTML/ui-config.json"
+   "$HTML/ui-config.base.json" \
+| jq "$PROMO_FILTER" > "$HTML/ui-config.json"
 
 echo "pixelrp-nitro: rendered renderer-config.json (socket.url=$NITRO_WS_URL, asset.url=$NITRO_ASSET_URL)"
 

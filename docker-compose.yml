@@ -127,6 +127,9 @@ services:
       # client bundle (verified: the client 404s on its own chunks).
       NITRO_ASSET_URL: "http://localhost:${NITRO_PORT:-3000}/game-assets"
       NITRO_CMS_URL: "http://localhost:${CMS_PORT:-8080}"
+      # Stock Habbo "What's new?" promo articles on the hotel view. Off by
+      # default (demo content); set to 1 in .env to bring them back.
+      NITRO_SHOW_PROMO_ARTICLES: ${NITRO_SHOW_PROMO_ARTICLES:-0}
       # Optional overrides if your asset pack layout differs (artifacts/README.md):
       # NITRO_IMAGE_LIBRARY_URL: "http://localhost:3000/game-assets/swf/c_images/"
       # NITRO_HOF_FURNI_URL: "http://localhost:3000/game-assets/swf/dcr/hof_furni"
