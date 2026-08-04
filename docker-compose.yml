@@ -62,6 +62,78 @@ services:
       pixelrp:
         ipv4_address: ${EMULATOR_IP:-172.28.0.20}
 
+  cms:
+    build:
+      context: ./cms
+      args:
+        GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Laravel reads real env vars (they override any .env file) — this block
+      # IS the CMS configuration; edit the root .env, not files in the container.
+      APP_NAME: ${APP_NAME:-PixelRP}
+      APP_ENV: local
+      APP_KEY: ${APP_KEY:?run 'make env' first}
+      APP_DEBUG: ${APP_DEBUG:-true}
+      APP_TIMEZONE: UTC
+      APP_URL: "http://localhost:${CMS_PORT:-8080}"
+      LOG_CHANNEL: stack
+      LOG_LEVEL: debug
+      DB_CONNECTION: mariadb
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-arcturus}
+      DB_USERNAME: ${DB_USERNAME:-arcturus}
+      DB_PASSWORD: ${DB_PASSWORD:?run 'make env' first}
+      SESSION_DRIVER: database
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+      MAIL_MAILER: log
+      FILESYSTEM_DISK: public
+      # RCON — the emulator whitelists this container's static IP (CMS_IP).
+      RCON_HOST: emulator
+      RCON_PORT: 3001
+      MIN_STAFF_RANK: 4
+      # Links the CMS renders for the game client + assets:
+      NITRO_CLIENT_URL: "http://localhost:${NITRO_PORT:-3000}"
+      NITRO_STATIC_URL: "http://localhost:${NITRO_PORT:-3000}/assets"
+      # Local dev: external integrations off.
+      TURNSTILE_ENABLED: "false"
+      IP_API_ENABLED: "false"
+      FINDRETROS_ENABLED: "false"
+    ports:
+      - "127.0.0.1:${CMS_PORT:-8080}:80"
+    volumes:
+      - ./data/cms/storage:/var/www/html/storage
+    networks:
+      pixelrp:
+        ipv4_address: ${CMS_IP:-172.28.0.30}
+
+  nitro:
+    build:
+      context: ./nitro
+      args:
+        NITRO_REF: ${NITRO_REF:-75ff874b73d5fc5672a38c536444efa0f0d27e8f}
+    restart: unless-stopped
+    environment:
+      # Browser-facing URLs (the client runs on the HOST, so localhost + host ports).
+      NITRO_WS_URL: "ws://localhost:${WS_PORT:-2096}"
+      NITRO_ASSET_URL: "http://localhost:${NITRO_PORT:-3000}/assets"
+      NITRO_CMS_URL: "http://localhost:${CMS_PORT:-8080}"
+      # Optional overrides if your asset pack layout differs (artifacts/README.md):
+      # NITRO_IMAGE_LIBRARY_URL: "http://localhost:3000/assets/swf/c_images/"
+      # NITRO_HOF_FURNI_URL: "http://localhost:3000/assets/swf/dcr/hof_furni"
+    ports:
+      - "127.0.0.1:${NITRO_PORT:-3000}:80"
+    volumes:
+      - ./artifacts/nitro-assets:/usr/share/nginx/html/assets:ro
+    networks:
+      pixelrp:
+        ipv4_address: ${NITRO_IP:-172.28.0.40}
+
 networks:
   pixelrp:
     driver: bridge
