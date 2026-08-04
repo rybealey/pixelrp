@@ -24,6 +24,8 @@ DEPLOY_PORT="${DEPLOY_PORT:-22}"
   || { echo >&2 $'sync-assets: artifacts/sql is empty locally — refusing to sync.\n  This guard exists so an empty checkout cannot wipe the server via --delete-after.'; exit 1; }
 [ -n "$(find artifacts/arcturus -maxdepth 1 -name '*.jar' 2>/dev/null | head -1)" ] \
   || { echo >&2 $'sync-assets: artifacts/arcturus has no emulator jar locally — refusing to sync.\n  This guard exists so an empty checkout cannot wipe the server via --delete-after.'; exit 1; }
+[ -n "$(find artifacts/nitro-assets -mindepth 1 -not -name '.git*' 2>/dev/null | head -1)" ] \
+  || { echo >&2 $'sync-assets: artifacts/nitro-assets is empty locally — refusing to sync.\n  This guard exists so an empty checkout cannot wipe the server via --delete-after.\n  Convert assets from your workstation:  make convert-assets'; exit 1; }
 
 echo "sync-assets: $(du -sh artifacts | cut -f1) -> ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/artifacts"
 echo "sync-assets: first run over a slow link can take a while; resumption is safe and never leaves truncated files."

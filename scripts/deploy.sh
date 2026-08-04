@@ -39,14 +39,18 @@ set -a; . ./.env; set +a
   || die $'artifacts/sql is empty — the database schema is missing.\n  Sync assets from your workstation:  make sync-assets'
 [ -n "$(find artifacts/arcturus -maxdepth 1 -name '*.jar' 2>/dev/null | head -1)" ] \
   || die $'artifacts/arcturus has no emulator jar.\n  Sync assets from your workstation:  make sync-assets'
-[ -n "$(find artifacts/nitro-assets -mindepth 1 2>/dev/null | head -1)" ] \
+[ -n "$(find artifacts/nitro-assets -mindepth 1 -not -name '.git*' 2>/dev/null | head -1)" ] \
   || die $'artifacts/nitro-assets is empty — the game client would load with zero furni/badges/gamedata.\n  Sync assets from your workstation:  make sync-assets'
 
 # cms/src is gitignored (not vendored) and excluded from the deploy sync, so a
 # fresh server checkout never has it — only `make up` clones it, and this
 # script does not call make. Clone it here so cms/Dockerfile's
 # `COPY src/package.json ./` has something to find on a first deploy.
-if [ ! -d cms/src ]; then
+if [ ! -f cms/src/package.json ]; then
+  if [ -d cms/src ]; then
+    say "cms/src exists but has no package.json — replacing incomplete checkout"
+    rm -rf cms/src
+  fi
   say "cms/src is missing — cloning AtomCMS source (first deploy on this server)"
   command -v git >/dev/null 2>&1 \
     || die "git is not installed — required to clone cms/src on first deploy."
@@ -117,9 +121,6 @@ else
 fi
 
 # ── 3. Build and start ─────────────────────────────────────────────────────
-# Capture the wall-clock time just before bringing the stack up so the
-# emulator health check below can scope its log grep to THIS deploy only.
-deploy_started="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 say "building and starting services"
 $COMPOSE up -d --build
 
@@ -153,7 +154,14 @@ check nitro "curl -fsS --max-time 10 --connect-timeout 5 -o /dev/null http://127
 # Must require BOTH that the emulator container is actually running (a
 # crash-looping container's log can still hold yesterday's success line,
 # which survives restarts) AND that the success line appears in logs scoped
-# to THIS deploy via --since, not the container's entire log history.
-check emulator "[ \"\$(docker inspect --format '{{.State.Running}}' \$($COMPOSE ps -q emulator))\" = true ] && $COMPOSE logs --since '$deploy_started' emulator 2>&1 | grep -q 'successfully loaded'"
+# to the CONTAINER'S CURRENT boot via --since, not its entire log history —
+# anchoring to the deploy's own start time instead would false-RED whenever
+# `compose up -d --build` leaves the container already running (its boot
+# line predates the deploy), and a stale --since would equally false-GREEN a
+# container that booted successfully once and is now crash-looping. Re-read
+# the container id and its StartedAt fresh each iteration (guarding against
+# `ps -q emulator` being briefly empty) so both conjuncts always reflect the
+# container's current incarnation.
+check emulator "cid=\$($COMPOSE ps -q emulator); [ -n \"\$cid\" ] && [ \"\$(docker inspect --format '{{.State.Running}}' \"\$cid\")\" = true ] && $COMPOSE logs --since \"\$(docker inspect --format '{{.State.StartedAt}}' \"\$cid\")\" emulator 2>&1 | grep -q 'successfully loaded'"
 
 say "deploy complete — stack healthy"
