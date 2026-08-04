@@ -62,6 +62,12 @@ touch `./data`.
 | `make shell-db` | root MariaDB shell into the game DB |
 | `make reset` | ⚠ destroy ./data after typed confirmation |
 
+## Deploying
+
+Pushing to `main` deploys to a VPS; game assets go separately via
+`make sync-assets`. Setup, secrets, backup restore, and the
+pre-public hardening checklist: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+
 ## Wiring facts worth knowing
 
 - One database for everything: AtomCMS migrates its `website_*` tables into the
