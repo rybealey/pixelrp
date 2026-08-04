@@ -3,7 +3,7 @@ COMPOSE := docker compose
 -include .env
 export
 
-.PHONY: up down logs ps shell-db env fetch-ws-plugin convert-assets reset
+.PHONY: up down logs ps shell-db env fetch-ws-plugin convert-assets fetch-catalog-icons reset
 
 ## Bring the whole stack up (builds images, clones AtomCMS source on first run).
 up: env cms/src
@@ -60,6 +60,13 @@ convert-assets:
 	  echo "convert-assets: restarting nitro to publish the new gamedata"; \
 	  $(COMPOSE) restart nitro; \
 	fi
+
+## Download catalog PAGE icons (category tab pictures) from Habbo's image CDN,
+## scoped to the icon ids your catalog_pages table actually references.
+## Furni icons need no download — `convert-assets` extracts them from bundles.
+fetch-catalog-icons:
+	./scripts/fetch-catalog-icons.sh
+	@if [ -n "$$($(COMPOSE) ps -q nitro)" ]; then $(COMPOSE) restart nitro; fi
 
 ## ─── DESTRUCTIVE ─── wipes every account, item, currency, room, upload, log.
 reset:

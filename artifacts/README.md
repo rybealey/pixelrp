@@ -106,6 +106,14 @@ client's `asset.url` root:
       c_images/        (album1584/, catalogue/, Quests/, notifications/ — SWF-era images)
       dcr/hof_furni/   (icons/, mp3/ — furni icons and sound machine samples)
 
+Two of those trees are produced for you rather than shipped in any pack:
+
+  dcr/hof_furni/icons/  ← `make convert-assets` extracts these straight out of
+                          the converted furniture bundles (no CDN needed)
+  c_images/catalogue/   ← `make fetch-catalog-icons` downloads the catalog page
+                          icons your catalog_pages table references, from
+                          Habbo's public image CDN
+
 The client preloads and REQUIRES: `bundled/generic/avatar_additions.nitro`,
 `bundled/generic/group_badge.nitro`, `bundled/generic/floor_editor.nitro`,
 `images/loading_icon.png`, `images/clear_icon.png`, `images/big_arrow.png`.

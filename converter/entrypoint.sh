@@ -83,6 +83,13 @@ fi
 # rendered with no nose or mouth). Safe and idempotent.
 node /usr/local/lib/fix-bundle-sources.js assets/bundled
 
+# ── Extract catalog icons from the furniture bundles ───────────────────────
+# The client loads catalog icons as plain images from dcr/hof_furni/icons/,
+# but the converter packs them inside each bundle — without this the catalog
+# is a grid of empty tiles. Extracting locally avoids scraping Habbo's CDN.
+NODE_PATH=/conv/node_modules node /usr/local/lib/extract-furni-icons.js \
+  assets/bundled assets/dcr/hof_furni/icons
+
 echo ""
 echo "──────────────────────────────────────────────────────"
 produced=$(find assets/bundled -name '*.nitro' 2>/dev/null | wc -l | tr -d ' ')

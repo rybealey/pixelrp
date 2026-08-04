@@ -107,3 +107,7 @@ touch `./data`.
 - **Refreshing Nitro gamedata** (new official clothes/furni metadata) →
   `./scripts/fetch-gamedata.sh` regenerates the JSONs from Habbo's live
   endpoints via the official nitro-converter.
+- **Catalog shows empty tiles / missing icons** → two separate image trees:
+  furni icons come out of the converted bundles (`make convert-assets`), and
+  catalog page icons are downloaded (`make fetch-catalog-icons`). Both restart
+  nitro for you.
