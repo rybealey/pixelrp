@@ -6,16 +6,17 @@ export
 .PHONY: up down logs ps shell-db env fetch-ws-plugin reset
 
 ## Bring the whole stack up (builds images, clones AtomCMS source on first run).
-up: .env cms/src
+up: env cms/src
 	@mkdir -p data/db data/emulator data/cms/storage
 	$(COMPOSE) up -d --build
 	@$(COMPOSE) ps
 
-.env:
+## Generate .env from .env.example (no-op if it exists). Deliberately NOT a
+## `.env:` file rule — with `-include .env` above, make would silently
+## regenerate a missing .env with FRESH secrets on ANY target (even `make
+## logs`), desyncing them from a ./data/db that still holds the old password.
+env:
 	@./scripts/gen-env.sh
-
-## Generate .env from .env.example (no-op if it exists).
-env: .env
 
 cms/src:
 	git clone https://github.com/atom-retros/atomcms.git cms/src
@@ -37,10 +38,13 @@ shell-db:
 ## Download the NitroWebsockets plugin jar from the official Krews repo.
 ## Explicit on purpose: it's a compiled binary, so fetching is a knowing act.
 ## (Built against MS 3.x; the community runs it on 4.0.x — see artifacts/README.md.)
+## Download to .part then mv: an interrupted transfer must never leave a
+## truncated jar that would pass the emulator's plugin-presence check.
 fetch-ws-plugin:
 	@mkdir -p artifacts/arcturus/plugins
-	curl -fL -o artifacts/arcturus/plugins/NitroWebsockets-3.2.jar \
+	curl -fL -o artifacts/arcturus/plugins/NitroWebsockets-3.2.jar.part \
 	  https://git.krews.org/morningstar/nitrowebsockets-for-ms/-/raw/master/target/NitroWebsockets-3.2.jar
+	mv artifacts/arcturus/plugins/NitroWebsockets-3.2.jar.part artifacts/arcturus/plugins/NitroWebsockets-3.2.jar
 	@echo "Saved artifacts/arcturus/plugins/NitroWebsockets-3.2.jar"
 
 ## ─── DESTRUCTIVE ─── wipes every account, item, currency, room, upload, log.

@@ -20,11 +20,12 @@ services:
       - ./db/init:/docker-entrypoint-initdb.d:ro
       - ./artifacts/sql:/artifacts/sql:ro
     healthcheck:
-      # The marker file is dropped by db/init/01-arcturus.sh when first-boot
-      # init fails — it keeps db unhealthy (blocking emulator/cms) until
-      # `make reset`, because MariaDB would otherwise restart "healthy" with
-      # an empty schema after an aborted init.
-      test: ["CMD-SHELL", "[ ! -f /var/lib/mysql/.pixelrp-init-failed ] && healthcheck.sh --connect --innodb_initialized"]
+      # db/init/01-arcturus.sh writes this marker BEFORE first-boot init and
+      # removes it only on full success. While it exists (init failed OR was
+      # killed mid-import), db must never report healthy — MariaDB would
+      # otherwise restart "healthy" on a partial schema. The cat surfaces the
+      # remedy in `docker inspect` health logs even after container recreation.
+      test: ["CMD-SHELL", "if [ -f /var/lib/mysql/.pixelrp-init-incomplete ]; then cat /var/lib/mysql/.pixelrp-init-incomplete >&2; exit 1; fi; healthcheck.sh --connect --innodb_initialized"]
       interval: 5s
       timeout: 5s
       retries: 30

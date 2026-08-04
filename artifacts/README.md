@@ -33,7 +33,11 @@ https://git.krews.org/morningstar/nitrowebsockets-for-ms/-/raw/master/target/Nit
 Compatibility note: the plugin was built against MS 3.x; the plugin APIs it
 uses still exist in 4.0.x and the community runs this combination, but it is
 not officially blessed. Any other `*.jar` you drop in this folder is also
-copied into the emulator's `plugins/` directory at start.
+copied into the emulator's `plugins/` directory at start. This folder is the
+single source of truth: on every start the emulator's persisted plugins dir
+(`data/emulator/plugins/`) is reconciled to match the jars here, so deleting
+or replacing a jar in this folder takes full effect on the next `make up` —
+no stale copies linger (plugin config files/subdirs are left alone).
 
 ## artifacts/sql/ — database bootstrap (applied ONCE, in this exact order)
 

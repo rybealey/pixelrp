@@ -8,13 +8,18 @@ SQL_DIR=/artifacts/sql
 DATADIR=/var/lib/mysql
 REQUIRED=(01-base.sql 02-3_5_4-to-3_5_5.sql 03-3_5_5-to-4_0_0.sql)
 
-# If init fails for ANY reason, drop a marker the healthcheck looks for.
-# Without this, a restart after an aborted init would skip this script (the
-# datadir is no longer empty) and report a HEALTHY database with an empty
-# schema — the marker keeps db unhealthy so emulator/cms never start against it.
+# Incomplete-until-proven-done marker. Written BEFORE any work and removed only
+# after full success; the compose healthcheck refuses "healthy" while it exists.
+# This covers every interruption class: a clean failure (EXIT trap annotates the
+# marker), but also SIGKILL mid-import (docker stop's 10s grace, power loss) —
+# where no trap ever fires, the marker simply stays. Without it, a restart after
+# ANY interrupted init would skip this script (datadir no longer empty) and
+# report a HEALTHY database with a partial schema.
+MARKER="$DATADIR/.pixelrp-init-incomplete"
+printf 'Arcturus DB init started but never completed.\nFix the cause (see the FIRST db container logs / artifacts/README.md),\nthen run: make reset && make up\n' > "$MARKER"
+
 on_exit() {
   if [ "$?" -ne 0 ]; then
-    touch "$DATADIR/.pixelrp-init-failed" 2>/dev/null || true
     echo >&2 "pixelrp-init: initialization FAILED — db will stay unhealthy until you"
     echo >&2 "pixelrp-init: fix the cause above and run 'make reset' && 'make up'."
   fi
@@ -64,4 +69,5 @@ INSERT INTO emulator_settings (`key`, `value`) VALUES
 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
 SQL
 
+rm -f "$MARKER"
 echo "pixelrp-init: done — Arcturus schema ready"

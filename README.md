@@ -6,7 +6,7 @@ production**: every port binds 127.0.0.1, no SSL, no hardening.
 | Piece | What | Where |
 |---|---|---|
 | Emulator | Arcturus Morningstar 4.0.x (Java 21) | `ws://localhost:2096` (websocket) |
-| Database | MariaDB 11 — ALL persistent state | `127.0.0.1:3310` (debug access) |
+| Database | MariaDB 11 — game DB (accounts, economy, progression) | `127.0.0.1:3310` (debug access) |
 | CMS | AtomCMS (Laravel 11) — register/housekeeping | http://localhost:8080 |
 | Client | Nitro (nitro-react) + game assets | http://localhost:3000 |
 
@@ -82,14 +82,21 @@ touch `./data`.
 
 ## Troubleshooting
 
-- **cms build fails resolving GitHub repos** → set `GITHUB_TOKEN=` in `.env`,
-  `docker compose build cms`.
+- **cms build fails resolving GitHub repos** → tokenless builds clone the six
+  AtomCMS VCS repos anonymously over https; if GitHub throttles those clones,
+  set `GITHUB_TOKEN=<your token>` in `.env` and `docker compose build cms`
+  (switches composer to the faster authenticated API path).
 - **cms build fails on laravel/nova (Bitbucket)** → AtomCMS's committed
   `auth.json` credentials are the fragile link; check the AtomCMS repo/Discord.
 - **db logs `pixelrp-init FATAL`** → a required SQL file is missing/misnamed;
   fix per artifacts/README.md, then `make reset` && `make up` (aborted first
   init leaves a partial datadir on purpose — nothing valuable is in it yet;
   the db healthcheck stays failing until you reset).
+- **db unhealthy but its logs look clean** → a previous first-boot init failed
+  or was interrupted and the container has since been recreated. The marker
+  `data/db/.pixelrp-init-incomplete` holds the explanation (also shown in
+  `docker inspect pixelrp-db-1` health logs). Remedy is the same: fix the
+  cause, `make reset`, `make up`.
 - **`02-…` SQL fails as already-applied** → your base dump is newer than 3.5.4;
   remove the redundant update file(s), `make reset`, `make up`.
 - **Client stuck loading** → assets missing (`docker compose logs nitro`), or
