@@ -3,7 +3,7 @@ COMPOSE := docker compose
 -include .env
 export
 
-.PHONY: up down logs ps shell-db env fetch-ws-plugin convert-assets fetch-catalog-icons reset
+.PHONY: up down logs ps shell-db env fetch-ws-plugin convert-assets fetch-catalog-icons sync-assets reset
 
 ## Bring the whole stack up (builds images, clones AtomCMS source on first run).
 up: env cms/src
@@ -67,6 +67,11 @@ convert-assets:
 fetch-catalog-icons:
 	./scripts/fetch-catalog-icons.sh
 	@if [ -n "$$($(COMPOSE) ps -q nitro)" ]; then $(COMPOSE) restart nitro; fi
+
+## Push ./artifacts (assets, jar, SQL) to the server. Separate from deploys on
+## purpose: ~570MB that only changes when you re-convert.
+sync-assets:
+	./scripts/sync-assets.sh
 
 ## ─── DESTRUCTIVE ─── wipes every account, item, currency, room, upload, log.
 reset:
