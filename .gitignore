@@ -1,0 +1,21 @@
+# Secrets — .env.example is the committed template
+.env
+
+# All persistent runtime state (DB datadir, emulator config/logs, CMS storage)
+data/
+
+# User-supplied artifacts: jar, SQL dumps, nitro assets. Only the README is tracked.
+artifacts/*
+!artifacts/README.md
+!artifacts/arcturus/
+artifacts/arcturus/*
+!artifacts/arcturus/.gitkeep
+!artifacts/sql/
+artifacts/sql/*
+!artifacts/sql/.gitkeep
+!artifacts/nitro-assets/
+artifacts/nitro-assets/*
+!artifacts/nitro-assets/.gitkeep
+
+# AtomCMS source — auto-cloned by `make up`, not vendored here
+cms/src/
