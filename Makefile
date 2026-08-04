@@ -3,7 +3,7 @@ COMPOSE := docker compose
 -include .env
 export
 
-.PHONY: up down logs ps shell-db env fetch-ws-plugin reset
+.PHONY: up down logs ps shell-db env fetch-ws-plugin convert-assets reset
 
 ## Bring the whole stack up (builds images, clones AtomCMS source on first run).
 up: env cms/src
@@ -46,6 +46,13 @@ fetch-ws-plugin:
 	  https://git.krews.org/morningstar/nitrowebsockets-for-ms/-/raw/master/target/NitroWebsockets-3.2.jar
 	mv artifacts/arcturus/plugins/NitroWebsockets-3.2.jar.part artifacts/arcturus/plugins/NitroWebsockets-3.2.jar
 	@echo "Saved artifacts/arcturus/plugins/NitroWebsockets-3.2.jar"
+
+## One-shot: convert ./artifacts/flash-assets SWFs (+ official furniture) into
+## .nitro bundles + gamedata in ./artifacts/nitro-assets. Exits when done;
+## re-running resumes (existing outputs are skipped, never overwritten).
+convert-assets:
+	$(COMPOSE) --profile tools build converter
+	$(COMPOSE) --profile tools run --rm converter
 
 ## ─── DESTRUCTIVE ─── wipes every account, item, currency, room, upload, log.
 reset:

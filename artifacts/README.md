@@ -83,9 +83,15 @@ asset pack). Two helpers cover the essentials:
 - `./scripts/fetch-gamedata.sh` generates the gamedata JSONs from Habbo's live
   endpoints via the official nitro-converter.
 
-Clothing/effect/pet `.nitro` bundles are NOT covered by either — avatars render
-as placeholders until you add a full converted pack (your own nitro-converter
-run with the SWF conversions enabled). Expected layout — this folder IS the
+Clothing/effect/pet `.nitro` bundles come from converting YOUR SWF pack — see
+`artifacts/flash-assets/` below and run:
+
+    make convert-assets
+
+One-shot: converts clothing/effects/pets from the local pack (fast) plus the
+full official furniture catalog (downloads from images.habbo.com — the first
+run takes a while; re-runs resume, existing outputs are never overwritten).
+Failed SWFs are listed in a summary at the end rather than skipped silently. Expected layout — this folder IS the
 client's `asset.url` root:
 
     nitro-assets/
@@ -110,3 +116,15 @@ docker-compose.yml (see nitro service comments).
 
 An empty folder does not block startup — the nitro container just logs a
 warning and the client shows an eternal loading screen until assets exist.
+
+## artifacts/flash-assets/ — your SWF pack (input for `make convert-assets`)
+
+Copy a Habbo flash client pack here, flat (the `.swf` files plus
+`figuremap.xml` / `effectmap.xml` at the top level), e.g.:
+
+    cp -R ~/Downloads/flash-assets-PRODUCTION-<version>/. artifacts/flash-assets/
+
+This is the source for clothing/effect/pet conversion. Furniture is NOT in
+these packs — the converter pulls it per-revision from the official
+`images.habbo.com/dcr/hof_furni/` CDN instead. The pack is read-only to the
+converter and never modified.

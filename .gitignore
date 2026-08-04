@@ -19,6 +19,9 @@ artifacts/sql/*
 !artifacts/nitro-assets/
 artifacts/nitro-assets/*
 !artifacts/nitro-assets/.gitkeep
+!artifacts/flash-assets/
+artifacts/flash-assets/*
+!artifacts/flash-assets/.gitkeep
 
 # AtomCMS source — auto-cloned by `make up`, not vendored here
 cms/src/

@@ -138,6 +138,18 @@ services:
       pixelrp:
         ipv4_address: ${NITRO_IP:-172.28.0.40}
 
+  # One-shot asset converter — NOT part of `make up` (profiles gate it).
+  # Run with `make convert-assets`; exits when done, re-runs resume.
+  converter:
+    build: ./converter
+    profiles: ["tools"]
+    volumes:
+      - ./artifacts/flash-assets:/flash-assets:ro
+      # Output goes straight into the volume the nitro service serves:
+      - ./artifacts/nitro-assets:/conv/assets
+    networks:
+      pixelrp: {}
+
 networks:
   pixelrp:
     driver: bridge
