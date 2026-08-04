@@ -1,0 +1,43 @@
+# PixelRP Phase 0 — local dev stack. See README.md.
+# Everything binds to 127.0.0.1; all state lives in ./data (see `make reset`).
+
+services:
+  db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?run 'make env' first}
+      MARIADB_DATABASE: ${DB_DATABASE:-arcturus}
+      MARIADB_USER: ${DB_USERNAME:-arcturus}
+      MARIADB_PASSWORD: ${DB_PASSWORD:?run 'make env' first}
+    ports:
+      - "127.0.0.1:${DB_HOST_PORT:-3310}:3306"
+    volumes:
+      # THE data that must survive everything short of `make reset`:
+      - ./data/db:/var/lib/mysql
+      - ./db/conf/my.cnf:/etc/mysql/conf.d/99-pixelrp.cnf:ro
+      # Init dir runs ONLY when ./data/db is empty (first boot):
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+      - ./artifacts/sql:/artifacts/sql:ro
+    healthcheck:
+      # The marker file is dropped by db/init/01-arcturus.sh when first-boot
+      # init fails — it keeps db unhealthy (blocking emulator/cms) until
+      # `make reset`, because MariaDB would otherwise restart "healthy" with
+      # an empty schema after an aborted init.
+      test: ["CMD-SHELL", "[ ! -f /var/lib/mysql/.pixelrp-init-failed ] && healthcheck.sh --connect --innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      # Generous: the first boot imports the full Arcturus schema.
+      start_period: 300s
+    networks:
+      pixelrp:
+        ipv4_address: ${DB_IP:-172.28.0.10}
+
+networks:
+  pixelrp:
+    driver: bridge
+    ipam:
+      config:
+        # Static IPs because Arcturus' rcon.allowed matches IPs EXACTLY (no CIDR).
+        - subnet: ${DOCKER_SUBNET:-172.28.0.0/24}

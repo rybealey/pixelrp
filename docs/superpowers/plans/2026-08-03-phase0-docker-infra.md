@@ -496,7 +496,8 @@ Expected: `persist-proof` row still present; init did NOT re-run (no duplicate `
 - [ ] **Step 8: Fixture run — missing-file abort is loud and names the file**
 
 Run: `docker compose ... down`, `rm -rf <SCRATCHPAD>/db-data`, `mv <SCRATCHPAD>/sql-fixtures/02-3_5_4-to-3_5_5.sql <SCRATCHPAD>/02.hidden`, `up -d db`, then `docker compose logs db`.
-Expected: log contains `pixelrp-init FATAL: required SQL artifact missing: ./artifacts/sql/02-3_5_4-to-3_5_5.sql` and the `make reset` warning; container exits; healthcheck never passes.
+Expected: log contains `pixelrp-init FATAL: required SQL artifact missing: ./artifacts/sql/02-3_5_4-to-3_5_5.sql` and the `make reset` warning; `.pixelrp-init-failed` marker exists in the datadir; healthcheck never reaches healthy.
+(EXECUTION FINDING, fixed: MariaDB restarts an aborted-init datadir as a *healthy empty* database — the init script now drops `.pixelrp-init-failed` in the datadir via an EXIT trap on any failure, and the compose healthcheck requires the marker's absence, so dependents stay blocked until `make reset`.)
 
 - [ ] **Step 9: Fixture cleanup**
 
