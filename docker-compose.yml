@@ -34,6 +34,34 @@ services:
       pixelrp:
         ipv4_address: ${DB_IP:-172.28.0.10}
 
+  emulator:
+    build: ./emulator
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # ARC_ prefix on purpose — see the env-var trap note in emulator/entrypoint.sh.
+      ARC_DB_HOST: db
+      ARC_DB_NAME: ${DB_DATABASE:-arcturus}
+      ARC_DB_USER: ${DB_USERNAME:-arcturus}
+      ARC_DB_PASS: ${DB_PASSWORD:?run 'make env' first}
+      # Exact-match RCON whitelist: the CMS container's static IP + loopback.
+      ARC_RCON_ALLOWED: "${CMS_IP:-172.28.0.30};127.0.0.1"
+      ARC_JAVA_OPTS: ${ARC_JAVA_OPTS:--Xmx1g}
+    ports:
+      # Nitro websocket only. RCON (3001) and raw TCP (3000) stay internal.
+      - "127.0.0.1:${WS_PORT:-2096}:2096"
+    volumes:
+      - ./data/emulator:/app
+      - ./artifacts/arcturus:/artifacts/arcturus:ro
+    # Arcturus has an interactive console reader; give it a tty so it behaves.
+    stdin_open: true
+    tty: true
+    networks:
+      pixelrp:
+        ipv4_address: ${EMULATOR_IP:-172.28.0.20}
+
 networks:
   pixelrp:
     driver: bridge
