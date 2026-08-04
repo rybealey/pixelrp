@@ -873,6 +873,7 @@ exec "$@"
 
 Run: `make cms/src && docker compose build cms`
 Expected: clone succeeds; build completes. If composer fails on GitHub rate limits: set `GITHUB_TOKEN` in `.env` and rebuild. If it fails fetching `laravel/nova` from Bitbucket: the committed `auth.json` credentials broke — STOP and surface to the user (do not fake a workaround).
+(EXECUTION FINDINGS, all fixed in cms/Dockerfile: 1. upstream `yarn.lock` is stale vs `package.json` — `--frozen-lockfile` fails; stage 1 now uses `npm install`/`npm run build:atom` matching AtomCMS CI. 2. anonymous composer cannot use the six `git@github.com:` VCS URLs — API driver rate-limits, non-API driver mismatches SSH URLs to svn; tokenless builds now rewrite the URLs to https form in the image copy and clone anonymously. 3. upstream `atomcms/core` ships `BackgroundSyncCommand.php` misdeclaring `class BadgeSyncCommand`, fataling every artisan call; the class is renamed in place post-install.)
 
 - [ ] **Step 7: Verify extensions, artisan, vite output, and web pipeline (no DB yet)**
 
