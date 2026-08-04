@@ -49,9 +49,10 @@ push to main
    │
    └─ scripts/deploy.sh  (on the VPS; also runnable by hand)
         1. preflight: .env present? artifacts present? → else abort naming the fix
-        2. docker compose up -d --build
-        3. health gate: db healthy, cms 200, nitro 200, emulator "successfully loaded"
-        4. non-zero exit on any failure, with the failing service's log tail
+        2. pre-deploy database backup (see below) → abort if it fails
+        3. docker compose up -d --build
+        4. health gate: db healthy, cms 200, nitro 200, emulator "successfully loaded"
+        5. non-zero exit on any failure, with the failing service's log tail
 ```
 
 ### Components
@@ -59,7 +60,7 @@ push to main
 | File | Responsibility |
 |---|---|
 | `.github/workflows/deploy.yml` | trigger, secrets, rsync, invoke deploy script, surface failure |
-| `scripts/deploy.sh` | server-side: preflight, compose up, health gate. Idempotent. |
+| `scripts/deploy.sh` | server-side: preflight, DB backup, compose up, health gate. Idempotent. |
 | `scripts/sync-assets.sh` + `make sync-assets` | operator-initiated rsync of `artifacts/` |
 | `docker-compose.yml` | consume `PUBLIC_*` for client-facing URLs |
 | `.env.example` | document `PUBLIC_*` and deployment variables |
@@ -74,6 +75,38 @@ Non-negotiable, mirroring the Phase 0 stance that only `make reset` destroys dat
 - the deploy script never runs `down -v`, never touches `data/`
 - the database survives every deploy; a deploy is code-only
 
+Two structural properties already hold and must not regress: DB init only runs
+on an empty datadir (so the base schema can never be re-applied over live
+data), and every stateful path is a bind mount (so container recreation
+discards only containers).
+
+### Pre-deploy database backup
+
+The one path by which a deploy can alter database *structure* is the CMS
+entrypoint's `php artisan migrate --force`, which runs on every boot. Those
+migrations are upstream AtomCMS code, not ours — normally additive, but a
+future one could alter or drop a column. With real players that risk deserves
+a floor under it.
+
+`scripts/deploy.sh` therefore takes a `mysqldump` of the game database
+**before** `docker compose up`:
+
+- written to `data/backups/pixelrp-<UTC timestamp>.sql.gz` (inside `data/`,
+  which is already excluded from every sync and from `--delete`)
+- **a failed backup aborts the deploy** — no backup, no migration
+- retention: keep the most recent `BACKUP_KEEP` (default 10), prune older
+- skipped with a clear log line when the db container is not running (a
+  first deploy has nothing to back up)
+
+Restoration is a documented manual step in `docs/DEPLOYMENT.md`: stop the
+stack, `gunzip -c <dump> | docker compose exec -T db mariadb …`. Automated
+restore is deliberately not built — an unattended restore over a live
+database is more dangerous than the failure it guards against.
+
+Note this is a *deploy-time safety net*, not a backup strategy: it does not
+protect against disk loss, and it only runs when you deploy. Scheduled
+off-box backups remain the operator's responsibility.
+
 ## Secrets
 
 Operator-owned; never committed, never handled by tooling in this repo:
@@ -87,6 +120,7 @@ Operator-owned; never committed, never handled by tooling in this repo:
 |---|---|
 | `.env` missing on server | abort before touching containers, print the exact remedy |
 | `artifacts/` missing/empty | abort, point at `make sync-assets` |
+| backup fails (disk full, db unreachable) | abort before `up` — never migrate without a dump |
 | build fails | compose exits non-zero; workflow fails; previous containers keep running |
 | health gate fails | workflow fails with the failing service's log tail |
 | concurrent pushes | workflow concurrency group; newer run supersedes |
@@ -104,3 +138,4 @@ TLS/reverse proxy, firewall, `wss://` termination for port 2096, keeping the DB 
 3. A deploy leaves `data/`, `.env`, and `artifacts/` untouched — verified by a registered account surviving a deploy.
 4. `make sync-assets` transfers assets and is safe to re-run.
 5. Missing `.env` or `artifacts/` aborts before any container action, naming the fix.
+6. Every deploy leaves a fresh timestamped dump in `data/backups/`, older dumps beyond `BACKUP_KEEP` are pruned, and a failed backup aborts the deploy before any migration runs.
