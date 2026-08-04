@@ -10,6 +10,9 @@ artifacts/*
 !artifacts/arcturus/
 artifacts/arcturus/*
 !artifacts/arcturus/.gitkeep
+!artifacts/arcturus/plugins/
+artifacts/arcturus/plugins/*
+!artifacts/arcturus/plugins/.gitkeep
 !artifacts/sql/
 artifacts/sql/*
 !artifacts/sql/.gitkeep

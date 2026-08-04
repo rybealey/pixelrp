@@ -46,12 +46,13 @@ pixelrp/
 ├── README.md
 ├── artifacts/              # user-supplied inputs (gitignored, README committed)
 │   ├── README.md           # exact drop-in instructions per file
-│   ├── arcturus/           # Habbo-*.jar from the Krews 4.0.1+ release
+│   ├── arcturus/           # exactly one Habbo-*.jar from the Krews 4.0.1+ release
+│   │   └── plugins/        # NitroWebsockets-3.2.jar — REQUIRED for Nitro (`make fetch-ws-plugin`)
 │   ├── sql/                # 01-base.sql, 02-3_5_4-to-3_5_5.sql, 03-3_5_5-to-4_0_0.sql
 │   └── nitro-assets/       # .nitro bundles + gamedata (furnidata, figuredata, …)
 ├── db/
 │   ├── conf/my.cnf         # local tuning, mounted read-only
-│   └── init/               # 01-arcturus.sh + local-overrides.sql
+│   └── init/               # 01-arcturus.sh (ordered SQL apply + inline websocket overrides)
 ├── emulator/               # Dockerfile, entrypoint.sh
 ├── cms/                    # Dockerfile, entrypoint.sh, apache vhost; src/ auto-cloned
 ├── nitro/                  # Dockerfile, nginx.conf, config templates, entrypoint.sh
@@ -85,7 +86,7 @@ User drops three SQL files into `artifacts/sql/` under prescribed names so order
 2. `02-3_5_4-to-3_5_5.sql` — first migration (must not be skipped)
 3. `03-3_5_5-to-4_0_0.sql` — second migration
 
-`db/init/01-arcturus.sh` (in MariaDB's `/docker-entrypoint-initdb.d`, with `artifacts/sql` mounted read-only) verifies **all three exist by exact name before applying any of them**; if one is missing it aborts init with a message naming the missing file. No substitutes, ever. It then applies them in order, followed by `db/init/local-overrides.sql` (authored in this repo — not a user artifact): sets RCON bind host to `0.0.0.0` in `emulator_settings` so the CMS can reach it over the Docker network, plus any websocket/whitelist settings needed for localhost. Exact setting keys to be verified against the Arcturus 4.x settings table during implementation.
+`db/init/01-arcturus.sh` (in MariaDB's `/docker-entrypoint-initdb.d`, with `artifacts/sql` mounted read-only) verifies **all three exist by exact name before applying any of them**; if one is missing it aborts init with a message naming the missing file (and the message notes that an aborted first init requires `make reset` before retrying, since MariaDB will otherwise skip the init directory on the next boot). No substitutes, ever. It then applies them in order, then any optional `04-`…`09-` prefixed extras (for the 4.0.2/4.0.3-beta updates), then an inline heredoc of local overrides (authored in this repo — not a user artifact) that pre-seeds the NitroWebsockets plugin's `emulator_settings` rows for local use: `websockets.whitelist = *` (local-only throwaway value), `ws.nitro.host = 0.0.0.0`, `ws.nitro.port = 2096` — written as `INSERT … ON DUPLICATE KEY UPDATE` since the plugin also registers these rows on first boot. Research note (verified against 4.0.x source, branch ms3-upgrade): RCON is configured in `config.ini`, **not** `emulator_settings`, so RCON overrides live in the emulator's generated config instead.
 
 AtomCMS's own tables come from `php artisan migrate --force` in the CMS entrypoint on every boot (idempotent via Laravel's migrations table). Seeding runs once, guarded by a marker file in persisted `storage/`.
 
@@ -98,23 +99,27 @@ AtomCMS's own tables come from `php artisan migrate --force` in the CMS entrypoi
 - `my.cnf`: small `innodb_buffer_pool_size` (256M), sane `max_connections` (100), utf8mb4 server defaults. Comments note the *client-side* pool is HikariCP, sized in Arcturus `config.ini` (`db.pool.maxsize`), and must stay below `max_connections`.
 
 ### `emulator` — built on `eclipse-temurin:21-jre`
-- Jar bind-mounted read-only from `artifacts/arcturus/`; entrypoint globs `Habbo-*.jar`/`*.jar`, exits with a clear named-file error if absent.
-- On first run, entrypoint generates `config.ini` in `/app` (persisted) from `.env` values — DB host `db`, port `3306`, credentials. If `config.ini` already exists it is left untouched (hand edits survive).
+- Jar bind-mounted read-only from `artifacts/arcturus/`; entrypoint requires **exactly one** `*.jar` there (Krews 4.0.x builds are named like `Habbo-4.0.1-beta-jar-with-dependencies.jar`), exits with a clear named-path error if absent or ambiguous.
+- **Websockets via plugin (research-verified):** 4.0.x has no built-in WS support; the NitroWebsockets plugin jar must be in `artifacts/arcturus/plugins/` (fetched knowingly via `make fetch-ws-plugin` from the official Krews repo). Entrypoint copies plugin jars into the persisted `/app/plugins/` and exits with a clear error if none are present.
+- On first run, entrypoint generates `config.ini` in `/app` (persisted) from env — DB host `db`, credentials, `game.host=0.0.0.0`, `rcon.host=0.0.0.0`, `rcon.allowed` = the CMS container's static IP (Arcturus matches whitelist IPs exactly — no CIDR). If `config.ini` already exists it is left untouched (hand edits survive).
+- **Env-var naming trap (research-verified):** if `DB_HOSTNAME` is set in the emulator's environment, Arcturus ignores `config.ini` entirely and switches to env-only config. All compose-provided variables therefore use an `ARC_` prefix so the emulator never sees `DB_HOSTNAME`.
 - Working directory `/app` so logs land in the persisted mount.
 - `depends_on: db: condition: service_healthy`, plus a belt-and-braces TCP wait in the entrypoint.
-- Exposes `2096` (websocket) to localhost. RCON (`3001`) stays internal.
+- Exposes `2096` (websocket) to localhost. RCON (`3001`) and raw-TCP `game.port` (`3000`, Flash-era, unused by Nitro) stay internal.
+- Services get static IPs on a dedicated compose network (subnet `172.28.0.0/24`) so the exact-match RCON whitelist stays stable.
 
 ### `cms` — multi-stage build → `php:8.3-apache`
 - Source: `make up` clones `https://github.com/atom-retros/atomcms` into `./cms/src` if absent (host-side, gitignored, so the source stays visible and editable); Dockerfile COPYs from there.
-- Stages: `composer:2` for `composer install`; `node:20` for the Vite asset build; final `php:8.3-apache` with required extensions (`pdo_mysql`, `gd`, `zip`, `intl`, `bcmath`, `exif`, `opcache` — final list verified against AtomCMS's composer.json during implementation), docroot at `public/`, `mod_rewrite` on.
-- Entrypoint: templates Laravel `.env` from container env on first run; ensures the `storage/` skeleton exists inside the bind mount and is writable by `www-data`; runs `migrate --force`; seeds once behind a storage marker; then `apache2-foreground`.
-- Laravel `.env` points `DB_HOST=db`, RCON at `emulator:3001`. `APP_KEY` comes from the project `.env` (generated by `make env`), not from runtime magic.
+- Stages: `node:22-alpine` for the Vite 6 asset build (`yarn install --frozen-lockfile && yarn build:atom` — repo ships `yarn.lock`, no `package-lock.json`); final `php:8.3-apache` with the research-verified extensions beyond image defaults: `pdo_mysql`, `gd`, `sockets` (required by the AtomCMS RCON package), `zip`, `opcache`; composer binary copied from `composer:2`; docroot at `public/`, `mod_rewrite` on. Laravel 11 / PHP `^8.2` per composer.json.
+- **Fragility note (research-verified):** AtomCMS pulls six first-party packages as VCS repos plus `laravel/nova` from a Bitbucket repo authenticated by the `auth.json` committed in the AtomCMS repo itself. The build needs network; an optional `GITHUB_TOKEN` build arg mitigates GitHub API rate limits.
+- Config comes as **real container environment** in compose (Laravel's Dotenv never overrides real env, and real env works without a `.env` file) — zero templating code, one source of truth. `DB_HOST=db`, `DB_CONNECTION=mariadb`, `SESSION_DRIVER=database`, `RCON_HOST=emulator`, `RCON_PORT=3001`, `APP_KEY` from the project `.env`.
+- Entrypoint: ensures the `storage/` skeleton exists inside the bind mount and is writable by `www-data`; waits for db; `php artisan migrate --force` (AtomCMS migrations run against the **same DB as the emulator** and ALTER emulator tables — so the Arcturus schema must exist first, which the dependency chain guarantees); seeds once behind a storage marker; `storage:link` if missing; then `apache2-foreground`.
 - `depends_on: db: condition: service_healthy`.
 
 ### `nitro` — multi-stage build → `nginx:alpine`
-- Build stage: `node:20-alpine` clones `billsonnn/nitro-react` at a pinned ref (overridable via build arg) and produces the production bundle.
-- Runtime: nginx serves the client at `/`; `artifacts/nitro-assets/` bind-mounted read-only at `/assets`.
-- Nitro's runtime config files (renderer/ui config JSON — exact filenames verified during implementation) are generated at **container start** from `.env` via a template, so the websocket URL (`ws://localhost:2096`) and asset URL (`http://localhost:3000/assets`) are not baked into the image.
+- Build stage: `node:20-alpine` clones `billsonnn/nitro-react` at a pinned commit (default `75ff874b73d5fc5672a38c536444efa0f0d27e8f`, current main — the 2.1.1 tag is 3.5 years stale; overridable via build arg), `yarn install --frozen-lockfile`, then plain `yarn build` (not `build:prod`, whose only addition is a network-dependent browserslist update). Output: `dist/`.
+- Runtime: nginx serves the client at `/`; `artifacts/nitro-assets/` bind-mounted read-only at `/usr/share/nginx/html/assets` (same origin as the client → no CORS needed).
+- Config (research-verified): the built app fetches `/renderer-config.json` and `/ui-config.json` at **runtime** from the web root. A container-start script rewrites only our keys (`socket.url`, `asset.url`, `image.library.url`, `hof.furni.url`, `url.prefix`) into the pinned ref's `.example` configs using `jq` — safe against the configs' internal `${key}` interpolation syntax, and upstream config evolution never requires re-vendoring a 31 KB file.
 - No DB dependency.
 
 ## Configuration & secrets
@@ -129,13 +134,14 @@ Every missing-artifact path fails loudly and specifically, never inventing subst
 
 | Missing | Behavior |
 |---|---|
-| Any of the three SQL files | DB init aborts, message names the missing file |
+| Any of the three SQL files | DB init aborts, message names the missing file + the `make reset` retry requirement |
 | Arcturus jar | Emulator container exits, message names the expected path |
+| NitroWebsockets plugin jar | Emulator container exits, message names `make fetch-ws-plugin` |
 | Nitro assets | Client serves, container logs a warning that `/assets` is empty |
 
 ## Makefile targets
 
-`up` (clone CMS source if needed, `docker compose up -d --build`), `down`, `logs`, `ps`, `shell-db` (mariadb client in the db container), `env` (generate `.env`), `reset` (typed-confirmation destroy, the only data-destroying path).
+`up` (clone CMS source if needed, `docker compose up -d --build`), `down`, `logs`, `ps`, `shell-db` (mariadb client in the db container), `env` (generate `.env`), `fetch-ws-plugin` (explicit one-command download of the NitroWebsockets jar from the official Krews repo), `reset` (typed-confirmation destroy, the only data-destroying path).
 
 ## Acceptance criteria (from the brief)
 
