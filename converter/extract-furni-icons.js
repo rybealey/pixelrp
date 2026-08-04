@@ -80,7 +80,7 @@ fs.mkdirSync(outDir, { recursive: true });
 
 (async () => {
     const bundles = fs.readdirSync(furniDir).filter(f => f.endsWith('.nitro'));
-    let written = 0, skipped = 0, noIcon = 0, failed = 0;
+    let written = 0, skipped = 0, noIcon = 0, failed = 0, fallbacks = 0;
 
     for (const file of bundles) {
         const libPath = path.join(furniDir, file);
@@ -96,7 +96,21 @@ fs.mkdirSync(outDir, { recursive: true });
 
             const iconAssets = Object.keys(json.assets || {})
                 .filter(n => /_icon_[a-z]$/.test(n));
-            if (!iconAssets.length) { noIcon++; continue; }
+
+            // Fallback: some furni ship no usable icon (no icon asset at all,
+            // or an icon entry whose image was never packed). Rather than
+            // leave a blank catalog tile, use the item's own sprite — the
+            // smallest front-facing frame is close to what an icon looks like.
+            let spriteFallback = null;
+            const usableIcons = iconAssets.filter(n => frames[`${libName}_${n}`]);
+            if (!usableIcons.length) {
+                const candidates = Object.keys(frames)
+                    .filter(f => /_64_[a-z]_0_0$/.test(f))
+                    .concat(Object.keys(frames).filter(f => /_64_[a-z]_\d+_\d+$/.test(f)))
+                    .concat(Object.keys(frames));
+                if (candidates.length) spriteFallback = candidates[0];
+            }
+            if (!iconAssets.length && !spriteFallback) { noIcon++; continue; }
 
             // Work out which outputs are missing before decoding the atlas —
             // decoding every PNG for an already-complete run is slow.
@@ -120,14 +134,29 @@ fs.mkdirSync(outDir, { recursive: true });
                 if (missing.length) jobs.push({ assetName, targets: missing });
                 else skipped++;
             }
+
+            // No usable icon in this bundle — emit the sprite fallback under
+            // every filename this library's classnames ask for.
+            if (spriteFallback) {
+                const targets = [`${libName}_icon.png`, `${libName}_1_icon.png`];
+                for (const c of (coloursByLib.get(libName) || [])) {
+                    if (c !== 1) targets.push(`${libName}_${c}_icon.png`);
+                }
+                const missing = targets.filter(t => !fs.existsSync(path.join(outDir, t)));
+                if (missing.length) {
+                    jobs.push({ assetName: null, frameKey: spriteFallback, targets: missing });
+                    fallbacks++;
+                } else skipped++;
+            }
+
             if (!jobs.length) continue;
 
             const atlas = await Jimp.read(zlib.inflateSync(pngEntry.data));
 
             for (const job of jobs) {
                 // The asset may alias another asset's image via `source`.
-                let frameKey = `${libName}_${job.assetName}`;
-                if (!frames[frameKey]) {
+                let frameKey = job.frameKey || `${libName}_${job.assetName}`;
+                if (!job.frameKey && !frames[frameKey]) {
                     const src = (json.assets[job.assetName] || {}).source;
                     if (src) frameKey = `${libName}_${src}`;
                 }
@@ -159,5 +188,5 @@ fs.mkdirSync(outDir, { recursive: true });
         }
     }
 
-    console.log(`converter: furni icons — wrote ${written}, already present ${skipped}, no icon asset ${noIcon}` + (failed ? `, failed ${failed}` : ''));
+    console.log(`converter: furni icons — wrote ${written} (${fallbacks} from the item sprite where no icon was packed), already present ${skipped}, unusable ${noIcon}` + (failed ? `, failed ${failed}` : ''));
 })();

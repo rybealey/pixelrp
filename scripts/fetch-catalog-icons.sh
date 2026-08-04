@@ -41,13 +41,18 @@ fetch_pairs() {
   if [ "$total" -eq 0 ]; then echo "fetch-catalog-icons: ${label}: nothing to do"; rm -f "$tmp"; return; fi
   echo "fetch-catalog-icons: ${label}: ${total} candidate(s), downloading with ${PARALLEL} workers…"
   local before after
-  before=$(find "$CAT_OUT" -type f | wc -l | tr -d ' ')
+  before=$(find artifacts/nitro-assets/c_images -type f 2>/dev/null | wc -l | tr -d ' ')
   # shellcheck disable=SC2016
+  # The temp name must be unique per WORKER, not per destination: two
+  # candidate URLs can target the same file (exact path + flattened
+  # fallback), and a shared .part means the 404 worker deletes the other
+  # worker's finished download.
   xargs -P "$PARALLEL" -n 2 sh -c '
     [ -s "$2" ] && exit 0
-    curl -fsS --max-time 20 -o "$2.part" "$1" 2>/dev/null && mv "$2.part" "$2" || rm -f "$2.part"
+    tmp="$2.$$.part"
+    curl -fsS --max-time 20 -o "$tmp" "$1" 2>/dev/null && mv "$tmp" "$2" || rm -f "$tmp"
   ' sh < "$tmp"
-  after=$(find "$CAT_OUT" -type f | wc -l | tr -d ' ')
+  after=$(find artifacts/nitro-assets/c_images -type f 2>/dev/null | wc -l | tr -d ' ')
   echo "fetch-catalog-icons: ${label}: +$((after - before)) file(s) (the rest were already present or not on the CDN)"
   rm -f "$tmp"
 }
@@ -70,6 +75,29 @@ dbq "SELECT DISTINCT page_headline FROM catalog_pages WHERE page_headline <> ''
     printf '%s %s\n' "$CAT_BASE/${name}.gif" "$CAT_OUT/${name}.gif"
   done \
 | fetch_pairs "page headline/teaser art"
+
+# ── C. front-page artwork referenced by path in the database ───────────────
+# These columns store a path relative to c_images/ (e.g.
+# "catalogue/feature_cata/foo.png", "web_promo_small/bar.png"). Habbo has
+# since FLATTENED some of these directories, so when the exact path 404s we
+# also try the same filename one directory up — that recovers the catalog
+# feature tiles, which are otherwise gone.
+{
+  dbq "SELECT DISTINCT image FROM catalog_featured_pages WHERE image <> ''
+       UNION SELECT DISTINCT image FROM hotelview_news WHERE image <> ''
+       UNION SELECT DISTINCT image FROM catalog_target_offers WHERE image <> '';"
+  # Hardcoded in nitro's stock ui-config hotelview widget, not in any table:
+  echo "web_promo_small/spromo_Canal_Bundle.png"
+} | while read -r rel; do
+    [ -n "$rel" ] || continue
+    dest="artifacts/nitro-assets/c_images/$rel"
+    mkdir -p "$(dirname "$dest")"
+    printf '%s %s\n' "https://images.habbo.com/c_images/$rel" "$dest"
+    flat="$(dirname "$(dirname "$rel")")/$(basename "$rel")"
+    flat="${flat#./}"
+    [ "$flat" != "$rel" ] && printf '%s %s\n' "https://images.habbo.com/c_images/$flat" "$dest"
+  done \
+| fetch_pairs "front-page artwork"
 
 echo "fetch-catalog-icons: done"
 echo "fetch-catalog-icons: restart nitro to serve them: docker compose restart nitro"
