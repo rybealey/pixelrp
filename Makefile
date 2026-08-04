@@ -1,0 +1,59 @@
+SHELL := /bin/bash
+COMPOSE := docker compose
+-include .env
+export
+
+.PHONY: up down logs ps shell-db env fetch-ws-plugin reset
+
+## Bring the whole stack up (builds images, clones AtomCMS source on first run).
+up: .env cms/src
+	@mkdir -p data/db data/emulator data/cms/storage
+	$(COMPOSE) up -d --build
+	@$(COMPOSE) ps
+
+.env:
+	@./scripts/gen-env.sh
+
+## Generate .env from .env.example (no-op if it exists).
+env: .env
+
+cms/src:
+	git clone https://github.com/atom-retros/atomcms.git cms/src
+
+## Stop containers. NEVER touches ./data — safe to run any time.
+down:
+	$(COMPOSE) down
+
+logs:
+	$(COMPOSE) logs -f --tail=200
+
+ps:
+	$(COMPOSE) ps
+
+## Root MariaDB shell into the game database.
+shell-db:
+	$(COMPOSE) exec db mariadb -uroot -p$(DB_ROOT_PASSWORD) $(DB_DATABASE)
+
+## Download the NitroWebsockets plugin jar from the official Krews repo.
+## Explicit on purpose: it's a compiled binary, so fetching is a knowing act.
+## (Built against MS 3.x; the community runs it on 4.0.x — see artifacts/README.md.)
+fetch-ws-plugin:
+	@mkdir -p artifacts/arcturus/plugins
+	curl -fL -o artifacts/arcturus/plugins/NitroWebsockets-3.2.jar \
+	  https://git.krews.org/morningstar/nitrowebsockets-for-ms/-/raw/master/target/NitroWebsockets-3.2.jar
+	@echo "Saved artifacts/arcturus/plugins/NitroWebsockets-3.2.jar"
+
+## ─── DESTRUCTIVE ─── wipes every account, item, currency, room, upload, log.
+reset:
+	@echo "!!! DESTRUCTIVE RESET !!!"
+	@echo "This will PERMANENTLY DELETE:"
+	@echo "  - all pixelrp containers and the docker network"
+	@echo "  - ./data/db          (every account, currency, item, room, progression)"
+	@echo "  - ./data/emulator    (emulator config.ini and logs)"
+	@echo "  - ./data/cms         (CMS storage: uploads, logs, seed marker)"
+	@echo "Your ./artifacts files and .env are NOT touched."
+	@read -p "Type 'yes-destroy-my-data' to proceed: " confirm && \
+	  [ "$$confirm" = "yes-destroy-my-data" ] || { echo "Aborted — nothing deleted."; exit 1; }
+	$(COMPOSE) down -v --remove-orphans
+	rm -rf ./data
+	@echo "Reset complete. Next 'make up' re-initializes the DB from ./artifacts/sql."
