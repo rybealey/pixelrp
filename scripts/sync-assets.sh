@@ -27,6 +27,36 @@ DEPLOY_PORT="${DEPLOY_PORT:-22}"
 [ -n "$(find artifacts/nitro-assets -mindepth 1 -not -name '.git*' 2>/dev/null | head -1)" ] \
   || { echo >&2 $'sync-assets: artifacts/nitro-assets is empty locally — refusing to sync.\n  This guard exists so an empty checkout cannot wipe the server via --delete-after.\n  Convert assets from your workstation:  make convert-assets'; exit 1; }
 
+# macOS 15+ ships `openrsync`, not GNU rsync, and it supports NONE of the
+# atomicity flags below (--info=progress2, --partial-dir, --delay-updates,
+# --delete-after) — it exits with a usage dump before transferring anything.
+# Those flags are the whole reason an interrupted sync can't corrupt the
+# server, so degrade loudly rather than silently dropping the guarantees.
+# NOTE: read the version into a variable rather than piping into `head` —
+# under `set -o pipefail`, head closing the pipe SIGPIPEs rsync and the
+# pipeline reports 141 even when the match succeeded, which silently rejects
+# a perfectly good GNU rsync.
+is_gnu_rsync() {
+  local v
+  v="$("$1" --version 2>/dev/null)" || return 1
+  case "$v" in rsync\ *version*) return 0 ;; *) return 1 ;; esac
+}
+
+RSYNC="${RSYNC:-rsync}"
+if ! is_gnu_rsync "$RSYNC"; then
+  for candidate in /opt/homebrew/bin/rsync /usr/local/bin/rsync; do
+    if [ -x "$candidate" ] && is_gnu_rsync "$candidate"; then RSYNC="$candidate"; break; fi
+  done
+fi
+is_gnu_rsync "$RSYNC" || {
+  echo >&2 "sync-assets: GNU rsync is required, but '$RSYNC' is $("$RSYNC" --version 2>/dev/null | head -1)."
+  echo >&2 "  This script relies on --partial-dir/--delay-updates/--delete-after so an"
+  echo >&2 "  interrupted transfer can never leave the server with truncated or missing"
+  echo >&2 "  assets. openrsync (the macOS default) does not support them."
+  echo >&2 "  Install GNU rsync:  brew install rsync"
+  exit 1
+}
+
 echo "sync-assets: $(du -sh artifacts | cut -f1) -> ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/artifacts"
 echo "sync-assets: first run over a slow link can take a while; resumption is safe and never leaves truncated files."
 
@@ -40,7 +70,7 @@ echo "sync-assets: first run over a slow link can take a while; resumption is sa
 # .rsync-partial/ and are moved into place only when the full rsync succeeds.
 # flash-assets/ is excluded: it's converter INPUT only (~93MB of source SWFs)
 # with no use on the server, which only ever serves the converted output.
-rsync -az --info=progress2 --partial-dir=.rsync-partial --delay-updates --delete-after \
+"$RSYNC" -az --info=progress2 --partial-dir=.rsync-partial --delay-updates --delete-after \
   --exclude='.rsync-partial/' \
   --exclude='flash-assets/' \
   -e "ssh -p ${DEPLOY_PORT}" \

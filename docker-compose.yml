@@ -101,6 +101,11 @@ services:
       # Links the CMS renders for the game client + assets:
       NITRO_CLIENT_URL: "${PUBLIC_NITRO_URL:-${PUBLIC_SCHEME:-http}://${PUBLIC_HOST:-localhost}:${NITRO_PORT:-3000}}"
       NITRO_STATIC_URL: "${PUBLIC_NITRO_URL:-${PUBLIC_SCHEME:-http}://${PUBLIC_HOST:-localhost}:${NITRO_PORT:-3000}}/game-assets"
+      # Behind a TLS-terminating proxy (Cloudflare), Laravel still builds
+      # http:// URLs from the request it actually received — every generated
+      # link then trips the browser's mixed-content block. AtomCMS exposes
+      # this switch for exactly that setup; harmless and off by default.
+      FORCE_HTTPS: ${FORCE_HTTPS:-false}
       # Local dev: external integrations off.
       TURNSTILE_ENABLED: "false"
       IP_API_ENABLED: "false"
