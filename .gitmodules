@@ -1,0 +1,6 @@
+[submodule "emulator"]
+	path = emulator
+	url = https://github.com/rybealey/PlusEMU.git
+[submodule "cms"]
+	path = cms
+	url = https://github.com/rybealey/atomcms.git
