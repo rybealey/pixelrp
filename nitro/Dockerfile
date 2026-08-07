@@ -7,6 +7,13 @@ ARG NITRO_REF=75ff874b73d5fc5672a38c536444efa0f0d27e8f
 RUN git clone https://github.com/billsonnn/nitro-react.git /src \
     && cd /src && git checkout "$NITRO_REF"
 WORKDIR /src
+# PixelRP client patches (nitro/patches/*.patch, filename order):
+#   0001  optimistic walk — instant cosmetic response to click-to-move (turn
+#         + walk animation); the server's statuses take over one RTT later.
+COPY patches/ /tmp/nitro-patches/
+RUN set -e; for p in /tmp/nitro-patches/*.patch; do \
+      git apply --check "$p" && git apply "$p" && echo "applied $(basename "$p")"; \
+    done
 RUN yarn install --frozen-lockfile
 # Headroom for vite in memory-capped Docker builds (a cap, not a reservation —
 # harmless if unnecessary; community reports occasional OOMs without it).

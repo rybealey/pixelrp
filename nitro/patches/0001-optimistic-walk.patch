@@ -1,0 +1,168 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index 072b05d..8ff88b9 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,6 +1,6 @@
+ import { ConfigurationEvent, GetAssetManager, HabboWebTools, LegacyExternalInterface, Nitro, NitroCommunicationDemoEvent, NitroConfiguration, NitroEvent, NitroLocalizationEvent, NitroVersion, RoomEngineEvent } from '@nitrots/nitro-renderer';
+ import { FC, useCallback, useEffect, useState } from 'react';
+-import { GetCommunication, GetConfiguration, GetNitroInstance, GetUIVersion } from './api';
++import { GetCommunication, GetConfiguration, GetNitroInstance, GetUIVersion, InstallOptimisticWalk } from './api';
+ import { Base, TransitionAnimation, TransitionAnimationTypes } from './common';
+ import { LoadingView } from './components/loading/LoadingView';
+ import { MainView } from './components/main/MainView';
+@@ -88,6 +88,10 @@ export const App: FC<{}> = props =>
+                 {
+                     GetCommunication().init();
+ 
++                    // pixelrp: instant cosmetic response to click-to-move
++                    // (see api/nitro/room/InstallOptimisticWalk).
++                    InstallOptimisticWalk();
++
+                     setPercent(prevValue => (prevValue + 20))
+                 }
+                 else
+diff --git a/src/api/nitro/room/InstallOptimisticWalk.ts b/src/api/nitro/room/InstallOptimisticWalk.ts
+new file mode 100644
+index 0000000..b976e82
+--- /dev/null
++++ b/src/api/nitro/room/InstallOptimisticWalk.ts
+@@ -0,0 +1,127 @@
++import { IMessageComposer, ObjectAvatarPostureUpdateMessage, RoomObjectVariable, RoomUnitStatusEvent, RoomUnitWalkComposer, Vector3d } from '@nitrots/nitro-renderer';
++import { GetCommunication } from '../GetCommunication';
++import { GetOwnRoomObject } from './GetOwnRoomObject';
++
++/**
++ * pixelrp optimistic walk: the server is authoritative over movement, so the
++ * avatar normally reacts one network round-trip AFTER a click — a visible
++ * hesitation for players far from the server. On click we give instant
++ * COSMETIC feedback (turn toward the target + start the walk animation);
++ * real movement still comes from the server's RoomUnitStatus updates ~RTT
++ * later and simply takes over. If the server never answers (unwalkable
++ * tile), the animation reverts after a short timeout. Position is never
++ * predicted, so there is nothing to rubber-band.
++ */
++
++let installed = false;
++let revertTimer: ReturnType<typeof setTimeout> = null;
++
++const clearRevert = () =>
++{
++    if(revertTimer) clearTimeout(revertTimer);
++    revertTimer = null;
++};
++
++// Same octant mapping as the server's Rotation.Calculate.
++const directionTo = (x: number, y: number, targetX: number, targetY: number) =>
++{
++    const dx = Math.sign(targetX - x);
++    const dy = Math.sign(targetY - y);
++
++    if(dx === 0 && dy === -1) return 0;
++    if(dx === 1 && dy === -1) return 1;
++    if(dx === 1 && dy === 0) return 2;
++    if(dx === 1 && dy === 1) return 3;
++    if(dx === 0 && dy === 1) return 4;
++    if(dx === -1 && dy === 1) return 5;
++    if(dx === -1 && dy === 0) return 6;
++    return 7;
++};
++
++const onWalkRequest = (composer: RoomUnitWalkComposer) =>
++{
++    const data = composer.getMessageArray();
++    const targetX = Number(data[0]);
++    const targetY = Number(data[1]);
++
++    const own = GetOwnRoomObject();
++
++    if(!own || !own.model) return;
++
++    // Only fake-walk from standing (or re-aim while already walking) —
++    // standing up from sit/lay is the server's call, faking it looks wrong.
++    const posture = own.model.getValue<string>(RoomObjectVariable.FIGURE_POSTURE);
++
++    if((posture !== 'std') && (posture !== 'mv')) return;
++
++    const location = own.getLocation();
++    const x = Math.round(location.x);
++    const y = Math.round(location.y);
++
++    if((x === targetX) && (y === targetY)) return;
++
++    own.setDirection(new Vector3d(directionTo(x, y, targetX, targetY) * 45, 0, 0));
++
++    if(posture === 'std')
++    {
++        own.processUpdateMessage(new ObjectAvatarPostureUpdateMessage('mv'));
++
++        // Revert unless the server takes over (status for our unit clears this).
++        clearRevert();
++        revertTimer = setTimeout(() =>
++        {
++            revertTimer = null;
++
++            const obj = GetOwnRoomObject();
++
++            if(obj) obj.processUpdateMessage(new ObjectAvatarPostureUpdateMessage('std'));
++        }, 800);
++    }
++};
++
++export function InstallOptimisticWalk(): void
++{
++    if(installed) return;
++
++    const connection = GetCommunication().connection;
++
++    if(!connection) return;
++
++    installed = true;
++
++    // Any server status about our own unit means the server has taken over —
++    // its updates now drive posture/position, so the cosmetic revert is moot.
++    connection.addMessageEvent(new RoomUnitStatusEvent(event =>
++    {
++        if(!revertTimer) return;
++
++        const own = GetOwnRoomObject();
++
++        if(!own) return;
++
++        for(const status of event.getParser().statuses)
++        {
++            if(status.id === own.id)
++            {
++                clearRevert();
++                return;
++            }
++        }
++    }));
++
++    const originalSend = connection.send.bind(connection);
++
++    connection.send = (...composers: IMessageComposer<unknown[]>[]) =>
++    {
++        for(const composer of composers)
++        {
++            if(composer instanceof RoomUnitWalkComposer)
++            {
++                try { onWalkRequest(composer); }
++                catch (e) { /* cosmetic only — never let feedback break the real send */ }
++            }
++        }
++
++        return originalSend(...composers);
++    };
++}
+diff --git a/src/api/nitro/room/index.ts b/src/api/nitro/room/index.ts
+index 764b72e..a9e66b0 100644
+--- a/src/api/nitro/room/index.ts
++++ b/src/api/nitro/room/index.ts
+@@ -5,6 +5,7 @@ export * from './GetRoomEngine';
+ export * from './GetRoomObjectBounds';
+ export * from './GetRoomObjectScreenLocation';
+ export * from './InitializeRoomInstanceRenderingCanvas';
++export * from './InstallOptimisticWalk';
+ export * from './IsFurnitureSelectionDisabled';
+ export * from './ProcessRoomObjectOperation';
+ export * from './SetActiveRoomId';
