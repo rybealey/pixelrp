@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Your look updates instantly
+
+### Fixed
+
+- **Changing your look updates everywhere right away.** Your avatar in the
+  bottom-left menu button and on the hotel landing screen now refresh the
+  moment you save a new look — no page reload needed.
+
 ## 2026-08-08 — Clothes you pick are the clothes you get
 
 ### Fixed
