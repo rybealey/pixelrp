@@ -1,8 +1,3 @@
-FROM node:22-alpine AS assets
-WORKDIR /app
-COPY cms/ .
-RUN npm ci && npm run build:atom
-
 FROM composer:2 AS vendor
 WORKDIR /app
 # ext-sockets is required at boot (habbo.php uses AF_INET) so post-autoload-dump
@@ -12,6 +7,15 @@ RUN apk add --no-cache --virtual .build-deps linux-headers \
  && apk del .build-deps
 COPY cms/ .
 RUN composer install --no-dev --no-interaction --ignore-platform-req=ext-* --optimize-autoloader
+
+FROM node:22-alpine AS assets
+WORKDIR /app
+COPY cms/ .
+# The Filament housekeeping theme's CSS does
+# `@import "../../../../vendor/filament/filament/resources/css/theme.css"`, so
+# the asset build needs Composer's output present — hence vendor stage first.
+COPY --from=vendor /app/vendor ./vendor
+RUN npm ci && npm run build:atom
 
 FROM php:8.5-fpm-alpine
 RUN apk add --no-cache icu-dev libzip-dev libpng-dev libjpeg-turbo-dev freetype-dev oniguruma-dev \
