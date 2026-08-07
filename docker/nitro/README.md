@@ -448,3 +448,20 @@ compression fix:
 Furniture bundles use a different key format and are intentionally left
 untouched (reported as "unresolved"). Hard-refresh the browser afterwards —
 the old bundles are cached for a week.
+
+## Hotel view widgets
+
+The promo panels overlaying the hotel landing view (the "Habboon PlusEMU Edit."
+article, the untranslated `landing.view.2021NitroPromo.*` container, and the
+fame hall-of-fame slot) come from `hotelview.widgets` in the client's
+`ui-config.json` — not from the CMS or the emulator. All slots are blanked in
+the versioned `nitro/ui-config.json`.
+
+Like `renderer-config.json`, copy it into the built client after any client
+rebuild (`nitro/client/` is git-ignored):
+
+    cp nitro/ui-config.json nitro/client/ui-config.json
+
+To bring a slot back, set `slot.N.widget` to a widget name (`promoarticle`,
+`widgetcontainer`, `achievementcompetition_hall_of_fame`) and fill its
+`slot.N.conf`.

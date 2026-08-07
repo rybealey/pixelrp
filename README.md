@@ -86,6 +86,7 @@ cp cms/.env.example cms/.env
 #    compression, dangling sprite aliases) documented in docker/nitro/README.md.
 #    rsync -az nitro/ root@<vps>:/opt/pixelrp/nitro/
 cp nitro/renderer-config.prod.json nitro/client/renderer-config.json   # wss endpoint
+cp nitro/ui-config.json nitro/client/ui-config.json                    # blanked promo widgets
 
 # 3. Host nginx (TLS edge)
 cp docker/host/pixelrp.nginx.conf /etc/nginx/sites-enabled/pixelrp
