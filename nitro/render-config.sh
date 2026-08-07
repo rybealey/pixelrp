@@ -58,8 +58,16 @@ else
         then .value = "" else . end)'
 fi
 
+# camera.url: nitro-react builds photo previews as camera.url + '/' + the
+# filename the emulator sends, so NO trailing slash here. thumbnails.url is
+# the navigator room-thumbnail template in the same tree.
+CAMERA_URL="${NITRO_CAMERA_URL:?NITRO_CAMERA_URL must be set (docker-compose.yml)}"
+
 jq --arg cms "$NITRO_CMS_URL" \
-   '."url.prefix" = $cms' \
+   --arg cam "$CAMERA_URL" \
+   '."url.prefix" = $cms
+    | ."camera.url" = $cam
+    | ."thumbnails.url" = "\($cam)/thumbnail/%thumbnail%.png"' \
    "$HTML/ui-config.base.json" \
 | jq "$PROMO_FILTER" > "$HTML/ui-config.json"
 

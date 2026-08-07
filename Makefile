@@ -7,7 +7,7 @@ export
 
 ## Bring the whole stack up (builds images, clones AtomCMS source on first run).
 up: env cms/src
-	@mkdir -p data/db data/emulator data/cms/storage
+	@mkdir -p data/db data/emulator data/cms/storage data/camera
 	$(COMPOSE) up -d --build
 	@$(COMPOSE) ps
 

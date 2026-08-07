@@ -3,7 +3,9 @@ set -euo pipefail
 
 ART=/artifacts/arcturus
 cd /app
-mkdir -p plugins logs
+# camera/ is the ./data/camera bind mount shared with nitro's nginx — the
+# thumbnail subdir must exist before the emulator writes room thumbnails.
+mkdir -p plugins logs camera/thumbnail
 
 # ── 1. config.ini: generate ONCE, then it belongs to the user ──────────────
 # NOTE: Arcturus 4.0.x switches to env-only config (ignoring this file) if a

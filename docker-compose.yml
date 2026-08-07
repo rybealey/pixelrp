@@ -55,6 +55,8 @@ services:
       - "127.0.0.1:${WS_PORT:-2096}:2096"
     volumes:
       - ./data/emulator:/app
+      # In-game camera photos (written by the emulator, served by nitro).
+      - ./data/camera:/app/camera
       - ./artifacts/arcturus:/artifacts/arcturus:ro
     # Arcturus has an interactive console reader; give it a tty so it behaves.
     stdin_open: true
@@ -142,6 +144,10 @@ services:
       # Stock Habbo "What's new?" promo articles on the hotel view. Off by
       # default (demo content); set to 1 in .env to bring them back.
       NITRO_SHOW_PROMO_ARTICLES: ${NITRO_SHOW_PROMO_ARTICLES:-0}
+      # Where the browser fetches in-game camera photos (nginx serves the
+      # ./data/camera bind mount at /usercontent/camera). The emulator's
+      # camera.url DB setting must point at the same base (docs/DEPLOYMENT.md).
+      NITRO_CAMERA_URL: "${PUBLIC_NITRO_URL:-${PUBLIC_SCHEME:-http}://${PUBLIC_HOST:-localhost}:${NITRO_PORT:-3000}}/usercontent/camera"
       # Optional overrides if your asset pack layout differs (artifacts/README.md):
       # NITRO_IMAGE_LIBRARY_URL: "http://localhost:3000/game-assets/swf/c_images/"
       # NITRO_HOF_FURNI_URL: "http://localhost:3000/game-assets/swf/dcr/hof_furni"
@@ -149,6 +155,8 @@ services:
       - "127.0.0.1:${NITRO_PORT:-3000}:80"
     volumes:
       - ./artifacts/nitro-assets:/usr/share/nginx/html/game-assets:ro
+      # In-game camera photos written by the emulator; nginx serves them.
+      - ./data/camera:/usr/share/nginx/html/usercontent/camera:ro
     networks:
       pixelrp:
         ipv4_address: ${NITRO_IP:-172.28.0.40}

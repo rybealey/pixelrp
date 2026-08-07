@@ -1,0 +1,218 @@
+diff --git a/src/main/java/com/eu/habbo/messages/incoming/camera/CameraRoomPictureEvent.java b/src/main/java/com/eu/habbo/messages/incoming/camera/CameraRoomPictureEvent.java
+index 15506037..4b1e9749 100644
+--- a/src/main/java/com/eu/habbo/messages/incoming/camera/CameraRoomPictureEvent.java
++++ b/src/main/java/com/eu/habbo/messages/incoming/camera/CameraRoomPictureEvent.java
+@@ -1,37 +1,119 @@
+ package com.eu.habbo.messages.incoming.camera;
+ 
+ import com.eu.habbo.Emulator;
++import com.eu.habbo.habbohotel.achievements.AchievementManager;
++import com.eu.habbo.habbohotel.rooms.Room;
++import com.eu.habbo.habbohotel.users.Habbo;
+ import com.eu.habbo.messages.incoming.MessageHandler;
+-import com.eu.habbo.networking.camera.CameraClient;
+-import com.eu.habbo.networking.camera.messages.outgoing.CameraRenderImageComposer;
+-import com.eu.habbo.util.crypto.ZIP;
++import com.eu.habbo.messages.outgoing.camera.CameraURLComposer;
++import org.slf4j.Logger;
++import org.slf4j.LoggerFactory;
+ 
++import java.io.File;
++import java.nio.file.Files;
++
++/**
++ * pixelrp local camera: Nitro clients render the photo THEMSELVES and upload
++ * a PNG (int32 length + raw bytes). Stock Arcturus instead forwarded a
++ * Flash-era JSON scene to Krews' hosted camera-render service — whose address
++ * is stubbed out upstream (CameraClient host "google.com":1232), so photos
++ * could never work. Save the client's PNG locally and mint the URL ourselves:
++ * - file:  <imager.location.output.camera>/<userId>_<timestamp>.png
++ * - CameraURLComposer carries the FILENAME ONLY: nitro-react builds the
++ *   preview as GetConfiguration('camera.url') + '/' + filename.
++ * - the photo furni's extradata "w" needs an ABSOLUTE url (camera.url
++ *   emulator setting + filename) — the widget uses it verbatim.
++ */
+ public class CameraRoomPictureEvent extends MessageHandler {
+-    @Override
+-    public void handle() throws Exception {
+-        if (!this.client.getHabbo().hasPermission("acc_camera")) {
+-            this.client.getHabbo().alert(Emulator.getTexts().getValue("camera.permission"));
+-            return;
+-        }
+ 
+-        if (CameraClient.isLoggedIn) {
+-            this.packet.getBuffer().readFloat();
++  private static final Logger LOGGER = LoggerFactory.getLogger(CameraRoomPictureEvent.class);
++  static final int MAX_PNG_BYTES = 512 * 1024;
+ 
+-            byte[] data = this.packet.getBuffer().readBytes(this.packet.getBuffer().readableBytes()).array();
++  @Override
++  public void handle() throws Exception {
++    Habbo habbo = this.client.getHabbo();
+ 
+-            String content = new String(ZIP.inflate(data));
+-            CameraRenderImageComposer composer = new CameraRenderImageComposer(this.client.getHabbo().getHabboInfo().getId(), this.client.getHabbo().getHabboInfo().getCurrentRoom().getBackgroundTonerColor().getRGB(), 320, 320, content);
+-            this.client.getHabbo().getHabboInfo().setPhotoJSON(Emulator.getConfig().getValue("camera.extradata").replace("%timestamp%", composer.timestamp + ""));
+-            this.client.getHabbo().getHabboInfo().setPhotoTimestamp(composer.timestamp);
++    if (!habbo.hasPermission("acc_camera")) {
++      habbo.alert(Emulator.getTexts().getValue("camera.permission"));
++      return;
++    }
+ 
+-            if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != null) {
+-                this.client.getHabbo().getHabboInfo().setPhotoRoomId(this.client.getHabbo().getHabboInfo().getCurrentRoom().getId());
+-            }
++    Room room = habbo.getHabboInfo().getCurrentRoom();
++    if (room == null) {
++      return;
++    }
++
++    byte[] png = readPngPayload(this);
++    if (png == null) {
++      habbo.alert(Emulator.getTexts().getValue("camera.error.creation"));
++      return;
++    }
+ 
+-            Emulator.getCameraClient().sendMessage(composer);
+-        } else {
+-            this.client.getHabbo().alert(Emulator.getTexts().getValue("camera.disabled"));
+-        }
++    int timestamp = Emulator.getIntUnixTimestamp();
++    String filename = habbo.getHabboInfo().getId() + "_" + timestamp + ".png";
++
++    if (!writePng(Emulator.getConfig().getValue("imager.location.output.camera"), filename, png)) {
++      habbo.alert(Emulator.getTexts().getValue("camera.error.creation"));
++      return;
++    }
++
++    String base = Emulator.getConfig().getValue("camera.url");
++    if (!base.endsWith("/")) {
++      base += "/";
++    }
++    String fullUrl = base + filename;
++
++    habbo.getHabboInfo().setPhotoTimestamp(timestamp);
++    habbo.getHabboInfo().setPhotoRoomId(room.getId());
++    habbo.getHabboInfo().setPhotoURL(fullUrl);
++    habbo.getHabboInfo().setPhotoJSON(Emulator.getConfig().getValue("camera.extradata")
++        .replace("%timestamp%", timestamp + "")
++        .replace("%room_id%", room.getId() + "")
++        .replace("%url%", fullUrl));
++
++    AchievementManager.progressAchievement(habbo,
++        Emulator.getGameEnvironment().getAchievementManager().getAchievement("CameraPhotoCount"), 1);
++
++    this.client.sendResponse(new CameraURLComposer(filename));
++  }
++
++  /**
++   * Reads and validates the Nitro camera payload: int32 length + PNG bytes.
++   * Returns null on any malformed/oversized/non-PNG input.
++   */
++  static byte[] readPngPayload(MessageHandler handler) {
++    try {
++      int length = handler.packet.readInt();
++      int available = handler.packet.getBuffer().readableBytes();
++
++      if (length <= 0 || length > MAX_PNG_BYTES || length > available) {
++        return null;
++      }
++
++      byte[] png = new byte[length];
++      handler.packet.getBuffer().readBytes(png);
++
++      if (png.length < 8 || (png[0] & 0xFF) != 0x89 || png[1] != 'P' || png[2] != 'N' || png[3] != 'G') {
++        return null;
++      }
++      return png;
++    } catch (Exception e) {
++      return null;
++    }
++  }
+ 
++  static boolean writePng(String directory, String filename, byte[] png) {
++    try {
++      File dir = new File(directory);
++      if (!dir.exists() && !dir.mkdirs()) {
++        LOGGER.error("Camera output directory {} does not exist and could not be created.", directory);
++        return false;
++      }
++      Files.write(new File(dir, filename).toPath(), png);
++      return true;
++    } catch (Exception e) {
++      LOGGER.error("Failed to write camera image {} to {}", filename, directory, e);
++      return false;
+     }
++  }
+ }
+diff --git a/src/main/java/com/eu/habbo/messages/incoming/camera/CameraRoomThumbnailEvent.java b/src/main/java/com/eu/habbo/messages/incoming/camera/CameraRoomThumbnailEvent.java
+index c9c1bc12..89a725eb 100644
+--- a/src/main/java/com/eu/habbo/messages/incoming/camera/CameraRoomThumbnailEvent.java
++++ b/src/main/java/com/eu/habbo/messages/incoming/camera/CameraRoomThumbnailEvent.java
+@@ -1,37 +1,40 @@
+ package com.eu.habbo.messages.incoming.camera;
+ 
+ import com.eu.habbo.Emulator;
++import com.eu.habbo.habbohotel.rooms.Room;
++import com.eu.habbo.habbohotel.users.Habbo;
+ import com.eu.habbo.messages.incoming.MessageHandler;
+ import com.eu.habbo.messages.outgoing.camera.CameraRoomThumbnailSavedComposer;
+-import com.eu.habbo.networking.camera.CameraClient;
+-import com.eu.habbo.networking.camera.messages.outgoing.CameraRenderImageComposer;
+-import com.eu.habbo.util.crypto.ZIP;
+ 
++/**
++ * pixelrp local camera: room navigator thumbnail, same Nitro payload as
++ * CameraRoomPictureEvent (int32 length + raw PNG). Saved as <roomId>.png in
++ * imager.location.output.thumbnail; the client's ui-config thumbnails.url
++ * resolves %thumbnail% (the room id) against that folder.
++ */
+ public class CameraRoomThumbnailEvent extends MessageHandler {
+-    @Override
+-    public void handle() throws Exception {
+-        if (!this.client.getHabbo().hasPermission("acc_camera")) {
+-            this.client.getHabbo().alert(Emulator.getTexts().getValue("camera.permission"));
+-            return;
+-        }
+ 
+-        if (!this.client.getHabbo().getHabboInfo().getCurrentRoom().isOwner(this.client.getHabbo()))
+-            return;
++  @Override
++  public void handle() throws Exception {
++    Habbo habbo = this.client.getHabbo();
+ 
+-        if (CameraClient.isLoggedIn) {
+-            this.packet.getBuffer().readFloat();
+-            byte[] data = this.packet.getBuffer().readBytes(this.packet.getBuffer().readableBytes()).array();
+-            String content = new String(ZIP.inflate(data));
+-
+-            CameraRenderImageComposer composer = new CameraRenderImageComposer(this.client.getHabbo().getHabboInfo().getId(), this.client.getHabbo().getHabboInfo().getCurrentRoom().getBackgroundTonerColor().getRGB(), 110, 110, content);
++    if (!habbo.hasPermission("acc_camera")) {
++      habbo.alert(Emulator.getTexts().getValue("camera.permission"));
++      return;
++    }
+ 
+-            this.client.getHabbo().getHabboInfo().setPhotoJSON(Emulator.getConfig().getValue("camera.extradata").replace("%timestamp%", composer.timestamp + ""));
+-            this.client.getHabbo().getHabboInfo().setPhotoTimestamp(composer.timestamp);
++    Room room = habbo.getHabboInfo().getCurrentRoom();
++    if (room == null || !room.isOwner(habbo)) {
++      return;
++    }
+ 
+-            Emulator.getCameraClient().sendMessage(composer);
+-        } else {
+-            this.client.sendResponse(new CameraRoomThumbnailSavedComposer());
+-            this.client.getHabbo().alert(Emulator.getTexts().getValue("camera.disabled"));
+-        }
++    byte[] png = CameraRoomPictureEvent.readPngPayload(this);
++    if (png != null) {
++      CameraRoomPictureEvent.writePng(
++          Emulator.getConfig().getValue("imager.location.output.thumbnail"),
++          room.getId() + ".png", png);
+     }
+-}
+\ No newline at end of file
++
++    this.client.sendResponse(new CameraRoomThumbnailSavedComposer());
++  }
++}
