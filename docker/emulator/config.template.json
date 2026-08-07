@@ -1,0 +1,18 @@
+{
+  "Database": {
+    "Hostname": "${DB_HOST}",
+    "Port": 3306,
+    "Username": "${DB_USER}",
+    "Password": "${DB_PASSWORD}",
+    "Name": "${DB_NAME}",
+    "MinimumPoolSize": 5,
+    "MaximumPoolSize": 25
+  },
+  "Flash": { "Hostname": "0.0.0.0", "Port": 1232, "Name": "Flash" },
+  "Nitro": { "Hostname": "0.0.0.0", "Port": ${NITRO_PORT}, "Name": "Nitro" },
+  "Rcon": {
+    "Hostname": "0.0.0.0",
+    "Port": ${RCON_PORT},
+    "AllowedAddresses": ["${RCON_ALLOWED_IP}", "127.0.0.1"]
+  }
+}

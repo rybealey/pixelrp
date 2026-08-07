@@ -31,3 +31,26 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+
+  emulator:
+    build:
+      context: .
+      dockerfile: docker/emulator/Dockerfile
+    tty: true
+    stdin_open: true
+    environment:
+      DB_HOST: db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      NITRO_PORT: ${NITRO_PORT}
+      RCON_PORT: ${RCON_PORT}
+      RCON_ALLOWED_IP: ${RCON_ALLOWED_IP}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${NITRO_PORT}:${NITRO_PORT}"
+    networks:
+      pixelrp:
+        ipv4_address: 172.28.0.30
