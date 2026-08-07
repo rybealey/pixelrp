@@ -568,3 +568,22 @@ rebuild (`nitro/client/` is git-ignored):
 To bring a slot back, set `slot.N.widget` to a widget name (`promoarticle`,
 `widgetcontainer`, `achievementcompetition_hall_of_fame`) and fill its
 `slot.N.conf`.
+
+## Wearables render wrong (picked shorts, got a skirt/kilt)
+
+The Nitro client renders avatars from `FigureData.json`, but PlusEMU validates
+every saved look against `emulator/Config/figuredata.xml`
+(`FigureDataManager.ProcessFigure`). If the XML is an older/smaller revision
+than the JSON, any clothing set the client offers but the server doesn't know
+is **silently dropped on save**, and the emulator's required-parts loop
+substitutes the *first* same-gender set of that type — e.g. a male who picks
+modern denim shorts is stored wearing leg set 3017 (a kilt). Symptom: "I chose
+X but I'm wearing Y."
+
+The two files must describe the same set universe. Regenerate the XML from the
+client JSON after every converter run that rewrites `FigureData.json`:
+
+    python3 docker/nitro/figuredata-json-to-xml.py
+
+then rebuild the emulator image so `Config/figuredata.xml` is baked in. (Our
+client offered 163 leg sets vs the emulator's 73 before this was synced.)
