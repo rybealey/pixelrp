@@ -4,27 +4,59 @@
 # Cloudflare origin certs (/etc/ssl/pixelrp/) and proxies:
 #   https://pixelrp.co        -> 127.0.0.1:8080  (our `web` container)
 #   wss://pixelrp.co:2096     -> 127.0.0.1:2096  (our `emulator` Nitro port)
-# All container ports stay loopback-bound exactly as in dev; nothing is
-# exposed publicly except through the host nginx. This overlay only hardens
-# runtime behavior:
-#   - restart policies for unattended operation
-#   - CMS in production mode with the public URL
+# Host nginx config lives in docker/host/pixelrp.nginx.conf (deploy it to
+# /etc/nginx/sites-enabled/pixelrp). All container ports stay loopback-bound.
 
 services:
   db:
+    # The CMS reaches MySQL over the compose network; nothing needs a host port.
+    ports: !override []
     restart: unless-stopped
+    logging: &default-logging
+      driver: json-file
+      options: {max-size: "10m", max-file: "3"}
 
   emulator:
     restart: unless-stopped
+    logging: *default-logging
 
   cms:
     environment:
       APP_ENV: production
       APP_DEBUG: "false"
       APP_URL: https://pixelrp.co
-      # host nginx is the TLS proxy; trust it so X-Forwarded-Proto=https is honored
-      TRUSTED_PROXIES: "*"
+      # Trust only the compose network's gateway — host nginx overwrites
+      # X-Forwarded-For with the real peer, so a client-supplied header must
+      # never be honored (it would forge request()->ip(), defeating the
+      # throttle and the accounts-per-IP cap).
+      TRUSTED_PROXIES: "172.28.0.0/16"
+      # The Turnstile package's client ctor is typed `string`; a null secret
+      # 500s if a request ever carries a cf-turnstile-response field.
+      TURNSTILE_SECRET_KEY: ""
+    # No ./cms bind mount in prod: the image already contains `composer
+    # install --no-dev` output and the built theme assets. Mounting the host
+    # tree over /var/www/html would hide both (500 on every request) and hand
+    # php-fpm a storage/ dir owned by the cloning user. Only writable state and
+    # the environment file are mounted through.
+    volumes: !override
+      - ./cms/.env:/var/www/html/.env
+      - cms-storage:/var/www/html/storage
+      # Populated from the CMS image on first create (cms starts before web via
+      # depends_on); nginx mounts the same volume read-only to serve public/.
+      - cms-public:/var/www/html/public
     restart: unless-stopped
+    logging: *default-logging
 
   web:
+    # Serve the CMS's public/ from the image via the cms container's volume,
+    # not from a host checkout.
+    volumes: !override
+      - ./docker/web/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nitro:/var/www/nitro-assets:ro
+      - cms-public:/var/www/html/public:ro
     restart: unless-stopped
+    logging: *default-logging
+
+volumes:
+  cms-storage:
+  cms-public:

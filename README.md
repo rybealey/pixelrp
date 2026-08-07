@@ -70,17 +70,40 @@ VPS's host nginx terminates TLS with the Cloudflare origin certs
 All container ports stay loopback-bound. The Nitro client uses
 `nitro/renderer-config.prod.json` (socket.url `wss://pixelrp.co:2096`).
 
+In prod there is **no `./cms` bind mount** — the image's `composer install
+--no-dev` output and built theme assets are what run, with only `.env` and
+`storage/` mounted through. Never `composer install` on the VPS.
+
 ```bash
-# on the VPS
+# 1. Code
 git clone --recurse-submodules https://github.com/rybealey/pixelrp.git /opt/pixelrp
 cd /opt/pixelrp
-cp .env.example .env                      # generate real secrets
-# rsync nitro/assets + nitro/client from the build machine (410 MB, git-ignored)
+cp .env.example .env        # then set real DB_PASSWORD / DB_ROOT_PASSWORD
+cp cms/.env.example cms/.env
+
+# 2. Assets — RSYNC the built tree from the build machine; do NOT regenerate
+#    here. It carries three hand-applied repairs (FigureMap null-parts, bundle
+#    compression, dangling sprite aliases) documented in docker/nitro/README.md.
+#    rsync -az nitro/ root@<vps>:/opt/pixelrp/nitro/
 cp nitro/renderer-config.prod.json nitro/client/renderer-config.json   # wss endpoint
+
+# 3. Host nginx (TLS edge)
+cp docker/host/pixelrp.nginx.conf /etc/nginx/sites-enabled/pixelrp
+nginx -t && systemctl reload nginx
+
+# 4. Stack
 docker compose -f compose.yaml -f compose.prod.yaml up -d --build
-docker compose exec cms php artisan migrate --force && docker compose exec cms php artisan db:seed --force
+docker compose exec cms php artisan migrate --force
+docker compose exec cms php artisan db:seed --force
 # apply the website_settings block from Quickstart
+
+# 5. Complete the /installation wizard in a browser BEFORE announcing the site
+#    — every request redirects there until it's done.
 ```
+
+Pre-cutover checks: a spoofed `X-Forwarded-For` must **not** change the
+`X-RateLimit-*` bucket; housekeeping → "reload catalog" must reach the emulator
+(RCON's allowlist is exact-IP, and it fails silently if the subnet shifts).
 
 
 ## Known limitations
