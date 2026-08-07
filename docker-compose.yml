@@ -98,6 +98,12 @@ services:
       RCON_HOST: emulator
       RCON_PORT: 3001
       MIN_STAFF_RANK: 4
+      # Group-badge disk (config/filesystems.php 'album1584'): without a real
+      # root, any page that renders a group badge fatals in Flysystem (null
+      # $location). Point it at persisted CMS storage; images 404 harmlessly
+      # until a badge pipeline fills the folder.
+      NITRO_BADGE_PATH: /var/www/html/storage/app/public/badges
+      NITRO_BADGE_URL: "${PUBLIC_CMS_URL:-${PUBLIC_SCHEME:-http}://${PUBLIC_HOST:-localhost}:${CMS_PORT:-8080}}/storage/badges"
       # Links the CMS renders for the game client + assets:
       NITRO_CLIENT_URL: "${PUBLIC_NITRO_URL:-${PUBLIC_SCHEME:-http}://${PUBLIC_HOST:-localhost}:${NITRO_PORT:-3000}}"
       NITRO_STATIC_URL: "${PUBLIC_NITRO_URL:-${PUBLIC_SCHEME:-http}://${PUBLIC_HOST:-localhost}:${NITRO_PORT:-3000}}/game-assets"

@@ -74,6 +74,15 @@ RUN if [ -n "$GITHUB_TOKEN" ]; then \
 RUN sed -i 's/^class BadgeSyncCommand /class BackgroundSyncCommand /' \
       vendor/atomcms/core/src/Console/Commands/BackgroundSyncCommand.php
 
+# UPSTREAM BUG WORKAROUND (atomcms/theme dev-main, 2026-08): SitemapController
+# chains ->map() directly onto the article query builder (no ->get()), so
+# /sitemap 500s with "Call to undefined method Builder::map()" every time a
+# crawler fetches it. Insert the missing ->get(); no-op once upstream fixes it.
+RUN sed -i "s/->latest('id')$/->latest('id')->get()/" \
+      vendor/atomcms/theme/src/Http/Controllers/SitemapController.php \
+    && grep -q "latest('id')->get()" \
+      vendor/atomcms/theme/src/Http/Controllers/SitemapController.php
+
 # Built front-end (includes public/build and theme images) over the source copy.
 COPY --from=assets /build/public ./public
 

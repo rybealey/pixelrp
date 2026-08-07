@@ -4,7 +4,7 @@ cd /var/www/html
 
 # ── storage/ is a bind mount (./data/cms/storage) that starts EMPTY — rebuild
 # the skeleton Laravel expects, then hand it to www-data.
-mkdir -p storage/app/public \
+mkdir -p storage/app/public storage/app/public/badges \
          storage/framework/cache/data storage/framework/sessions storage/framework/views \
          storage/logs bootstrap/cache
 chown -R www-data:www-data storage bootstrap/cache
@@ -15,6 +15,14 @@ until (echo > "/dev/tcp/${DB_HOST:-db}/${DB_PORT:-3306}") 2>/dev/null; do sleep 
 
 # Build was done with --no-scripts; discover packages now that we have real env.
 php artisan package:discover --ansi
+
+# --no-scripts also skipped composer's post-update vendor:publish, and public/
+# is image-local (wiped on every recreate) — so publish package assets every
+# start. Without these, public/vendor/ is empty and Housekeeping (Laravel
+# Nova) 500s on a missing mix-manifest (verified 2026-08). nova-assets covers
+# laravel/nova + nova-kit; laravel-assets covers standard package publishes.
+php artisan vendor:publish --tag=nova-assets --force --ansi
+php artisan vendor:publish --tag=laravel-assets --force --ansi
 
 # Idempotent: Laravel tracks applied migrations. These ALTER emulator tables,
 # so the Arcturus schema must exist (guaranteed by db's init + healthcheck).
