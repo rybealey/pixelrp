@@ -1,3 +1,4 @@
 .env
 nitro/assets/
 nitro/client/
+.DS_Store

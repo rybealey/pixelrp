@@ -249,6 +249,20 @@ further.
 - `ProductData.json` converts to `{"productdata":{"product":[{"code":"pixel","description":""}]}}`
   — this is what official Habbo's `productdata` endpoint itself returns
   today (effectively deprecated/empty upstream), not a converter bug.
+- **`FigureMap.json` had two malformed entries** — `face_M_nftscarface2`
+  and `face_F_nftscarface2` converted with `"parts": null` instead of an
+  array. `nitro-renderer`'s avatar figure-map downloader
+  (`processFigureMap`, in `nitro-renderer-*.js`) does `for (const part of
+  library.parts)` with no null guard, so it throws ("`e.parts is not
+  iterable`") partway through parsing the map — which only runs once a
+  real SSO ticket authenticates, so this was invisible to this task's own
+  no-SSO verification (Step 6) and only surfaced in Task 9's logged-in E2E
+  walk. Fixed **in place** on the live `nitro/assets/gamedata/FigureMap.json`
+  (git-ignored, so this note is the only record of it) by replacing both
+  `null` values with `[]`. If you regenerate `nitro/assets/` from scratch
+  via Step 3, re-check for `"parts": null` entries in the fresh
+  `FigureMap.json` before deploying it:
+  `python3 -c "import json; d=json.load(open('nitro/assets/gamedata/FigureMap.json')); print([l['id'] for l in d['libraries'] if not isinstance(l.get('parts'), list)])"`
 
 ## Step 4: Build and install (full command sequence actually run)
 
