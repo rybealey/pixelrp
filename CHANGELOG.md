@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Clothes you pick are the clothes you get
+
+### Fixed
+
+- **Wearables now save correctly.** Picking many newer clothing items — modern
+  shorts, jeans, and lots of other pieces — used to silently swap to a default
+  garment when you saved (famously: choose denim shorts, end up in a skirt).
+  Every item the wardrobe offers is now recognised when you save, so your
+  avatar wears exactly what you chose, across every clothing category.
+
 ## 2026-08-08 — Snappier walking
 
 ### Changed
