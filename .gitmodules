@@ -4,3 +4,7 @@
 [submodule "cms"]
 	path = cms
 	url = https://github.com/rybealey/atomcms.git
+[submodule "client"]
+	path = client
+	url = https://github.com/rybealey/nitro-react.git
+	branch = pixelrp

@@ -22,7 +22,23 @@ correct with **no source patch and no config override**.
 
 ## Step 1: Client (nitro-react + nitro-renderer)
 
-Cloned to a scratch directory (NOT inside this repo):
+> **The client source is now the tracked `client/` submodule**
+> (`rybealey/nitro-react` @ branch `pixelrp`, forked from `billsonnn/nitro-react`).
+> Make UI changes in `client/`, commit them on `pixelrp`, and push. The two
+> historical source patches (subpath `config.urls`, friend-bar removal) are
+> already commits on that branch — the manual-patch notes below are kept only
+> as the record of what those commits do.
+>
+> Build + install with one command (no scratch clone needed):
+> ```bash
+> docker/nitro/build-client.sh          # local (ws://localhost) config
+> docker/nitro/build-client.sh --prod   # prod (wss://pixelrp.co:2096) config
+> ```
+> Output goes to `nitro/client/` (git-ignored), which nginx serves at
+> `/nitro-assets/client/`. The rest of this section documents the original
+> from-scratch build for reference.
+
+Original from-scratch build (superseded by the submodule + `build-client.sh`):
 
 ```bash
 git clone https://github.com/billsonnn/nitro-react.git nitro-react
