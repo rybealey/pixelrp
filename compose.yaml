@@ -1,0 +1,33 @@
+name: pixelrp
+
+networks:
+  pixelrp:
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
+volumes:
+  dbdata:
+
+services:
+  db:
+    image: mysql:8.0
+    command: --sql-mode=NO_ENGINE_SUBSTITUTION --character-set-server=utf8mb4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./emulator/Resources/SQLs/Original Database.sql:/docker-entrypoint-initdb.d/01-plusemu.sql:ro
+    ports:
+      - "127.0.0.1:3306:3306"
+    networks:
+      pixelrp:
+        ipv4_address: 172.28.0.10
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p${DB_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
