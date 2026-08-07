@@ -1,5 +1,5 @@
 {
-  "socket.url": "wss://pixelrp.co/ws",
+  "socket.url": "wss://pixelrp.co:2096",
   "asset.url": "https://pixelrp.co/nitro-assets/assets",
   "image.library.url": "https://pixelrp.co/nitro-assets/assets/c_images/",
   "hof.furni.url": "https://pixelrp.co/nitro-assets/assets/dcr/hof_furni",

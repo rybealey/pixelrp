@@ -63,10 +63,12 @@ docker compose exec cms php artisan test -c phpunit.plus.xml
 
 ## Production (pixelrp.co)
 
-Production = the same stack plus [compose.prod.yaml](compose.prod.yaml):
-nginx terminates TLS with the Cloudflare origin cert, binds 80/443, and the
-emulator/database ports are not published. The Nitro client uses
-`nitro/renderer-config.prod.json` (socket.url `wss://pixelrp.co/ws`).
+Production = the same stack plus [compose.prod.yaml](compose.prod.yaml). The
+VPS's host nginx terminates TLS with the Cloudflare origin certs
+(`/etc/ssl/pixelrp/`) and proxies `https://pixelrp.co` → `127.0.0.1:8080`
+(our `web`) and `wss://pixelrp.co:2096` → `127.0.0.1:2096` (our `emulator`).
+All container ports stay loopback-bound. The Nitro client uses
+`nitro/renderer-config.prod.json` (socket.url `wss://pixelrp.co:2096`).
 
 ```bash
 # on the VPS
@@ -74,14 +76,12 @@ git clone --recurse-submodules https://github.com/rybealey/pixelrp.git /opt/pixe
 cd /opt/pixelrp
 cp .env.example .env                      # generate real secrets
 # rsync nitro/assets + nitro/client from the build machine (410 MB, git-ignored)
-cp nitro/renderer-config.prod.json nitro/client/renderer-config.json
+cp nitro/renderer-config.prod.json nitro/client/renderer-config.json   # wss endpoint
 docker compose -f compose.yaml -f compose.prod.yaml up -d --build
 docker compose exec cms php artisan migrate --force && docker compose exec cms php artisan db:seed --force
 # apply the website_settings block from Quickstart
 ```
 
-Origin certs are expected at `/etc/nginx/certs/origin.pem` + `origin.key`
-(override the directory with `TLS_CERT_DIR` in `.env`).
 
 ## Known limitations
 

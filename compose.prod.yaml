@@ -1,23 +1,20 @@
 # Production overlay: docker compose -f compose.yaml -f compose.prod.yaml up -d
 #
-# Differences from local dev:
-# - web terminates TLS with the Cloudflare origin cert (mounted from
-#   ${TLS_CERT_DIR}, default /etc/nginx/certs on the host) and binds public
-#   80/443; the dev 127.0.0.1:8080 bind is replaced.
-# - The emulator's Nitro port is NOT published — wss://pixelrp.co/ws through
-#   nginx is the only ingress.
-# - CMS runs with APP_ENV=production, APP_DEBUG=false, APP_URL=https://pixelrp.co.
-# - MySQL is not exposed on any host port.
-# - The ./cms bind mount stays (same layout dev verified): deploys are
-#   `git pull` + composer/npm build inside the container + restart.
+# Topology on the VPS (pixelrp.co): the HOST nginx terminates TLS with the
+# Cloudflare origin certs (/etc/ssl/pixelrp/) and proxies:
+#   https://pixelrp.co        -> 127.0.0.1:8080  (our `web` container)
+#   wss://pixelrp.co:2096     -> 127.0.0.1:2096  (our `emulator` Nitro port)
+# All container ports stay loopback-bound exactly as in dev; nothing is
+# exposed publicly except through the host nginx. This overlay only hardens
+# runtime behavior:
+#   - restart policies for unattended operation
+#   - CMS in production mode with the public URL
 
 services:
   db:
-    ports: !override []
     restart: unless-stopped
 
   emulator:
-    ports: !override []
     restart: unless-stopped
 
   cms:
@@ -25,15 +22,9 @@ services:
       APP_ENV: production
       APP_DEBUG: "false"
       APP_URL: https://pixelrp.co
+      # host nginx is the TLS proxy; trust it so X-Forwarded-Proto=https is honored
+      TRUSTED_PROXIES: "*"
     restart: unless-stopped
 
   web:
-    ports: !override
-      - "80:80"
-      - "443:443"
-    volumes: !override
-      - ./docker/web/nginx.prod.conf:/etc/nginx/nginx.conf:ro
-      - ./cms:/var/www/html:ro
-      - ./nitro:/var/www/nitro-assets:ro
-      - ${TLS_CERT_DIR:-/etc/nginx/certs}:/etc/nginx/certs:ro
     restart: unless-stopped
