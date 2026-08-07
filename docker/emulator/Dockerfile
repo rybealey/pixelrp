@@ -4,7 +4,7 @@ COPY emulator/ .
 RUN dotnet publish "Plus Emulator.csproj" -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/runtime:7.0
-RUN apt-get update && apt-get install -y --no-install-recommends gettext-base && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends gettext-base default-mysql-client && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=build /app .
 COPY docker/emulator/config.template.json /templates/config.template.json
