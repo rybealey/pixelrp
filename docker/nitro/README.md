@@ -240,12 +240,13 @@ further.
 
 - `image.library.url` (`c_images/`) and `hof.furni.url` (`dcr/hof_furni/`) —
   the raw, unconverted badge/catalog-icon and furni-HOF-icon SWF/image trees
-  — were not populated. Neither `default-assets` nor `nitro-converter`
-  produces these (they're a separate raw-download tree, e.g. via
-  `habbo-downloader --command icons|badges|badgeparts`). They affect catalog
-  images, furni icons in the catalog, and badge rendering — not the
+  — were not populated by this task. Neither `default-assets` nor
+  `nitro-converter` produces these (they're a separate raw-download tree, e.g.
+  via `habbo-downloader --command icons|badges|badgeparts`). They affect
+  catalog images, furni icons in the catalog, and badge rendering — not the
   standalone client boot / login screen covered by this task's verification
-  bar. Flagged for Task 9 / a follow-up if catalog browsing needs it.
+  bar. **Resolved** by `extract-furni-icons.py` and `mirror-c-images.sh` —
+  see "Catalog & badge images" below.
 - `ProductData.json` converts to `{"productdata":{"product":[{"code":"pixel","description":""}]}}`
   — this is what official Habbo's `productdata` endpoint itself returns
   today (effectively deprecated/empty upstream), not a converter bug.
@@ -448,6 +449,108 @@ compression fix:
 Furniture bundles use a different key format and are intentionally left
 untouched (reported as "unresolved"). Hard-refresh the browser afterwards —
 the old bundles are cached for a week.
+
+## Catalog & badge images
+
+Two of the three trees `renderer-config.json` points at were still empty
+after the initial import (see "Known gaps" above): `dcr/hof_furni/icons/`
+(furni catalog/inventory grid icons) and `c_images/` (catalog category tree
+icons, catalog promo/teaser art, badge art). Both are populated by scripts
+here rather than by hand — the produced images themselves stay git-ignored
+(`nitro/assets/` is excluded in `.gitignore`), only the scripts are committed.
+
+### `extract-furni-icons.py` — furni grid icons, extracted offline from our own bundles
+
+The Nitro client requests furni icons from
+`furni.asset.icon.url` = `${hof.furni.url}/icons/%libname%%param%_icon.png`
+(see the config table above). Rather than scraping these from Sulake, they're
+cropped directly out of the `.nitro` furniture bundles we already have under
+`nitro/assets/bundled/furniture/`.
+
+Each `.nitro` bundle is a small custom container (big-endian): `int16`
+fileCount, then per file `[int16 nameLen][name][int32 blobLen][zlib blob]`.
+Furniture bundles contain a `<lib>.json` (a pixi spritesheet description,
+itself zlib-compressed once decoded from the container) and a `<lib>.png`
+sprite sheet. The JSON's `spritesheet.frames` map has one or more icon
+frames keyed like `<lib>_<lib>_icon_a` (the default icon) and occasionally
+`..._icon_b` etc. (alternate state icons for togglable furni). The script
+crops each icon frame out of the sheet using Pillow and writes:
+
+- `<classname>_icon.png` for the `_a` (default) frame
+- `<classname>_<suffix>_icon.png` for any other frame suffix
+
+Per-color catalog variants (`classname*1`, `classname*2`, ... in
+`FurnitureData.json`) intentionally share one base icon — colored icons for
+those are tinted client-side at render time from the layer/color data already
+in the bundle, not fetched as separate static images per color, so a single
+`<classname>_icon.png` covers every `*N` variant of a library.
+
+```bash
+pip3 install pillow   # if not already available
+python3 docker/nitro/extract-furni-icons.py
+```
+
+Bundles whose `.json`/`.png` entries fail to parse (missing icon frames, bad
+zlib data, etc.) are skipped with a per-bundle reason and counted, not fatal.
+The script finishes by computing coverage against every base classname in
+`nitro/assets/gamedata/FurnitureData.json` and prints the percentage plus a
+sample of misses. Current run: 13,333/13,576 bundles processed cleanly,
+13,808 icon files written, **98.0% coverage** (13,240/13,505 base
+classnames) — the misses are mostly multi-part sets (`bc_alpha1_*` letter
+tiles, `SF_alien`, board games like `Chess`/`Poker`) whose bundles don't ship
+a dedicated icon frame at all, not a parsing failure.
+
+### `mirror-c-images.sh` — c_images, mirrored from Sulake against what the DB actually references
+
+`c_images/` (catalog tree icons, catalog promo/teaser art, badge art) never
+existed in any bundle — it's Sulake's raw web-image tree, so this genuinely
+has to be fetched from `images.habbo.com`. The script only mirrors what our
+own database references (plus a small numeric sweep for catalog icons),
+rather than scraping the whole tree:
+
+1. **Catalog tree icons** (`c_images/catalogue/icon_<N>.png`): `N` is the
+   union of every `catalog_pages.icon_image` value in the DB and a `1..250`
+   sweep (covers icon ids used by older/edited catalog trees that may not be
+   wired into `catalog_pages` yet).
+2. **Catalog promo/teaser images**: `catalog_promotions.image` already
+   stores the full relative path (e.g.
+   `catalogue/feature_cata_vert_hween16bun1.png`) — fetched verbatim, with a
+   `.png`⇄`.gif` extension fallback if the first attempt 404s.
+3. **Badge art** (`c_images/album1584/<code>.gif`): the deduplicated union of
+   `badge_definitions.code`, `user_badges.badge_id`, and
+   `client_external_badge_texts.badge_code`.
+
+All fetches are `curl -f` (so a 404 is just a failed, non-fatal command),
+capped at 4 concurrent requests, and idempotent — files that already exist
+locally are skipped on a re-run (pass `--force` to refetch everything).
+
+```bash
+docker/nitro/mirror-c-images.sh          # normal run, skips existing files
+docker/nitro/mirror-c-images.sh --force  # refetch everything
+```
+
+Latest run against the local DB: catalog icons 254 fetched / 11 404
+(258 files on disk incl. 4 promo images sharing the same directory),
+promo/teaser images 4/4 fetched, badges 5,334 fetched / 380 404 (5,714 unique
+codes attempted — `badge_definitions` includes codes from other emulator
+badge packs that were never mirrored to Sulake's CDN, hence the 404s).
+
+### Verification
+
+```bash
+$ curl -s -o /dev/null -w '%{http_code} %{content_type}\n' \
+    http://localhost:8080/nitro-assets/assets/c_images/catalogue/icon_2.png
+200 image/png
+$ curl -s -o /dev/null -w '%{http_code} %{content_type}\n' \
+    http://localhost:8080/nitro-assets/assets/c_images/album1584/ACH_AvatarLooks1.gif
+200 image/gif
+$ curl -s -o /dev/null -w '%{http_code} %{content_type}\n' \
+    http://localhost:8080/nitro-assets/assets/dcr/hof_furni/icons/anna_sofa_icon.png
+200 image/png
+```
+
+nginx needed no config changes — the icons directory sits inside the
+already-served `nitro/assets/` tree.
 
 ## Hotel view widgets
 
