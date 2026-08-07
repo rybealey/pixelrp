@@ -135,6 +135,44 @@ TEASER_SKIP=$(grep -c '^SKIP' /tmp/mirror_teaser_results.txt || true)
 echo "  teasers: fetched=$TEASER_OK 404=$TEASER_404 skipped(existing)=$TEASER_SKIP"
 
 # ---------------------------------------------------------------------------
+# 2b. Catalog page header/teaser images (the banner to the right of the item
+#     grid). Each visible catalog_pages.page_strings_1 is a '|'-separated list
+#     whose first two tokens are the header (index 0) and teaser (index 1)
+#     image NAMES; PageLocalization.getImage() resolves them to
+#     c_images/catalogue/<name>.gif (the client always requests .gif). Fetch
+#     .gif, falling back to Habbo's .png saved under the .gif name the client
+#     asks for (browsers sniff the content, so PNG bytes still render).
+#     Legacy/purged or custom-pack names simply 404 and stay blank.
+# ---------------------------------------------------------------------------
+echo "== Collecting catalog page header/teaser image names =="
+mysql_query "SELECT page_strings_1 FROM catalog_pages WHERE visible=1 AND page_strings_1 <> '';" \
+  | awk -F'|' '{ if ($1 ~ /^[A-Za-z0-9_]+$/) print $1; if ($2 ~ /^[A-Za-z0-9_]+$/) print $2; }' \
+  | sort -u > /tmp/mirror_header_names.txt
+echo "  $(wc -l < /tmp/mirror_header_names.txt) header/teaser names"
+
+fetch_header() {
+    local name="$1" dest="$CATALOGUE_DIR/$1.gif"
+    if [ "$FORCE" != "1" ] && [ -s "$dest" ]; then echo "SKIP"; return; fi
+    if curl -fs --max-time 20 "$BASE_URL/catalogue/$name.gif" -o "$dest.tmp" && [ -s "$dest.tmp" ]; then
+        mv "$dest.tmp" "$dest"; echo "OK"; return
+    fi
+    # fall back to the .png source, saved under the .gif name the client requests
+    if curl -fs --max-time 20 "$BASE_URL/catalogue/$name.png" -o "$dest.tmp" && [ -s "$dest.tmp" ]; then
+        mv "$dest.tmp" "$dest"; echo "OK"; return
+    fi
+    rm -f "$dest.tmp"; echo "404"
+}
+export -f fetch_header
+export CATALOGUE_DIR BASE_URL FORCE
+
+echo "== Fetching catalog header/teaser images (catalogue/<name>.gif) =="
+HEADER_RESULTS=$(cat /tmp/mirror_header_names.txt | xargs -P "$CONCURRENCY" -I{} bash -c 'fetch_header "$@"' _ {})
+HEADER_OK=$(grep -c '^OK' <<<"$HEADER_RESULTS" || true)
+HEADER_404=$(grep -c '^404' <<<"$HEADER_RESULTS" || true)
+HEADER_SKIP=$(grep -c '^SKIP' <<<"$HEADER_RESULTS" || true)
+echo "  headers: fetched=$HEADER_OK 404=$HEADER_404 skipped(existing)=$HEADER_SKIP"
+
+# ---------------------------------------------------------------------------
 # 3. Badge art: nitro/assets/c_images/album1584/<code>.gif
 #    Union of badge_definitions.code, user_badges.badge_id and
 #    client_external_badge_texts.badge_code - deduplicated.

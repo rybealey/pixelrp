@@ -587,3 +587,19 @@ client JSON after every converter run that rewrites `FigureData.json`:
 
 then rebuild the emulator image so `Config/figuredata.xml` is baked in. (Our
 client offered 163 leg sets vs the emulator's 73 before this was synced.)
+
+## Catalog category header/teaser images (banner right of the item grid)
+
+Each visible `catalog_pages` row stores `page_strings_1` as a `|`-separated
+list; tokens 0 and 1 are the header and teaser image NAMES. Nitro's
+`PageLocalization.getImage()` resolves them to
+`c_images/catalogue/<name>.gif` (the client always requests `.gif`). These are
+Sulake web images, never bundled — mirror them (and everything else in
+`c_images`) with:
+
+    docker/nitro/mirror-c-images.sh
+
+Legacy/purged names and other emulators' custom-pack names (e.g. `vipheader1`,
+`habboclub`, `customheader`) are no longer on images.habbo.com and stay blank —
+those pages still work, just without a banner. Supply custom art under
+`nitro/assets/c_images/catalogue/<name>.gif` to fill them.

@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Shop banners are back
+
+### Fixed
+
+- **Catalogue category pictures now show.** The banner image to the right of
+  the furniture list (and the front-page promos) were blank on most pages;
+  they now load. A handful of very old or one-off pages still have no banner
+  because the original artwork is no longer available anywhere.
+
 ## 2026-08-08 — Your look updates instantly
 
 ### Fixed
