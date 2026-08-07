@@ -427,3 +427,24 @@ and fixed here — both fail silently (no console error, no failed request):
 `.nitro` bundles are served with `max-age=604800`, so browsers that loaded the
 broken responses keep replaying them from cache — including the wrong
 Content-Type — until forced past the cache.
+
+## Troubleshooting: avatars missing nose/mouth
+
+The converter emitted the standard-expression face sprites
+(`h_std_fc_1_<dir>_0` in `hh_human_face.nitro`) as aliases whose `source`
+pointed at NFT "scarface" part images (`*_fc_6221/6222_*`) that were dropped
+from the bundle — a dangling alias renders as nothing, so idle avatars had no
+nose/mouth (mouths only appeared mid-expression, e.g. while speaking). 48
+other bundles had smaller cases of the same defect (~94 dangling aliases
+total, mostly clothing frames).
+
+`fix-dangling-sources.py` remaps every dangling `source` to the closest real
+sprite with the same size/part/part-id/direction (action priority: std, spk,
+sml, sad, agr, wlk). Run it after (re)importing any asset pack, after the
+compression fix:
+
+    python3 docker/nitro/fix-dangling-sources.py nitro/assets
+
+Furniture bundles use a different key format and are intentionally left
+untouched (reported as "unresolved"). Hard-refresh the browser afterwards —
+the old bundles are cached for a week.
