@@ -14,11 +14,13 @@ Easiest path — build it from the official source in one command:
 
     ./scripts/build-emulator.sh
 
-(clones the official repo @ ms3-upgrade, patches out the beta build's
-interactive 'Press ENTER' gate — which otherwise blocks forever in a container
-— and Maven-builds with the same image as upstream CI.)
+(clones the official repo @ ms3-upgrade at a **pinned commit**, applies the
+patches in `emulator/patches/` — the interactive 'Press ENTER' beta gate skip
+plus PixelRP gameplay patches like instant-first-step walking — and
+Maven-builds with the same image as upstream CI.)
 
-Alternatively drop a downloaded jar: Arcturus Morningstar 4.0.x has **no formal
+Alternatively drop a downloaded jar (note: you lose the `emulator/patches/`
+gameplay fixes that way): Arcturus Morningstar 4.0.x has **no formal
 GitLab releases** — jars are distributed as GitLab CI artifacts (2-week expiry)
 on https://git.krews.org/morningstar/Arcturus-Community (branch `ms3-upgrade`)
 and via the 4.0.x announcement threads (DevBest) / Krews Discord. Any 4.0.1+

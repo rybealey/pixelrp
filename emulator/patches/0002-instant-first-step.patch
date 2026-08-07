@@ -1,0 +1,161 @@
+diff --git a/src/main/java/com/eu/habbo/habbohotel/rooms/Room.java b/src/main/java/com/eu/habbo/habbohotel/rooms/Room.java
+index 7cc531c1..6ff2fb79 100644
+--- a/src/main/java/com/eu/habbo/habbohotel/rooms/Room.java
++++ b/src/main/java/com/eu/habbo/habbohotel/rooms/Room.java
+@@ -1174,6 +1174,81 @@ public class Room implements Comparable<Room>, ISerialize, Runnable {
+     this.cycleManager.cycle();
+   }
+ 
++  /**
++   * pixelrp instant-first-step: dispatch a walking unit's first step NOW
++   * instead of waiting for the next 500ms room tick, then drive that unit on
++   * its own 500ms beat until it arrives. Walking SPEED is unchanged — steps
++   * stay 500ms apart — only the initial click-to-move latency is removed.
++   *
++   * Guards guarantee movement can never exceed one tile per 500ms:
++   * - a unit that stepped less than 500ms ago is left to the global tick;
++   * - a self-paced unit is skipped by the global tick (RoomCycleManager);
++   * - re-clicks while self-paced only re-path, they never add beats.
++   *
++   * Runtime kill-switch: emulator_settings key pathfinder.instant.first.step
++   * (default enabled; set 0 to restore stock tick behaviour).
++   */
++  public void tryInstantFirstStep(RoomUnit unit) {
++    // NOTE: not getBoolean(key, true) — that overload ignores its default for
++    // a MISSING key (getValue(key,"0")=="1" || getValue(key,"false")=="true"
++    // is always false), which would silently disable this feature until an
++    // emulator_settings row exists. getValue's default is honoured.
++    if ("0".equals(Emulator.getConfig().getValue("pathfinder.instant.first.step", "1"))) {
++      return;
++    }
++
++    synchronized (this.loadLock) {
++      if (!this.loaded || unit == null || unit.isSelfPaced()) {
++        return;
++      }
++      if (System.currentTimeMillis() - unit.getLastStepAt() < 500) {
++        return;
++      }
++      if (unit.getPath() == null || unit.getPath().isEmpty() || !unit.isWalking()) {
++        return;
++      }
++
++      unit.setSelfPaced(true);
++      this.selfPacedBeat(unit);
++    }
++  }
++
++  /**
++   * One beat of a self-paced unit: identical processing to what the global
++   * tick does for the unit (RoomCycleManager.cycleRoomUnit + status
++   * broadcast), re-armed every 500ms until the unit arrives and its MOVE
++   * status has been cleared, then hand the unit back to the global tick.
++   * Caller must hold loadLock.
++   */
++  private void selfPacedBeat(RoomUnit unit) {
++    try {
++      if (this.cycleManager.cycleRoomUnit(unit, RoomUnitType.USER)) {
++        this.sendComposer(new RoomUserStatusComposer(unit).compose());
++      }
++    } catch (Exception e) {
++      LOGGER.error("Caught exception in self-paced walk beat", e);
++      unit.setSelfPaced(false);
++      return;
++    }
++
++    boolean stillWalking = unit.isWalking() && unit.getPath() != null && !unit.getPath().isEmpty();
++    boolean stillMoving = unit.hasStatus(RoomUnitStatus.MOVE);
++
++    if (stillWalking || stillMoving) {
++      Emulator.getThreading().run(() -> {
++        synchronized (this.loadLock) {
++          if (!this.loaded || !unit.isSelfPaced() || unit.getRoom() != this) {
++            unit.setSelfPaced(false);
++            return;
++          }
++          this.selfPacedBeat(unit);
++        }
++      }, 500);
++    } else {
++      unit.setSelfPaced(false);
++    }
++  }
++
+   public int getId() {
+     return this.id;
+   }
+diff --git a/src/main/java/com/eu/habbo/habbohotel/rooms/RoomCycleManager.java b/src/main/java/com/eu/habbo/habbohotel/rooms/RoomCycleManager.java
+index c4b6eb62..e961e991 100644
+--- a/src/main/java/com/eu/habbo/habbohotel/rooms/RoomCycleManager.java
++++ b/src/main/java/com/eu/habbo/habbohotel/rooms/RoomCycleManager.java
+@@ -102,7 +102,11 @@ public class RoomCycleManager {
+                     processHabboMute(habbo);
+                     processHabboChatCounter(habbo);
+ 
+-                    if (this.cycleRoomUnit(habbo.getRoomUnit(), RoomUnitType.USER)) {
++                    // pixelrp instant-first-step: units on their own 500ms
++                    // beat (Room.selfPacedBeat) are stepped there, not here —
++                    // cycling them from both drivers would double their speed.
++                    if (!habbo.getRoomUnit().isSelfPaced()
++                            && this.cycleRoomUnit(habbo.getRoomUnit(), RoomUnitType.USER)) {
+                         updatedUnit.add(habbo.getRoomUnit());
+                     }
+                 }
+diff --git a/src/main/java/com/eu/habbo/habbohotel/rooms/RoomUnit.java b/src/main/java/com/eu/habbo/habbohotel/rooms/RoomUnit.java
+index 181e3039..1f93f617 100644
+--- a/src/main/java/com/eu/habbo/habbohotel/rooms/RoomUnit.java
++++ b/src/main/java/com/eu/habbo/habbohotel/rooms/RoomUnit.java
+@@ -67,6 +67,11 @@ public class RoomUnit {
+   private boolean canWalk;
+   private boolean fastWalk = false;
+   private boolean statusUpdate = false;
++  // pixelrp instant-first-step: wall-clock time of this unit's last committed
++  // walk step, and whether the unit is currently driven by its own 500ms
++  // beat (Room.tryInstantFirstStep) instead of the global room tick.
++  private volatile long lastStepAt = 0;
++  private volatile boolean selfPaced = false;
+   private boolean invisible = false;
+   private boolean canLeaveRoomByDoor = true;
+   private RoomUserRotation bodyRotation = RoomUserRotation.NORTH;
+@@ -290,6 +295,7 @@ public class RoomUnit {
+       }
+ 
+       this.tilesWalked++;
++      this.lastStepAt = System.currentTimeMillis();
+ 
+       RoomUserRotation oldRotation = this.getBodyRotation();
+       this.setRotation(
+@@ -749,6 +755,18 @@ public class RoomUnit {
+     return this.path;
+   }
+ 
++  public long getLastStepAt() {
++    return this.lastStepAt;
++  }
++
++  public boolean isSelfPaced() {
++    return this.selfPaced;
++  }
++
++  public void setSelfPaced(boolean selfPaced) {
++    this.selfPaced = selfPaced;
++  }
++
+   public void setPath(Deque<RoomTile> path) {
+     this.path = path;
+   }
+diff --git a/src/main/java/com/eu/habbo/messages/incoming/rooms/users/RoomUserWalkEvent.java b/src/main/java/com/eu/habbo/messages/incoming/rooms/users/RoomUserWalkEvent.java
+index a83a418d..0061f86b 100644
+--- a/src/main/java/com/eu/habbo/messages/incoming/rooms/users/RoomUserWalkEvent.java
++++ b/src/main/java/com/eu/habbo/messages/incoming/rooms/users/RoomUserWalkEvent.java
+@@ -112,6 +112,10 @@ public class RoomUserWalkEvent extends MessageHandler {
+           }
+ 
+           roomUnit.setGoalLocation(tile);
++          // pixelrp instant-first-step: don't sit on the path until the next
++          // 500ms room tick — take the first step now (guarded so movement
++          // can never exceed one tile per 500ms).
++          room.tryInstantFirstStep(roomUnit);
+         }
+       }
+     } catch (Exception e) {
