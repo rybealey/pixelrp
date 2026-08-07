@@ -80,9 +80,16 @@ things in the unmodified build break under that:
    **Source patch applied** (`index.html`, before `vite build`): changed the
    two entries to `'./renderer-config.json'` and `'./ui-config.json'`
    (relative — resolved against the page's own `<base href="./">`, which was
-   already present unmodified). This is the only source patch made anywhere
-   in this task; it addresses subpath deployment, not the handshake version
-   string (which required no patch — see above).
+   already present unmodified). This addresses subpath deployment, not the
+   handshake version string (which required no patch — see above).
+
+   **Second source patch (friend bar removal):** the toolbar "Find new
+   friends" friend bar is not wanted. In `src/components/friends/FriendsView.tsx`
+   drop the `createPortal(<FriendBarView .../>, ...)` line (and its now-unused
+   `createPortal`/`FriendBarView`/`onlineFriends` references); in
+   `src/components/toolbar/ToolbarView.tsx` remove the
+   `<Base id="toolbar-friend-bar-container" ... />` element. Re-apply both
+   before `vite build` if rebuilding from a fresh nitro-react clone.
 
 Build (Node v22.22.3 host, yarn 4.13.0 via the repo's `yarn.lock`, `nodeLinker: node-modules`):
 

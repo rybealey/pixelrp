@@ -14,6 +14,12 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Tidier toolbar
+
+### Changed
+
+- Removed the "Find new friends" bar from the bottom toolbar.
+
 ## 2026-08-08 — Shop banners are back
 
 ### Fixed
