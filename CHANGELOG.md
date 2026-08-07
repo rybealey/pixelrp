@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Snappier walking
+
+### Changed
+
+- **Walking starts the instant you click.** There used to be a brief, uneven
+  hesitation before your avatar set off — up to half a second depending on
+  timing. Your first step now goes out immediately. Walking speed itself is
+  exactly the same; only the delay before that first step is gone.
+
 ## 2026-08-08 — Shop, badges & catalogue art
 
 ### Added
