@@ -7,10 +7,18 @@ standard face `h_std_fc_1_*` aliasing deleted `*_fc_6221/6222_*` images —
 result: avatars render with no nose/mouth). A dangling alias renders as
 nothing, silently.
 
-For every asset whose `source` resolves to no other asset in the bundle,
-this script rewrites `source` to the closest existing sprite with the same
-size prefix, part type, part id, and direction, preferring actions in the
-order std, spk, sml, sad, agr, wlk, then anything, at frame 0.
+Two repairs, in priority order, for every asset carrying a `source`:
+
+1. If the asset has its own sprite in the spritesheet, the alias is dropped
+   entirely — GraphicAssetCollection falls back to the asset's own name when
+   `source` is absent. This is the common case for the human figure parts:
+   the sprite was always there, only the alias was junk. (Aliasing such an
+   asset to a *different* action is how the idle face came to borrow the
+   open-mouthed speaking sprite.)
+2. Otherwise, if `source` resolves to no other asset in the bundle, it is
+   rewritten to the closest existing sprite with the same size prefix, part
+   type, part id, and direction, preferring actions in the order std, spk,
+   sml, sad, agr, wlk, then anything, at frame 0.
 
 Usage:
     python3 fix-dangling-sources.py <assets-dir> [--dry-run]
@@ -89,14 +97,26 @@ def process(path: Path, dry_run: bool):
         if name.decode(errors="replace").endswith(".json"):
             json_index = i
     if json_index is None:
-        return 0, 0
+        return 0, 0, 0
     import json as jsonlib
 
     j = jsonlib.loads(zlib.decompress(entries[json_index][1]))
     assets = j.get("assets") or {}
-    remapped = unresolved = 0
+    lib = j.get("name", "")
+    frames = set((j.get("spritesheet") or {}).get("frames", {}).keys())
+    unaliased = remapped = unresolved = 0
     for key, meta in assets.items():
         if not (isinstance(meta, dict) and meta.get("source")):
+            continue
+        # An asset that has its own sprite in the sheet needs no alias at all:
+        # GraphicAssetCollection falls back to the asset's own name when
+        # `source` is absent. Aliasing such an asset to a different action is
+        # how the idle face ended up borrowing the open-mouthed speaking
+        # sprite. flipH only takes effect alongside a source, so mirrored
+        # aliases are left intact.
+        if f"{lib}_{key}" in frames and not meta.get("flipH"):
+            del meta["source"]
+            unaliased += 1
             continue
         if meta["source"] in assets:
             continue
@@ -106,7 +126,7 @@ def process(path: Path, dry_run: bool):
             remapped += 1
         else:
             unresolved += 1
-    if remapped and not dry_run:
+    if (remapped or unaliased) and not dry_run:
         entries[json_index][1] = zlib.compress(
             jsonlib.dumps(j, separators=(",", ":")).encode(), 9
         )
@@ -116,26 +136,28 @@ def process(path: Path, dry_run: bool):
         tmp = path.with_suffix(".nitro.tmp")
         tmp.write_bytes(bytes(out))
         tmp.replace(path)
-    return remapped, unresolved
+    return unaliased, remapped, unresolved
 
 
 def main() -> None:
     root = Path(sys.argv[1])
     dry_run = "--dry-run" in sys.argv
-    total_remapped = total_unresolved = touched = 0
+    total_unaliased = total_remapped = total_unresolved = touched = 0
     for path in root.rglob("*.nitro"):
         try:
-            remapped, unresolved = process(path, dry_run)
+            unaliased, remapped, unresolved = process(path, dry_run)
         except Exception as exc:  # noqa: BLE001
             print(f"SKIP {path}: {exc}", file=sys.stderr)
             continue
-        if remapped or unresolved:
+        if unaliased or remapped or unresolved:
             touched += 1
-            print(f"{path.name}: remapped={remapped} unresolved={unresolved}")
+            print(f"{path.name}: unaliased={unaliased} remapped={remapped} unresolved={unresolved}")
+        total_unaliased += unaliased
         total_remapped += remapped
         total_unresolved += unresolved
-    verb = "would remap" if dry_run else "remapped"
-    print(f"bundles touched={touched} {verb}={total_remapped} unresolved={total_unresolved}")
+    verb = "would fix" if dry_run else "fixed"
+    print(f"bundles touched={touched} {verb}: unaliased={total_unaliased} "
+          f"remapped={total_remapped} unresolved={total_unresolved}")
 
 
 if __name__ == "__main__":
