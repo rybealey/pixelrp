@@ -400,3 +400,30 @@ Task 9's job, per the brief.
    effect/pet conversion pass against official Habbo.
 5. Run Step 5's DB update + cache:clear against the running compose stack.
 6. Verify per Step 6.
+
+## Troubleshooting: client stuck at 80%
+
+The final 20% of the Nitro loading bar is `RoomEngineEvent.ENGINE_INITIALIZED`,
+which only fires after all six mandatory room libraries (`room`, `tile_cursor`,
+`selection_arrow`, `place_holder`, `place_holder_wall`, `place_holder_pet`)
+have been downloaded AND parsed into collections. Two failure modes were found
+and fixed here — both fail silently (no console error, no failed request):
+
+1. **Wrong Content-Type.** nitro-renderer's `AssetManager.downloadAssets`
+   switches on the response `Content-Type` and only parses bundles served as
+   `application/octet-stream`. nginx's default mime map serves `.nitro` as
+   `text/plain`, so every bundle is skipped. Fixed in `docker/web/nginx.conf`
+   with `types { application/octet-stream nitro; }`.
+
+2. **gzip-compressed bundle entries.** The renderer's `NitroBundle` parser
+   uses `pako.inflate` (zlib only). 99 bundles from the default asset pack
+   (mostly posters + 5 of the 6 mandatory generic libraries) had their inner
+   entries gzip-compressed. `fix-bundle-compression.py` re-encodes gzip
+   entries as zlib in place; run it after (re)importing any asset pack:
+
+       python3 docker/nitro/fix-bundle-compression.py nitro/assets
+
+**After fixing either issue, hard-refresh the browser (Cmd+Shift+R).** The
+`.nitro` bundles are served with `max-age=604800`, so browsers that loaded the
+broken responses keep replaying them from cache — including the wrong
+Content-Type — until forced past the cache.
