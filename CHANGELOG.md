@@ -14,6 +14,22 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Shop, badges & catalogue art
+
+### Added
+
+- **The shop looks like a shop again.** Furniture, the exchange, and the pet
+  shop now show item pictures instead of blank boxes, so you can actually see
+  what you're browsing.
+- **Badges have their pictures back** across profiles, the badge inventory, and
+  room displays.
+
+### Known issues
+
+- A small number of custom badges and catalogue icons still show blank — those
+  particular images don't exist in the standard art set and need to be added by
+  hand.
+
 ## 2026-08-07 — Hotel launch 🎉
 
 The hotel is open! PixelRP now runs on a brand-new server and a modern
@@ -39,8 +55,5 @@ into the hotel.
 
 ### Known issues
 
-- **Badges and catalogue icons don't show up yet.** The images are missing, so
-  you'll see blank spaces where badge art belongs. Rooms, avatars, and
-  furniture are unaffected.
 - **IP bans don't stick.** Staff: banning by IP currently has no effect — use
   account bans until this is sorted.
