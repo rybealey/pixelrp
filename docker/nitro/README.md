@@ -312,6 +312,11 @@ further.
   New bundle: 902 assets (was 878), all 12 `hr_32` assets present, nothing
   lost. If you regenerate figure bundles from a stock converter, re-apply
   the patch or this hair goes blank again.
+- **Sunburnt face (hd set 6021) made free for everyone** (2026-08-08) —
+  `sellable` flipped to false in FigureData.json so the set shows in the
+  Change Your Looks picker without ownership; the emulator never gated it
+  (no catalog_clothing row). Regenerating FigureData from the converter
+  restores sellable=true and re-hides it — re-apply after regeneration.
 - **Importing new clothing from Habbo Unity bundles** (2026-08-08) —
   `import-unity-figure.py <unity-bundle>` extracts sprites + the
   AvatarPartBundleXml manifest via UnityPy, builds the .nitro figure bundle,

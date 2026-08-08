@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — A new face in the mirror
+
+### Added
+
+- **The sunburnt face is now available to everyone.** Open Change Your Looks
+  → Face & Body and it's in the selector — no purchase needed.
+
 ## 2026-08-08 — The online counter counts
 
 ### Fixed
