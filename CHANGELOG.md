@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Room for a longer name
+
+### Fixed
+
+- **The Create room button looked broken for longer room names.** Giving a
+  new room a name longer than 25 characters made the green Create button do
+  nothing at all — no room, no error. Names up to 60 characters now work,
+  matching what renaming a room already allowed.
+
 ## 2026-08-08 — Say cheese 📸
 
 ### Added
