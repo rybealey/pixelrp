@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — The Create button really creates now
+
+### Fixed
+
+- **For some players, creating a room did nothing at all.** If one of your
+  existing rooms dated back far enough, the Create room button silently
+  failed no matter what name you typed, and the My World tab could load
+  empty. Those older rooms no longer break anything — creating rooms and
+  browsing My World work for everyone again.
+
 ## 2026-08-08 — Photos on the wall, for real this time
 
 ### Fixed
