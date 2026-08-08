@@ -30,7 +30,9 @@ async function session(): Promise<void> {
     if (msg.self || msg.userType !== 1) return; // ignore own lines, bots, pets
     transcript.add(msg.username, msg.message);
     if (isAddressed(msg.message, msg.whisper)) {
-      void brain.respond({ username: msg.username, message: msg.message, whisper: msg.whisper });
+      void brain
+        .respond({ username: msg.username, message: msg.message, whisper: msg.whisper })
+        .catch((err) => console.error("[bot] respond error:", err));
     }
   });
   game.on("roomForward", ({ roomId }: { roomId: number }) => game.goToRoom(roomId));
