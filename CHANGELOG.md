@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Pick up where you left off
+
+### Added
+
+- **You now log back in right where you were.** Closing the game — or losing
+  connection — no longer sends you back to the hotel screen. On your next
+  login you'll be standing in the same room, on the same tile, facing the
+  same way as when you left. If that room has since been locked or removed,
+  you'll land on the hotel screen like before.
+
 ## 2026-08-08 — Tidier toolbar
 
 ### Changed
