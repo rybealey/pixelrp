@@ -42,12 +42,35 @@ import { BinaryReader } from "../protocol/buffer.ts";
 //       WriteInteger(achievementPoints) -> achievementScore
 //       WriteBoolean(false)             -> isModerator (always false in source)
 //
-//     userType 2 (pet, L117-141) and userType 4 (bot, L143-164) have different, longer
-//     tails (pet type/owner/saddle/riding flags; bot owner/action-count/5 shorts of
-//     preset actions) that we do not need for the bot's purposes. We do not attempt to
-//     parse them field-by-field: once we hit a non-1 userType we stop, returning the
-//     entries decoded so far, rather than risk misaligning the stream on an assumption
-//     about a tail we don't consume.
+//     userType 2 (pet) and userType 4 (bot) share the exact same 10-field common prefix
+//     above (baseId/name/motto/look/virtualId/x/y/z/dir/userType — WriteUser() writes these
+//     in the same order and types for every branch), then diverge into different, longer
+//     tails that we don't need for the bot's own purposes but must still consume field-by-
+//     field to keep the stream aligned for whatever roster entry comes after — including,
+//     potentially, the bot's own entry (roster order is not guaranteed to put the bot last).
+//
+//     userType 2 (pet) tail, WriteUser() L133-141:
+//       WriteInteger(user.PetData.Type)        -> pet type
+//       WriteInteger(user.PetData.OwnerId)     -> owner userId
+//       WriteString(user.PetData.OwnerName)    -> owner username
+//       WriteInteger(1)                        -> hardcoded constant
+//       WriteBoolean(user.PetData.Saddle > 0)  -> has saddle
+//       WriteBoolean(user.RidingHorse)         -> is being ridden
+//       WriteInteger(0)                        -> hardcoded constant
+//       WriteInteger(0)                        -> hardcoded constant
+//       WriteString("")                        -> hardcoded constant
+//
+//     userType 4 (bot) tail, WriteUser() L155-163:
+//       WriteString(user.BotData.Gender.ToLower())              -> gender
+//       WriteInteger(user.BotData.OwnerId)                      -> owner userId
+//       WriteString(PlusEnvironment.GetUsernameById(OwnerId))   -> owner username
+//       WriteInteger(5)                                         -> hardcoded action count
+//       WriteShort(1) / WriteShort(2) / WriteShort(3) / WriteShort(4) / WriteShort(5)
+//                                                                -> 5 hardcoded preset-action shorts
+//
+//     Any other userType has no known tail shape in this composer, so for that case only we
+//     stop and return the entries decoded so far rather than risk misaligning the stream on
+//     an assumption we can't verify.
 
 export function parseChat(payload: Buffer): { unitId: number; message: string } {
   const r = new BinaryReader(payload);
@@ -81,20 +104,43 @@ export function parseUsers(payload: Buffer): RoomUser[] {
       r.readString(); // z
       r.readInt(); // dir
       const userType = r.readInt();
-      if (userType !== 1) {
-        // Bots/pets (userType 2/4) have different tails we don't parse — stop rather
-        // than misalign the stream, returning what we've decoded so far.
+      if (userType === 1) {
+        // Type-1 (user) tail — see UsersComposer.cs L60-75 cited above.
+        r.readString(); // gender
+        r.readInt(); // group id
+        r.readInt(); // group status
+        r.readString(); // group name
+        r.readString(); // swim figure
+        r.readInt(); // achievement score
+        r.readBool(); // is moderator
+      } else if (userType === 2) {
+        // Type-2 (pet) tail — UsersComposer.cs WriteUser() L133-141, cited above.
+        r.readInt(); // pet type
+        r.readInt(); // owner userId
+        r.readString(); // owner username
+        r.readInt(); // hardcoded constant (1)
+        r.readBool(); // has saddle
+        r.readBool(); // is being ridden
+        r.readInt(); // hardcoded constant (0)
+        r.readInt(); // hardcoded constant (0)
+        r.readString(); // hardcoded constant ("")
+      } else if (userType === 4) {
+        // Type-4 (bot) tail — UsersComposer.cs WriteUser() L155-163, cited above.
+        r.readString(); // gender
+        r.readInt(); // owner userId
+        r.readString(); // owner username
+        r.readInt(); // hardcoded action count (5)
+        r.readShort(); // preset action 1
+        r.readShort(); // preset action 2
+        r.readShort(); // preset action 3
+        r.readShort(); // preset action 4
+        r.readShort(); // preset action 5
+      } else {
+        // No known tail shape for this userType — stop rather than misalign the stream,
+        // returning what we've decoded so far.
         users.push({ userId, username, unitId, userType });
         break;
       }
-      // Type-1 (user) tail — see UsersComposer.cs L60-75 cited above.
-      r.readString(); // gender
-      r.readInt(); // group id
-      r.readInt(); // group status
-      r.readString(); // group name
-      r.readString(); // swim figure
-      r.readInt(); // achievement score
-      r.readBool(); // is moderator
       users.push({ userId, username, unitId, userType });
     }
     return users;

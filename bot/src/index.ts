@@ -11,8 +11,12 @@ import { nextDelay } from "./backoff.ts";
 
 const config = loadConfig();
 if (!config.enabled) {
-  console.log("[bot] BOT_ENABLED=false — exiting");
-  process.exit(0);
+  // Idle forever instead of process.exit(0): the compose service runs with
+  // `restart: unless-stopped`, so exiting would just have Docker restart the container in a
+  // loop for as long as the kill switch is set. Staying up with an open (no-op) event loop
+  // lets the container sit healthy-but-idle until BOT_ENABLED is flipped back and it's redeployed.
+  console.log("[bot] BOT_ENABLED=false — idling (not connecting)");
+  await new Promise<void>(() => {});
 }
 
 const pool = mysql.createPool({ ...config.db, connectionLimit: 2 });
@@ -22,12 +26,31 @@ const memory = new MemoryFile(config.memoryPath);
 async function session(): Promise<void> {
   const ticket = await mintTicket(pool, config.botUsername);
   const conn = new Connection();
+  // Connection.connect()'s internal `ws.once("error", ...)` only settles the connect() promise
+  // (and re-emits on `conn`) for the FIRST error the socket ever raises — including one that
+  // happens long after `connect()` has already resolved (i.e. after login, mid-session). Node's
+  // EventEmitter throws (crashing the process) if "error" is emitted with no listener attached,
+  // so without this handler a post-open socket error takes the whole bot down instead of just
+  // closing the connection, which the "close" handler below already turns into a reconnect.
+  conn.on("error", (err) => console.error("[bot] socket error:", err));
   const game = new GameClient(conn, config.botUsername);
   const transcript = new Transcript();
   const brain = new Brain({ anthropic, game, memory, transcript });
 
   game.on("chat", (msg: ChatMessage) => {
-    if (msg.self || msg.userType !== 1) return; // ignore own lines, bots, pets
+    // Belt-and-braces on top of GameClient's own self-detection: UsersComposer roster parsing
+    // stops as soon as it hits a bot/pet entry it doesn't fully understand (see parsers.ts), so
+    // in a room where the bot's own roster entry sits behind an unparsed one, msg.self could in
+    // principle come back false for our own lines. A plain username match can't be fooled by
+    // that truncation, so we check it independently rather than relying on msg.self alone.
+    const isSelf = msg.self || msg.username.toLowerCase() === config.botUsername.toLowerCase();
+    if (isSelf) {
+      // Spec: all room chat is buffered into the transcript, including our own lines — we just
+      // must never treat our own lines as a trigger to respond to.
+      transcript.add(msg.username, msg.message);
+      return;
+    }
+    if (msg.userType !== 1) return; // ignore bots, pets
     transcript.add(msg.username, msg.message);
     if (isAddressed(msg.message, msg.whisper)) {
       void brain
@@ -70,12 +93,23 @@ async function session(): Promise<void> {
   });
 
   await conn.connect(config.wsUrl);
-  await game.login(ticket);
-  console.log("[bot] logged in as", config.botUsername);
-  game.goToRoom(config.homeRoom);
+  // If login() rejects (bad/expired ticket, or the 15s timeout), the WebSocket is left open
+  // with GameClient's frame/close listeners still attached and nothing left to ever close it —
+  // a leaked connection per failed login, and if a very late AuthenticationOkComposer somehow
+  // still arrived on it, a stray "authOk" with nothing waiting on it. The try/finally guarantees
+  // conn.close() runs on that path; on the normal path it runs after the socket has already
+  // closed itself (the "close" promise below only resolves once that's happened), so it's a
+  // harmless no-op there.
+  try {
+    await game.login(ticket);
+    console.log("[bot] logged in as", config.botUsername);
+    game.goToRoom(config.homeRoom);
 
-  await new Promise<void>((resolve) => game.once("close", resolve));
-  console.log("[bot] disconnected");
+    await new Promise<void>((resolve) => game.once("close", resolve));
+    console.log("[bot] disconnected");
+  } finally {
+    conn.close();
+  }
 }
 
 let attempt = 0;

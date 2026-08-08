@@ -107,6 +107,7 @@ services:
     build:
       context: bot
     environment:
+      BOT_ENABLED: ${BOT_ENABLED:-true}
       WS_URL: ws://emulator:${NITRO_PORT}
       DB_HOST: db
       DB_USER: ${DB_USER}

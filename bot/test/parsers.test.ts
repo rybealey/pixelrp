@@ -48,6 +48,35 @@ function userEntry(w: BinaryWriter, userId: number, username: string, unitId: nu
     .writeBool(false); // is moderator (always false in source)
 }
 
+// Field order verified against emulator source:
+//   emulator/Communication/Packets/Outgoing/Rooms/Engine/UsersComposer.cs
+//   (WriteUser, bot branch, userType 4, lines 143-164)
+// Shares the same 10-field common prefix as userEntry() above, then diverges into the
+// bot-specific tail: WriteString(gender), WriteInteger(ownerId), WriteString(ownerName),
+// WriteInteger(actionCount=5), then 5x WriteShort (preset actions 1-5).
+function botEntry(w: BinaryWriter, baseId: number, name: string, unitId: number) {
+  w.writeInt(baseId)
+    .writeString(name)
+    .writeString("motto")
+    .writeString("figure")
+    .writeInt(unitId)
+    .writeInt(5) // x
+    .writeInt(6) // y
+    .writeString("0.0") // z
+    .writeInt(0) // dir (hardcoded 0 for bots)
+    .writeInt(4); // userType 4 = bot
+  // bot tail (UsersComposer.cs lines 155-163):
+  w.writeString("m") // gender
+    .writeInt(1) // owner userId
+    .writeString("Ry") // owner username
+    .writeInt(5) // hardcoded action count
+    .writeShort(1)
+    .writeShort(2)
+    .writeShort(3)
+    .writeShort(4)
+    .writeShort(5);
+}
+
 describe("parsers", () => {
   it("parses chat unitId + message, ignoring the tail", () => {
     expect(parseChat(chatFixture(42, "hey claude"))).toEqual({
@@ -74,5 +103,18 @@ describe("parsers", () => {
 
   it("returns [] instead of throwing on malformed roster", () => {
     expect(parseUsers(Buffer.from([0, 0, 0, 5, 1]))).toEqual([]);
+  });
+
+  it("parses past a bot's tail to keep reading the users behind it (regression: truncation broke self-detection when the bot's own entry sat behind another bot/pet)", () => {
+    const w = new BinaryWriter().writeInt(3);
+    userEntry(w, 100, "Ry", 1);
+    botEntry(w, 999, "Rentcop", 2);
+    userEntry(w, 101, "ClaudeTest", 3);
+    const users = parseUsers(w.toBuffer());
+    expect(users).toEqual([
+      { userId: 100, username: "Ry", unitId: 1, userType: 1 },
+      { userId: 999, username: "Rentcop", unitId: 2, userType: 4 },
+      { userId: 101, username: "ClaudeTest", unitId: 3, userType: 1 },
+    ]);
   });
 });
