@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Check your ping
+
+### Added
+
+- **Type `:ping` to see your connection speed.** A quick whisper pops up over
+  your avatar showing your current ping in milliseconds — only you can see it,
+  and it doesn't get sent to the room.
+
 ## 2026-08-08 — Easier-to-read text
 
 ### Changed
