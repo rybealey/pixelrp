@@ -259,6 +259,26 @@ attempts — those are pre-existing quirks in the official asset set unrelated
 to this task, not required for the verification bar, and not investigated
 further.
 
+### Camera photo storage (2026-08-08)
+
+The in-game camera writes photos to `nitro/assets/c_images/camera/`
+(`photo_<guid>.png` + `thumb_<guid>.png`), bind-mounted into the emulator
+container at `/camera-storage` (see `compose.yaml` / `compose.prod.yaml`) and
+served by nginx at `/nitro-assets/assets/c_images/camera/…` like any other
+asset. Two `server_settings` rows drive it (inserted by hand per environment,
+not migrated):
+
+- `camera.storage.path` = `/camera-storage` (container path; the emulator
+  falls back to this default if the row is missing)
+- `camera.url.base` = `http://localhost:8080/nitro-assets/assets/c_images/camera`
+  (dev) / `https://pixelrp.co/nitro-assets/assets/c_images/camera` (prod).
+  **Required** — if this row is absent the emulator throws on photo render
+  rather than persisting a broken URL, so set it before using the camera.
+
+The client's `camera.url` (in `ui-config.json` / `ui-config.prod.json`, the
+latter selected by `build-client.sh --prod`) must point at the same base for
+the checkout preview image to load.
+
 ### Known gaps (documented, not blocking)
 
 - `image.library.url` (`c_images/`) and `hof.furni.url` (`dcr/hof_furni/`) —

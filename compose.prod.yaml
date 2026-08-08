@@ -21,6 +21,8 @@ services:
     # publishes the Nitro socket on loopback 12096 and nginx proxies into it.
     ports: !override
       - "127.0.0.1:12096:${NITRO_PORT}"
+    volumes:
+      - ./nitro/assets/c_images/camera:/camera-storage
     restart: unless-stopped
     logging: *default-logging
 

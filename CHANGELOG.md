@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Say cheese 📸
+
+### Added
+
+- **The camera works end to end.** Staff can take photos of rooms, keep them
+  as placeable wall photos, and publish them — published photos appear on the
+  website's Photos page for everyone to browse.
+
 ## 2026-08-08 — A new face in the mirror
 
 ### Added
