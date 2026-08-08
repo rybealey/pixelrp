@@ -312,6 +312,15 @@ further.
   New bundle: 902 assets (was 878), all 12 `hr_32` assets present, nothing
   lost. If you regenerate figure bundles from a stock converter, re-apply
   the patch or this hair goes blank again.
+- **Game text rebranded Habbo -> PixelRP** (2026-08-08) — all player-facing
+  strings in `nitro/assets/gamedata/ExternalTexts.json` (3,484 values):
+  "a Habbo" -> "a Pixel", "Habbos" -> "Pixels", "Habbo" -> "PixelRP", bare
+  "habbo.com" -> "pixelrp.co". URLs, emails, `event:` link targets, and
+  compound proper nouns (Habboween, HabboQuests, Habbox, FlyHabbo, ...)
+  are deliberately preserved. Applied by `rename-habbo-to-pixelrp.py`
+  (idempotent) — re-run it after regenerating gamedata from the converter,
+  which restores Habbo branding. Keys are never modified; UITexts.json,
+  `server_locale`, and client-source strings audited clean.
 - **Six catalog-tree icons referenced by `catalog_pages.icon_image` don't
   exist on the official CDN** (2026-08-08) — they were custom Habboon art
   (icon ids 1009 Alphabet, 2014 New Years 2015, 2055 Video TVs, 3009 rare
