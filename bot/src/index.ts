@@ -35,12 +35,29 @@ async function session(): Promise<void> {
         .catch((err) => console.error("[bot] respond error:", err));
     }
   });
-  game.on("roomForward", ({ roomId }: { roomId: number }) => game.goToRoom(roomId));
+  // SSOTicketEvent.Parse sends RoomForwardComposer(last_room_id) unconditionally right after
+  // AuthenticationOkComposer (emulator/Communication/Packets/Incoming/Handshake/SSOTicketEvent.cs
+  // L130-161: reads users.last_room_id, falling back to room 1) — this is the server restoring
+  // where the user was last seen, same as any real client reconnecting. If we auto-follow that
+  // forward (as a real client does) *and* then immediately also send our own home-room entry
+  // right after login resolves, the two OpenFlatConnectionEvent/GetRoomEntryDataEvent sequences
+  // fire back-to-back (single-digit ms apart) for two different rooms on the same session. Live
+  // testing against the emulator showed this leaves the session's room membership desynced: our
+  // own UsersComposer roster correctly shows us in the home room, but the room's broadcast list
+  // never gets chat from other occupants delivered to us. Ignoring the pre-startup forward and
+  // only following ones that arrive *after* our own initial entry (e.g. a real mid-session
+  // redirect, like an admin teleport) avoids the race and matches what we actually verified live.
+  let settled = false;
+  game.on("roomForward", ({ roomId }: { roomId: number }) => {
+    if (!settled) return;
+    game.goToRoom(roomId);
+  });
 
   await conn.connect(config.wsUrl);
   await game.login(ticket);
   console.log("[bot] logged in as", config.botUsername);
   game.goToRoom(config.homeRoom);
+  settled = true;
 
   await new Promise<void>((resolve) => game.once("close", resolve));
   console.log("[bot] disconnected");

@@ -15,12 +15,13 @@ export interface ChatMessage {
 export class GameClient extends EventEmitter {
   private roster = new Map<number, { username: string; userType: number }>();
   botUnitId: number | undefined;
+  private conn: Connection;
+  private botUsername: string;
 
-  constructor(
-    private conn: Connection,
-    private botUsername: string,
-  ) {
+  constructor(conn: Connection, botUsername: string) {
     super();
+    this.conn = conn;
+    this.botUsername = botUsername;
     conn.on("frame", (f: { id: number; payload: Buffer }) => this.onFrame(f));
     conn.on("close", () => this.emit("close"));
   }

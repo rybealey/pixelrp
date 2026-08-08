@@ -12,19 +12,21 @@ interface GameActions {
   goToRoom(roomId: number): void;
 }
 
+interface BrainDeps {
+  anthropic: Anthropic;
+  game: GameActions;
+  memory: MemoryFile;
+  transcript: Transcript;
+  sleep?: (ms: number) => Promise<void>;
+}
+
 export class Brain {
   private busy = false;
   private sleep: (ms: number) => Promise<void>;
+  private deps: BrainDeps;
 
-  constructor(
-    private deps: {
-      anthropic: Anthropic;
-      game: GameActions;
-      memory: MemoryFile;
-      transcript: Transcript;
-      sleep?: (ms: number) => Promise<void>;
-    },
-  ) {
+  constructor(deps: BrainDeps) {
+    this.deps = deps;
     this.sleep = deps.sleep ?? ((ms) => new Promise((r) => setTimeout(r, ms)));
   }
 
@@ -55,7 +57,12 @@ export class Brain {
           },
         ],
       });
-      await runner.done();
+      // runner.done() only *waits* for the completion promise — nothing ever starts the
+      // async generator that drives the request/tool loop and resolves/rejects it, so
+      // calling it alone hangs forever (reproduced live: an invalid ANTHROPIC_API_KEY
+      // never surfaced an error until this was runUntilDone()). runUntilDone() both
+      // starts consuming the iterator (if not already) and waits for completion.
+      await runner.runUntilDone();
     } catch (err) {
       console.error("[brain] respond failed:", err);
     } finally {

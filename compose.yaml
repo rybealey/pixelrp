@@ -8,6 +8,7 @@ networks:
 
 volumes:
   dbdata:
+  bot-memory:
 
 services:
   db:
@@ -101,3 +102,27 @@ services:
     networks:
       pixelrp:
         ipv4_address: 172.28.0.40
+
+  bot:
+    build:
+      context: bot
+    environment:
+      WS_URL: ws://emulator:${NITRO_PORT}
+      DB_HOST: db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      BOT_USERNAME: ClaudeTest
+      BOT_HOME_ROOM: "2"
+      MEMORY_PATH: /data/memory.md
+    volumes:
+      - bot-memory:/data
+    depends_on:
+      db:
+        condition: service_healthy
+      emulator:
+        condition: service_started
+    networks:
+      - pixelrp
+    restart: unless-stopped

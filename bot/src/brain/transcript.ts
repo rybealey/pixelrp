@@ -4,7 +4,11 @@ export function isAddressed(message: string, whisper: boolean): boolean {
 
 export class Transcript {
   private lines: string[] = [];
-  constructor(private cap = 30) {}
+  private cap: number;
+
+  constructor(cap = 30) {
+    this.cap = cap;
+  }
 
   add(username: string, message: string): void {
     this.lines.push(`${username}: ${message}`);

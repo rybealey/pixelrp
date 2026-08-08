@@ -34,7 +34,11 @@ export class BinaryWriter {
 
 export class BinaryReader {
   private offset = 0;
-  constructor(private buf: Buffer) {}
+  private buf: Buffer;
+
+  constructor(buf: Buffer) {
+    this.buf = buf;
+  }
 
   private need(n: number) {
     if (this.offset + n > this.buf.length)

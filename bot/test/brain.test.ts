@@ -16,7 +16,21 @@ function fakeAnthropic(reply: string) {
           const done = Promise.resolve(say.run({ message: reply } as never)).then(() => ({
             content: [],
           }));
-          return { done: () => done, [Symbol.asyncIterator]: async function* () { await done; } };
+          const iterate = async function* () {
+            await done;
+          };
+          // Mirrors the real SDK: done() alone never starts the generator — only
+          // runUntilDone() (or iterating directly) drives it to completion.
+          return {
+            done: () => done,
+            runUntilDone: async () => {
+              for await (const _ of iterate()) {
+                // drain
+              }
+              return done;
+            },
+            [Symbol.asyncIterator]: iterate,
+          };
         }),
       },
     },
@@ -50,10 +64,22 @@ describe("Brain", () => {
     const anthropic = {
       beta: {
         messages: {
-          toolRunner: vi.fn(() => ({
-            done: () => gate.then(() => ({ content: [] })),
-            [Symbol.asyncIterator]: async function* () { await gate; },
-          })),
+          toolRunner: vi.fn(() => {
+            const done = gate.then(() => ({ content: [] }));
+            const iterate = async function* () {
+              await gate;
+            };
+            return {
+              done: () => done,
+              runUntilDone: async () => {
+                for await (const _ of iterate()) {
+                  // drain
+                }
+                return done;
+              },
+              [Symbol.asyncIterator]: iterate,
+            };
+          }),
         },
       },
     };

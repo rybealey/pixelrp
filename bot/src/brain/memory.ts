@@ -1,7 +1,11 @@
 import { appendFile, readFile } from "node:fs/promises";
 
 export class MemoryFile {
-  constructor(private path: string) {}
+  private path: string;
+
+  constructor(path: string) {
+    this.path = path;
+  }
 
   async read(): Promise<string> {
     try {
