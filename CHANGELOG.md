@@ -47,6 +47,8 @@ any heading with nothing under it).
 
 - **The room you're in is always visible.** A slim card next to your wallet
   shows the current room's name (staff also see the room's number).
+- **See how many Pixels are online.** A small counter sits beside the room
+  name card and keeps itself up to date.
 
 ### Changed
 
