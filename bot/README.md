@@ -33,13 +33,34 @@ docker compose stop bot
 | `BOT_ENABLED` | `true` | No | Set to `"false"` (string) to disable the bot without stopping the container. |
 | `WS_URL` | — | Yes | WebSocket URL to the emulator. In compose, this is `ws://emulator:2096`. |
 | `DB_HOST` | — | Yes | MySQL host (`db` in compose). |
-| `DB_USER` | — | Yes | MySQL username. |
+| `DB_USER` | — | Yes | MySQL username. In compose this is `BOT_DB_USER` when set (see [Database Access](#database-access)), else the app user. |
 | `DB_PASSWORD` | — | Yes | MySQL password. |
 | `DB_NAME` | — | Yes | MySQL database name. |
-| `ANTHROPIC_API_KEY` | — | Yes | Claude API key for AI responses. |
+| `ANTHROPIC_API_KEY` | — | No | Claude API key for AI responses. If empty, the bot idles instead of connecting (logged at startup) — so a fresh `.env` copied from `.env.example` doesn't crash-loop the container. |
 | `BOT_USERNAME` | — | Yes | Bot's in-game username. |
 | `BOT_HOME_ROOM` | `1` | No | Room ID where the bot spawns. Dev: `2` (Moody's Pointe). Prod: `1`. |
 | `MEMORY_PATH` | `/data/memory.md` | No | Path to the bot's persistent memory file. In compose, mounted from the `bot-memory` volume. |
+
+## Database Access
+
+The bot's only query is `UPDATE users SET auth_ticket = ? WHERE username = ?`
+(SSO minting, below), so it runs as a dedicated MySQL user with exactly those
+column privileges — `SELECT (username)` and `UPDATE (auth_ticket)` on `users` —
+instead of the full app credentials. A compromised bot then can't read or
+modify anything else in the database.
+
+Configure it with `BOT_DB_USER` / `BOT_DB_PASSWORD` in `.env`. On a **fresh**
+database volume, `docker/db/create-bot-user.sh` creates the user and grants
+automatically during MySQL init. On an **existing** volume (including prod),
+init scripts don't re-run — apply the grants once by hand:
+
+```bash
+docker compose exec db mysql -uroot -p"$DB_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS 'pixelrp_bot'@'%' IDENTIFIED BY '<BOT_DB_PASSWORD>'; GRANT SELECT (username), UPDATE (auth_ticket) ON \`pixelrp\`.\`users\` TO 'pixelrp_bot'@'%';"
+```
+
+If `BOT_DB_USER` is unset or empty, compose falls back to handing the bot the
+app's `DB_USER`/`DB_PASSWORD`, so existing setups keep working until the grant
+is applied.
 
 ## How SSO Minting Works
 

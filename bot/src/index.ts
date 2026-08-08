@@ -10,12 +10,18 @@ import { mintTicket } from "./sso.ts";
 import { nextDelay } from "./backoff.ts";
 
 const config = loadConfig();
-if (!config.enabled) {
+const disabledReason = !config.enabled
+  ? "BOT_ENABLED=false"
+  : !config.anthropicApiKey
+    ? "ANTHROPIC_API_KEY is not set"
+    : null;
+if (disabledReason) {
   // Idle forever instead of process.exit(0): the compose service runs with
   // `restart: unless-stopped`, so exiting would just have Docker restart the container in a
-  // loop for as long as the kill switch is set. Staying up with an open (no-op) event loop
-  // lets the container sit healthy-but-idle until BOT_ENABLED is flipped back and it's redeployed.
-  console.log("[bot] BOT_ENABLED=false — idling (not connecting)");
+  // loop for as long as the kill switch is set (or the key is left empty, as in a fresh dev
+  // checkout of .env.example). Staying up with an open (no-op) event loop lets the container
+  // sit healthy-but-idle until the env is fixed and it's redeployed.
+  console.log(`[bot] ${disabledReason} — idling (not connecting)`);
   await new Promise<void>(() => {});
 }
 
@@ -77,8 +83,9 @@ async function session(): Promise<void> {
   //
   // What *is* guaranteed, independent of arrival order, is that this is the only unprompted
   // RoomForwardComposer a fresh connection ever receives: every other call site in the emulator
-  // (SummonCommand, PurchaseGroupEvent, FollowFriendEvent, ChangeUserNameEvent,
-  // FindRandomFriendingRoomEvent, SaveFloorPlanModelEvent) fires only in response to some other
+  // (SummonCommand, PurchaseGroupEvent, FollowFriendEvent, FindNewFriendsEvent,
+  // ChangeUserNameEvent, FindRandomFriendingRoomEvent, SaveFloorPlanModelEvent) fires only in
+  // response to some other
   // action — an admin command or a packet this bot doesn't send — that can't happen before our
   // first login completes. So the very first RoomForwardComposer this connection ever receives
   // is always the login-restore one, whenever it happens to arrive, and gets ignored; every

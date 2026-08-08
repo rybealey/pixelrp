@@ -19,9 +19,13 @@ services:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+      # Consumed by docker-entrypoint-initdb.d/02-bot-user.sh (first init only).
+      BOT_DB_USER: ${BOT_DB_USER:-}
+      BOT_DB_PASSWORD: ${BOT_DB_PASSWORD:-}
     volumes:
       - dbdata:/var/lib/mysql
       - ./emulator/Resources/SQLs/Original Database.sql:/docker-entrypoint-initdb.d/01-plusemu.sql:ro
+      - ./docker/db/create-bot-user.sh:/docker-entrypoint-initdb.d/02-bot-user.sh:ro
     ports:
       - "127.0.0.1:3306:3306"
     networks:
@@ -110,8 +114,12 @@ services:
       BOT_ENABLED: ${BOT_ENABLED:-true}
       WS_URL: ws://emulator:${NITRO_PORT}
       DB_HOST: db
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
+      # The bot only ever mints SSO tickets (UPDATE users.auth_ticket), so it
+      # gets the dedicated low-privilege user when one is configured; the
+      # fallback to the app user keeps databases initialized before
+      # 02-bot-user.sh existed working until the grant is applied by hand.
+      DB_USER: ${BOT_DB_USER:-${DB_USER}}
+      DB_PASSWORD: ${BOT_DB_PASSWORD:-${DB_PASSWORD}}
       DB_NAME: ${DB_NAME}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
       BOT_USERNAME: ClaudeTest

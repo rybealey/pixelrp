@@ -67,8 +67,8 @@ services:
     environment:
       BOT_USERNAME: Claude
       BOT_HOME_ROOM: "1"
-    logging: *default-logging
     restart: unless-stopped
+    logging: *default-logging
 
 volumes:
   cms-storage:
