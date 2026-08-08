@@ -42,6 +42,13 @@ else
     cp nitro/renderer-config.json nitro/client/renderer-config.json
     echo "  installed local renderer-config (ws://localhost:2096)"
 fi
-cp nitro/ui-config.json nitro/client/ui-config.json
+
+if [ "$PROD" = "1" ]; then
+    cp nitro/ui-config.prod.json nitro/client/ui-config.json
+    echo "  installed PROD ui-config (camera.url -> https://pixelrp.co)"
+else
+    cp nitro/ui-config.json nitro/client/ui-config.json
+    echo "  installed local ui-config (camera.url -> http://localhost:8080)"
+fi
 
 echo "Done. nginx serves nitro/client/ at /nitro-assets/client/."
