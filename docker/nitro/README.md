@@ -279,6 +279,20 @@ The client's `camera.url` (in `ui-config.json` / `ui-config.prod.json`, the
 latter selected by `build-client.sh --prod`) must point at the same base for
 the checkout preview image to load.
 
+**Deploying the client to prod:** the VPS has no Node/yarn, so
+`build-client.sh` cannot run there. Build on a machine that has the
+toolchain and copy the output up:
+
+```bash
+docker/nitro/build-client.sh --prod                 # writes prod config into nitro/client/
+rsync -az --delete nitro/client/ root@<vps>:/opt/pixelrp/nitro/client/
+docker/nitro/build-client.sh                         # restore the local dev build afterward
+```
+
+Unlike the asset-tree rsyncs, this one includes `renderer-config.json` /
+`ui-config.json` on purpose — the `--prod` build stamped the prod values
+into them.
+
 ### Known gaps (documented, not blocking)
 
 - `image.library.url` (`c_images/`) and `hof.furni.url` (`dcr/hof_furni/`) —
