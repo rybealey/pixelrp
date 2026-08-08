@@ -18,8 +18,9 @@ any heading with nothing under it).
 
 ### Added
 
-- **The sunburnt face is now available to everyone.** Open Change Your Looks
-  → Face & Body and it's in the selector — no purchase needed.
+- **The sunburnt faces are now available to everyone** — both the male and
+  female versions. Open Change Your Looks → Face & Body and they're in the
+  selector — no purchase needed.
 
 ## 2026-08-08 — The online counter counts
 
