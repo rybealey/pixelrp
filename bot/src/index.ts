@@ -35,21 +35,37 @@ async function session(): Promise<void> {
         .catch((err) => console.error("[bot] respond error:", err));
     }
   });
-  // SSOTicketEvent.Parse sends RoomForwardComposer(last_room_id) unconditionally right after
-  // AuthenticationOkComposer (emulator/Communication/Packets/Incoming/Handshake/SSOTicketEvent.cs
-  // L130-161: reads users.last_room_id, falling back to room 1) — this is the server restoring
-  // where the user was last seen, same as any real client reconnecting. If we auto-follow that
-  // forward (as a real client does) *and* then immediately also send our own home-room entry
-  // right after login resolves, the two OpenFlatConnectionEvent/GetRoomEntryDataEvent sequences
-  // fire back-to-back (single-digit ms apart) for two different rooms on the same session. Live
-  // testing against the emulator showed this leaves the session's room membership desynced: our
-  // own UsersComposer roster correctly shows us in the home room, but the room's broadcast list
-  // never gets chat from other occupants delivered to us. Ignoring the pre-startup forward and
-  // only following ones that arrive *after* our own initial entry (e.g. a real mid-session
-  // redirect, like an admin teleport) avoids the race and matches what we actually verified live.
-  let settled = false;
+  // SSOTicketEvent.Parse sends RoomForwardComposer(last_room_id) unconditionally on every login
+  // (emulator/Communication/Packets/Incoming/Handshake/SSOTicketEvent.cs L130-161: reads
+  // users.last_room_id, falling back to room 1) — the server restoring where the account was
+  // last seen, same as any real client reconnecting. If we auto-follow that forward (as a real
+  // client does) *and* then also send our own home-room entry, the two
+  // OpenFlatConnectionEvent/GetRoomEntryDataEvent sequences land on the same session for two
+  // different rooms; live testing showed this desyncs the session's room membership — our own
+  // roster correctly shows us in the home room, but the room's broadcast list never gets chat
+  // from other occupants delivered to us. So the login-restore forward must never be followed.
+  //
+  // It can't be filtered by "arrived before our own goToRoom(homeRoom) call", though: per the
+  // same file (L80-146), a genuine async gap — a rewards check plus a DB query — sits between
+  // AuthenticationOkComposer and this RoomForwardComposer server-side, and GameClient.Send
+  // flushes per-composer with no batching, so it can just as easily arrive as a *later* WebSocket
+  // message, after our synchronous post-login code (including any "have we sent our own entry
+  // yet" flag) has already run. Ordering relative to our own call is not guaranteed either way.
+  //
+  // What *is* guaranteed, independent of arrival order, is that this is the only unprompted
+  // RoomForwardComposer a fresh connection ever receives: every other call site in the emulator
+  // (SummonCommand, PurchaseGroupEvent, FollowFriendEvent, ChangeUserNameEvent,
+  // FindRandomFriendingRoomEvent, SaveFloorPlanModelEvent) fires only in response to some other
+  // action — an admin command or a packet this bot doesn't send — that can't happen before our
+  // first login completes. So the very first RoomForwardComposer this connection ever receives
+  // is always the login-restore one, whenever it happens to arrive, and gets ignored; every
+  // later one is a genuine mid-session redirect (e.g. an admin /summon) and is followed.
+  let seenLoginRestoreForward = false;
   game.on("roomForward", ({ roomId }: { roomId: number }) => {
-    if (!settled) return;
+    if (!seenLoginRestoreForward) {
+      seenLoginRestoreForward = true;
+      return;
+    }
     game.goToRoom(roomId);
   });
 
@@ -57,7 +73,6 @@ async function session(): Promise<void> {
   await game.login(ticket);
   console.log("[bot] logged in as", config.botUsername);
   game.goToRoom(config.homeRoom);
-  settled = true;
 
   await new Promise<void>((resolve) => game.once("close", resolve));
   console.log("[bot] disconnected");
