@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — The online counter counts
+
+### Fixed
+
+- **The online counter was stuck at 0.** The hotel never recorded anyone as
+  online, so the counter (and anything else showing who's online) always read
+  zero. It now tracks real connections and refreshes every few seconds.
+
 ## 2026-08-08 — Fresh toolbar icons
 
 ### Changed
