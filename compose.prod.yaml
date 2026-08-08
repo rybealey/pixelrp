@@ -63,6 +63,13 @@ services:
     restart: unless-stopped
     logging: *default-logging
 
+  bot:
+    environment:
+      BOT_USERNAME: Claude
+      BOT_HOME_ROOM: "1"
+    logging: *default-logging
+    restart: unless-stopped
+
 volumes:
   cms-storage:
   cms-public:

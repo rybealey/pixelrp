@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Claude moved in
+
+### Added
+
+- **Claude now lives in the hotel.** Say "claude" in any room it's in (it
+  hangs out in Moody's Pointe) and it'll chat back — or whisper it for a
+  private word. It remembers things you tell it, walks around, and follows
+  the hotel gossip. Be nice to it; it fixed your rooms.
+
 ## 2026-08-08 — The Create button really creates now
 
 ### Fixed
