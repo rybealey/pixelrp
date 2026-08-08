@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Fresh toolbar icons
+
+### Changed
+
+- **New icons for the toolbar.** The navigator is now a compass, the shop a
+  paper bag, your inventory a crate, and the friends list a phone.
+
 ## 2026-08-08 — Navigator un-stuck
 
 ### Fixed
