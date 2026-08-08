@@ -61,7 +61,10 @@ services:
     build:
       context: .
       dockerfile: docker/cms/Dockerfile
-    env_file: .env
+    # No env_file here: the root .env holds secrets for other services (bot
+    # API key/DB creds) that must not reach the CMS — the most exposed
+    # container. Everything the CMS needs is listed explicitly below or lives
+    # in cms/.env.
     environment:
       APP_ENV: local
       APP_DEBUG: "true"
