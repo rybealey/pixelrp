@@ -14,6 +14,74 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — You're a Pixel now
+
+### Changed
+
+- **The hotel speaks PixelRP.** Every mention of "Habbo" in the game's text
+  now says PixelRP, and players are called Pixels — from the room-chat notice
+  to quest stories and catalogue blurbs. Historical event names (Habboween,
+  HabboQuests and friends) keep their original titles, and the hotel rules
+  still name the other hotel where they genuinely mean it.
+
+## 2026-08-08 — Emoji come to chat
+
+### Added
+
+- **Send emoji in chat.** A little emoji sits at the right end of the chat
+  bar — hover it and it shuffles with a pop. Click it to open a drawer of
+  every emoji there is, sorted by category, and tap any to drop it into your
+  message.
+- **Type shortcodes, get emoji.** Finish typing a code like `:sob:` or
+  `:fire:` in the chat bar and it instantly becomes 😭 or 🔥. Nearly two
+  thousand codes work — hover an emoji in the drawer to learn its code.
+
+### Changed
+
+- **The chat bar is wider**, so longer messages stay readable while you type.
+- Chat history timestamps now include seconds (HH:MM:SS).
+
+## 2026-08-08 — A tidier corner and toolbar
+
+### Added
+
+- **The room you're in is always visible.** A slim card next to your wallet
+  shows the current room's name (staff also see the room's number).
+
+### Changed
+
+- **The toolbar is now just the P.** Your avatar portrait and the old row of
+  icons are gone; staff tools (navigator, shop, inventory, camera, mod tools)
+  slide out of the PixelRP emblem when staff click it, and tuck back in when
+  they're done.
+- The wallet now matches the width of the notices beneath it, and pop-up
+  notices got roomier padding with text that uses the full card.
+- The big room-name banner that slid in every time you entered a room is
+  gone — the corner card replaced it.
+- The "Join" club box in the wallet is gone — there's no club membership
+  here.
+
+## 2026-08-08 — A fresh coat of paint
+
+### Changed
+
+- **New loading screen.** Loading the hotel now shows PixelRP artwork instead
+  of the old duck animation, with the same progress bar.
+- **New look for the website.** The PixelRP wordmark replaces the old logo,
+  and the banner behind the login area shows the city bar scene.
+
+## 2026-08-08 — Missing pictures, found
+
+### Fixed
+
+- **Every furniture icon now shows.** Coloured furniture — most visibly the
+  entire Builders Club range — had blank squares in the catalogue and
+  inventory; all of them now have their proper coloured icons.
+- **A few catalogue categories had broken icons** (Alphabet among them);
+  they're fixed.
+- **One hairstyle was invisible** in Change Your Looks — both in the picker
+  and on your avatar. It's back.
+
 ## 2026-08-08 — Check your ping
 
 ### Added
