@@ -14,6 +14,18 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Photos on the wall, for real this time
+
+### Fixed
+
+- **Wall photos showed up as a black square once a room reloaded.** A photo
+  you hung looked fine right after placing it, but the next time the room
+  loaded it turned into a plain black rectangle. Wall photos now keep their
+  picture across reloads, and opening one still shows the full shot.
+- **Furniture that remembers a setting kept its memory across reloads.** The
+  same underlying issue could wipe saved details on other items when a room
+  reloaded; those now stick too.
+
 ## 2026-08-08 — Room for a longer name
 
 ### Fixed
