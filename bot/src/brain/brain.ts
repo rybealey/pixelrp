@@ -20,10 +20,22 @@ interface BrainDeps {
   sleep?: (ms: number) => Promise<void>;
 }
 
+// Memory notes are user-influenced content (see MemoryFile.append) that gets read back
+// verbatim into the system prompt on every response. append() caps each individual note at
+// 300 chars, but the file accumulates over time, so the *read* side also caps the total
+// included here — an unbounded memory file shouldn't be able to grow the prompt (or the
+// fraction of it a prompt-injection attempt could dominate) without limit.
+const MAX_MEMORY_CHARS = 4000;
+
 export class Brain {
   private busy = false;
   private sleep: (ms: number) => Promise<void>;
   private deps: BrainDeps;
+  // Shared across say/whisper tool calls (and across respond() runs) so that consecutive
+  // outgoing lines stay >=700ms apart even when the model makes multiple separate tool calls
+  // in one turn — previously each say()/whisper() call reset its own "first chunk, no delay"
+  // counter, so back-to-back tool calls had no spacing between them at all.
+  private hasSentAnyLine = false;
 
   constructor(deps: BrainDeps) {
     this.deps = deps;
@@ -37,7 +49,9 @@ export class Brain {
     }
     this.busy = true;
     try {
-      const memory = await this.deps.memory.read();
+      const rawMemory = await this.deps.memory.read();
+      const memory =
+        rawMemory.length > MAX_MEMORY_CHARS ? rawMemory.slice(-MAX_MEMORY_CHARS) : rawMemory;
       const tools = this.buildTools();
       const runner = this.deps.anthropic.beta.messages.toolRunner({
         model: "claude-opus-5",
@@ -74,9 +88,13 @@ export class Brain {
     const { game, memory } = this.deps;
     const speak = async (send: (line: string) => void, message: string) => {
       const chunks = chunkReply(message).slice(0, 3);
-      for (const [i, chunk] of chunks.entries()) {
-        if (i > 0) await this.sleep(700);
+      for (const chunk of chunks) {
+        // Delay before every line except the very first one this Brain has ever sent — spacing
+        // is tracked on `this`, not scoped to this speak() call, so it holds across separate
+        // say/whisper tool calls within (and across) a respond() run, not just within one.
+        if (this.hasSentAnyLine) await this.sleep(700);
         send(chunk);
+        this.hasSentAnyLine = true;
       }
       return "sent";
     };
