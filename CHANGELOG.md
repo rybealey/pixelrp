@@ -19,7 +19,8 @@ any heading with nothing under it).
 ### Changed
 
 - **New icons for the toolbar.** The navigator is now a compass, the shop a
-  paper bag, your inventory a crate, and the friends list a phone — all sized
+  paper bag, your inventory a crate, the camera a polaroid, and the friends list a
+  phone — all sized
   to a matching height so the row sits evenly.
 
 ## 2026-08-08 — Navigator un-stuck
