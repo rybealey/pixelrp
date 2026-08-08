@@ -62,6 +62,23 @@ describe("GameClient", () => {
     ]);
   });
 
+  it("drops staff-notify whisper forwards (WhisperEvent.cs L121 '[Whisper to X] ' prefix) instead of treating them as addressed to the bot", () => {
+    const conn = new FakeConnection();
+    const client = new GameClient(conn as never, "ClaudeTest");
+    const events: unknown[] = [];
+    client.on("chat", (e) => events.push(e));
+    // Simulated staff-notify forward: some other player's private whisper, rewritten by
+    // WhisperEvent.Parse and delivered to us as staff. Must never surface as a chat event.
+    // (2704 = WhisperComposer per revision.json; 1446, used elsewhere in this file, is
+    // ChatComposer, which does not get the eavesdrop-forward treatment.)
+    conn.emit("frame", { id: 2704, payload: chatPayload(1, "[Whisper to bob] hey, meet me upstairs") });
+    // A genuine whisper addressed to the bot itself must still come through.
+    conn.emit("frame", { id: 2704, payload: chatPayload(1, "hi claude") });
+    expect(events).toEqual([
+      { username: "someone", message: "hi claude", whisper: true, self: false, userType: 1 },
+    ]);
+  });
+
   it("say sends a ChatEvent with the message", () => {
     const conn = new FakeConnection();
     const client = new GameClient(conn as never, "ClaudeTest");

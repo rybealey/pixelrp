@@ -140,11 +140,25 @@ export class GameClient extends EventEmitter {
         case "ShoutComposer":
         case "WhisperComposer": {
           const { unitId, message } = parseChat(payload);
+          const isWhisper = name === "WhisperComposer";
+          // WhisperEvent.Parse's staff-notify branch (emulator/Communication/Packets/Incoming/
+          // Rooms/Chat/WhisperEvent.cs L113-124) forwards EVERY room whisper — between any two
+          // other players — to every rank>=2 occupant of the room as its own WhisperComposer,
+          // with the message rewritten to exactly `$"[Whisper to {toUser}] {message}"` (L121).
+          // The bot account is staff-ranked, so it receives these too. Without this guard,
+          // isWhisper is true, isAddressed() always returns true for whispers, and the bot
+          // would treat other players' private whispers to each other as addressed to itself —
+          // eavesdropping and possibly replying into a private conversation it was never part
+          // of. These are recognizable only by that exact literal prefix, so drop them here,
+          // before roster lookup or the "chat" event, so they never reach the transcript.
+          if (isWhisper && message.startsWith("[Whisper to ")) {
+            break;
+          }
           const entry = this.roster.get(unitId);
           this.emit("chat", {
             username: entry?.username ?? "someone",
             message,
-            whisper: name === "WhisperComposer",
+            whisper: isWhisper,
             self: unitId === this.botUnitId,
             userType: entry?.userType ?? 1,
           } satisfies ChatMessage);
