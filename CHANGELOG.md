@@ -14,6 +14,26 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — The create-room button answers back
+
+### Fixed
+
+- **Creating a room no longer fails silently.** If something goes wrong —
+  the name is too short or too long, or the chosen layout isn't available —
+  the hotel now shows a message saying so instead of doing nothing. A rare
+  case where picking an unrecognized category could make the request vanish
+  entirely now files the room under "All Other Rooms" instead.
+
+## 2026-08-08 — Ways to get around
+
+### Added
+
+- **New navigation furni for builders.** The staff shop's Builders section
+  has a new Navigation page with directional arrows, an animated action
+  point, and a taxi sign. The arrows come in linked pairs — step on one and
+  you're whisked to its twin, even if it's in a different room. They're the
+  new backbone for walking between connected areas of the hotel.
+
 ## 2026-08-08 — Claude moved in
 
 ### Added
