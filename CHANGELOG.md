@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Easier-to-read text
+
+### Changed
+
+- **The in-game text uses a cleaner font.** We swapped the narrow "condensed"
+  lettering across the interface for the standard, slightly wider Ubuntu font,
+  so menus, chat, and labels are a touch easier to read.
+
 ## 2026-08-08 — Pick up where you left off
 
 ### Added
