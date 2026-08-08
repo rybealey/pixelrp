@@ -51,6 +51,8 @@ services:
         condition: service_healthy
     ports:
       - "127.0.0.1:${NITRO_PORT}:${NITRO_PORT}"
+    volumes:
+      - ./nitro/assets/c_images/camera:/camera-storage
     networks:
       pixelrp:
         ipv4_address: 172.28.0.30
