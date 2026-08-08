@@ -13,7 +13,7 @@
   "user.badges.max.slots": 5,
   "user.tags.enabled": false,
   "camera.publish.disabled": false,
-  "hc.disabled": false,
+  "hc.disabled": true,
   "badge.descriptions.enabled": true,
   "motto.max.length": 38,
   "bot.name.max.length": 15,
