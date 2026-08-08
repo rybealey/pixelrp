@@ -30,6 +30,16 @@ describe("GameClient", () => {
     await expect(login).resolves.toBeUndefined();
   });
 
+  it("login rejects immediately if the connection closes before auth ok", async () => {
+    // SSOTicketEvent.cs's failure branch sends no packet, just disconnects — the bot
+    // should not sit through the full 15s timeout in that case.
+    const conn = new FakeConnection();
+    const client = new GameClient(conn as never, "ClaudeTest");
+    const login = client.login("bad-ticket");
+    conn.emit("close");
+    await expect(login).rejects.toThrow("connection closed");
+  });
+
   it("emits chat with username resolved from roster, flags self", () => {
     const conn = new FakeConnection();
     const client = new GameClient(conn as never, "ClaudeTest");

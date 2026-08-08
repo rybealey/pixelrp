@@ -43,11 +43,29 @@ export class GameClient extends EventEmitter {
     // field, but the server never reads it, so we omit it to match what Parse() actually consumes.
     this.conn.send(sendId("SsoTicketEvent"), new BinaryWriter().writeString(ssoTicket).toBuffer());
     return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error("login timeout (15s)")), 15_000);
-      this.once("authOk", () => {
+      const cleanup = () => {
         clearTimeout(timer);
+        this.off("authOk", onAuthOk);
+        this.off("close", onClose);
+      };
+      const onAuthOk = () => {
+        cleanup();
         resolve();
-      });
+      };
+      // SSOTicketEvent.cs's failure branch (L163-178) sends no error packet — it just calls
+      // session.Disconnect() (bad/expired/reused ticket, account not found, login prohibited).
+      // Without this, a rejected ticket would silently hang the whole 15s timeout instead of
+      // failing fast when the socket actually closes.
+      const onClose = () => {
+        cleanup();
+        reject(new Error("connection closed before login completed"));
+      };
+      const timer = setTimeout(() => {
+        cleanup();
+        reject(new Error("login timeout (15s)"));
+      }, 15_000);
+      this.once("authOk", onAuthOk);
+      this.once("close", onClose);
     });
   }
 
