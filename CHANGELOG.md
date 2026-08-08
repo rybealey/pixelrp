@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Navigator un-stuck
+
+### Fixed
+
+- **The navigator's My World tab could gray out and never load** for staff,
+  most likely when a friend was logging in or out at the same moment. The
+  hotel also now records these failures properly so anything similar shows
+  up immediately instead of failing silently.
+
 ## 2026-08-08 — You're a Pixel now
 
 ### Changed
