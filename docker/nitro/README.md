@@ -312,6 +312,14 @@ further.
   New bundle: 902 assets (was 878), all 12 `hr_32` assets present, nothing
   lost. If you regenerate figure bundles from a stock converter, re-apply
   the patch or this hair goes blank again.
+- **Importing new clothing from Habbo Unity bundles** (2026-08-08) —
+  `import-unity-figure.py <unity-bundle>` extracts sprites + the
+  AvatarPartBundleXml manifest via UnityPy, builds the .nitro figure bundle,
+  and registers the library in FigureMap if absent. Validated by
+  round-tripping the official `face_m_sunburntface` bundle: output matched
+  the converter-shipped bundle exactly (assets, offsets, frames). Remember:
+  a NEW item also needs a FigureData set, then
+  `figuredata-json-to-xml.py` + emulator restart, or saves strip it.
 - **Game text rebranded Habbo -> PixelRP** (2026-08-08) — all player-facing
   strings in `nitro/assets/gamedata/ExternalTexts.json` (3,484 values):
   "a Habbo" -> "a Pixel", "Habbos" -> "Pixels", "Habbo" -> "PixelRP", bare
