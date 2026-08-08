@@ -287,6 +287,42 @@ further.
   via Step 3, re-check for `"parts": null` entries in the fresh
   `FigureMap.json` before deploying it:
   `python3 -c "import json; d=json.load(open('nitro/assets/gamedata/FigureMap.json')); print([l['id'] for l in d['libraries'] if not isinstance(l.get('parts'), list)])"`
+- **Per-color-variant furni icons were missing** (2026-08-08) —
+  `extract-furni-icons.py` emits one icon per `.nitro` bundle, but
+  nitro-renderer requests `{base}_{param}_icon.png` for every classname
+  FurnitureData registers as `base*param` (RoomContentLoader appends the
+  `_param` suffix whenever the full starred classname exists). All 4,793
+  variant icons 404'd — most visibly the Builders Club catalog tree, where
+  every item is a `*N` color variant. **Resolved** by
+  `fetch-variant-icons.py` (4,776 fetched from the official
+  `images.habbo.com/dcr/hof_furni/{revision}/` CDN, 17 filled with a copy of
+  their base icon where no official variant exists). Idempotent; re-run it
+  after regenerating `nitro/assets/` or updating FurnitureData.
+- **Hair set 889 (part `hr/32`) rendered blank** (2026-08-08) — an upstream
+  `nitro-converter` bug: five `indexOf('_32_') >= 0` skips (AssetMapper,
+  ManifestMapper ×2, GenerateSpritesheet ×2) exist to drop furniture's
+  small-scale `_32_` sprite variants, but they also run for figure
+  conversion, where `_32_` is a legitimate part id — so every sprite of
+  `h_*_hr_32_*` was silently dropped from `hh_human_hair.nitro` (the SWF and
+  its manifest both contain them). hr/32 is the only part id 32 in the whole
+  FigureMap, so exactly one bundle was affected. **Resolved** by commenting
+  out those five skips in the converter checkout and re-converting only
+  `hh_human_hair.nitro` (delete the output bundle; the converter skips
+  existing ones) against `flash-assets-PRODUCTION-202608061512-663981953`.
+  New bundle: 902 assets (was 878), all 12 `hr_32` assets present, nothing
+  lost. If you regenerate figure bundles from a stock converter, re-apply
+  the patch or this hair goes blank again.
+- **Six catalog-tree icons referenced by `catalog_pages.icon_image` don't
+  exist on the official CDN** (2026-08-08) — they were custom Habboon art
+  (icon ids 1009 Alphabet, 2014 New Years 2015, 2055 Video TVs, 3009 rare
+  packages, 9990 Paris, 9991 Infobus). **Resolved** by hand-placing
+  lookalikes in `nitro/assets/c_images/catalogue/`: `icon_1009.png` is a copy
+  of `dcr/hof_furni/icons/bc_alpha1_a_1_icon.png` (alphabet block), and the
+  rest are copies of existing catalogue icons (91 firework, 136 cinema,
+  145 LTD tag, 57 summer ring, 1 default box respectively). If you
+  regenerate `nitro/assets/`, re-run the audit:
+  `SELECT DISTINCT icon_image FROM catalog_pages` vs the files in
+  `c_images/catalogue/`.
 
 ## Step 4: Build and install (full command sequence actually run)
 
