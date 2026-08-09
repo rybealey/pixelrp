@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-09 — The emoji face calmed down
+
+### Fixed
+
+- **The chat bar's emoji face no longer strobes in Safari.** Hovering the
+  emoji button is supposed to show one new random face with a little pop;
+  in Safari it flickered through faces endlessly until you moved the mouse
+  away. It now behaves the same in every browser.
+
 ## 2026-08-08 — Doorways stopped swallowing people
 
 ### Changed
