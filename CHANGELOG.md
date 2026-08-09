@@ -26,6 +26,9 @@ any heading with nothing under it).
   the message, sticking around for 45 seconds, and dismissible with a small
   × in the corner. (An earlier version showed a broken picture and squashed
   the text sideways.)
+- **Personal alerts from the team.** Staff can now send a notice to a single
+  player. It shows up as the same corner toast as hotel announcements, but
+  tinted red with a "Moderation" label so you know it's meant just for you.
 
 ### Fixed
 
