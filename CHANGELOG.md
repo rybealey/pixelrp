@@ -14,6 +14,20 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Rooms unfroze, furni found their owners
+
+### Fixed
+
+- **Stepping onto furniture no longer freezes the room.** Walking onto any
+  item placed since the room was loaded — a teleport arrow, a chair, anything
+  — left every avatar in the room marching in place forever: nobody could
+  walk, sit, or teleport until the hotel was restarted. Freshly placed
+  furniture now behaves exactly like furniture that was already there.
+- **Furniture knows who owns it.** Clicking an item used to show a blank
+  Owner line unless the stars aligned. The info panel now names the owner for
+  every floor and wall item — including ones just placed, and ones owned by
+  someone other than the room's owner.
+
 ## 2026-08-08 — The create-room button answers back
 
 ### Fixed
