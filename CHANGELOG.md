@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Claude has an off switch
+
+### Added
+
+- **Staff can now send Claude home for the night.** Typing `:bot off` in any
+  room disconnects the Claude bot within a few seconds; `:bot on` brings it
+  back, and `:bot` alone whispers whether it's currently on or off. The
+  setting sticks — Claude stays off through restarts until someone turns it
+  back on.
+
 ## 2026-08-08 — Rooms unfroze, furni found their owners
 
 ### Fixed

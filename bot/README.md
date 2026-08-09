@@ -12,7 +12,14 @@ docker compose up -d
 
 In dev, the bot runs as `ClaudeTest` in room 2. You can test it by SSO logging into the local client, standing in room 2, and saying "claude" in chat.
 
-To disable it without stopping the container, set `BOT_ENABLED=false` in your `.env`:
+The quickest switch is in-game: staff (rank 5+) can whisper-toggle the bot
+with the `:bot` chat command — `:bot off` disconnects it within ~10 seconds,
+`:bot on` brings it back, and bare `:bot` reports the current state. The state
+lives in `server_settings` (`bot.enabled`), so it survives restarts of the
+bot, the emulator, and the host.
+
+To disable it at the container level instead (a hard override the in-game
+toggle can't undo), set `BOT_ENABLED=false` in your `.env`:
 
 ```bash
 # .env
@@ -43,11 +50,13 @@ docker compose stop bot
 
 ## Database Access
 
-The bot's only query is `UPDATE users SET auth_ticket = ? WHERE username = ?`
-(SSO minting, below), so it runs as a dedicated MySQL user with exactly those
-column privileges — `SELECT (username)` and `UPDATE (auth_ticket)` on `users` —
-instead of the full app credentials. A compromised bot then can't read or
-modify anything else in the database.
+The bot's queries are `UPDATE users SET auth_ticket = ? WHERE username = ?`
+(SSO minting, below) and `SELECT value FROM server_settings WHERE key =
+'bot.enabled'` (the in-game `:bot` toggle, below), so it runs as a dedicated
+MySQL user with exactly those column privileges — `SELECT (username)` and
+`UPDATE (auth_ticket)` on `users`, plus `SELECT (key, value)` on
+`server_settings` — instead of the full app credentials. A compromised bot
+then can't read or modify anything else in the database.
 
 Configure it with `BOT_DB_USER` / `BOT_DB_PASSWORD` in `.env`. On a **fresh**
 database volume, `docker/db/create-bot-user.sh` creates the user and grants
@@ -55,7 +64,7 @@ automatically during MySQL init. On an **existing** volume (including prod),
 init scripts don't re-run — apply the grants once by hand:
 
 ```bash
-docker compose exec db mysql -uroot -p"$DB_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS 'pixelrp_bot'@'%' IDENTIFIED BY '<BOT_DB_PASSWORD>'; GRANT SELECT (username), UPDATE (auth_ticket) ON \`pixelrp\`.\`users\` TO 'pixelrp_bot'@'%';"
+docker compose exec db mysql -uroot -p"$DB_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS 'pixelrp_bot'@'%' IDENTIFIED BY '<BOT_DB_PASSWORD>'; GRANT SELECT (username), UPDATE (auth_ticket) ON \`pixelrp\`.\`users\` TO 'pixelrp_bot'@'%'; GRANT SELECT (\`key\`, \`value\`) ON \`pixelrp\`.\`server_settings\` TO 'pixelrp_bot'@'%';"
 ```
 
 If `BOT_DB_USER` is unset or empty, compose falls back to handing the bot the

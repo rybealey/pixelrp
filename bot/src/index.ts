@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import mysql from "mysql2/promise";
 import { loadConfig } from "./config.ts";
+import { FlagWatcher } from "./flag.ts";
 import { Connection } from "./protocol/connection.ts";
 import { GameClient, type ChatMessage } from "./game/client.ts";
 import { Brain } from "./brain/brain.ts";
@@ -29,6 +30,18 @@ const pool = mysql.createPool({ ...config.db, connectionLimit: 2 });
 const anthropic = new Anthropic({ apiKey: config.anthropicApiKey });
 const memory = new MemoryFile(config.memoryPath);
 
+// In-game kill switch (:bot on/off writes server_settings.`bot.enabled`).
+// Awaiting start() means the first poll lands before the first connect, so a
+// bot that was toggled off before a restart never flashes online. If the
+// bot's DB user lacks SELECT on server_settings, the poll error path keeps
+// the default-enabled state — same behavior as before the toggle existed.
+const watcher = new FlagWatcher(async () => {
+  const [rows] = await pool.query("SELECT `value` FROM `server_settings` WHERE `key` = 'bot.enabled' LIMIT 1");
+  const list = rows as Array<{ value: unknown }>;
+  return list.length ? String(list[0].value) : null;
+});
+await watcher.start();
+
 async function session(): Promise<void> {
   const ticket = await mintTicket(pool, config.botUsername);
   const conn = new Connection();
@@ -39,6 +52,11 @@ async function session(): Promise<void> {
   // so without this handler a post-open socket error takes the whole bot down instead of just
   // closing the connection, which the "close" handler below already turns into a reconnect.
   conn.on("error", (err) => console.error("[bot] socket error:", err));
+  // While this session is live, an in-game :bot off closes its connection; the
+  // existing close/reconnect path then lands back in the main loop, whose
+  // waitUntilEnabled() gate holds until :bot on. Cleared in the finally below
+  // so a stale hook can never close a later session's socket.
+  watcher.onDisable(() => conn.close());
   const game = new GameClient(conn, config.botUsername);
   const transcript = new Transcript();
   const brain = new Brain({ anthropic, game, memory, transcript });
@@ -115,12 +133,14 @@ async function session(): Promise<void> {
     await new Promise<void>((resolve) => game.once("close", resolve));
     console.log("[bot] disconnected");
   } finally {
+    watcher.onDisable(null);
     conn.close();
   }
 }
 
 let attempt = 0;
 for (;;) {
+  await watcher.waitUntilEnabled();
   try {
     const started = Date.now();
     await session();
