@@ -31,6 +31,17 @@ any heading with nothing under it).
   tinted red with a "Moderation" label so you know it's meant just for you.
   Staff can also send one to themselves to preview how it looks — the
   command no longer talks back when you try.
+- **Moderation caught up with the new toasts.** Messages, cautions, mute and
+  trade-ban notices from the moderation team — and the reason when you're
+  kicked from a room — now arrive as the red "Moderation" toast, which stays
+  on screen until you close it. Room-wide notices appear as a blue
+  "Information" toast for everyone in the room.
+
+### Fixed
+
+- **Muting from the moderation panel works now.** Muting a player through
+  the mod tools used to fail silently; it now mutes for the full hour and
+  tells the player why.
 
 ### Fixed
 
