@@ -43,6 +43,9 @@ services:
       dockerfile: docker/emulator/Dockerfile
     tty: true
     stdin_open: true
+    # PerformShutDown() broadcasts, saves every inventory and resets
+    # server_status before exiting; give it time before SIGKILL.
+    stop_grace_period: 60s
     environment:
       DB_HOST: db
       DB_USER: ${DB_USER}
@@ -86,8 +89,12 @@ services:
       EMULATOR_DRIVER: plus
       RCON_HOST: emulator
       RCON_PORT: ${RCON_PORT}
+      DEPLOY_CHANGELOG_PATH: /changelog/CHANGELOG.md
     volumes:
       - ./cms:/var/www/html
+      # /api/deploy-status serves the newest release notes from here (outside
+      # /var/www/html — a file mount inside the ./cms bind mount fails).
+      - ./CHANGELOG.md:/changelog/CHANGELOG.md:ro
     depends_on:
       db:
         condition: service_healthy

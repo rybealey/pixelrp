@@ -50,6 +50,8 @@ services:
       # Populated from the CMS image on first create (cms starts before web via
       # depends_on); nginx mounts the same volume read-only to serve public/.
       - cms-public:/var/www/html/public
+      # /api/deploy-status serves the newest release notes from here.
+      - ./CHANGELOG.md:/changelog/CHANGELOG.md:ro
     restart: unless-stopped
     logging: *default-logging
 

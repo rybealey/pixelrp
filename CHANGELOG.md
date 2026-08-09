@@ -14,6 +14,24 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-09 — Updates got a proper waiting room
+
+### Added
+
+- **A real "update in progress" screen.** When the team ships a hotel
+  update, you're no longer dumped on the plain "you have been disconnected"
+  box. Instead: the city terrace at sunset, the animated logo, a pixel
+  progress bar following the update step by step with a time estimate, and
+  the patch notes for what's landing — straight from this page. The moment
+  every district is back online, a ▶ Reconnect button drops you right back
+  in where you left off.
+
+### Changed
+
+- **The hotel says goodbye properly.** Restarts for updates now finish
+  saving everyone's inventory and close every connection cleanly instead
+  of cutting to black mid-step.
+
 ## 2026-08-09 — The hotel found its tannoy
 
 ### Added
@@ -42,9 +60,6 @@ any heading with nothing under it).
 - **Muting from the moderation panel works now.** Muting a player through
   the mod tools used to fail silently; it now mutes for the full hour and
   tells the player why.
-
-### Fixed
-
 - **The online counter isn't stuck at zero anymore.** The hotel always
   reported nobody online, no matter how many people were in. The count shown
   by `:info` and used by wired message boxes (`%USERSONLINE%`) is now real.

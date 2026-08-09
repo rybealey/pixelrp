@@ -1,0 +1,177 @@
+# Deploy to VPS — the run the in-client "Update in progress" screen tracks.
+#
+# Trigger it deliberately (pushes to main are often docs/changelog-only and
+# must not restart the hotel):
+#   gh workflow run deploy.yml        # or the Actions tab → Run workflow
+#
+# The five SSH steps are named exactly what players see as progress phases —
+# the CMS's /api/deploy-status maps step names to the screen's step text, so
+# renaming them changes (or breaks) what the deployment screen displays.
+#
+# Required secrets (workflow fails fast on the first SSH step without them):
+#   DEPLOY_SSH_KEY   private key authorized on the VPS
+#   DEPLOY_HOST      e.g. 67.219.109.182
+#   DEPLOY_USER      e.g. root
+#   DEPLOY_HOST_KEY  output of: ssh-keyscan -p <port> -H <host>  (recommended)
+#   DEPLOY_PORT      optional, default 22
+#   DEPLOY_PATH      optional, default /opt/pixelrp
+
+name: Deploy to VPS
+
+on:
+  workflow_dispatch:
+
+# One deploy at a time; queue rather than interrupt. An interrupted deploy can
+# leave the live hotel half-deployed (mid-migration, orphaned build).
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_PORT: ${{ secrets.DEPLOY_PORT || 22 }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || '/opt/pixelrp' }}
+      COMPOSE: docker compose -f compose.yaml -f compose.prod.yaml
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true # client source is needed for the build below
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # The VPS has no Node — the client is always built off-box and only the
+      # dist output is shipped (docker/nitro/README.md).
+      - name: Build the Nitro client
+        run: |
+          cd client
+          yarn install --immutable 2>/dev/null || yarn install
+          npx vite build --base=/nitro-assets/client/
+
+      - name: Load SSH key and configure host verification
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_HOST_KEY: ${{ secrets.DEPLOY_HOST_KEY }}
+        run: |
+          [ -n "$DEPLOY_SSH_KEY" ] || { echo "::error::DEPLOY_SSH_KEY secret is not set"; exit 1; }
+          [ -n "$DEPLOY_HOST" ] || { echo "::error::DEPLOY_HOST secret is not set"; exit 1; }
+          [ -n "$DEPLOY_USER" ] || { echo "::error::DEPLOY_USER secret is not set"; exit 1; }
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          if [ -n "$DEPLOY_HOST_KEY" ]; then
+            # Must be keyed for the same port as DEPLOY_PORT ([host]:port
+            # entries when the port is not 22) or every deploy fails with
+            # "Host key verification failed".
+            printf '%s\n' "$DEPLOY_HOST_KEY" >> ~/.ssh/known_hosts
+          else
+            echo "::warning::DEPLOY_HOST_KEY not set — trusting the host key on first use for this run only."
+            ssh-keyscan -p "$DEPLOY_PORT" -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          fi
+          printf 'Host vps\n  HostName %s\n  User %s\n  Port %s\n  IdentityFile ~/.ssh/id_deploy\n  StrictHostKeyChecking yes\n' \
+            "$DEPLOY_HOST" "$DEPLOY_USER" "$DEPLOY_PORT" >> ~/.ssh/config
+
+      # SIGTERM → PerformShutDown(): goodbye broadcast, inventory save, clean
+      # disconnect (players' screens switch to the deployment view here), then
+      # a DB dump while nothing is writing.
+      - name: Backing up city data
+        run: |
+          ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$DEPLOY_PATH"
+          docker compose -f compose.yaml -f compose.prod.yaml stop emulator
+          mkdir -p /opt/pixelrp-backups
+          docker compose -f compose.yaml -f compose.prod.yaml exec -T db \
+            sh -c 'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --single-transaction "$MYSQL_DATABASE"' \
+            | gzip > "/opt/pixelrp-backups/deploy-$(date +%Y%m%d-%H%M%S).sql.gz"
+          # Keep the newest 10 deploy dumps.
+          ls -1t /opt/pixelrp-backups/deploy-*.sql.gz | tail -n +11 | xargs -r rm --
+          REMOTE
+
+      - name: Uploading new assets
+        run: |
+          # Prod renderer-config.json / ui-config.json live only on the VPS
+          # (git-ignored) — exclude protects them from both overwrite and
+          # --delete.
+          rsync -az --delete --info=stats2 \
+            --exclude 'renderer-config.json' \
+            --exclude 'ui-config.json' \
+            client/dist/ vps:"$DEPLOY_PATH/nitro/client/"
+          ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$DEPLOY_PATH"
+          git pull -q origin main
+          git submodule update --init emulator cms
+          git -C emulator log --oneline -1
+          REMOTE
+
+      # Replays emulator/Resources/SQLs/Updates/*.sql that are not yet in the
+      # _applied_sql_updates table. On the table's first creation every file
+      # already on disk is recorded WITHOUT running it — prod predates this
+      # mechanism and already has 1–18 applied by hand. If that same first
+      # deploy also introduces new SQL, apply it manually once.
+      - name: Applying database patches
+        run: |
+          ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$DEPLOY_PATH"
+          dbsql() { docker compose -f compose.yaml -f compose.prod.yaml exec -T db sh -c 'exec mysql -N -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' 2>/dev/null; }
+          baseline=0
+          if [ -z "$(echo "SHOW TABLES LIKE '_applied_sql_updates';" | dbsql)" ]; then
+            baseline=1
+            echo "CREATE TABLE _applied_sql_updates (filename VARCHAR(255) PRIMARY KEY, applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" | dbsql
+          fi
+          cd emulator/Resources/SQLs/Updates
+          for f in $(ls -1 *.sql | sort -V); do
+            if [ -n "$(printf "SELECT 1 FROM _applied_sql_updates WHERE filename='%s';" "$f" | dbsql)" ]; then
+              continue
+            fi
+            if [ "$baseline" = "1" ]; then
+              echo "baseline (already applied by hand): $f"
+            else
+              echo "applying: $f"
+              dbsql < "$f"
+            fi
+            printf "INSERT INTO _applied_sql_updates (filename) VALUES ('%s');" "$f" | dbsql
+          done
+          REMOTE
+
+      - name: Restarting districts
+        run: |
+          ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$DEPLOY_PATH"
+          docker compose -f compose.yaml -f compose.prod.yaml build emulator cms 2>&1 | tail -3
+          docker compose -f compose.yaml -f compose.prod.yaml up -d
+          REMOTE
+
+      # The run (and the deployment screen) only turns green once the emulator
+      # is actually accepting players again.
+      - name: Polishing pixels
+        run: |
+          ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$DEPLOY_PATH"
+          cid=$(docker compose -f compose.yaml -f compose.prod.yaml ps -q emulator)
+          started=$(docker inspect -f '{{.State.StartedAt}}' "$cid")
+          deadline=$((SECONDS + 300))
+          until docker logs --since "$started" "$cid" 2>&1 | grep -qF 'EMULATOR -> READY'; do
+            if [ "$SECONDS" -ge "$deadline" ]; then
+              echo "::error::Emulator did not report READY within 300s"
+              docker logs --since "$started" "$cid" 2>&1 | tail -30
+              exit 1
+            fi
+            sleep 5
+          done
+          echo "Emulator is READY."
+          REMOTE
+
+      - name: Remove SSH key
+        if: always()
+        run: rm -f ~/.ssh/id_deploy
