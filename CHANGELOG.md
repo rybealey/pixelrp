@@ -14,6 +14,21 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-09 — The hotel found its tannoy
+
+### Added
+
+- **Hotel-wide announcements.** Staff can now broadcast a message to everyone
+  online. It arrives as the small dark notification bubble in the corner —
+  the same style as the moderation notice — instead of a pop-up box.
+
+### Fixed
+
+- **Hotel-wide messages actually arrive now.** The under-the-hood channel
+  for messaging everyone at once had been broadcasting into the void; any
+  future hotel-wide announcements, staff alerts, and similar messages now
+  reach every online player.
+
 ## 2026-08-09 — The emoji face calmed down
 
 ### Fixed
