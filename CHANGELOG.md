@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-08 — Doorways stopped swallowing people
+
+### Changed
+
+- **Room doorways no longer dump you out of the room.** The tile you arrive
+  on when entering a room used to double as an exit — one wrong step and you
+  were staring at the hotel view. It's now a normal tile you can walk on and
+  stand on. Move between rooms using the teleport arrows.
+
 ## 2026-08-08 — Claude has an off switch
 
 ### Added
