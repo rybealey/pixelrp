@@ -29,6 +29,8 @@ any heading with nothing under it).
 - **Personal alerts from the team.** Staff can now send a notice to a single
   player. It shows up as the same corner toast as hotel announcements, but
   tinted red with a "Moderation" label so you know it's meant just for you.
+  Staff can also send one to themselves to preview how it looks — the
+  command no longer talks back when you try.
 
 ### Fixed
 
