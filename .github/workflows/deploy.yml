@@ -45,11 +45,14 @@ jobs:
           node-version: 22
 
       # The VPS has no Node — the client is always built off-box and only the
-      # dist output is shipped (docker/nitro/README.md).
+      # dist output is shipped (docker/nitro/README.md). corepack activates
+      # the Yarn pinned in client/package.json; the runner's default yarn 1
+      # cannot read the Berry lockfile and silently re-resolves dependencies.
       - name: Build the Nitro client
         run: |
+          corepack enable
           cd client
-          yarn install --immutable 2>/dev/null || yarn install
+          yarn install --immutable
           npx vite build --base=/nitro-assets/client/
 
       - name: Load SSH key and configure host verification
