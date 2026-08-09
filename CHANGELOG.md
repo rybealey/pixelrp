@@ -24,6 +24,14 @@ any heading with nothing under it).
 
 ### Fixed
 
+- **The online counter isn't stuck at zero anymore.** The hotel always
+  reported nobody online, no matter how many people were in. The count shown
+  by `:info` and used by wired message boxes (`%USERSONLINE%`) is now real.
+- **More staff tools reach people again.** Staff alerts, advertising
+  reports to moderators, hotel-wide badge handouts, and live rank reloads
+  were all quietly reaching no one — same void as the broadcast fix below.
+  They now reach everyone online, and everyone's inventory is properly
+  saved when the hotel shuts down.
 - **Hotel-wide messages actually arrive now.** The under-the-hood channel
   for messaging everyone at once had been broadcasting into the void; any
   future hotel-wide announcements, staff alerts, and similar messages now
