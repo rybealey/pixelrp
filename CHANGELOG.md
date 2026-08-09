@@ -21,6 +21,11 @@ any heading with nothing under it).
 - **Hotel-wide announcements.** Staff can now broadcast a message to everyone
   online. It arrives as the small dark notification bubble in the corner —
   the same style as the moderation notice — instead of a pop-up box.
+- **Announcements got a proper look.** Hotel-wide messages now arrive as a
+  tidy "Platform" toast — labeled so you know it's official, sized to fit
+  the message, sticking around for 45 seconds, and dismissible with a small
+  × in the corner. (An earlier version showed a broken picture and squashed
+  the text sideways.)
 
 ### Fixed
 
