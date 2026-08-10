@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-09 — PixelRP gets its own tab icon
+
+### Changed
+
+- **A pixel-art "P" now marks every PixelRP tab.** The website, the hotel
+  client, and housekeeping all show the same pink pixel "P" in your browser
+  tab — no more mismatched or missing icons. It's also the icon you'll see
+  if you pin PixelRP to your phone's home screen.
+
 ## 2026-08-09 — Restarts count themselves down
 
 ### Changed
