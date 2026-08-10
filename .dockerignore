@@ -1,0 +1,7 @@
+# Host-side build artifacts must not enter image build contexts: stale
+# obj/Release output copied into /src makes dotnet publish fail with
+# duplicate TargetFrameworkAttribute errors.
+emulator/bin/
+emulator/obj/
+emulator/Tests/bin/
+emulator/Tests/obj/
