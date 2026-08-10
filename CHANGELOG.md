@@ -14,6 +14,17 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — Room backgrounds actually work
+
+### Fixed
+
+- **The Room Background furni from the staff shop does something now.** Any
+  staff member could buy it, place it… and then stare at it, because clicking
+  it offered nothing to configure and no image ever appeared. Staff who own a
+  room can now click the placed furni, paste an image link, nudge it into
+  place with the offset fields, and the picture shows up behind the room for
+  everyone who visits.
+
 ## 2026-08-10 — Wired furniture can't lock you out anymore
 
 ### Fixed
