@@ -14,6 +14,29 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — Smoother walking
+
+### Fixed
+
+- **Avatars no longer freeze for a beat mid-walk.** Walking could visibly
+  hitch — your avatar (or someone else's) would stop for a fraction of a
+  second mid-path, then carry on. This wasn't your connection: the server's
+  walk rhythm slipped a little further behind on every step until a stride
+  was visibly skipped. The server now keeps strict time, so every step lands
+  exactly on the beat and long walks stay glass-smooth from door to door.
+
+### Changed
+
+- **Chained clicks now flow as one continuous walk.** Clicking a new tile
+  right as you finish (or fumble) a previous click used to sometimes do
+  nothing for up to half a second before your avatar set off again. A
+  rapid-fire click is now queued to fire precisely on your next walking beat
+  instead of being dropped.
+- **Walking speed is unchanged** — still exactly one tile per half-second,
+  and rapid clicking can't make anyone move faster than that. The pace
+  cap that prevents speed-walking is now enforced more strictly than
+  before, not less.
+
 ## 2026-08-10 — New staff badge
 
 ### Changed
