@@ -14,6 +14,31 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-09 — No more free coins for standing around
+
+### Changed
+
+- **Coins no longer trickle in while you're online.** Until now the hotel
+  quietly handed out coins and pixels every 15 minutes just for being logged
+  in. That tap is now off — your balance only changes when you actually earn
+  or spend something.
+
+## 2026-08-09 — Floor plan saves no longer strand you
+
+### Fixed
+
+- **Saving a floor plan now puts everyone back in the room.** Saving used to
+  leave you (and anyone else standing in the room) staring at a black screen,
+  unable to enter any room at all until you logged out and back in. Now the
+  room reloads with its new layout and everyone walks right back in.
+
+## 2026-08-09 — A tidier wallet
+
+### Changed
+
+- **Duckets are gone.** The purple ducket counter no longer appears in the
+  wallet — PixelRP runs on credits and diamonds.
+
 ## 2026-08-09 — PixelRP gets its own tab icon
 
 ### Changed
