@@ -53,7 +53,7 @@ jobs:
           corepack enable
           cd client
           yarn install --immutable
-          npx vite build --base=/nitro-assets/client/
+          yarn vite build --base=/nitro-assets/client/
 
       - name: Load SSH key and configure host verification
         env:
