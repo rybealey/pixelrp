@@ -14,6 +14,24 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — Staff dress free
+
+### Added
+
+- **Staff (rank 4+) can now use all sellable clothing in the Choose Your Look
+  window without purchasing it.** Access is removed automatically if demoted
+  below rank 4 — unpurchased items vanish from the panel and from the worn
+  look at next login. Clothing they actually purchased is unaffected.
+
+## 2026-08-10 — Changing booths are now how you change your look
+
+### Changed
+
+- **Changing booths (Builders > Corporations > Clothing) now open the Change
+  Your Looks window automatically while you stand in them**, and close it when
+  you step out. The "My clothes" context-menu item and the toolbar clothing
+  button are removed — booths are now the only way to change your look.
+
 ## 2026-08-10 — Fresh staff toolbar icons
 
 ### Changed
