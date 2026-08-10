@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — Fresh staff toolbar icons
+
+### Changed
+
+- **The staff toolbar got new icons.** The menu that unfolds from the "P"
+  button now shows a redrawn compass, shop bag, inventory box, camera and
+  mod-tools badge — drawn at their real size, so they're crisp instead of
+  stretched.
+
 ## 2026-08-10 — Jeen and Azul join the staff team
 
 ### Changed
