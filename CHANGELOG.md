@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-09 — Idle players nap in place
+
+### Changed
+
+- **Going AFK no longer yanks you out of the room.** Stepping away used to
+  eventually dump you back to the hotel view, stranding you mid-scene. Now
+  your avatar just falls asleep where it stands, and if you haven't typed
+  or moved for a full hour, you're simply logged out — reconnect and you'll
+  land right back in the room.
+
 ## 2026-08-09 — Updates got a proper waiting room
 
 ### Added
