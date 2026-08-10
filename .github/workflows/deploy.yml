@@ -113,6 +113,10 @@ jobs:
           git pull -q origin main
           git submodule update --init emulator cms
           git -C emulator log --oneline -1
+          # Fresh patch notes for the deployment screen (a bind mount would
+          # pin the pre-pull inode).
+          docker compose -f compose.yaml -f compose.prod.yaml exec -T cms mkdir -p /changelog
+          docker compose -f compose.yaml -f compose.prod.yaml cp CHANGELOG.md cms:/changelog/CHANGELOG.md
           REMOTE
 
       # Replays emulator/Resources/SQLs/Updates/*.sql that are not yet in the
@@ -155,6 +159,9 @@ jobs:
           cd "$DEPLOY_PATH"
           docker compose -f compose.yaml -f compose.prod.yaml build emulator cms 2>&1 | tail -3
           docker compose -f compose.yaml -f compose.prod.yaml up -d
+          # A recreated cms container starts without /changelog — re-seed it.
+          docker compose -f compose.yaml -f compose.prod.yaml exec -T cms mkdir -p /changelog
+          docker compose -f compose.yaml -f compose.prod.yaml cp CHANGELOG.md cms:/changelog/CHANGELOG.md
           REMOTE
 
       # The run (and the deployment screen) only turns green once the emulator
