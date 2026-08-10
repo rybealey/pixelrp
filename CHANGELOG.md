@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — The chrome chain comes in colors
+
+### Changed
+
+- **The chrome chain is now colorable.** Pick it in the avatar editor and
+  you'll get two color choices: one for the chain itself and one for the
+  pendant. Mix and match to fit your look — already-saved chains keep
+  working and simply use your first color for the chain.
+
 ## 2026-08-10 — Signs are now staff-only
 
 ### Changed
