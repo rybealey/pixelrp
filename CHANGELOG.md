@@ -14,6 +14,20 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — Staff rights, tightened
+
+### Fixed
+
+- **Staff tools now switch off however you leave a room.** A few unusual
+  exits — like being in a room while its floor plan was saved and rebuilt —
+  could leave a staff member's tools silently switched on in the next room
+  they visited. Tools now stay on only when returning straight to the room
+  they were enabled in.
+- **Giving rights to a staff member no longer shows them a badge that doesn't
+  work.** A staff member with their tools off who was granted room rights saw
+  the rights badge and furni info panels while every action was refused. What
+  they see now matches what they can actually do.
+
 ## 2026-08-10 — Staff blend in
 
 ### Changed
