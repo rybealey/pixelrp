@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — Kat joins the staff team
+
+### Changed
+
+- **Kat is now hotel staff.** Say hi — they can now help out with staff tools
+  around the hotel.
+
 ## 2026-08-10 — New staff badge
 
 ### Changed
