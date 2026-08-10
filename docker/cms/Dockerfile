@@ -28,5 +28,11 @@ COPY --from=vendor /app .
 COPY --from=assets /app/public/build ./public/build
 COPY docker/cms/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh && chown -R www-data:www-data storage bootstrap/cache
+# Housekeeping upload roots (ads_path_filesystem / badge_path_filesystem).
+# Created here so the named volume mounted at /var/www/gamedata inherits
+# www-data ownership on first create — php-fpm runs as www-data and cannot
+# create these under the root-owned /var/www itself.
+RUN mkdir -p /var/www/gamedata/custom /var/www/gamedata/c_images/album1584 \
+ && chown -R www-data:www-data /var/www/gamedata
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["php-fpm"]
