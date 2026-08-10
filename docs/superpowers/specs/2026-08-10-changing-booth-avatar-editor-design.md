@@ -84,7 +84,7 @@ All other ways of opening it are removed.
 
 ### Data
 
-- New idempotent SQL update `emulator/Resources/SQLs/Updates/20_DressingBooths.sql`:
+- New idempotent SQL update `emulator/Resources/SQLs/Updates/21_DressingBooths.sql`:
   `UPDATE furniture SET interaction_type = 'dressing_booth' WHERE item_name IN
   ('boutique_changing1','boutique_changing2','boutique_changing3');`
 - Apply to the local dev DB immediately (furniture definitions are boot-time
