@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — New staff badge
+
+### Changed
+
+- **The badge floating above staff members' heads is new.** The old gold
+  "Habbo Staff" diamond is gone — staff now glow with PixelRP's own pink
+  medallion.
+
 ## 2026-08-10 — Staff dress free
 
 ### Added
