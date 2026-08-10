@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-09 — Reconnect actually reconnects
+
+### Fixed
+
+- **The ▶ Reconnect button works now.** After an update finished, clicking
+  Reconnect just showed you the update screen all over again. It now
+  properly reloads the client with a fresh login, dropping you straight
+  back into the city.
+
 ## 2026-08-09 — Idle players nap in place
 
 ### Changed
