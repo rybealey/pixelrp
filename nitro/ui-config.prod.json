@@ -240,7 +240,6 @@
   "chat.history.max.items": 100,
   "system.currency.types": [
     -1,
-    0,
     5
   ],
   "catalog.links": {
