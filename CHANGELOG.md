@@ -14,6 +14,43 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — Jeen and Azul join the staff team
+
+### Changed
+
+- **Jeen and Azul are now hotel staff.** Say hi — they can now help out
+  with staff tools around the hotel.
+- **The old "Admin" account has been retired.** It's gone from the hotel;
+  its news posts now live under Ry.
+
+## 2026-08-10 — Shop rules up front
+
+### Added
+
+- **The Builders and Staff shop tabs now open with the ground rules.** An
+  Information page sits at the top of each section explaining that its tools
+  and furniture are for builders/staff only, for use in roleplay settings —
+  and not to be freely handed out without approved justification.
+
+### Changed
+
+- **The Builders shop tab got a reorganization.** "Builders Club" is now
+  called "Blocks" (which is what it actually holds), Navigation moved up
+  above it, and there's a new Corporations category below with sections for
+  each workplace: Armory, Cafe, Casino, Clothing, Hospital, Police and
+  Staff. Police opens with a curated set of security furniture exclusive to
+  the San Francisco Police Department, Clothing carries the boutique
+  fittings (changing booths, mannequin, shoe racks and shelves), the
+  Corporations page itself holds the shared business pieces — cash register
+  and notice board — and the Navigation section now explains its role in
+  getting between rooms.
+
+### Fixed
+
+- **Two Boutique furni finally show their shop icons.** The sofa and the
+  cash register appeared as blank squares in the shop grid — both now have
+  proper icons.
+
 ## 2026-08-10 — The chrome chain comes in colors
 
 ### Changed
