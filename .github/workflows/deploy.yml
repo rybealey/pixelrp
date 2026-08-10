@@ -125,7 +125,9 @@ jobs:
           ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
           set -euo pipefail
           cd "$DEPLOY_PATH"
-          dbsql() { docker compose -f compose.yaml -f compose.prod.yaml exec -T db sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" exec mysql -N -uroot "$MYSQL_DATABASE"'; }
+          # Subshell cd: the compose -f paths are relative, and the loop below
+          # runs from the SQL updates directory.
+          dbsql() { (cd "$DEPLOY_PATH" && docker compose -f compose.yaml -f compose.prod.yaml exec -T db sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" exec mysql -N -uroot "$MYSQL_DATABASE"'); }
           echo "CREATE TABLE IF NOT EXISTS _applied_sql_updates (filename VARCHAR(255) PRIMARY KEY, applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" | dbsql
           applied=$(echo "SELECT filename FROM _applied_sql_updates;" | dbsql)
           cd emulator/Resources/SQLs/Updates
