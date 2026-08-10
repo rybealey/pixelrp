@@ -177,9 +177,17 @@ Everything from `Update Deploying.dc.html` + the design-system bundle:
 - Footer: centered Barlow 13 `--mauve-300` "Your progress is safe — you'll
   reconnect right where you left off."
 
+## Pre-disconnect countdown (added same day)
+
+The shutdown warning is a Platform toast, not the legacy modal:
+`PerformShutDown()` broadcasts `hotel.alert` / BUBBLE with
+"A software update has been pushed. PixelRP is restarting in…
+%countdown:15% seconds." and waits 15 s before stopping the game loop.
+`NotificationPlatformBubbleView` recognizes the `%countdown:N%` token and
+ticks it down once per second (singularizing "seconds" at 1). The token is
+generic — any `:ha` message may carry one.
+
 ## Out of scope
 
 - Auto-deploy on push (deliberate `workflow_dispatch` only).
-- A pre-disconnect in-game countdown (the existing shutdown broadcast modal
-  still fires ~2.5 s before sockets close).
 - Failure-state artwork (failed deploys fall back to the classic overlay).

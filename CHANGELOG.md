@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-09 — Restarts count themselves down
+
+### Changed
+
+- **Update restarts now warn you with a countdown.** Instead of the old
+  pop-up box, a "Platform" toast appears in the corner: "A software update
+  has been pushed. PixelRP is restarting in… 15 seconds." — and the number
+  actually ticks down, second by second, before the hotel restarts and the
+  update screen takes over.
+
 ## 2026-08-09 — Reconnect actually reconnects
 
 ### Fixed
