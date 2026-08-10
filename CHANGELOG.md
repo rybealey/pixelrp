@@ -14,6 +14,18 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — Staff rights are back
+
+### Changed
+
+- **Staff have their room rights again, everywhere.** The experiment where
+  staff walked around without rights until switching them on per room is
+  over — the rights badge and build tools are back for staff in every room,
+  and the `:rights` command is gone.
+- **Clicking furniture shows the info panel for everyone again.** The
+  rights-only infostand from earlier today has been rolled back along with
+  the rest of the staff-rights changes.
+
 ## 2026-08-10 — Staff rights, tightened
 
 ### Fixed
