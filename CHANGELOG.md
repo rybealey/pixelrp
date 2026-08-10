@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — Signs are now staff-only
+
+### Changed
+
+- **The Signs menu is now reserved for staff.** Clicking your avatar no longer
+  shows the Signs option unless you're on the hotel team — regular players
+  keep My clothes, Dance and Actions as before.
+
 ## 2026-08-10 — New wardrobe item: chrome chain
 
 ### Added
