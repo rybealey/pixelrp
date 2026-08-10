@@ -14,6 +14,17 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — Staff blend in
+
+### Changed
+
+- **Staff no longer have automatic rights in every room.** The rights badge is
+  gone from staff by default — they walk, sit, and chat like any other player,
+  even in rooms they own. Staff can switch their tools on in a specific room
+  when they need to build, and it switches off again the moment they leave.
+- **Clicking furniture only shows the info panel if you have rights in that
+  room.** No rights, no infostand — the room's builds keep their secrets.
+
 ## 2026-08-10 — Kat joins the staff team
 
 ### Changed
