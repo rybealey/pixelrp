@@ -14,6 +14,17 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — Wired furniture can't lock you out anymore
+
+### Fixed
+
+- **Placing a wired gadget no longer breaks the room for everyone.** A wired
+  item placed in a room could leave that room refusing to let anyone in —
+  you'd walk through a teleporter or click a room and just never arrive.
+  This briefly hit the main spawn room, which locked most of the city out;
+  rooms now load normally even with wired gadgets in them. (Wired gadgets
+  themselves still don't do anything — that's a project for another day.)
+
 ## 2026-08-09 — No more free coins for standing around
 
 ### Changed
