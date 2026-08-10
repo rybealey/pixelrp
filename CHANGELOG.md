@@ -14,6 +14,26 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — Walls stay hidden, and they're gone by default
+
+### Changed
+
+- **Rooms now start with their walls hidden.** Every room — new and existing —
+  has invisible walls out of the box, so backgrounds and open layouts are the
+  norm. Prefer the classic boxed-in look? Untick "Hide walls" in your room's
+  settings to bring them back.
+- **The hotel view drape got a PixelRP makeover.** The old Habbo banner that
+  hung over the hotel view has been replaced with proper PixelRP artwork.
+
+### Fixed
+
+- **"Hide walls" finally sticks.** Ticking it in room settings used to hide
+  the walls only until the room reloaded — the saved choice was misread on
+  load, and even when it wasn't, the client never got the memo. Both ends are
+  fixed: the setting survives restarts and reloads, and wall thickness and
+  floor thickness settings now reach the room view too (they were silently
+  ignored before).
+
 ## 2026-08-10 — Room backgrounds actually show up
 
 ### Fixed
