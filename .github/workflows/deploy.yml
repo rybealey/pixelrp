@@ -56,6 +56,7 @@ jobs:
           yarn vite build --base=/nitro-assets/client/
 
       - name: Load SSH key and configure host verification
+        id: ssh-setup
         env:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
@@ -124,25 +125,25 @@ jobs:
           ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
           set -euo pipefail
           cd "$DEPLOY_PATH"
-          dbsql() { docker compose -f compose.yaml -f compose.prod.yaml exec -T db sh -c 'exec mysql -N -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' 2>/dev/null; }
-          baseline=0
-          if [ -z "$(echo "SHOW TABLES LIKE '_applied_sql_updates';" | dbsql)" ]; then
-            baseline=1
-            echo "CREATE TABLE _applied_sql_updates (filename VARCHAR(255) PRIMARY KEY, applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" | dbsql
-          fi
+          dbsql() { docker compose -f compose.yaml -f compose.prod.yaml exec -T db sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" exec mysql -N -uroot "$MYSQL_DATABASE"'; }
+          echo "CREATE TABLE IF NOT EXISTS _applied_sql_updates (filename VARCHAR(255) PRIMARY KEY, applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" | dbsql
+          applied=$(echo "SELECT filename FROM _applied_sql_updates;" | dbsql)
           cd emulator/Resources/SQLs/Updates
-          for f in $(ls -1 *.sql | sort -V); do
-            if [ -n "$(printf "SELECT 1 FROM _applied_sql_updates WHERE filename='%s';" "$f" | dbsql)" ]; then
-              continue
-            fi
-            if [ "$baseline" = "1" ]; then
-              echo "baseline (already applied by hand): $f"
-            else
+          if [ -z "$applied" ]; then
+            for f in *.sql; do
+              printf "INSERT IGNORE INTO _applied_sql_updates (filename) VALUES ('%s');\n" "$f"
+            done | dbsql
+            echo "baselined $(ls -1 *.sql | wc -l) updates as already applied by hand"
+          else
+            for f in $(ls -1 *.sql | sort -V); do
+              if printf '%s\n' "$applied" | grep -xF "$f" > /dev/null; then
+                continue
+              fi
               echo "applying: $f"
               dbsql < "$f"
-            fi
-            printf "INSERT INTO _applied_sql_updates (filename) VALUES ('%s');" "$f" | dbsql
-          done
+              printf "INSERT INTO _applied_sql_updates (filename) VALUES ('%s');" "$f" | dbsql
+            done
+          fi
           REMOTE
 
       - name: Restarting districts
@@ -173,6 +174,19 @@ jobs:
             sleep 5
           done
           echo "Emulator is READY."
+          REMOTE
+
+      # A deploy that dies between "stop emulator" and "restart" must not
+      # leave the hotel offline — bring everything back up with whatever
+      # images exist before the run goes red.
+      - name: Bring the hotel back up after a failed deploy
+        if: failure() && steps.ssh-setup.outcome == 'success'
+        run: |
+          ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$DEPLOY_PATH"
+          docker compose -f compose.yaml -f compose.prod.yaml up -d
+          docker compose -f compose.yaml -f compose.prod.yaml ps --format '{{.Name}} {{.State}}'
           REMOTE
 
       - name: Remove SSH key
