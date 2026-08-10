@@ -14,6 +14,17 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — Room backgrounds actually show up
+
+### Fixed
+
+- **The background image you set now really appears in the room.** The earlier
+  fix let staff open the Room Background editor and save an image link, but
+  the picture itself stubbornly refused to draw — the saved settings reached
+  everyone's screens in a shape the game didn't recognise. Saved backgrounds
+  now display for everyone in the room, survive restarts, and previously
+  saved ones start working on their own.
+
 ## 2026-08-10 — Room backgrounds actually work
 
 ### Fixed
