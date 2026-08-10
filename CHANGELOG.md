@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-10 — New wardrobe item: chrome chain
+
+### Added
+
+- **A chrome chain accessory is in the wardrobe.** Open the avatar editor's
+  chest-accessory tab and you'll find a shiny new chrome chain. It's free and
+  available to everyone, no membership or purchase needed.
+
 ## 2026-08-10 — Walls stay hidden, and they're gone by default
 
 ### Changed
