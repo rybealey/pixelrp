@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-14 — The Duck Afro
+
+### Added
+
+- **A new hairstyle, the Duck Afro, is now in Change Your Looks.** A big
+  round curly afro with a duck tucked into it, and two colours to pick — one
+  for the hair, one for the duck. It's stocked for staff for now, so it can
+  be handed out in character at the boutique rather than sitting on a shelf.
+
 ## 2026-08-13 — You come back exactly where you left
 
 ### Fixed
