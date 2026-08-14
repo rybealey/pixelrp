@@ -14,6 +14,19 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-13 — You come back exactly where you left
+
+### Fixed
+
+- **You now return to the exact spot you left from, every time.** Sometimes
+  you'd log back in somewhere you'd been earlier rather than where you
+  actually were — an older room, or an older tile. Your spot was only being
+  written down when you cleanly left a room, so if the hotel went down or
+  your connection dropped where you stood, the last thing it remembered was
+  wherever you'd been before that. It now keeps track as you move, so the
+  room, the tile and the direction you're facing survive a dropped
+  connection or a restart.
+
 ## 2026-08-13 — Staff-only tools locked down for real
 
 ### Changed
