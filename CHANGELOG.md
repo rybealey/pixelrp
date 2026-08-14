@@ -14,6 +14,39 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-13 — Staff-only tools locked down for real
+
+### Changed
+
+- **The catalogue, marketplace, and room navigator are now staff-only from
+  the inside out.** These tools were already hidden for regular players, but
+  the hotel now also refuses to *act* on any catalogue, marketplace, or
+  navigator request from a non-staff account — so poking at them with an
+  outside tool does nothing instead of sneaking a purchase or a search
+  through.
+- **You can only land in rooms the hotel sends you to.** Regular players
+  move between rooms the normal way — teleports, doors, and the room you log
+  back into. Trying to jump straight to a room by ID from an outside tool is
+  now turned away.
+
+### Fixed
+
+- **The hotel no longer goes down when it's sent nonsense.** A garbled
+  message from a badly-behaved or hostile connection could take the whole
+  hotel offline for everyone. Those connections are now dropped on their own
+  and everyone else keeps playing.
+- **Only a room's owner can change that room's settings.** It was possible to
+  rename a room, change its door lock, or change who may kick and ban in it
+  without owning it. Now the hotel checks.
+- **Group badges you haven't earned stay off your avatar.** You can only wear
+  the badge of a group you're actually a member of.
+- **Pet gear can't be taken or duplicated any more.** Saddles and dyes lying
+  in a room can only be used by the player who owns them, taking a saddle off
+  a horse gives back exactly the one that was on it, and only a pet's owner
+  decides who may ride it.
+- **Finished quests no longer pay out twice.** Re-starting a quest you had
+  already completed could hand you its reward again.
+
 ## 2026-08-10 — Staff rights are back
 
 ### Changed
