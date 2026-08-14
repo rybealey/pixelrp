@@ -14,6 +14,25 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-14 — Reporting someone actually reaches staff now
+
+### Fixed
+
+- **Reports sent from the Help window never reached staff.** Picking "Someone
+  is misbehaving", choosing the player, the chat lines and a topic, then
+  sending, looked like it worked — but the report was thrown away on arrival
+  and never appeared in the staff ticket list, so nobody could act on it.
+  Reports sent the other way, from the Report option on a player, were
+  arriving fine. Both paths now work.
+- **Sending a second report while your first one is still open** did nothing
+  at all. You now get told that your existing call is still waiting for staff.
+
+### Known issues
+
+- Open tickets are still cleared when the hotel restarts, so anything staff
+  hasn't picked up before an update is lost. Reports sent after a restart are
+  unaffected.
+
 ## 2026-08-14 — The Duck Afro
 
 ### Added
