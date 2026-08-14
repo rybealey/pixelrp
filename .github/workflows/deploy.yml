@@ -177,16 +177,25 @@ jobs:
           # Docker first creates it, so built assets are otherwise frozen at
           # whatever the volume was created with. Overlay, not replace - the
           # volume also holds runtime content that is not in the image.
-          docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps cms \
+          docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps -T cms \
             sh -c 'cp -a /opt/cms-public/. /var/www/html/public/'
+          # -T throughout: without it compose wants a TTY the SSH heredoc has
+          # not got, and the commands' output never reaches the run log.
           # Status first, so the run log records exactly what was pending.
-          docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps cms php artisan migrate:status
-          docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps cms php artisan migrate --force
+          docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps -T cms php artisan migrate:status
+          docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps -T cms php artisan migrate --force
+          # The image bakes exactly one theme's assets (the Vite manifest holds
+          # only the theme that was built), so website_settings.theme has to
+          # name that same theme or @vite throws on every page. Taken from the
+          # Dockerfile rather than a migration: this is a property of the image
+          # being deployed, and it has to hold on every deploy, not once.
+          dbsql() { docker compose -f compose.yaml -f compose.prod.yaml exec -T db sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" exec mysql -N -uroot "$MYSQL_DATABASE"'; }
+          theme=$(grep -oE 'npm run build:[a-z0-9-]+' docker/cms/Dockerfile | head -1 | cut -d: -f2)
+          [ -n "$theme" ] || { echo "::error::could not read the built theme from docker/cms/Dockerfile"; exit 1; }
+          echo "image ships theme: $theme"
+          printf "UPDATE website_settings SET value='%s' WHERE \`key\`='theme';\n" "$theme" | dbsql
+          echo "website_settings.theme is now: $(echo "SELECT value FROM website_settings WHERE \`key\`='theme';" | dbsql)"
           docker compose -f compose.yaml -f compose.prod.yaml up -d
-          # Which theme the image actually shipped - the manifest only holds the
-          # theme that was built, and it has to match website_settings.theme.
-          docker compose -f compose.yaml -f compose.prod.yaml exec -T cms \
-            sh -c 'grep -o "resources/themes/[a-z]*/css/app.css" public/build/manifest.json | head -1'
           # Config/route/view caches are baked per-image; drop anything the old
           # container left in the mounted storage volume.
           docker compose -f compose.yaml -f compose.prod.yaml exec -T cms php artisan optimize:clear
