@@ -14,6 +14,20 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-14 — Reloading the moderation settings stopped kicking staff
+
+### Fixed
+
+- **`:update moderation` threw whoever ran it out of the hotel.** The first use
+  after a restart worked, but every one after that disconnected the staff
+  member on the spot — so re-editing call topics or preset warnings mid-session
+  meant waiting for the next restart before they took effect. The command now
+  works as often as you like and confirms with the usual whisper.
+- **Reloaded moderation presets piled up on top of the old ones.** The room
+  warning presets and the preset action messages were added to the existing
+  list instead of replacing it, so a reload could leave staff picking from
+  duplicated entries.
+
 ## 2026-08-14 — Reports wait for staff through a restart
 
 ### Fixed
