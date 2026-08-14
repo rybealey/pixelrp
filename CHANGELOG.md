@@ -14,6 +14,24 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-14 — Reports wait for staff through a restart
+
+### Fixed
+
+- **Reports no longer vanish when the hotel restarts.** Anything staff hadn't
+  picked up or closed yet was thrown away every time the hotel went down for
+  an update, so a report sent just before one simply never got looked at. Open
+  reports — and ones a staff member has already picked up — now wait through a
+  restart, still showing who reported whom, what they said, and the chat lines
+  the reporter picked out.
+
+### Known issues
+
+- Closing a report with the mod tool's default-action button does nothing; use
+  the ordinary close options instead.
+- When one staff member picks up a report, it can briefly show in other staff
+  members' own picked list until they reload.
+
 ## 2026-08-14 — Reporting someone actually reaches staff now
 
 ### Fixed
@@ -26,12 +44,6 @@ any heading with nothing under it).
   arriving fine. Both paths now work.
 - **Sending a second report while your first one is still open** did nothing
   at all. You now get told that your existing call is still waiting for staff.
-
-### Known issues
-
-- Open tickets are still cleared when the hotel restarts, so anything staff
-  hasn't picked up before an update is lost. Reports sent after a restart are
-  unaffected.
 
 ## 2026-08-14 — The Duck Afro
 
