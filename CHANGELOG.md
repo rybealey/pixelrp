@@ -14,6 +14,26 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-14 — Room categories that fit the city
+
+### Changed
+
+- **The room categories are now Corporations, Residential, Commercial,
+  Industrial, Farm and Staff.** They replace the old Habbo-style list (Chat &
+  Chill, Trading & Casinos, Parties & Clubs and the rest), and they are what
+  you pick from in Room Settings and what the navigator's All Rooms tab groups
+  rooms under. Staff is reserved for staff to assign.
+- **Every room in the hotel has been parked under Staff for now**, so staff can
+  work through them and file each one under the category it really belongs to.
+  Your room's own settings — name, description, rights, everything else — are
+  untouched.
+
+### Fixed
+
+- **Staff could not change the category of a room they did not own.** Picking a
+  category in someone else's Room Settings looked like it saved, but the room
+  quietly stayed where it was.
+
 ## 2026-08-14 — Reloading the moderation settings stopped kicking staff
 
 ### Fixed
