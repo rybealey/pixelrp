@@ -168,10 +168,25 @@ jobs:
           # the image have to agree - migrate before the containers swap in, or
           # the new container serves a theme whose assets it does not have.
           #
+          # cms is stopped for both: the service holds a static IP, so a one-off
+          # container cannot start alongside the running one ("Address already
+          # in use"), and this way the container comes back up already
+          # consistent instead of briefly serving a half-updated state.
+          docker compose -f compose.yaml -f compose.prod.yaml stop cms
+          # Refresh public/ from the image. cms-public is only seeded when
+          # Docker first creates it, so built assets are otherwise frozen at
+          # whatever the volume was created with. Overlay, not replace - the
+          # volume also holds runtime content that is not in the image.
+          docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps cms \
+            sh -c 'cp -a /opt/cms-public/. /var/www/html/public/'
           # Status first, so the run log records exactly what was pending.
           docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps cms php artisan migrate:status
           docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps cms php artisan migrate --force
           docker compose -f compose.yaml -f compose.prod.yaml up -d
+          # Which theme the image actually shipped - the manifest only holds the
+          # theme that was built, and it has to match website_settings.theme.
+          docker compose -f compose.yaml -f compose.prod.yaml exec -T cms \
+            sh -c 'grep -o "resources/themes/[a-z]*/css/app.css" public/build/manifest.json | head -1'
           # Config/route/view caches are baked per-image; drop anything the old
           # container left in the mounted storage volume.
           docker compose -f compose.yaml -f compose.prod.yaml exec -T cms php artisan optimize:clear
