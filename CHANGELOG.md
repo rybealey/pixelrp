@@ -14,6 +14,18 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-14 — Bots you buy are actually bots now
+
+### Fixed
+
+- **Buying a bot from the catalog gave you a broken wall item instead of a
+  bot.** The bot showed up fine in the catalog, but the moment you bought it,
+  it landed in your inventory as an unnamed wall item that would not place or
+  render. Bots now arrive as proper bots — in your bots inventory, ready to
+  drop into a room, walk, talk and dress up. (Effects, badges and pets bought
+  from the catalog were mis-delivered the same way and now arrive correctly
+  too.)
+
 ## 2026-08-14 — A new front door
 
 ### Changed
