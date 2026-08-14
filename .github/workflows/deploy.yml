@@ -178,12 +178,12 @@ jobs:
           # whatever the volume was created with. Overlay, not replace - the
           # volume also holds runtime content that is not in the image.
           docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps -T cms \
-            sh -c 'cp -a /opt/cms-public/. /var/www/html/public/'
+            sh -c 'cp -a /opt/cms-public/. /var/www/html/public/' < /dev/null
           # -T throughout: without it compose wants a TTY the SSH heredoc has
           # not got, and the commands' output never reaches the run log.
           # Status first, so the run log records exactly what was pending.
-          docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps -T cms php artisan migrate:status
-          docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps -T cms php artisan migrate --force
+          docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps -T cms php artisan migrate:status < /dev/null
+          docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps -T cms php artisan migrate --force < /dev/null
           # The image bakes exactly one theme's assets (the Vite manifest holds
           # only the theme that was built), so website_settings.theme has to
           # name that same theme or @vite throws on every page. Taken from the
@@ -195,10 +195,10 @@ jobs:
           echo "image ships theme: $theme"
           printf "UPDATE website_settings SET value='%s' WHERE \`key\`='theme';\n" "$theme" | dbsql
           echo "website_settings.theme is now: $(echo "SELECT value FROM website_settings WHERE \`key\`='theme';" | dbsql)"
-          docker compose -f compose.yaml -f compose.prod.yaml up -d
+          docker compose -f compose.yaml -f compose.prod.yaml up -d < /dev/null
           # Config/route/view caches are baked per-image; drop anything the old
           # container left in the mounted storage volume.
-          docker compose -f compose.yaml -f compose.prod.yaml exec -T cms php artisan optimize:clear
+          docker compose -f compose.yaml -f compose.prod.yaml exec -T cms php artisan optimize:clear < /dev/null
           # A recreated cms container starts without /changelog — re-seed it.
           docker compose -f compose.yaml -f compose.prod.yaml exec -T cms mkdir -p /changelog
           docker compose -f compose.yaml -f compose.prod.yaml cp CHANGELOG.md cms:/changelog/CHANGELOG.md
