@@ -14,6 +14,30 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-14 — A new front door
+
+### Changed
+
+- **The website's front page is now the login screen.** Arriving at pixelrp.co
+  while logged out drops you straight onto a pixel-art terrace at sunset, with
+  the animated PixelRP sign overhead and a single card asking for your username
+  and password. No hunting for a login box in the menu bar. A ticker along the
+  bottom shows how many players are in the hotel right now.
+- **Signing up is a boarding pass.** The create-account page hands you a ticket
+  out of the old world and into the city — a departure board that flips through
+  cities as you fill in your details, then flies you to PXL on flight PXL-26.
+  It asks for the same things it always did.
+- **Forgotten passwords, password resets and the two-step security check wear
+  the same look**, so the whole way in matches from the first screen to the
+  last.
+
+### Fixed
+
+- **"Your password has been successfully reset!" never actually appeared.**
+  After choosing a new password you were sent back to the front page with
+  nothing to confirm it had worked. The confirmation now shows up where you
+  land.
+
 ## 2026-08-14 — Room categories that fit the city
 
 ### Changed

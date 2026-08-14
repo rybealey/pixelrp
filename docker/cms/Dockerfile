@@ -15,7 +15,7 @@ COPY cms/ .
 # `@import "../../../../vendor/filament/filament/resources/css/theme.css"`, so
 # the asset build needs Composer's output present — hence vendor stage first.
 COPY --from=vendor /app/vendor ./vendor
-RUN npm ci && npm run build:atom
+RUN npm ci && npm run build:pixelrp
 
 FROM php:8.5-fpm-alpine
 RUN apk add --no-cache icu-dev libzip-dev libpng-dev libjpeg-turbo-dev freetype-dev oniguruma-dev \
