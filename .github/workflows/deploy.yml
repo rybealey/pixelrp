@@ -158,7 +158,23 @@ jobs:
           set -euo pipefail
           cd "$DEPLOY_PATH"
           docker compose -f compose.yaml -f compose.prod.yaml build emulator cms 2>&1 | tail -3
+          # CMS migrations run here, not in "Applying database patches": prod
+          # has no ./cms bind mount, so the running container is the previous
+          # image and does not contain migrations added by this deploy. A
+          # one-off container off the image just built does.
+          #
+          # Order matters. The theme's assets are baked per-theme (the Vite
+          # manifest only holds the built theme), so website_settings.theme and
+          # the image have to agree - migrate before the containers swap in, or
+          # the new container serves a theme whose assets it does not have.
+          #
+          # Status first, so the run log records exactly what was pending.
+          docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps cms php artisan migrate:status
+          docker compose -f compose.yaml -f compose.prod.yaml run --rm --no-deps cms php artisan migrate --force
           docker compose -f compose.yaml -f compose.prod.yaml up -d
+          # Config/route/view caches are baked per-image; drop anything the old
+          # container left in the mounted storage volume.
+          docker compose -f compose.yaml -f compose.prod.yaml exec -T cms php artisan optimize:clear
           # A recreated cms container starts without /changelog — re-seed it.
           docker compose -f compose.yaml -f compose.prod.yaml exec -T cms mkdir -p /changelog
           docker compose -f compose.yaml -f compose.prod.yaml cp CHANGELOG.md cms:/changelog/CHANGELOG.md
