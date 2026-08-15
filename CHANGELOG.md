@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-15 — Readable command list
+
+### Changed
+
+- **The `:commands` list is now a proper table** — grouped by permission
+  tier, with a filter box to find what you need, instead of one long wall of
+  text.
+
 ## 2026-08-15 — Medkit jacket
 
 ### Added
