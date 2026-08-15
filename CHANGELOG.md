@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-14 — Animated clothing comes to life
+
+### Fixed
+
+- **Animated clothing actually animates now.** Hats, hair, and accessories
+  that were built to move — the spinning, glowing, sparkling, and flapping
+  ones — now play their animation while you're just standing around, not only
+  mid-dance.
+
 ## 2026-08-14 — Bots feel alive again
 
 ### Fixed
