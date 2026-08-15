@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-15 — Respect system removed
+
+### Removed
+
+- **The respect system is gone** — no more "Give respect" on the avatar menu.
+- **The achievement score** no longer shows on the profile popup.
+
 ## 2026-08-15 — Emoji picker opens first try
 
 ### Fixed
