@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-14 — Wardrobe button fix
+
+### Fixed
+
+- **The Wardrobe's "Wear" button reads properly again** — it was briefly
+  showing a snippet of raw code instead of the word "Wear".
+
 ## 2026-08-14 — Animated clothing comes to life
 
 ### Fixed
