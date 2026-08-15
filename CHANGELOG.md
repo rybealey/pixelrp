@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-15 — Emoji picker opens first try
+
+### Fixed
+
+- **The chat emoji picker now opens on the first click**, instead of needing a
+  few tries.
+
 ## 2026-08-15 — Staff effect off by default
 
 ### Changed
