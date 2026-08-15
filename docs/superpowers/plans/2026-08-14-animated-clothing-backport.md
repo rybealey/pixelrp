@@ -121,7 +121,7 @@ Run:
 ```bash
 node docs/superpowers/plans/tools/detect-animated-figures.mjs nitro/assets/bundled/figure
 ```
-Expected: `idle-animated bundles: <N> / 2958` with N in the low thousands (≈1,200), confirming the rule matches the earlier analysis.
+Expected: `idle-animated bundles: 33 / 2958`. (Note: an earlier estimate of ~1,200 was wrong — it counted *any* multi-frame asset across *all* actions, including walk/carry/wave which 1.6.6 already animates. Only ~33 bundles carry frames under the idle postures `std`/`sit`/`lay`; those are the ones this feature targets — mostly `nft*` head accessories plus a couple of pets and `jacket_U_animtest`.)
 
 - [ ] **Step 3: Spot-check known items**
 
