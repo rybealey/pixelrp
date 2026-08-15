@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-15 — Staff effect off by default
+
+### Changed
+
+- **Staff no longer get a glowing effect slapped on automatically** when they
+  enter a room.
+
 ## 2026-08-15 — Readable command list
 
 ### Changed
