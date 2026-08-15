@@ -14,6 +14,47 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-14 — Bots feel alive again
+
+### Fixed
+
+- **Bots wander again.** Bots with automatic chat switched off had stopped
+  walking entirely; they now free-roam around the room as they should.
+- **"Copy my looks" works right away.** Telling a bot to copy your look used to
+  do nothing until a reload — it now applies instantly.
+
+### Changed
+
+- **Bots are easy to spot.** Every bot now wears an identifier effect, so you
+  can tell a bot from a real player at a glance.
+- **The bot's walk toggle says what it'll do** — it reads "Relax" while the bot
+  is wandering, and "Walk around" while it's standing still.
+
+## 2026-08-14 — Room thumbnails you can actually set
+
+### Fixed
+
+- **Setting a room's thumbnail with the in-room camera now works.** Clicking
+  Save used to do nothing; your captured shot now saves as the room's thumbnail
+  and shows up in the room info and navigator.
+
+## 2026-08-14 — Room ratings retired
+
+### Changed
+
+- **Rooms no longer have likes or ratings.** The like button is gone and the
+  room info panel no longer shows a rating — the feature is switched off
+  hotel-wide.
+
+## 2026-08-14 — Achievements have left the hotel
+
+### Changed
+
+- **The achievement system is gone.** Achievements no longer track, unlock or
+  pay out — no more achievement badges, pixels or points — and the
+  achievements panel and its button in the "Me" menu have been removed. Any
+  achievement badges and points accounts had earned have been cleared.
+
 ## 2026-08-14 — Bots you buy are actually bots now
 
 ### Fixed
