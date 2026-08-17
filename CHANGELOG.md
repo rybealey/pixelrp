@@ -23,6 +23,8 @@ any heading with nothing under it).
   they're standing on.
 - **With click-through on, hovering another player no longer flips your cursor**
   to the hand pointer — it stays the normal cursor to match the walk behaviour.
+- **With click-through on, hovering another player no longer pops their name tag**
+  above them.
 
 ## 2026-08-17 — Player HUD
 
