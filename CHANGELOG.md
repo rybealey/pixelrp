@@ -22,6 +22,11 @@ any heading with nothing under it).
   another player and their panel slides in next to yours, with lock and close
   buttons to hold or clear your target.
 
+### Fixed
+
+- **Your currency counter now widens to fit** larger balances instead of
+  cutting them off.
+
 ## 2026-08-15 — Respect system removed
 
 ### Removed
