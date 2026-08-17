@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-16 — Medkit jacket
+
+### Added
+
+- **A new Medkit jacket** — a little red first-aid box on the arm. Stocked for
+  staff for now.
+
 ## 2026-08-15 — Respect system removed
 
 ### Removed
