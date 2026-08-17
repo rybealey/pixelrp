@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-17 — Click-through polish
+
+### Fixed
+
+- **Click-through (`:ct`) now walks you onto a player's exact tile** when you
+  click them, instead of the tile just behind them.
+- **With click-through on, hovering another player no longer flips your cursor**
+  to the hand pointer — it stays the normal cursor to match the walk behaviour.
+
 ## 2026-08-17 — Player HUD
 
 ### Added
