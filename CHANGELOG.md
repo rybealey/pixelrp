@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-17 — Side drawer open by default
+
+### Changed
+
+- **The left-edge drawer now starts expanded**, and remembers whether you leave
+  it open or collapsed between sessions.
+
 ## 2026-08-17 — Click-through polish
 
 ### Fixed
