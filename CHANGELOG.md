@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-17 — Player HUD
+
+### Added
+
+- **A new heads-up display** in the top-left corner showing your avatar. Click
+  another player and their panel slides in next to yours, with lock and close
+  buttons to hold or clear your target.
+
 ## 2026-08-15 — Respect system removed
 
 ### Removed
