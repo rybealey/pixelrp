@@ -43,13 +43,6 @@ any heading with nothing under it).
   tier, with a filter box to find what you need, instead of one long wall of
   text.
 
-## 2026-08-15 — Medkit jacket
-
-### Added
-
-- **A new Medkit jacket** — a little red first-aid box strapped to your arm.
-  Stocked for staff for now.
-
 ## 2026-08-14 — Wardrobe button fix
 
 ### Fixed
