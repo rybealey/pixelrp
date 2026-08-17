@@ -37,8 +37,8 @@ any heading with nothing under it).
 ### Changed
 
 - **The HUD now uses a cleaner, more readable font throughout** and shows names
-  as typed rather than in all caps, with avatars framed a little higher in their
-  portrait circles.
+  as typed rather than in all caps. HUD avatars are now framed consistently in
+  their portrait circles across different screen resolutions and zoom levels.
 
 ### Fixed
 
