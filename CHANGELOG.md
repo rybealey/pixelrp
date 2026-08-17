@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-17 — Animated clothing in the looks editor
+
+### Changed
+
+- **Animated clothing now plays its animation in the "Change Your Looks" preview**,
+  matching how it already looks in the room.
+
 ## 2026-08-17 — Side drawer open by default
 
 ### Changed
