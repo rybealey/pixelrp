@@ -18,8 +18,9 @@ any heading with nothing under it).
 
 ### Fixed
 
-- **Click-through (`:ct`) now walks you onto a player's exact tile** when you
-  click them, instead of the tile just behind them.
+- **Click-through (`:ct`) now walks you to the exact tile you click**, even when
+  your click lands on another player's avatar, instead of snapping to the tile
+  they're standing on.
 - **With click-through on, hovering another player no longer flips your cursor**
   to the hand pointer — it stays the normal cursor to match the walk behaviour.
 
@@ -30,6 +31,12 @@ any heading with nothing under it).
 - **A new heads-up display** in the top-left corner showing your avatar. Click
   another player and their panel slides in next to yours, with lock and close
   buttons to hold or clear your target.
+
+### Changed
+
+- **The HUD now uses a cleaner, more readable font throughout** and shows names
+  as typed rather than in all caps, with avatars framed a little higher in their
+  portrait circles.
 
 ### Fixed
 
