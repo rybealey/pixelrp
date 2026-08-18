@@ -14,13 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
-## 2026-08-18 — Chasing a layering flicker
+## 2026-08-18 — Layering flicker fixed
 
-### Known issues
+### Fixed
 
-- **A layering flicker can still appear when one player walks diagonally
-  right behind another** — who shows in front may briefly swap. This update
-  adds temporary diagnostics so we can pin down the cause; a fix will follow.
+- **The layering flicker when walking near other players is gone.** Who
+  appears in front no longer swaps back and forth while players walk
+  diagonally behind or beside each other — stacking stays put, and your own
+  avatar still always wins the front spot in your own view. (The temporary
+  diagnostics from earlier today have been removed.)
 
 ## 2026-08-18 — Stable stacking on shared tiles
 
