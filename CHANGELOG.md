@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-18 — Stable stacking on shared tiles
+
+### Fixed
+
+- **Players standing or walking on the same tile no longer flicker** over who
+  appears in front — the layering stays put.
+
 ## 2026-08-18 — Deploy screen polish
 
 ### Changed
