@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-19 — Stacked players render as one solid layer
+
+### Fixed
+
+- **Players sharing a tile no longer cut through each other.** When avatars
+  stack, each one now renders as a single solid layer — a neighbour's effect
+  glow or typing bubble can't slice through your avatar anymore, and your own
+  avatar always stays fully on top in your view.
+
 ## 2026-08-18 — Layering flicker fixed
 
 ### Fixed
