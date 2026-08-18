@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-18 — Snappier, smoother walking
+
+### Changed
+
+- **Walking responds faster and glides more smoothly.** Your avatar sets off
+  the moment you click, steps flow evenly instead of hitching at each tile,
+  and changing direction mid-walk takes effect right at the tile boundary —
+  even during rapid clicking.
+
 ## 2026-08-17 — Animated clothing in the looks editor
 
 ### Changed
