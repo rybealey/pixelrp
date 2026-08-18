@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-18 — Deploy screen polish
+
+### Changed
+
+- **The update screen's progress bar turns green** the moment the deployment
+  hits 100%.
+
 ## 2026-08-18 — Snappier, smoother walking
 
 ### Changed
