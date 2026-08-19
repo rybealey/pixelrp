@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-19 — Target mentions
+
+### Added
+
+- **Call out your target with `@x`.** With a target selected in your HUD,
+  typing `@x` anywhere in a message swaps in their name and sends the message
+  as a shout. The player you mentioned — and only them — sees it in a special
+  alert bubble and hears a mention sound, every time. Typing out `@TheirName`
+  in a shout works too.
+
 ## 2026-08-19 — Stacked players render as one solid layer
 
 ### Fixed
