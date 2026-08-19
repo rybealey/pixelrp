@@ -18,11 +18,11 @@ any heading with nothing under it).
 
 ### Added
 
-- **Call out your target with `@x`.** With a target selected in your HUD,
-  typing `@x` anywhere in a message swaps in their name and sends the message
-  as a shout. The player you mentioned — and only them — sees it in a special
-  alert bubble and hears a mention sound, every time. Typing out `@TheirName`
-  in a shout works too.
+- **Call out anyone with `@`.** Mention `@TheirName` (capitals don't matter)
+  in any message and, if they're in the room, they — and only they — see it in
+  a special alert bubble and hear a mention sound, every time. With a target
+  selected in your HUD, `@x` is a shortcut that swaps in your target's name
+  and sends the message as a shout.
 
 ## 2026-08-19 — Stacked players render as one solid layer
 
