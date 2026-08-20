@@ -22,6 +22,10 @@ any heading with nothing under it).
   no longer leaves you floating half a tile behind them — after a few steps,
   everyone walking falls into the same rhythm, so you're either on their tile
   or cleanly one behind.
+- **Joining someone mid-walk locks in step immediately.** Starting a walk
+  right next to a player who's already walking now waits a beat to match
+  their rhythm, so you fall in perfectly from your very first step instead
+  of trailing at a half-tile offset.
 
 ## 2026-08-19 — Target mentions
 
