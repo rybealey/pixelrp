@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-19 — Walkers fall into step
+
+### Fixed
+
+- **Players walking together now line up on whole tiles.** Following someone
+  no longer leaves you floating half a tile behind them — after a few steps,
+  everyone walking falls into the same rhythm, so you're either on their tile
+  or cleanly one behind.
+
 ## 2026-08-19 — Target mentions
 
 ### Added
