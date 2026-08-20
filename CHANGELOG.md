@@ -32,6 +32,9 @@ any heading with nothing under it).
   stack, each one now renders as a single solid layer — a neighbour's effect
   glow or typing bubble can't slice through your avatar anymore, and your own
   avatar always stays fully on top in your view.
+- **Walking onto or through another player no longer flickers.** The layering
+  now holds steady the whole way through an overlap — including mid-step —
+  instead of momentarily swapping who's in front.
 
 ## 2026-08-18 — Layering flicker fixed
 
