@@ -14,6 +14,21 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-21 — Health and energy are real
+
+### Added
+
+- **Your health and energy bars are live.** The HUD now shows your actual
+  stats — everyone starts at 100/100, values persist between sessions, and
+  changes appear instantly for everyone in the room, including on the target
+  panel when you select someone. Staff can adjust a player's stats, announced
+  in the room as they do.
+
+### Changed
+
+- **The HUD bars are taller with clearer numbers**, the aggression strip no
+  longer shifts the bars when it appears, and the wanted stars sit straight.
+
 ## 2026-08-19 — Walkers fall into step
 
 ### Fixed
