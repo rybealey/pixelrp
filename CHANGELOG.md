@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-21 — Aggression is real
+
+### Added
+
+- **The aggression meter is live.** Staff can raise a player's aggression,
+  the strip slides out under their energy bar for everyone to see, and it
+  drains back down on its own over 45 seconds. Groundwork for combat and
+  wanted systems to come.
+
 ## 2026-08-21 — Health and energy are real
 
 ### Added
