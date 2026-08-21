@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-21 — Crossing paths looks right
+
+### Fixed
+
+- **Walking through another walking player no longer looks offset.** When
+  your avatar and another moving avatar cross the same tile, their feet now
+  line up instead of one floating slightly beside the other. The pull is
+  gradual — no snapping or teleporting — and everyone walks normally the
+  rest of the time.
+
 ## 2026-08-21 — Aggression is real
 
 ### Added
