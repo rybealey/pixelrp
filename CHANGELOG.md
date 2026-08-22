@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Restore command
+
+### Added
+
+- **Staff can fully heal a player.** A new command instantly refills a
+  player's health and energy, announced in the room with an emote shout.
+
 ## 2026-08-22 — Cleaner name tags
 
 ### Changed
