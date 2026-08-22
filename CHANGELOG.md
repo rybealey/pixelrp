@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — A prettier goodbye
+
+### Changed
+
+- **The disconnect screen matches the hotel now.** Getting disconnected
+  shows the PixelRP pixel-art card — logo, proper buttons and all — instead
+  of the old plain text over a dimmed room.
+
 ## 2026-08-22 — Knocked out at zero health
 
 ### Added
