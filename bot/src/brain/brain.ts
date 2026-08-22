@@ -1,5 +1,6 @@
 import type Anthropic from "@anthropic-ai/sdk";
 import { betaTool } from "@anthropic-ai/sdk/helpers/beta/json-schema.mjs";
+import { GAME_KNOWLEDGE } from "./knowledge.ts";
 import { PERSONA } from "./persona.ts";
 import { chunkReply } from "./chunk.ts";
 import type { MemoryFile } from "./memory.ts";
@@ -58,7 +59,7 @@ export class Brain {
         max_tokens: 1000,
         output_config: { effort: "low" },
         system: [
-          { type: "text", text: PERSONA + memory, cache_control: { type: "ephemeral" } },
+          { type: "text", text: PERSONA + GAME_KNOWLEDGE + memory, cache_control: { type: "ephemeral" } },
         ],
         tools,
         messages: [

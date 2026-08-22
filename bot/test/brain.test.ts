@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { Brain } from "../src/brain/brain.ts";
+import { GAME_KNOWLEDGE } from "../src/brain/knowledge.ts";
 import { PERSONA } from "../src/brain/persona.ts";
 import { Transcript } from "../src/brain/transcript.ts";
 import { MemoryFile } from "../src/brain/memory.ts";
@@ -147,7 +148,7 @@ describe("Brain", () => {
     });
     await brain.respond({ username: "Ry", message: "hi claude", whisper: false });
     // system text is PERSONA + (capped) memory — isolate just the memory portion.
-    const memoryPortion = capturedSystem.slice(PERSONA.length);
+    const memoryPortion = capturedSystem.slice((PERSONA + GAME_KNOWLEDGE).length);
     expect(memoryPortion).toBe("a".repeat(4000));
   });
 
