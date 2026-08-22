@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Target shorthand in commands
+
+### Added
+
+- **"x" now works in commands.** With a target selected in your HUD, typing
+  `x` as a command argument stands in for their name — `:restore x` instead
+  of typing the full username. Works for everyone, in any command, alongside
+  the existing `@x` mention shorthand.
+
 ## 2026-08-22 — Restore command
 
 ### Added
