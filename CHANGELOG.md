@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Cleaner name tags
+
+### Changed
+
+- **Hover name tags got smaller and quieter.** The big bordered box that
+  appeared over players, bots and pets is now a compact dark chip matching
+  the rest of the interface. Friends stand out with a green chip and white
+  name.
+
 ## 2026-08-22 — Two new hairstyles
 
 ### Added
