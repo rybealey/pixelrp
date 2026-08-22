@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Headers in brand colors
+
+### Changed
+
+- **Window title bars wear PixelRP colors now.** All windows default to the
+  brand's two-tone orange, and Settings → Interface lets you pick pink or
+  purple instead — same classic split-tone style, your choice saves to
+  your account.
+
 ## 2026-08-22 — Frosted glass
 
 ### Changed
