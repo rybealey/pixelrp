@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Duckets fully retired
+
+### Fixed
+
+- **Duckets no longer appear on the website.** They were already disabled
+  in-game; the site's header counter, the Top Duckets leaderboard and the
+  profile currency list have now caught up.
+
 ## 2026-08-22 — A new view from the hill
 
 ### Changed
