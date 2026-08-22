@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Merging mid-stride
+
+### Fixed
+
+- **Joining someone's walk looks like one continuous motion.** Whoever was
+  already walking keeps moving untouched; the player who joins the path
+  bends onto their track mid-stride — no snap, no pause, no speed dip —
+  and peels off just as smoothly when your paths split.
+
 ## 2026-08-22 — Headers in brand colors
 
 ### Changed
