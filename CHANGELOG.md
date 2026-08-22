@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Walking together, exactly
+
+### Fixed
+
+- **Walking stacked with another player is now pixel-perfect.** When you and
+  another player travel the same path on the same tile, your avatars lock to
+  the exact same spot every frame instead of slowly drifting into alignment
+  over a few tiles. The lock releases the moment either of you stops or
+  turns off the shared path.
+
 ## 2026-08-22 — Targets stick around
 
 ### Changed
