@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Fresh drops for staff
+
+### Added
+
+- **Two new hats: Puffle Hat (dyeable, two color channels) and Chiikawa
+  Hat.** Staff-only in the wardrobe for now.
+- **The Chrome chest accessory is now staff-only** ahead of the clothing
+  economy — it was briefly wearable by everyone.
+
 ## 2026-08-22 — Duckets fully retired
 
 ### Fixed
