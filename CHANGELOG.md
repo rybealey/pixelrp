@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Falling into step
+
+### Changed
+
+- **Joining someone's walk now reads as falling into step.** Instead of
+  being pulled sideways onto the other player's position, the joining
+  avatar stays on its own path and its stride timing catches up over about
+  one step — the brief offset melts away like two people syncing their
+  pace. Whoever was already walking is never touched.
+
 ## 2026-08-22 — The Backpack
 
 ### Added
