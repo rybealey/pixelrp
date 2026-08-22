@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — A new view from the hill
+
+### Changed
+
+- **The landing view got a skyline.** Leaving a room now overlooks a
+  pixel-art PixelRP city at sunset — bay, bridge and all — replacing the
+  old hotel curtains.
+
 ## 2026-08-22 — Falling into step
 
 ### Changed
