@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Snappier starts near walkers
+
+### Changed
+
+- **Clicking to walk next to a moving player responds instantly again.**
+  A brief hold that synced you with nearby walkers before your first step
+  is gone — the newer avatar-alignment smoothing made it unnecessary.
+
 ## 2026-08-22 — Make it yours
 
 ### Added
