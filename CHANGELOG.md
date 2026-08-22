@@ -19,7 +19,8 @@ any heading with nothing under it).
 ### Added
 
 - **Two new hats: Puffle Hat (dyeable, two color channels) and Chiikawa
-  Hat.** Staff-only in the wardrobe for now.
+  Hat — plus the dyeable Ribbon Shnibbony head accessory.** Staff-only in
+  the wardrobe for now.
 - **The Chrome chest accessory is now staff-only** ahead of the clothing
   economy — it was briefly wearable by everyone.
 
