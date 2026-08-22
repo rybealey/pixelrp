@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Two new hairstyles
+
+### Added
+
+- **Two new hairs: Cookie Dana and Brit Pigtails.** Both fully dyeable with
+  two color channels (main hair + accent). Staff-only in the wardrobe for
+  now — they'll reach everyone once clothing can be bought.
+
 ## 2026-08-21 — Crossing paths looks right
 
 ### Fixed
