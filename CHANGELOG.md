@@ -14,15 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
-## 2026-08-22 — Walking together, exactly
+## 2026-08-22 — See-through settings
 
-### Fixed
+### Added
 
-- **Walking stacked with another player is now pixel-perfect.** When you and
-  another player travel the same path on the same tile, your avatars lock to
-  the exact same spot every frame instead of slowly drifting into alignment
-  over a few tiles. The lock releases the moment either of you stops or
-  turns off the shared path.
+- **Interface opacity is yours to set.** Next to the UI color picker,
+  a new slider with five stops controls how solid the dark interface
+  surfaces are — slide down to see more of the room through your HUDs,
+  drawer and toolbars. Saves to your account like the color scheme.
 
 ## 2026-08-22 — Targets stick around
 
