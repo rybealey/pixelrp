@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Frosted glass
+
+### Changed
+
+- **The interface got a subtle frosted-glass look.** The customizable dark
+  panels — HUDs, drawer, purse, toolbars and friends — now softly blur the
+  room behind them. Pairs especially well with a lower UI opacity.
+
 ## 2026-08-22 — Walking together, smoothly
 
 ### Fixed
