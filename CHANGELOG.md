@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Targeting works with click-through
+
+### Fixed
+
+- **Click-through no longer blocks targeting.** With click-through enabled,
+  clicking another player now sets them as your HUD target while still
+  walking you to the exact tile you clicked — and still without opening
+  their menu or showing their name tag.
+
 ## 2026-08-22 — Snappier starts near walkers
 
 ### Changed
