@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Knocked out at zero health
+
+### Added
+
+- **Hitting 0 health knocks you out.** Your avatar drops to the floor and
+  lies there frozen — no walking, no getting up — until someone brings your
+  health back above zero. Being knocked out survives relogging, so there's
+  no escaping it by signing out.
+
 ## 2026-08-22 — Target shorthand in commands
 
 ### Added
