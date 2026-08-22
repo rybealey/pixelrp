@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Walking together, smoothly
+
+### Fixed
+
+- **Walking stacked with another player aligns cleanly.** When you and
+  another player travel the same path on the same tile, their avatar now
+  eases onto your track over a quarter second and then matches your
+  position exactly — no snap when it engages, no snap when either of you
+  breaks off. Your own avatar's movement is never touched.
+
 ## 2026-08-22 — See-through settings
 
 ### Added
