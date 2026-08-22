@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Targets stick around
+
+### Changed
+
+- **Your target stays targeted.** Clicking the floor or furniture no longer
+  clears your HUD target — it now persists until you pick a new target,
+  close it with the ✕ on the target HUD, or the player leaves the room.
+
 ## 2026-08-22 — Targeting works with click-through
 
 ### Fixed
