@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — The Backpack
+
+### Added
+
+- **The drawer's Inventory button opens your Backpack.** Weapon and armor
+  slots up top, ten carry slots below — the RP item system that fills them
+  is on its way.
+
 ## 2026-08-22 — Merging mid-stride
 
 ### Fixed
