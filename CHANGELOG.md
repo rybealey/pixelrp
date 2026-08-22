@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Lightning strikes
+
+### Added
+
+- **Staff can knock a player out on the spot.** A bolt of lightning drops
+  the target to zero health instantly — they collapse where they stand,
+  announced to the room with an emote shout.
+
 ## 2026-08-22 — A prettier goodbye
 
 ### Changed
