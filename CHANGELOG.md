@@ -14,6 +14,20 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Make it yours
+
+### Added
+
+- **A real Settings window.** The gear in the side drawer now opens a
+  multi-tab settings window — General, Social, Roleplay, Interface and
+  System. Most tabs are still being furnished; more settings land soon.
+- **Pick your interface color.** Under Interface you'll find eight color
+  schemes — Charcoal, Midnight, Ocean, Forest, Plum, Wine, Ember and
+  Slate — that recolor the dark interface everywhere: HUDs, side drawer
+  (icons included), purse, room tools, chat bar, name tags and more. Your
+  choice saves to your account and follows you between sessions and
+  devices.
+
 ## 2026-08-22 — Lightning strikes
 
 ### Added
