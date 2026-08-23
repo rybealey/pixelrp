@@ -14,6 +14,19 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-23 — The backpack comes alive
+
+### Added
+
+- **Consumable items are here — starting with the Passive Smoothie.** Items
+  now appear in your Backpack with their own icons, stack together with a
+  count badge, and can be used with a single click. Drinking a Passive
+  Smoothie announces it to the room and grants passive status for one hour
+  of online play — with a whisper each minute counting down how long you
+  have left.
+- **Staff can hand out items.** A new `:spawn` command places an item
+  directly into a player's backpack.
+
 ## 2026-08-22 — Profiles take shape
 
 ### Added
