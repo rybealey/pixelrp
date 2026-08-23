@@ -16,6 +16,13 @@ any heading with nothing under it).
 
 ## 2026-08-23 — The backpack comes alive
 
+### Changed
+
+- **The PASSIVE badge means it now.** The HUD chip next to your name only
+  appears while you actually hold passive status (from a Passive Smoothie),
+  showing up the moment you drink one and vanishing when the hour runs out.
+  AGGRESSIVE still takes over whenever your aggression is up.
+
 ### Added
 
 - **Consumable items are here — starting with the Passive Smoothie.** Items
