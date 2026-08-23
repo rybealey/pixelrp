@@ -16,8 +16,17 @@ any heading with nothing under it).
 
 ## 2026-08-23 — The backpack comes alive
 
+### Fixed
+
+- **The shop search actually finds things now.** Searching the furni shop
+  used to come back empty no matter what you typed. Type a name — even a
+  multi-word one like "gray sofa" — and matching items appear with working
+  previews, prices and Buy buttons.
+
 ### Changed
 
+- **The Diamonds button moved into the toolbar.** It now lives at the
+  bottom right, just left of the friends list, instead of up in the purse.
 - **The loading screen joined the city.** Loading into the hotel now shows
   the same pixel-city skyline as the landing view, with the animated
   PixelRP logo front and center instead of the old panel artwork.
