@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — Profiles take shape
+
+### Added
+
+- **Click a HUD portrait to open a profile.** Your own portrait opens your
+  profile; your target's portrait opens theirs. The new profile window
+  shows identity, combat and farming levels, employment, gang and an RP
+  stat sheet — all placeholder numbers until those systems go live.
+
 ## 2026-08-22 — The website wears the brand
 
 ### Changed
