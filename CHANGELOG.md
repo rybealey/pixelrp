@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-22 — The website wears the brand
+
+### Changed
+
+- **Website colors are PixelRP colors now.** The gold accents became brand
+  magenta, action buttons went sunset orange, dark mode is a warm
+  plum-black instead of slate gray, and light mode surfaces carry a soft
+  cream cast — matching the hotel's pixel-art identity in both modes.
+
 ## 2026-08-22 — Fresh drops for staff
 
 ### Added
