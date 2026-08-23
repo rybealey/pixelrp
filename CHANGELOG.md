@@ -22,6 +22,9 @@ any heading with nothing under it).
   profile; your target's portrait opens theirs. The new profile window
   shows identity, combat and farming levels, employment, gang and an RP
   stat sheet — all placeholder numbers until those systems go live.
+- **The old profile window is retired.** Every way of opening a profile —
+  avatar menus, the infostand, friends and messenger, group members —
+  now opens the new RP profile instead.
 
 ## 2026-08-22 — The website wears the brand
 
