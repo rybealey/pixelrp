@@ -18,6 +18,9 @@ any heading with nothing under it).
 
 ### Changed
 
+- **The infostand dresses to match.** When you select a player, the panel
+  behind their sprite and their bio line now carry a subtle transparency
+  and take on your chosen UI Color instead of flat gray.
 - **The PASSIVE badge means it now.** The HUD chip next to your name only
   appears while you actually hold passive status (from a Passive Smoothie),
   showing up the moment you drink one and vanishing when the hour runs out.
