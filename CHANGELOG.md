@@ -18,6 +18,9 @@ any heading with nothing under it).
 
 ### Changed
 
+- **The loading screen joined the city.** Loading into the hotel now shows
+  the same pixel-city skyline as the landing view, with the animated
+  PixelRP logo front and center instead of the old panel artwork.
 - **The infostand dresses to match.** When you select a player, the panel
   behind their sprite and their bio line now carry a subtle transparency
   and take on your chosen UI Color instead of flat gray.
