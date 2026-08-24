@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-24 — Color your name
+
+### Added
+
+- **Pick a color for your username.** Head to Settings → Social → Username →
+  Color and choose from 20 shades. Your name shows up in that color inside
+  your chat bubbles — everyone in the room sees it — and it sticks between
+  visits. Black is the default; pick it again any time to go back to normal.
+
 ## 2026-08-24 — A new bubble for staff
 
 ### Added
