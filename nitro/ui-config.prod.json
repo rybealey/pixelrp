@@ -541,6 +541,13 @@
             "isSystemStyle": false,
             "isHcOnly": true,
             "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 40,
+            "minRank": 5,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
         }
     ],
     "camera.available.effects": [
