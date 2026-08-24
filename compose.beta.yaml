@@ -1,0 +1,58 @@
+# Beta overlay: a full second hotel at beta.pixelrp.co off the `beta` branch,
+# with its own database, volumes and network — safe to break, refreshed from
+# prod on demand (docker/beta/refresh-from-prod.sh).
+#
+#   docker compose -p pixelrp-beta -f compose.yaml -f compose.prod.yaml -f compose.beta.yaml up -d
+#
+# ALWAYS pass -p pixelrp-beta: the project name prefixes every volume and
+# network, which is what keeps beta's state separate from prod's. Without it
+# this overlay would attach to (and clobber) the live hotel's resources.
+#
+# Host nginx additions live in docker/host/pixelrp-beta.nginx.conf:
+#   https://beta.pixelrp.co      -> 127.0.0.1:8081  (beta web container)
+#   wss://beta.pixelrp.co:2096   -> 127.0.0.1:12097 (beta emulator socket)
+
+networks:
+  pixelrp:
+    ipam:
+      config:
+        # Prod owns 172.28.0.0/16; two bridge networks cannot share a subnet.
+        - subnet: 172.29.0.0/16
+
+services:
+  db:
+    networks:
+      pixelrp:
+        ipv4_address: 172.29.0.10
+
+  emulator:
+    ports: !override
+      - "127.0.0.1:12097:${NITRO_PORT}"
+    environment:
+      # Rejects non-staff (rank < 5) at SSO login — the beta hotel is a
+      # staff-only testing ground.
+      STAFF_ONLY_LOGIN: "1"
+    networks:
+      pixelrp:
+        ipv4_address: 172.29.0.30
+
+  cms:
+    environment:
+      APP_URL: https://beta.pixelrp.co
+      # Must match THIS project's subnet or Laravel refuses the forwarded
+      # headers and every visitor collapses into one IP bucket.
+      TRUSTED_PROXIES: "172.29.0.0/16"
+    networks:
+      pixelrp:
+        ipv4_address: 172.29.0.20
+
+  web:
+    ports: !override
+      - "127.0.0.1:8081:80"
+    networks:
+      pixelrp:
+        ipv4_address: 172.29.0.40
+
+  bot:
+    # No Claude bot in beta — it would double-run against the shared account.
+    profiles: ["disabled"]
