@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-24 — A badge for your name
+
+### Added
+
+- **Put an icon before your name in chat.** Settings → Social → Username now
+  has an Icon picker (and an Icon Color to match). Pick one and it shows as
+  `[ icon ]` in front of your name in chat bubbles and history for everyone in
+  the room; pick the X to remove it. Your choice sticks between visits.
+
 ## 2026-08-24 — Color your name
 
 ### Added
