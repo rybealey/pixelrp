@@ -59,7 +59,9 @@ jobs:
             echo "::warning::DEPLOY_HOST_KEY not set — trusting the host key on first use for this run only."
             ssh-keyscan -p "$DEPLOY_PORT" -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
           fi
-          printf 'Host vps\n  HostName %s\n  User %s\n  Port %s\n  IdentityFile ~/.ssh/id_deploy\n  StrictHostKeyChecking yes\n' \
+          # Keepalives: without them a dropped connection leaves the step
+          # hanging silently until the 6h job timeout instead of failing.
+          printf 'Host vps\n  HostName %s\n  User %s\n  Port %s\n  IdentityFile ~/.ssh/id_deploy\n  StrictHostKeyChecking yes\n  ServerAliveInterval 15\n  ServerAliveCountMax 4\n' \
             "$DEPLOY_HOST" "$DEPLOY_USER" "$DEPLOY_PORT" >> ~/.ssh/config
 
       - name: Upload client and pull beta branch
@@ -107,6 +109,13 @@ jobs:
           cd "$DEPLOY_PATH"
           COMPOSE="docker compose -p pixelrp-beta -f compose.yaml -f compose.prod.yaml -f compose.beta.yaml"
           $COMPOSE build emulator cms 2>&1 | tail -3
+          # Always restart the emulator, even when its image is unchanged
+          # (client-only deploys): the READY wait below reads the log since
+          # container start, and on a long-lived container the boot line has
+          # rotated out of the capped log window - the wait can never pass.
+          # Prod's deploy restarts the emulator every time (backup step), so
+          # this keeps beta's semantics identical.
+          $COMPOSE stop emulator
           $COMPOSE stop cms
           $COMPOSE run --rm --no-deps -T cms \
             sh -c 'cp -a /opt/cms-public/. /var/www/html/public/' < /dev/null
@@ -128,10 +137,13 @@ jobs:
           cid=$($COMPOSE ps -q emulator)
           started=$(docker inspect -f '{{.State.StartedAt}}' "$cid")
           deadline=$((SECONDS + 300))
-          until docker logs --since "$started" "$cid" 2>&1 | grep -qF 'EMULATOR -> READY'; do
+          # timeout + --tail bound each probe: an unresponsive daemon or a
+          # log being flooded faster than it can be read must trip the
+          # deadline, not hang the step (the 2026-08-24 stall).
+          until timeout 20 docker logs --since "$started" --tail 500 "$cid" 2>&1 | grep -qF 'EMULATOR -> READY'; do
             if [ "$SECONDS" -ge "$deadline" ]; then
               echo "::error::Beta emulator did not report READY within 300s"
-              docker logs --since "$started" "$cid" 2>&1 | tail -30
+              timeout 20 docker logs --since "$started" --tail 30 "$cid" 2>&1 || true
               exit 1
             fi
             sleep 5
