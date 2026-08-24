@@ -24,6 +24,20 @@ echo "dump size: $(du -h "$dump" | cut -f1)"
 echo "== Stopping beta emulator/cms =="
 (cd "$BETA" && $BETA_COMPOSE stop emulator cms bot 2>/dev/null || true)
 
+# A fresh db container spends minutes seeding the base SQL before the real
+# server listens on TCP; dropping the schema mid-init corrupts the data
+# dictionary (MySQL error 3681). The healthcheck pings over TCP, so healthy
+# means init is genuinely done.
+echo "== Waiting for the beta database to be ready =="
+deadline=$((SECONDS + 600))
+until [ "$(docker inspect -f '{{.State.Health.Status}}' pixelrp-beta-db-1 2>/dev/null)" = "healthy" ]; do
+  if [ "$SECONDS" -ge "$deadline" ]; then
+    echo "beta db did not become healthy within 10 minutes" >&2
+    exit 1
+  fi
+  sleep 5
+done
+
 echo "== Importing into the beta database =="
 (cd "$BETA" && $BETA_COMPOSE exec -T db \
   sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -uroot -e "DROP DATABASE IF EXISTS \`$MYSQL_DATABASE\`; CREATE DATABASE \`$MYSQL_DATABASE\` CHARACTER SET utf8mb4;"')
