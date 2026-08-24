@@ -86,8 +86,9 @@ additions). Ids are permanent and carry into phase A.
 - `client/src/assets/images/chat/chatbubbles/bubble_40.png` and
   `bubble_40_pointer.png`.
 - `&.bubble-40 { ... }` block in `ChatWidgetView.scss`, mirroring the stock
-  pattern (both the in-room bubble section and the selector-preview section —
-  the file defines each style twice).
+  pattern. One block only: the style selector's preview reuses the same
+  `.chat-bubble.bubble-N` classes, and the file's trailing `.chat-bubble-icon`
+  section is dead code with no consumer — it is not extended.
 - `chat.styles` config entry `{ "styleId": 40, "minRank": 5,
   "isSystemStyle": false, "isHcOnly": false, "isAmbassadorOnly": false }` in
   every tracked ui-config copy that carries the array.
