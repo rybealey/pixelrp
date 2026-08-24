@@ -43,6 +43,9 @@ git submodule update --init emulator cms
 # 2. Environment files (same secrets as prod; compose overlay changes the rest)
 cp /opt/pixelrp/.env /opt/pixelrp-beta/.env
 cp /opt/pixelrp/cms/.env /opt/pixelrp-beta/cms/.env
+# php-fpm runs as www-data - a root-umask 600 copy reads as "no .env" to
+# Laravel (MissingAppKeyException on every page).
+chmod 644 /opt/pixelrp-beta/cms/.env
 
 # 3. Game assets + client configs from prod
 rsync -a /opt/pixelrp/nitro/ /opt/pixelrp-beta/nitro/
@@ -76,3 +79,6 @@ manually) to build and start the full stack.
   "Handshake Failed".
 - The refresh script wipes beta's database. Anything created only in beta is
   lost on refresh — that is the point.
+- A fresh beta db container spends minutes seeding before MySQL listens on
+  TCP; the refresh script waits for the container healthcheck before touching
+  the schema (dropping mid-init corrupts the data dictionary, MySQL 3681).
