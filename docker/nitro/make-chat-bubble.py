@@ -110,6 +110,10 @@ after the last stock `&.bubble-38` block):
                 margin-left: 20px;
             }}
 
+            .user-container {{
+                display: none;
+            }}
+
             .pointer {{
                 background: url('@/assets/images/chat/chatbubbles/bubble_{args.id}_pointer.png');
                 width: {pointer.width}px;

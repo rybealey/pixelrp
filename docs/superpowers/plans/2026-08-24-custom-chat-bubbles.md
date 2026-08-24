@@ -392,7 +392,7 @@ From the plus repo root:
 
 ```bash
 docker/nitro/build-client.sh
-grep -c "bubble-40" nitro/client/assets/*.css
+grep -c "bubble-40" nitro/client/src/assets/*.css
 ```
 
 Expected: build succeeds; grep finds at least 1 match.
@@ -465,7 +465,7 @@ docker compose exec db sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" pixelrp -e "
 
 Expected: the SELECT prints `40  pixelrp_custom_1  mod_tool`.
 
-If the emulator is running, hot-reload styles from any staff account in-game with `:update chat_styles` (permission `command_reload_styles`); otherwise the row loads at next emulator boot — note which applies in the handoff message.
+If the emulator is running, hot-reload styles from any staff account in-game with `:update chat_styles` (permission `command_update_chat_styles`); otherwise the row loads at next emulator boot — note which applies in the handoff message.
 
 - [ ] **Step 4: CHANGELOG entry**
 
@@ -496,9 +496,9 @@ git commit -m "feat: custom chat bubble style 40 - staff-gated config + changelo
 
 ```bash
 # CSS shipped in the built bundle
-grep -c "bubble-40" nitro/client/assets/*.css
+grep -c "bubble-40" nitro/client/src/assets/*.css
 # assets shipped
-ls nitro/client/assets | grep -i "bubble_40" || grep -rl "bubble_40" nitro/client/assets | head -2
+ls nitro/client/src/assets | grep -i "bubble_40" || grep -rl "bubble_40" nitro/client/src/assets | head -2
 # served config has the entry
 python3 -c "import json; print([s for s in json.load(open('nitro/client/ui-config.json'))['chat.styles'] if s['styleId'] == 40])"
 # DB row present
@@ -539,7 +539,7 @@ Update `.pointer` `width`/`height`/`bottom` in the `&.bubble-40` block to the pr
 
 ```bash
 docker/nitro/build-client.sh
-grep -c "bubble-40" nitro/client/assets/*.css
+grep -c "bubble-40" nitro/client/src/assets/*.css
 ```
 
 Expected: build succeeds, grep ≥ 1.
