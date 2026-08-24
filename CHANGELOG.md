@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-24 — A new bubble for staff
+
+### Added
+
+- **A brand-new chat bubble style is being tested.** Staff members will spot
+  an extra bubble design at the end of the chat style picker — a dark
+  "Pixel City Neon" look. It's staff-only while we test; if all goes well,
+  more custom bubbles (and ways for everyone to unlock them) come later.
+
 ## 2026-08-23 — The backpack comes alive
 
 ### Fixed
