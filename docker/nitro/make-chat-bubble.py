@@ -106,14 +106,6 @@ after the last stock `&.bubble-38` block):
             border-image-width: {b}px {b}px {b}px {b}px;
             border-image-outset: 0px 0px 0px 0px;
 
-            .chat-content {{
-                margin-left: 20px;
-            }}
-
-            .user-container {{
-                display: none;
-            }}
-
             .pointer {{
                 background: url('@/assets/images/chat/chatbubbles/bubble_{args.id}_pointer.png');
                 width: {pointer.width}px;

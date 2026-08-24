@@ -22,6 +22,13 @@ any heading with nothing under it).
   an extra bubble design at the end of the chat style picker — a dark
   "Pixel City Neon" look. It's staff-only while we test; if all goes well,
   more custom bubbles (and ways for everyone to unlock them) come later.
+- **A second test bubble joins the picker.** A soft cream-and-pink pixel
+  frame, also staff-only for now.
+
+### Changed
+
+- **The test bubbles now show your face.** Both custom bubbles display your
+  avatar's head next to your name, just like the classic bubbles do.
 
 ## 2026-08-23 — The backpack comes alive
 
