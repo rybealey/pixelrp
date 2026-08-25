@@ -54,6 +54,12 @@ any heading with nothing under it).
 - **Gallery is now Photos, and it's real.** Every photo you save shows up
   in an iOS-style grid with a full-screen viewer. Shots you publish to the
   website's photo feed get a little "shared" mark.
+- **The photo viewer grew up.** Photos now fill the whole screen edge to
+  edge — tap the photo to hide the controls and just look. The overlay
+  shows when it was taken, which shot you're on, and whether it's shared,
+  with arrows to flick through. You can delete a photo (with an
+  are-you-sure sheet — prints you own stay safe), or hit crop to zoom,
+  drag to reframe, and save the edit back to your library.
 
 ### Changed
 
