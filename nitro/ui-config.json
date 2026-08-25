@@ -555,6 +555,13 @@
             "isSystemStyle": false,
             "isHcOnly": false,
             "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 42,
+            "minRank": 5,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
         }
     ],
     "camera.available.effects": [
