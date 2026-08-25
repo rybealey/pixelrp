@@ -61,6 +61,12 @@ any heading with nothing under it).
   are-you-sure sheet — prints you own stay safe), or hit crop to zoom,
   drag to reframe, and save the edit back to your library.
 
+- **Arrange your home screen.** Click-hold an app icon and drag it where
+  you want it — swap grid spots, pull apps into the dock (it holds four)
+  or back out. Your layout sticks between visits. The pinned grid in
+  Messages works the same way: drag your pinned friends into whatever
+  order you like, and it stays put.
+
 ### Changed
 
 - **The classic friends list is retired.** The old friends window and
