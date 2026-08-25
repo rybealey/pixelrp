@@ -50,6 +50,15 @@ echo "== Importing into the beta database =="
   sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" exec mysql -uroot "$MYSQL_DATABASE"' \
   <<< "UPDATE users SET online = '0', auth_ticket = ''; UPDATE server_status SET users_online = 0;") || true
 
+# Camera URLs come over pointing at prod: repoint the base setting and every
+# stored photo URL (camera_web rows + photo-furni extra_data) at the beta
+# host, or the phone's Photos app / photo furni render broken images.
+(cd "$BETA" && $BETA_COMPOSE exec -T db \
+  sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" exec mysql -uroot "$MYSQL_DATABASE"' \
+  <<< "UPDATE server_settings SET value = REPLACE(value, '//pixelrp.co/', '//beta.pixelrp.co/') WHERE \`key\` = 'camera.url.base';
+UPDATE camera_web SET url = REPLACE(url, '//pixelrp.co/', '//beta.pixelrp.co/');
+UPDATE items SET extra_data = REPLACE(extra_data, '//pixelrp.co/', '//beta.pixelrp.co/') WHERE extra_data LIKE '%c_images/camera%';") || true
+
 if [ "${1:-}" = "--assets" ]; then
   echo "== Syncing game assets (prod -> beta) =="
   # nitro/assets only — nitro/client (the built client + its VPS-only
