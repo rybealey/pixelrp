@@ -61,6 +61,13 @@ any heading with nothing under it).
   are-you-sure sheet — prints you own stay safe), or hit crop to zoom,
   drag to reframe, and save the edit back to your library.
 
+- **Settings is open — starting with Appearance.** The Settings app now
+  works: pick Light or Dark from the two mini previews, or flip on
+  Automatic to follow your device's appearance (it switches live when
+  your system does). Dark mode re-skins every phone app — Messages,
+  Contacts, Photos, the lot — in a deep plum-black. Your choice sticks
+  between visits, and it only changes the phone; the rest of the hotel
+  stays exactly as it is.
 - **Photos in chat are first-class.** Tap a photo in a conversation to view
   it full screen; received photos have a little save button beside them
   (and a Save to Photos button in the viewer) that files a copy into your
