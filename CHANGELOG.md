@@ -14,6 +14,36 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-25 — Your phone is here
+
+### Added
+
+- **Everyone gets a phone.** Tap the phone on the toolbar (where the friends
+  button used to be) and it opens right on screen — wallpaper, app grid and
+  all. Drag it around by the top edge; the side button or the home bar puts
+  it away.
+- **Messages.** Your DMs now live in a proper messaging app: chat bubbles,
+  a New Message composer, and a conversation list you can search. Drag a
+  conversation left to pin, mute or delete it — pinned friends sit in their
+  own grid up top, and muted chats stay quiet. Pins and mutes are remembered
+  between visits.
+- **Contacts.** Your friends list moved into the phone too: friend requests
+  wait at the top, friends are listed A–Z with online dots, and each row has
+  message / call / remove buttons (remove asks for a second tap, so no
+  accidental break-ups). Search for players at the bottom to send new friend
+  requests.
+- **Calls.** You can ring a friend on PixelRP Audio. Nobody will pick up —
+  voice hasn't been invented in the city yet — but it felt rude not to let
+  you try.
+- **Unread badges that make sense.** The Messages app badge (and the toolbar
+  phone badge) only counts unread messages from your friends — muted
+  conversations and group chats don't nag you.
+
+### Changed
+
+- **The classic friends list is retired.** The old friends window and
+  messenger popup are gone; everything they did now happens on the phone.
+
 ## 2026-08-24 — A badge for your name
 
 ### Added
