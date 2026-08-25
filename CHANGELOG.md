@@ -14,6 +14,106 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-25 — Your phone is here
+
+### Added
+
+- **A bow for your name.** There's a new two-tone pixel bow in
+  Settings > Social > Username > Icon. Pick it and it sits in front of your
+  username in chat, tinted to match your icon colour.
+- **Everyone gets a phone.** Tap the phone button on the toolbar and it opens
+  right on screen — wallpaper, app grid and all. Click and hold the dynamic
+  island (the black pill up top) to drag it around; the side button or the
+  home bar puts it away.
+- **Messages.** Your DMs now live in a proper messaging app: chat bubbles,
+  a New Message composer, and a conversation list you can search. Drag a
+  conversation left to pin, mute or delete it — pinned friends sit in their
+  own grid up top, and muted chats stay quiet. Pins and mutes are remembered
+  between visits.
+- **Contacts.** Your friends list moved into the phone too: friend requests
+  wait at the top, friends are listed A–Z with online dots, and each row has
+  message / call / remove buttons (remove asks for a second tap, so no
+  accidental break-ups). Search for players at the bottom to send new friend
+  requests.
+- **Calls.** You can ring a friend on PixelRP Audio. Nobody will pick up —
+  voice hasn't been invented in the city yet — but it felt rude not to let
+  you try.
+- **Unread badges that make sense.** The Messages app badge (and the toolbar
+  phone badge) only counts unread messages from your friends — muted
+  conversations and group chats don't nag you.
+- **Delivered and read receipts.** Under your latest message you'll see
+  Sent, then Delivered the moment it reaches your friend (including when
+  your messages catch up to them at login), then "Read at 14:53" once they
+  open the conversation. Receipts are live — they show while you're both
+  around, not dug up from the archives.
+- **The Camera works — and your phone screen is the viewfinder.** Open the
+  Camera app in a room and the screen turns see-through: whatever's behind
+  the phone is your shot. Drag the phone around to frame it, hit the
+  shutter, then Retake or Use Photo. Saved photos also land in your
+  inventory as printable wall photos.
+- **Gallery is now Photos, and it's real.** Every photo you save shows up
+  in an iOS-style grid with a full-screen viewer. Shots you publish to the
+  website's photo feed get a little "shared" mark.
+- **The photo viewer grew up.** Photos now fill the whole screen edge to
+  edge — tap the photo to hide the controls and just look. The overlay
+  shows when it was taken, which shot you're on, and whether it's shared,
+  with arrows to flick through. You can delete a photo (with an
+  are-you-sure sheet — prints you own stay safe), or hit crop to zoom,
+  drag to reframe, and save the edit back to your library.
+
+- **Photos in chat are first-class.** Tap a photo in a conversation to view
+  it full screen; received photos have a little save button beside them
+  (and a Save to Photos button in the viewer) that files a copy into your
+  own library.
+- **Grab the phone by its edge.** The orange border now drags the phone
+  around, just like the dynamic island.
+- **Share photos in Messages.** The + button next to the message box opens
+  the attach menu — pick Share Photo, tap up to six shots from your
+  library (numbered in the order you pick them), and they land in the
+  conversation as photo bubbles for both of you. Conversation previews
+  say "Shared a photo" instead of showing gibberish.
+- **Hold the side button for a screenshot.** A quick press still puts the
+  phone away, but holding it flashes the screen and snaps whatever your
+  phone is showing — straight into your Photos library, ready to view,
+  edit or share. Works anywhere, no room needed.
+- **Arrange your home screen.** Click-hold an app icon and drag it where
+  you want it — swap grid spots, pull apps into the dock (it holds four)
+  or back out. Your layout sticks between visits. The pinned grid in
+  Messages works the same way: drag your pinned friends into whatever
+  order you like, and it stays put.
+
+### Changed
+
+- **The classic friends list is retired.** The old friends window and
+  messenger popup are gone; everything they did now happens on the phone.
+- **Pinned friends are just their head now.** In Messages, the coloured
+  square behind each pinned friend is gone — it's the avatar's head on its
+  own, full and uncropped, tall hair and all.
+
+### Fixed
+
+- **Shouted hearts are hearts again.** The special chat symbols (like `|`
+  turning into a heart) only worked when you talked — shouting showed the
+  raw characters instead. Symbols now convert no matter how loud you are.
+
+## 2026-08-24 — A badge for your name
+
+### Added
+
+- **Put an icon before your name in chat.** Settings → Social → Username now
+  has an Icon picker (and an Icon Color to match). Pick one and it shows as
+  `[ icon ]` in front of your name in chat bubbles and history for everyone in
+  the room; pick the X to remove it. Your choice sticks between visits.
+
+## 2026-08-24 — Color your name
+
+### Added
+
+- **Pick a color for your username.** Head to Settings → Social → Username →
+  Color and choose from 20 shades. Your name shows up in that color inside
+  your chat bubbles — everyone in the room sees it — and it sticks between
+  visits. Black is the default; pick it again any time to go back to normal.
+
 ## 2026-08-24 — A new bubble for staff
 
 ### Added
