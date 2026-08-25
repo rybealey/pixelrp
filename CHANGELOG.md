@@ -61,6 +61,12 @@ any heading with nothing under it).
   are-you-sure sheet — prints you own stay safe), or hit crop to zoom,
   drag to reframe, and save the edit back to your library.
 
+- **Photos in chat are first-class.** Tap a photo in a conversation to view
+  it full screen; received photos have a little save button beside them
+  (and a Save to Photos button in the viewer) that files a copy into your
+  own library.
+- **Grab the phone by its edge.** The orange border now drags the phone
+  around, just like the dynamic island.
 - **Share photos in Messages.** The + button next to the message box opens
   the attach menu — pick Share Photo, tap up to six shots from your
   library (numbered in the order you pick them), and they land in the
