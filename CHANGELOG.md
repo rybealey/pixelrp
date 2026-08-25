@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-25 — Smoother walking
+
+### Fixed
+
+- **Walk lag and rubber-banding.** Your connection to the hotel now takes a
+  direct route instead of going through a middleman that bunched up movement
+  updates — avatars had been freezing mid-walk and then teleporting to catch
+  up, no matter how few people were online. Refresh the hotel once to get on
+  the new connection.
+
 ## 2026-08-25 — Your phone is here
 
 ### Added
