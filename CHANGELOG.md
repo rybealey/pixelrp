@@ -14,14 +14,6 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
-## 2026-08-25 — A third test bubble
-
-### Added
-
-- **A cyber-cat bubble joins the picker.** Dark navy with a cyan neon frame
-  and little cat ears, white text. Staff-only while custom bubbles are in
-  testing, like the other two.
-
 ## 2026-08-24 — A badge for your name
 
 ### Added
