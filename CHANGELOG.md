@@ -65,6 +65,9 @@ any heading with nothing under it).
 
 - **The classic friends list is retired.** The old friends window and
   messenger popup are gone; everything they did now happens on the phone.
+- **Pinned friends show their whole head.** In Messages, the heads on your
+  pinned tiles are no longer cropped to the tile — tall hair and big
+  headgear now pop past the edges instead of getting trimmed.
 
 ### Fixed
 
