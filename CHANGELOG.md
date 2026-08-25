@@ -18,6 +18,9 @@ any heading with nothing under it).
 
 ### Added
 
+- **A bow for your name.** There's a new two-tone pixel bow in
+  Settings > Social > Username > Icon. Pick it and it sits in front of your
+  username in chat, tinted to match your icon colour.
 - **Everyone gets a phone.** Tap the phone button on the toolbar and it opens
   right on screen — wallpaper, app grid and all. Click and hold the dynamic
   island (the black pill up top) to drag it around; the side button or the
