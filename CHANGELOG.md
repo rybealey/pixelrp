@@ -66,6 +66,12 @@ any heading with nothing under it).
 - **The classic friends list is retired.** The old friends window and
   messenger popup are gone; everything they did now happens on the phone.
 
+### Fixed
+
+- **Shouted hearts are hearts again.** The special chat symbols (like `|`
+  turning into a heart) only worked when you talked — shouting showed the
+  raw characters instead. Symbols now convert no matter how loud you are.
+
 ## 2026-08-24 — A badge for your name
 
 ### Added
