@@ -18,10 +18,10 @@ any heading with nothing under it).
 
 ### Added
 
-- **Everyone gets a phone.** Tap the phone on the toolbar (where the friends
-  button used to be) and it opens right on screen — wallpaper, app grid and
-  all. Drag it around by the top edge; the side button or the home bar puts
-  it away.
+- **Everyone gets a phone.** Tap the phone button on the toolbar and it opens
+  right on screen — wallpaper, app grid and all. Click and hold the dynamic
+  island (the black pill up top) to drag it around; the side button or the
+  home bar puts it away.
 - **Messages.** Your DMs now live in a proper messaging app: chat bubbles,
   a New Message composer, and a conversation list you can search. Drag a
   conversation left to pin, mute or delete it — pinned friends sit in their
