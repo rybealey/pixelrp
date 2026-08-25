@@ -46,6 +46,14 @@ any heading with nothing under it).
   your messages catch up to them at login), then "Read at 14:53" once they
   open the conversation. Receipts are live — they show while you're both
   around, not dug up from the archives.
+- **The Camera works — and your phone screen is the viewfinder.** Open the
+  Camera app in a room and the screen turns see-through: whatever's behind
+  the phone is your shot. Drag the phone around to frame it, hit the
+  shutter, then Retake or Use Photo. Saved photos also land in your
+  inventory as printable wall photos.
+- **Gallery is now Photos, and it's real.** Every photo you save shows up
+  in an iOS-style grid with a full-screen viewer. Shots you publish to the
+  website's photo feed get a little "shared" mark.
 
 ### Changed
 
