@@ -20,8 +20,9 @@ any heading with nothing under it).
 
 - **A puffle for your shoulder.** A new dyeable shoulder-riding puffle in the
   jacket tab — it perches on your shoulder, waddles along when you walk, and
-  when you lie down it hops off to snack on some Puffle O's. Staff-only in
-  the wardrobe for now, like the Puffle Hat it pairs with.
+  when you lie down it hops off to snack on some Puffle O's. Two color
+  channels (body + hair tuft), matching the Puffle Hat it pairs with.
+  Staff-only in the wardrobe for now.
 - **A bow for your name.** There's a new two-tone pixel bow in
   Settings > Social > Username > Icon. Pick it and it sits in front of your
   username in chat, tinted to match your icon colour.
