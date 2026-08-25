@@ -61,6 +61,15 @@ any heading with nothing under it).
   are-you-sure sheet — prints you own stay safe), or hit crop to zoom,
   drag to reframe, and save the edit back to your library.
 
+- **Share photos in Messages.** The + button next to the message box opens
+  the attach menu — pick Share Photo, tap up to six shots from your
+  library (numbered in the order you pick them), and they land in the
+  conversation as photo bubbles for both of you. Conversation previews
+  say "Shared a photo" instead of showing gibberish.
+- **Hold the side button for a screenshot.** A quick press still puts the
+  phone away, but holding it flashes the screen and snaps whatever your
+  phone is showing — straight into your Photos library, ready to view,
+  edit or share. Works anywhere, no room needed.
 - **Arrange your home screen.** Click-hold an app icon and drag it where
   you want it — swap grid spots, pull apps into the dock (it holds four)
   or back out. Your layout sticks between visits. The pinned grid in
