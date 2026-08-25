@@ -38,6 +38,11 @@ any heading with nothing under it).
 - **Unread badges that make sense.** The Messages app badge (and the toolbar
   phone badge) only counts unread messages from your friends — muted
   conversations and group chats don't nag you.
+- **Delivered and read receipts.** Under your latest message you'll see
+  Sent, then Delivered the moment it reaches your friend (including when
+  your messages catch up to them at login), then "Read at 14:53" once they
+  open the conversation. Receipts are live — they show while you're both
+  around, not dug up from the archives.
 
 ### Changed
 
