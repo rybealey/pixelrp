@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-27 — VIP login fix
+
+### Fixed
+
+- **VIP members could get locked out.** After collecting a daily VIP
+  diamond bonus, your next login following a hotel restart could fail
+  silently and leave you stuck at the loading screen. Logins for VIP
+  members work reliably again.
+
 ## 2026-08-27 — Walking in step
 
 ### Fixed
