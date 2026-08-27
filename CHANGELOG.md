@@ -26,6 +26,10 @@ any heading with nothing under it).
 
 ### Changed
 
+- **Window tabs match your colors too.** The tab bars across the top of the
+  Shop, Navigator and Inventory windows now use the same dark strip as the
+  Settings window — tinted to your UI color scheme — instead of the fixed
+  blue bar.
 - **Click menus match your colors.** The menu that pops up when you click a
   player (or furni) now follows the UI color scheme you picked in Settings >
   Interface — including your transparency choice — instead of always being
