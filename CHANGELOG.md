@@ -18,6 +18,10 @@ any heading with nothing under it).
 
 ### Added
 
+- **Safe zones.** Room settings has a new Roleplay tab where owners set the
+  room's Zone Type — Safe or Unsafe. In a safe zone, your passive status
+  stops counting down entirely; the timer only ticks while you're in
+  unsafe rooms.
 - **The Jukebox actually plays music now.** Double-click a Jukebox and
   paste a YouTube link to queue a song for everyone in the room. While
   music plays, the jukebox itself lights up and a player slides in under
