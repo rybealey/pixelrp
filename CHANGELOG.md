@@ -14,6 +14,29 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-27 — VIP membership arrives
+
+### Added
+
+- **VIP membership.** The Diamonds Store's Store tab now sells two VIP
+  tokens - 14 days for 250 diamonds and 31 days for 500 diamonds. Redeem
+  a token from your Backpack to activate (or extend) your membership;
+  redeeming again while already VIP just stacks more days on top.
+- **What VIP gets you.** HC clothing, dances (`:dance` 1-4), and chat
+  bubbles unlock in the avatar editor, plus camera access, two extra
+  Backpack slots (11-12), a VIP badge, and a daily stipend of 5 diamonds
+  for logging in. Your purse shows a chip with your remaining VIP days -
+  click it to open the HC Center, whose button jumps straight to the
+  Diamonds Store.
+
+### Changed
+
+- **HC-style perks now require VIP.** Clothing, dances, and chat bubbles
+  that used to be free for everyone are now part of VIP membership.
+  Outfits you're already wearing aren't touched, but once VIP lapses you
+  won't be able to put HC pieces back on, dance, or use HC bubbles until
+  you buy VIP again.
+
 ## 2026-08-27 — A handier phone
 
 ### Added
