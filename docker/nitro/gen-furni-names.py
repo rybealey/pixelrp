@@ -50,12 +50,45 @@ def prettify(cn):
     return pretty or cn
 
 
+def is_placeholder(nm, cn):
+    # Habbo ships un-localized names as "<token> name" where <token> is a raw
+    # lowercase classname (foo*0 -> "foo_0 name", prizetrophy_room2*1 ->
+    # "prizetrophy_room2_g name"). Detect any lowercase-token-then-" name".
+    if not nm:
+        return True
+    if not nm.endswith(' name'):
+        return False
+    pre = nm[:-5]
+    if re.fullmatch(r'[a-z0-9_.*+\-]+', pre):     # raw classname token
+        return True
+    norm = lambda s: re.sub(r'[*_.\s]', '', s).lower()
+    return norm(pre) == norm(cn)
+
+
+def resolve(nm, cn):
+    nm = str(nm).strip()
+    if '\t' in nm or '\n' in nm:                  # data corruption in furnidata
+        nm = re.split(r'[\t\n]', nm)[0].strip()
+    return prettify(cn) if is_placeholder(nm, cn) else nm
+
+
 names = {}
 for kind in ('roomitemtypes', 'wallitemtypes'):
     for f in OFF[kind]['furnitype']:
         cn = f['classname']
-        nm = str(f.get('name', '')).strip()
-        names[cn] = nm if (nm and nm != f"{cn} name") else prettify(cn)
+        names[cn] = resolve(f.get('name', ''), cn)
+
+# Also cover legacy furniture rows that are not in the current furnidata
+# (old imports): prettify their classname so their public_name is real too.
+try:
+    for line in open('/tmp/furni_id_map.tsv'):
+        if '\t' not in line:
+            continue
+        cn = line.split('\t', 1)[0].strip()
+        if cn and cn not in names:
+            names[cn] = prettify(cn)
+except FileNotFoundError:
+    pass
 
 json.dump(names, open('/tmp/furni_names.json', 'w'), ensure_ascii=False)
 
