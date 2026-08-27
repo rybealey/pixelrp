@@ -18,6 +18,13 @@ any heading with nothing under it).
 
 ### Added
 
+- **The Jukebox actually plays music now.** When a room has a Jukebox, hit
+  the + on the music player under your wallet and paste a YouTube link to
+  queue a song for everyone in the room — the player shows what's on, who
+  queued it, and what's next, with a small video dock you can expand to
+  watch. Room owners can skip and prune the queue; the person who queued a
+  song can pull their own. First time it plays you'll need to tap "unmute"
+  — browsers insist.
 - **A music player for Jukebox rooms.** When a room has a Jukebox placed,
   a little player panel appears under your wallet showing the current song,
   artist and album, what's up next, and a volume slider. It doesn't play
