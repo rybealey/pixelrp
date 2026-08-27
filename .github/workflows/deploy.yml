@@ -240,6 +240,12 @@ jobs:
           docker compose -f compose.yaml -f compose.prod.yaml ps --format '{{.Name}} {{.State}}'
           REMOTE
 
+      # Cap the BuildKit cache so it can't balloon (it hit 54GB once because
+      # nothing pruned it). No `if:` -> runs only on a successful deploy, so a
+      # failed build keeps its cache for a fast retry. Never fails the deploy.
+      - name: Prune build cache
+        run: ssh vps 'docker builder prune -f --max-used-space 10GB || true'
+
       - name: Remove SSH key
         if: always()
         run: rm -f ~/.ssh/id_deploy
