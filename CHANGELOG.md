@@ -40,9 +40,9 @@ any heading with nothing under it).
   classic angle, and the profile now opens from their name (it underlines
   when you hover) instead of a separate icon button.
 - **Window tabs match your colors too.** The tab bars across the top of the
-  Shop, Navigator and Inventory windows now use the same dark strip as the
-  Settings window — tinted to your UI color scheme — instead of the fixed
-  blue bar.
+  Shop, Navigator, Inventory and Change Your Looks windows now use the same
+  dark strip as the Settings window — tinted to your UI color scheme —
+  instead of the fixed blue bar.
 - **Click menus match your colors.** The menu that pops up when you click a
   player (or furni) now follows the UI color scheme you picked in Settings >
   Interface — including your transparency choice — instead of always being
