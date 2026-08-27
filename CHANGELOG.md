@@ -25,10 +25,6 @@ any heading with nothing under it).
   watch. Room owners can skip and prune the queue; the person who queued a
   song can pull their own. First time it plays you'll need to tap "unmute"
   — browsers insist.
-- **A music player for Jukebox rooms.** When a room has a Jukebox placed,
-  a little player panel appears under your wallet showing the current song,
-  artist and album, what's up next, and a volume slider. It doesn't play
-  anything yet — the music itself is on its way.
 - **Bots can walk a beat.** The menu on a bot you own now has working
   "Walk Horizontally" and "Walk Vertically" options — the bot paces back
   and forth along that line, turning around when it reaches furni, a wall,
