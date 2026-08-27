@@ -14,6 +14,22 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-27 — A much bigger shop
+
+### Added
+
+- **Thousands more furni in the catalog.** The shop is now stocked with the
+  full furniture library, sorted into themed lines (Seasonal, Themed Lines,
+  Classics, Functional and more) so there is far more to browse and buy.
+
+### Changed
+
+- **Prices are all in coins now.** Duckets have been retired as a shop
+  currency, and everything in the catalog is priced in coins.
+- **The shop was reorganized.** The Furni and Staff tabs were rebuilt for a
+  cleaner, easier to browse layout. The old Club and Exchange sections were
+  removed; the furni recycler and room promotion tools are still here.
+
 ## 2026-08-27 — VIP login fix
 
 ### Fixed
