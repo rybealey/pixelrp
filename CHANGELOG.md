@@ -39,6 +39,9 @@ any heading with nothing under it).
 
 ### Changed
 
+- **Room settings slimmed down.** The ModTool tab (room mute/kick/ban rules
+  and the ban list) is gone from Room settings — city moderation runs
+  through the staff tools instead.
 - **Your motto is in the city's hands now.** The little text under your
   badges (like "Citizen") is managed by the roleplay systems, so the
   pencil-edit box in the click card is gone and motto changes are no longer
