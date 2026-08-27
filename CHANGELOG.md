@@ -14,6 +14,17 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-27 — A handier phone
+
+### Changed
+
+- **The phone is smaller.** It's been scaled down about 20% so it covers less
+  of the room while you're chatting.
+- **The phone moves freely.** You can now drag it anywhere on screen — even
+  mostly off the edge to tuck it away — instead of it snapping back whenever
+  it touched the bottom of the window. A corner always stays on screen so you
+  can grab it back.
+
 ## 2026-08-25 — Smoother walking
 
 ### Fixed
