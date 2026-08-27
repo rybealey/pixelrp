@@ -59,7 +59,8 @@ and a name. **Builders is off-limits — never read, write, or reference it.**
 
 Deterministic, in priority order:
 
-1. `classname` starts `ads_` OR `furniline == ad_sales` → **EXCLUDE** (not catalogued).
+1. `classname` starts `ads_` OR `furniline == ad_sales` OR `classname` starts `test_`
+   OR `furniline == test` → **EXCLUDE** (ad junk + Habbo internal test items).
 2. `furniline` starts `buildersclub` → **EXCLUDE** (Builders owns it).
 3. `furniline` starts `nft` → **Staff ▸ NFT**.
 4. `furniline` in {`rare`,`bonusrare`} OR `rare == true` → **Staff ▸ Rares**.
@@ -95,13 +96,22 @@ else (public furni):
 
 ### D. Names (#3)
 
-- Pull `external_flash_texts` from the 9 regional Habbo domains and merge
-  (habbo-downloader `collectAllTexts` logic) → a `<classname>_name` / `_desc` map that
-  covers items localized in some region even when `.com` shows a placeholder.
-- For every catalog-eligible furni whose name is a placeholder (`"<classname> name"`) or
-  empty: update `ExternalTexts.json` (client) and `furniture.public_name` (server), and use
-  the resolved name for `catalog_name`. Prettified-classname fallback where no region has it.
-- Re-run `rename-habbo-to-pixelrp.py` after, rsync gamedata to beta.
+Furni names live in **FurnitureData.json's `name` field** (mirrored from furnidata), NOT in
+`external_flash_texts` (that holds badge/UI strings). So the resolution order per furni is:
+
+1. **`.com` furnidata `name`** if real (covers ~11k established items with proper English names).
+2. Else **prettified classname** — strip a known line/season prefix, split on `_`/camelCase,
+   Title Case (e.g. `ranch_c26_sunset` → "Ranch Sunset"). Clean English, deterministic.
+
+Do **not** substitute other regions' names for `.com` placeholders — measured, ~173 resolve
+that way but mostly in Spanish/Finnish, worse than a clean English prettified name. The ~108
+genuinely-new seasonal items (ranch/hween 2026) have no real name anywhere yet; prettified is
+the baseline and improves automatically on a future furnidata refresh + regenerate.
+
+- Write the resolved name to `furniture.public_name` (server) and to `catalog_name` on each
+  generated `catalog_items` row. `FurnitureData.json`'s `name` is left as furnidata shipped it
+  (the client reads it, but the catalog uses `catalog_name`, and #2 already merged new entries).
+- No `catalog_name` may remain a literal `"<classname> name"` placeholder.
 
 ### E. Data model + idempotency
 
