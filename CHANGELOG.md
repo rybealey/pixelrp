@@ -14,6 +14,17 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-27 — Walking in step
+
+### Fixed
+
+- **Falling into line behind someone works again after turning around.**
+  When two people walking in single file turned around mid-walk, the one
+  now behind could shuffle along awkwardly overlapping their partner for
+  several seconds instead of settling neatly one tile back. Turning
+  around now re-forms the line right away, and a pair that had already
+  drifted into place locks in cleanly instead of never quite snapping.
+
 ## 2026-08-27 — VIP membership arrives
 
 ### Added
