@@ -28,6 +28,9 @@ any heading with nothing under it).
 - **Calm down on your own terms.** Hover the PASSIVE tag on your HUD and
   an x slides out - click it to end your passive status early. Doing so
   announces your newfound anger to the room.
+- **Staff can march you around.** A new staff command makes a player walk
+  back and forth across the room, horizontally or vertically, without
+  stopping at the walls. Walking anywhere yourself breaks the spell.
 - **Safe zones.** Room settings has a new Roleplay tab where owners set the
   room's Zone Type — Safe or Unsafe. In a safe zone, your passive status
   stops counting down entirely; the timer only ticks while you're in
