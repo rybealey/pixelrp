@@ -32,6 +32,13 @@ any heading with nothing under it).
 
 ### Changed
 
+- **Your motto is in the city's hands now.** The little text under your
+  badges (like "Citizen") is managed by the roleplay systems, so the
+  pencil-edit box in the click card is gone and motto changes are no longer
+  accepted — for anyone, by any means.
+- **A tidier click card.** Clicking a player shows their sprite from the
+  classic angle, and the profile now opens from their name (it underlines
+  when you hover) instead of a separate icon button.
 - **Window tabs match your colors too.** The tab bars across the top of the
   Shop, Navigator and Inventory windows now use the same dark strip as the
   Settings window — tinted to your UI color scheme — instead of the fixed
