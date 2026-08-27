@@ -16,6 +16,14 @@ any heading with nothing under it).
 
 ## 2026-08-27 — A handier phone
 
+### Added
+
+- **Bots can walk a beat.** The menu on a bot you own now has working
+  "Walk Horizontally" and "Walk Vertically" options — the bot paces back
+  and forth along that line, turning around when it reaches furni, a wall,
+  or another person. "Walk freely" puts it back to wandering wherever it
+  likes. The choice sticks, even after the room reloads.
+
 ### Changed
 
 - **Click menus match your colors.** The menu that pops up when you click a
