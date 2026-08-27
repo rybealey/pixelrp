@@ -18,6 +18,10 @@ any heading with nothing under it).
 
 ### Added
 
+- **A music player for Jukebox rooms.** When a room has a Jukebox placed,
+  a little player panel appears under your wallet showing the current song,
+  artist and album, what's up next, and a volume slider. It doesn't play
+  anything yet — the music itself is on its way.
 - **Bots can walk a beat.** The menu on a bot you own now has working
   "Walk Horizontally" and "Walk Vertically" options — the bot paces back
   and forth along that line, turning around when it reaches furni, a wall,
