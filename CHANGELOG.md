@@ -18,6 +18,9 @@ any heading with nothing under it).
 
 ### Added
 
+- **Smoothies are a safe-zone luxury.** Passive Smoothies can now only be
+  drunk inside a safe zone, and only at full health - the smoothie stays
+  in your backpack if the moment isn't right.
 - **Calm down on your own terms.** Hover the PASSIVE tag on your HUD and
   an x slides out - click it to end your passive status early. Doing so
   announces your newfound anger to the room.
