@@ -24,6 +24,12 @@ any heading with nothing under it).
   or another person. "Walk freely" puts it back to wandering wherever it
   likes. The choice sticks, even after the room reloads.
 
+### Fixed
+
+- **Profiles stop pretending everyone's here.** The badge on a player's
+  profile now actually shows Offline when they're offline, instead of
+  always claiming Online.
+
 ### Changed
 
 - **Window tabs match your colors too.** The tab bars across the top of the
