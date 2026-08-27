@@ -18,13 +18,14 @@ any heading with nothing under it).
 
 ### Added
 
-- **The Jukebox actually plays music now.** When a room has a Jukebox, hit
-  the + on the music player under your wallet and paste a YouTube link to
-  queue a song for everyone in the room — the player shows what's on, who
-  queued it, and what's next, with a small video dock you can expand to
-  watch. Room owners can skip and prune the queue; the person who queued a
-  song can pull their own. First time it plays you'll need to tap "unmute"
-  — browsers insist.
+- **The Jukebox actually plays music now.** Double-click a Jukebox and
+  paste a YouTube link to queue a song for everyone in the room. While
+  music plays, the jukebox itself lights up and a player slides in under
+  your wallet showing what's on and what's next, with a video dock you can
+  expand to watch, a volume slider that remembers your setting, and a
+  speaker button to mute on the spot. Room owners can skip and prune the
+  queue; the person who queued a song can pull their own. Sound plays right
+  away — a "tap to unmute" pill only appears if your browser blocks it.
 - **Bots can walk a beat.** The menu on a bot you own now has working
   "Walk Horizontally" and "Walk Vertically" options — the bot paces back
   and forth along that line, turning around when it reaches furni, a wall,
