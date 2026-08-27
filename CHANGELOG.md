@@ -18,6 +18,10 @@ any heading with nothing under it).
 
 ### Added
 
+- **The Diamonds Store opens its doors.** The diamonds button next to the
+  phone now opens the new store window. The shelves are still being
+  stocked, but the Buy Diamonds tab already works: pick an amount (100
+  diamonds per dollar) and pay by card right inside the window.
 - **Smoothies are a safe-zone luxury.** Passive Smoothies can now only be
   drunk inside a safe zone, and only at full health - the smoothie stays
   in your backpack if the moment isn't right.
