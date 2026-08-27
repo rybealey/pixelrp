@@ -18,6 +18,10 @@ any heading with nothing under it).
 
 ### Changed
 
+- **Click menus match your colors.** The menu that pops up when you click a
+  player (or furni) now follows the UI color scheme you picked in Settings >
+  Interface — including your transparency choice — instead of always being
+  blue. The two-tone button styling stays.
 - **Contacts shows who's around.** The Contacts app now lists your online
   friends in their own section at the top, with offline friends below —
   both sorted alphabetically — so you can see at a glance who's in the city
