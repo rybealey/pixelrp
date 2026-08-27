@@ -18,6 +18,10 @@ any heading with nothing under it).
 
 ### Changed
 
+- **Contacts shows who's around.** The Contacts app now lists your online
+  friends in their own section at the top, with offline friends below —
+  both sorted alphabetically — so you can see at a glance who's in the city
+  right now.
 - **The phone is smaller.** It's been scaled down about 20% so it covers less
   of the room while you're chatting.
 - **The phone moves freely.** You can now drag it anywhere on screen — even
