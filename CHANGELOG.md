@@ -61,6 +61,12 @@ any heading with nothing under it).
 - **Username chat icons.** The little icon before your name in chat, and its
   picker in Settings, have been removed. Your username colour is unchanged.
 
+### Fixed
+
+- **Windows remember their spot again.** Draggable windows now reopen where you
+  last left them, and the phone's Left / Center / Right open-position setting
+  now actually moves the phone.
+
 ## 2026-08-27 — A much bigger shop
 
 ### Added
