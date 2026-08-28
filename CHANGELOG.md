@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-28 — Photo libraries reset
+
+### Changed
+
+- **Everyone's Photos app started fresh.** All previously saved photos were
+  cleared from every player's photo library (and the city photo feed) as part
+  of upgrading how photos are stored. New shots save as usual.
+
 ## 2026-08-27 — Friend requests move to your phone
 
 ### Changed
@@ -51,6 +59,9 @@ any heading with nothing under it).
 
 ### Changed
 
+- **Phone photos skip your backpack.** Shots taken with the phone's Camera now
+  go straight into the Photos app only - they no longer drop a photo furni
+  into your inventory.
 - **The phone got a fresh coat of paint.** The status bar, dock, search box,
   chat headers and pop-up menus are now frosted glass, pinned chats sit in
   neat framed tiles, and every icon across the phone shares one clean,
