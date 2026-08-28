@@ -41,6 +41,9 @@ any heading with nothing under it).
 - **Choose where your phone opens.** Appearance has a new Left / Center / Right
   option that sets where the phone pops up on screen when you open it, and it
   remembers your choice.
+- **See when a friend is typing.** In a conversation, a little animated bubble
+  now appears while the other person is typing a reply, and disappears when
+  they send it or stop.
 
 ### Changed
 
