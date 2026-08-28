@@ -44,6 +44,10 @@ any heading with nothing under it).
 - **See when a friend is typing.** In a conversation, a little animated bubble
   now appears while the other person is typing a reply, and disappears when
   they send it or stop.
+- **Airplane Mode.** Flip Airplane Mode on in the phone's Settings and you go
+  quiet: incoming friend requests are hidden, and any DM someone sends you
+  won't arrive - they just see a red "Not Delivered" where the receipt would
+  be. Turn it off to come back. Your choice is saved.
 
 ### Changed
 
