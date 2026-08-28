@@ -28,8 +28,9 @@ any heading with nothing under it).
 ### Changed
 
 - **The phone got a fresh coat of paint.** The status bar, dock, search box,
-  chat headers and pop-up menus are now frosted glass, and pinned chats sit in
-  neat framed tiles.
+  chat headers and pop-up menus are now frosted glass, pinned chats sit in
+  neat framed tiles, and every icon across the phone shares one clean,
+  two-tone icon set.
 - **A full home screen of apps.** The phone's home screen now has the complete,
   colourful app lineup - Phone, Messages, Camera, App Store, Contacts, Photos,
   Stocks, Music, Wallet, Calendar, Tasks, Notes, Weather, News, Translate and
