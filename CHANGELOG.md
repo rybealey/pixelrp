@@ -14,6 +14,25 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-28 — Photos gets Collections
+
+### Added
+
+- **A Collections tab in Photos.** Next to your Library there's now a
+  Collections view: create your own albums, and delete them when you're done -
+  the photos always stay in your library.
+- **Shared albums.** Start a shared album and invite friends into it - everyone
+  in the album can see it and add their own photos. The owner can invite or
+  remove people at any time (removing someone also removes the photos they
+  added).
+- **People.** Players who were in frame when a photo was taken are grouped
+  automatically - open a person to see every photo you have together, just
+  like on a real phone.
+- **Places.** Photos are also grouped by the room they were taken in.
+- **A built-in Screenshots album.** Screenshots you take with the side button,
+  and photos you save from chats, collect in a default Screenshots album that
+  can't be deleted.
+
 ## 2026-08-28 — Photo libraries reset
 
 ### Changed
