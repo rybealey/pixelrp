@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-27 — Quieter friend requests
+
+### Changed
+
+- **Friend requests are far less in-your-face.** When someone asks to add you,
+  you now get a small badge floating over their head instead of a big pop-up
+  in the middle of the room. Tap the badge to reveal Accept and Decline, and
+  tap it again to tuck it away.
+
 ## 2026-08-27 — Phone refresh
 
 ### Added
