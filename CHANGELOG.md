@@ -16,6 +16,12 @@ any heading with nothing under it).
 
 ## 2026-08-28 — Wardrobe freedom
 
+### Added
+
+- **Every Habbo effect, in sync.** The full official effects catalog now
+  renders in the hotel, including the newest additions (like the Enchanted
+  Broomstick, enable 247).
+
 ### Changed
 
 - **HC clothing and colors are free again.** Choose Your Looks no longer locks
