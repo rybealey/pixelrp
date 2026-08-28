@@ -14,6 +14,26 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-28 — Straight into the city
+
+### Changed
+
+- **Logging in takes you to the game.** Signing in (or registering) on the
+  website now drops you straight into the hotel instead of the website
+  dashboard. Website pages are still there whenever you want them.
+- **Walking together looks locked-in.** When two avatars walk the same path,
+  the follower now moves in perfect step with the leader - exactly one tile
+  behind, ahead, or side by side on the same stride - instead of slowly
+  drifting into place or rubber-banding to catch up. If your paths split, both
+  avatars simply carry on walking normally.
+- **The Diamonds Store window fits its content.** It opens compact and only
+  grows (with a smooth animation) when the card payment form needs the room.
+
+### Fixed
+
+- **The VIP countdown in your wallet is now a neat square** instead of a tall
+  sliver.
+
 ## 2026-08-28 — A shop you can actually browse
 
 ### Changed
