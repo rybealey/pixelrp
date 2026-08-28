@@ -33,6 +33,9 @@ any heading with nothing under it).
 - **A proper Settings app.** Settings now opens a full list with your own
   avatar and name at the top, and a dedicated Appearance page for switching
   the phone between Light, Dark and Automatic.
+- **Choose where your phone opens.** Appearance has a new Left / Center / Right
+  option that sets where the phone pops up on screen when you open it, and it
+  remembers your choice.
 
 ### Changed
 
