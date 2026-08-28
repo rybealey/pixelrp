@@ -14,6 +14,23 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-27 — Phone refresh
+
+### Added
+
+- **Swipe with a trackpad in Messages.** You can now swipe a conversation
+  sideways with a trackpad, not just a click-and-drag, to reveal its Pin,
+  Mute and Delete actions.
+- **A proper Settings app.** Settings now opens a full list with your own
+  avatar and name at the top, and a dedicated Appearance page for switching
+  the phone between Light, Dark and Automatic.
+
+### Changed
+
+- **The phone got a fresh coat of paint.** The status bar, dock, search box,
+  chat headers and pop-up menus are now frosted glass, the home-screen app
+  icons each have their own colour, and pinned chats sit in neat framed tiles.
+
 ## 2026-08-27 — A much bigger shop
 
 ### Added
