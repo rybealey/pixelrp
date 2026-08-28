@@ -28,8 +28,17 @@ any heading with nothing under it).
 ### Changed
 
 - **The phone got a fresh coat of paint.** The status bar, dock, search box,
-  chat headers and pop-up menus are now frosted glass, the home-screen app
-  icons each have their own colour, and pinned chats sit in neat framed tiles.
+  chat headers and pop-up menus are now frosted glass, and pinned chats sit in
+  neat framed tiles.
+- **A full home screen of apps.** The phone's home screen now has the complete,
+  colourful app lineup - Phone, Messages, Camera, App Store, Contacts, Photos,
+  Stocks, Music, Wallet, Calendar, Tasks, Notes, Weather, News, Translate and
+  Settings - each with its own icon.
+
+### Removed
+
+- **Username chat icons.** The little icon before your name in chat, and its
+  picker in Settings, have been removed. Your username colour is unchanged.
 
 ## 2026-08-27 — A much bigger shop
 
