@@ -14,14 +14,19 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
-## 2026-08-27 — Quieter friend requests
+## 2026-08-27 — Friend requests move to your phone
 
 ### Changed
 
-- **Friend requests are far less in-your-face.** When someone asks to add you,
-  you now get a small badge floating over their head instead of a big pop-up
-  in the middle of the room. Tap the badge to reveal Accept and Decline, and
-  tap it again to tuck it away.
+- **Friend requests no longer pop up in the room.** The old in-room prompt is
+  gone. When someone asks to add you, it now waits quietly on your phone: the
+  phone button lights up with an alert count, and the Contacts app shows the
+  same count on its icon.
+- **Contacts has Friends and Requests tabs.** The Contacts app is now split
+  into a Friends tab (your online and offline contacts, plus search to add
+  more) and a Requests tab that collects incoming friend requests. A request
+  stays in the Requests tab until you Accept or Decline it, and the tab shows
+  how many are waiting.
 
 ## 2026-08-27 — Phone refresh
 
