@@ -30,6 +30,9 @@ any heading with nothing under it).
   grows (with a smooth animation) when the card payment form needs the room.
 - **Diamond top-ups start at 500.** The Buy Diamonds form now has a 500
   diamond ($5.00) minimum per purchase.
+- **Safe while you pay.** Opening the card payment form in the Diamonds Store
+  quietly gives you 5 minutes of passive status, so nobody can hit you while
+  you're entering payment details.
 
 ### Fixed
 
