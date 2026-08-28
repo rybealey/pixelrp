@@ -33,6 +33,11 @@ any heading with nothing under it).
   and photos you save from chats, collect in a default Screenshots album that
   can't be deleted.
 
+### Fixed
+
+- **Your profile shows your real motto.** Opening your own profile now
+  displays your actual motto instead of a placeholder.
+
 ## 2026-08-28 — Photo libraries reset
 
 ### Changed
