@@ -14,6 +14,22 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-28 — A shop you can actually browse
+
+### Changed
+
+- **The Furni tab got a real structure.** Instead of one enormous "Themed
+  Lines" list, furniture is now organized into Lines (the classic ranges like
+  Area, Iced, Lodge and Mode), Themes (Pirates, Cyberpunk, Jungle and friends),
+  and Seasonal - which now opens into holidays (Christmas, Halloween, Easter,
+  Valentine's, New Year and more), each with its years underneath.
+- **Game furni have their own shelves.** Battle Banzai, Freeze, Football, Ice
+  Hockey, Ice Tag, Snow Storm and Lost Monkey each get their own page under
+  Games, with score boards and extras alongside.
+- **Every category has a proper name and its own icon.** No more "Xmas2023" or
+  "Habboween" - and the little coin purse next to every single category has
+  been replaced with an icon that matches what's inside.
+
 ## 2026-08-28 — Wardrobe freedom
 
 ### Added
