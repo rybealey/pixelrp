@@ -28,6 +28,8 @@ any heading with nothing under it).
   avatars simply carry on walking normally.
 - **The Diamonds Store window fits its content.** It opens compact and only
   grows (with a smooth animation) when the card payment form needs the room.
+- **Diamond top-ups start at 500.** The Buy Diamonds form now has a 500
+  diamond ($5.00) minimum per purchase.
 
 ### Fixed
 
