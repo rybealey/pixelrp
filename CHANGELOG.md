@@ -14,6 +14,17 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-28 — Wardrobe freedom
+
+### Changed
+
+- **HC clothing and colors are free again.** Choose Your Looks no longer locks
+  any clothing item or color behind VIP - the diamond badges are gone and
+  everything selectable can be worn and saved by everyone. (VIP still covers
+  dances, chat bubbles, camera access and the rest of its perks.)
+- **Clothing left the shop.** Clothing items are no longer sold in the catalog
+  in any category - outfits come from Choose Your Looks.
+
 ## 2026-08-28 — Photos gets Collections
 
 ### Added
