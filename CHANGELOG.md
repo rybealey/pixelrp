@@ -75,6 +75,10 @@ any heading with nothing under it).
 
 ### Fixed
 
+- **Missing images filled in.** Thousands of previously missing hotel assets
+  (badge artwork, group badge-editor parts, catalog icons, promo and article
+  images, and the full sound machine sample library) are now in place, so
+  images that used to render broken show correctly.
 - **Broken chat commands work again.** :push, :pull, :spush and :kickpets
   failed silently every time (and :givebadge could too) - all repaired. The
   info panel's badge grid also lines up evenly now.
