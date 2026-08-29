@@ -18,6 +18,10 @@ any heading with nothing under it).
 
 ### Changed
 
+- **Search your Photos.** The Photos app has a new Search tab (bottom right):
+  find pictures by the room they were taken in, who was in frame, how they
+  were captured, when - or type "shared" for photos on the city feed.
+
 - **Rearranging phone apps works like a real phone.** Hold an app icon for a
   moment and the icons start jiggling - drag them anywhere on the home screen
   (icons can sit in any spot, gaps and all, just like iOS) or into the dock,
