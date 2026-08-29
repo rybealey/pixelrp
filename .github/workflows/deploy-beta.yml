@@ -108,7 +108,7 @@ jobs:
           set -euo pipefail
           cd "$DEPLOY_PATH"
           COMPOSE="docker compose -p pixelrp-beta -f compose.yaml -f compose.prod.yaml -f compose.beta.yaml"
-          $COMPOSE build emulator cms cms-scheduler 2>&1 | tail -3
+          $COMPOSE build emulator cms cms-scheduler imager 2>&1 | tail -3
           # Always restart the emulator, even when its image is unchanged
           # (client-only deploys): the READY wait below reads the log since
           # container start, and on a long-lived container the boot line has
@@ -125,6 +125,11 @@ jobs:
           [ -n "$theme" ] || { echo "::error::could not read the built theme from docker/cms/Dockerfile"; exit 1; }
           printf "UPDATE website_settings SET value='%s' WHERE \`key\`='theme';\n" "$theme" | dbsql
           $COMPOSE up -d < /dev/null
+          # web's nginx.conf is a bind mount; `up -d` won't recreate web when
+          # only the config changed, so reload to pick up route changes (e.g.
+          # /imaging/). Safe because the imager upstream now resolves at request
+          # time, so reload succeeds even if imager isn't ready yet.
+          $COMPOSE exec -T web nginx -s reload < /dev/null
           $COMPOSE exec -T cms php artisan optimize:clear < /dev/null
           REMOTE
 
