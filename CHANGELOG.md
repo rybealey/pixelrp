@@ -54,6 +54,9 @@ any heading with nothing under it).
 
 ### Fixed
 
+- **Broken chat commands work again.** :push, :pull, :spush and :kickpets
+  failed silently every time (and :givebadge could too) - all repaired. The
+  info panel's badge grid also lines up evenly now.
 - **The VIP countdown in your wallet is now a neat square** instead of a tall
   sliver.
 - **Backpack stacks cap at 10.** The same item now stacks up to 10 per slot,
