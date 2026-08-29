@@ -27,7 +27,7 @@ services:
     logging: *default-logging
 
   cms:
-    environment:
+    environment: &cms-prod-env
       APP_ENV: production
       APP_DEBUG: "false"
       APP_URL: https://pixelrp.co
@@ -58,6 +58,17 @@ services:
       # workflow copies the fresh file to /changelog/ instead; when absent
       # (e.g. right after a container recreate), the CMS falls back to
       # raw.githubusercontent.
+    restart: unless-stopped
+    logging: *default-logging
+
+  # Scheduler mirrors the cms overrides: baked-in code from the image (no
+  # host bind mount), real .env, and the SHARED cms-storage volume so file
+  # cache mutexes (withoutOverlapping) are common to both containers.
+  cms-scheduler:
+    environment: *cms-prod-env
+    volumes: !override
+      - ./cms/.env:/var/www/html/.env
+      - cms-storage:/var/www/html/storage
     restart: unless-stopped
     logging: *default-logging
 

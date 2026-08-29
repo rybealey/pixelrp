@@ -76,7 +76,7 @@ services:
     # API key/DB creds) that must not reach the CMS — the most exposed
     # container. Everything the CMS needs is listed explicitly below or lives
     # in cms/.env.
-    environment:
+    environment: &cms-env
       APP_ENV: local
       APP_DEBUG: "true"
       APP_URL: http://localhost:${HTTP_PORT}
@@ -105,6 +105,26 @@ services:
     networks:
       pixelrp:
         ipv4_address: 172.28.0.20
+
+  # Laravel scheduler runner (Discord queue/sweep, paypal:reconcile). Same
+  # image and config as cms, but runs `schedule:work` instead of php-fpm.
+  # Shares the cms storage (file cache) so withoutOverlapping mutexes are
+  # visible to both containers. NO static IP — it serves nothing, and both
+  # the prod and beta overlays assign their own addresses to the web-facing
+  # services only.
+  cms-scheduler:
+    build:
+      context: .
+      dockerfile: docker/cms/Dockerfile
+    command: ["php", "artisan", "schedule:work"]
+    environment: *cms-env
+    volumes:
+      - ./cms:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - pixelrp
 
   web:
     image: nginx:1.27-alpine

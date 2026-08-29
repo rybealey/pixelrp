@@ -108,7 +108,7 @@ jobs:
           set -euo pipefail
           cd "$DEPLOY_PATH"
           COMPOSE="docker compose -p pixelrp-beta -f compose.yaml -f compose.prod.yaml -f compose.beta.yaml"
-          $COMPOSE build emulator cms 2>&1 | tail -3
+          $COMPOSE build emulator cms cms-scheduler 2>&1 | tail -3
           # Always restart the emulator, even when its image is unchanged
           # (client-only deploys): the READY wait below reads the log since
           # container start, and on a long-lived container the boot line has
@@ -116,7 +116,7 @@ jobs:
           # Prod's deploy restarts the emulator every time (backup step), so
           # this keeps beta's semantics identical.
           $COMPOSE stop emulator
-          $COMPOSE stop cms
+          $COMPOSE stop cms cms-scheduler
           $COMPOSE run --rm --no-deps -T cms \
             sh -c 'cp -a /opt/cms-public/. /var/www/html/public/' < /dev/null
           $COMPOSE run --rm --no-deps -T cms php artisan migrate --force < /dev/null

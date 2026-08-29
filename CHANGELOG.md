@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-29 — Get verified
+
+### Added
+
+- **Connect your Discord.** Settings > Social > Discord now links your
+  Discord account to PixelRP. Connecting joins you to the official server
+  automatically, gives you the Verified role, and keeps your server nickname
+  matched to your in-game name. Your Discord details are never shown
+  in-game, and you can disconnect any time from the website.
+
 ## 2026-08-28 — Straight into the city
 
 ### Added

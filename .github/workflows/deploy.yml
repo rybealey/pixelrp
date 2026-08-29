@@ -159,7 +159,7 @@ jobs:
           ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
           set -euo pipefail
           cd "$DEPLOY_PATH"
-          docker compose -f compose.yaml -f compose.prod.yaml build emulator cms 2>&1 | tail -3
+          docker compose -f compose.yaml -f compose.prod.yaml build emulator cms cms-scheduler 2>&1 | tail -3
           # CMS migrations run here, not in "Applying database patches": prod
           # has no ./cms bind mount, so the running container is the previous
           # image and does not contain migrations added by this deploy. A
@@ -174,7 +174,7 @@ jobs:
           # container cannot start alongside the running one ("Address already
           # in use"), and this way the container comes back up already
           # consistent instead of briefly serving a half-updated state.
-          docker compose -f compose.yaml -f compose.prod.yaml stop cms
+          docker compose -f compose.yaml -f compose.prod.yaml stop cms cms-scheduler
           # Refresh public/ from the image. cms-public is only seeded when
           # Docker first creates it, so built assets are otherwise frozen at
           # whatever the volume was created with. Overlay, not replace - the
