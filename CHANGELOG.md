@@ -40,6 +40,9 @@ any heading with nothing under it).
 - **Patch notes post themselves to Discord.** New changelog entries now
   land in the official server automatically - #planned as they arrive on
   beta, #updates when they ship to the hotel.
+- **Logging in lands on your profile page again.** Signing in on the
+  website takes you to your profile dashboard as before, rather than
+  jumping straight into the game.
 
 ### Changed
 
