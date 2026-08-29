@@ -23,6 +23,9 @@ any heading with nothing under it).
   automatically, gives you the Verified role, and keeps your server nickname
   matched to your in-game name. Your Discord details are never shown
   in-game, and you can disconnect any time from the website.
+- **Patch notes post themselves to Discord.** New changelog entries now
+  land in the official server automatically - #planned as they arrive on
+  beta, #updates when they ship to the hotel.
 
 ### Changed
 

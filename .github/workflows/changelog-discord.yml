@@ -1,0 +1,52 @@
+# Posts newly added CHANGELOG.md bullets to Discord: beta -> #planned,
+# main -> #updates. Skips gracefully (exit 0 + notice) while the webhook
+# secrets are unset. Manual runs can override the diff base and channel.
+name: Changelog to Discord
+
+on:
+  push:
+    branches: [beta, main]
+    paths: [CHANGELOG.md]
+  workflow_dispatch:
+    inputs:
+      before:
+        description: "Base commit to diff from (default: HEAD~1)"
+        required: false
+      channel:
+        description: "Channel override: planned or updates (default: by branch)"
+        required: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Post new changelog entries
+        env:
+          WEBHOOK_PLANNED: ${{ secrets.DISCORD_WEBHOOK_PLANNED }}
+          WEBHOOK_UPDATES: ${{ secrets.DISCORD_WEBHOOK_UPDATES }}
+          EVENT_BEFORE: ${{ github.event.before }}
+          INPUT_BEFORE: ${{ github.event.inputs.before }}
+          INPUT_CHANNEL: ${{ github.event.inputs.channel }}
+        run: |
+          before="${INPUT_BEFORE:-$EVENT_BEFORE}"
+          # first push / manual run: no usable before-commit on the event
+          if [ -z "$before" ] || [ "$before" = "0000000000000000000000000000000000000000" ]; then
+            before="$(git rev-parse HEAD~1)"
+          fi
+
+          channel="$INPUT_CHANNEL"
+          if [ -z "$channel" ]; then
+            if [ "$GITHUB_REF_NAME" = "main" ]; then channel=updates; else channel=planned; fi
+          fi
+
+          if [ "$channel" = "updates" ]; then
+            export WEBHOOK_URL="$WEBHOOK_UPDATES"
+          else
+            export WEBHOOK_URL="$WEBHOOK_PLANNED"
+          fi
+
+          node scripts/changelog-to-discord.mjs --before "$before" --after "$GITHUB_SHA" --channel "$channel"
