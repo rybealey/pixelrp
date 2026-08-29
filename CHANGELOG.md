@@ -18,6 +18,9 @@ any heading with nothing under it).
 
 ### Added
 
+- **Meet Trina.** A new bot is in the shop under Builders > Bots - she can
+  talk, walk, dance and dress up like the other casual bots, and comes
+  dressed in her own look.
 - **Corporations are here.** The Corporations button in your side drawer now
   opens the city's business directory - starting with the San Francisco
   Police Department and its full rank ladder, from Cadet (15c per 10 minutes
