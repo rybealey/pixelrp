@@ -12,6 +12,8 @@ volumes:
   # Housekeeping-uploaded game images (ads backgrounds, badge parts): written
   # by the cms (php-fpm as www-data), served read-only by web at /gamedata/.
   gamedata:
+  # Rendered-avatar PNG cache for the imager (keyed by full figure query).
+  imager-cache:
 
 services:
   db:
@@ -145,6 +147,29 @@ services:
     networks:
       pixelrp:
         ipv4_address: 172.28.0.40
+
+  imager:
+    build:
+      context: .
+      dockerfile: docker/imager/Dockerfile
+    environment:
+      API_HOST: 0.0.0.0
+      API_PORT: "3030"
+      AVATAR_SAVE_PATH: /cache
+      AVATAR_ACTIONS_URL: http://web/nitro-assets/assets/gamedata/HabboAvatarActions.json
+      AVATAR_FIGUREDATA_URL: http://web/nitro-assets/assets/gamedata/FigureData.json
+      AVATAR_FIGUREMAP_URL: http://web/nitro-assets/assets/gamedata/FigureMap.json
+      AVATAR_EFFECTMAP_URL: http://web/nitro-assets/assets/gamedata/EffectMap.json
+      AVATAR_ASSET_URL: http://web/nitro-assets/assets/bundled/figure/%libname%.nitro
+      AVATAR_ASSET_EFFECT_URL: http://web/nitro-assets/assets/bundled/effect/%libname%.nitro
+    volumes:
+      - imager-cache:/cache
+    depends_on:
+      - web
+    networks:
+      pixelrp:
+        ipv4_address: 172.28.0.50
+    restart: unless-stopped
 
   bot:
     build:

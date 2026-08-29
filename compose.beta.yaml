@@ -53,6 +53,11 @@ services:
       pixelrp:
         ipv4_address: 172.29.0.40
 
+  imager:
+    networks:
+      pixelrp:
+        ipv4_address: 172.29.0.50
+
   bot:
     # No Claude bot in beta — it would double-run against the shared account.
     profiles: ["disabled"]
