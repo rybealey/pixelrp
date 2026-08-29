@@ -13,7 +13,7 @@
 - **Node 18** in the imager image — `node-canvas@^2.8.0` (upstream dep) does not build cleanly on newer Node. Copy verbatim: base image `node:18-bookworm`.
 - **Avatars only** — no furni/room/badge imaging in scope.
 - **Beta-first** — everything lands on the `beta` branch and is validated on beta before any prod rollout (prod is a documented follow-up, not in this plan).
-- **No CMS template changes** — the imager already accepts the CMS's habbo-style params (`figure`, `direction`, `head_direction`, `gesture=sml`, `action=wav`, `headonly`, `size=s/l`); verified against upstream source. The only CMS-side change is the `avatar_imager` setting value.
+- **Minimal CMS template changes** — the imager already accepts the CMS's habbo-style params (`figure`, `direction`, `head_direction`, `gesture=sml`, `action=wav`, `headonly`, `size=s/l`); verified against upstream source. The core CMS change is the `avatar_imager` setting value. The only permitted template edits are small per-spot `background-position`/sizing tweaks if the content-cropped image (Task 3) anchors wrong in a fixed box — decided during the Task 6 visual pass, not a blanket refactor.
 - **Imager is internal-only** — no host port publish; reachable only via the web nginx `/imaging/` proxy.
 - **Assets over HTTP, never baked** — the imager reads the same `/nitro-assets/...` the client uses, so it always tracks live figuredata.
 - **Data-only DB change is manual per environment** — per the non-git-deploy rule, the running `website_settings.avatar_imager` row is changed by hand on beta (and later prod); the seeder default is updated for fresh installs only.
@@ -203,7 +203,106 @@ git commit -m "build(imager): Dockerfile + render smoke test (clothed vs naked)"
 
 ---
 
-### Task 3: Wire the imager into compose and the web nginx proxy
+### Task 3: Patch the fork to crop rendered PNGs (headonly headshots)
+
+The vendored imager leaves `CanvasUtilities.cropTransparentPixels` disabled, so `headonly=1` returns a full-height (128×220) canvas with the head at the top and everything below transparent — the Online Friends chip (`headonly` + `bg-center`) would show an empty center, and other headshot spots (leaderboard, article bylines, top-header) render a head with dead space below. Fix it in the fork by cropping the **final composed PNG** to its content bounding box. This crops the head-only render down to a head, and full-body renders down to a tight figure. Crop the router's output canvas — NOT the internal `AvatarImage.getImage` canvas, whose size the sprite-offset math depends on.
+
+**Files:**
+- Modify (in the `imager/` submodule = fork `rybealey/nitro-imager`, branch `main`): `src/app/router/habbo-imaging/handlers/HabboImagingRouterGet.ts`
+- Modify (main repo): the `imager` submodule gitlink
+
+**Interfaces:**
+- Consumes: the running imager image from Task 2.
+- Produces: an imager whose PNG output is content-cropped; `headonly=1` returns a head crop.
+
+- [ ] **Step 1: Patch the router's PNG output in the fork**
+
+Work inside the submodule on its `main` branch:
+```bash
+cd imager
+git checkout main
+```
+
+In `src/app/router/habbo-imaging/handlers/HabboImagingRouterGet.ts`:
+1. Add `CanvasUtilities` to the existing core import on line 5. It becomes:
+   ```ts
+   import { CanvasUtilities, File, FileUtilities, Point } from '../../../../core';
+   ```
+   (First confirm `CanvasUtilities` is re-exported from `../../../../core`; it lives at `src/core/utils/CanvasUtilities.ts`. If the barrel does not re-export it, import it directly from `../../../../core/utils` instead — verify by reading `src/core/index.ts` / `src/core/utils/index.ts`.)
+2. Change the PNG output line (around line 137) from:
+   ```ts
+                const buffer = tempCanvas.toBuffer();
+   ```
+   to:
+   ```ts
+                const buffer = CanvasUtilities.cropTransparentPixels(tempCanvas).toBuffer();
+   ```
+   Only the synchronous PNG branch is used by the CMS; leave the GIF branch untouched.
+
+- [ ] **Step 2: Commit and push to the fork**
+
+```bash
+git add src/app/router/habbo-imaging/handlers/HabboImagingRouterGet.ts
+git commit -m "fix: crop transparent margins on PNG output so headonly returns a head"
+git push origin HEAD:main
+cd ..
+```
+
+- [ ] **Step 3: Bump the submodule pointer in the main repo**
+
+```bash
+git add imager
+git commit -m "build(imager): crop headonly headshots (bump submodule)"
+```
+
+- [ ] **Step 4: Rebuild the image**
+
+Run:
+```bash
+docker build -f docker/imager/Dockerfile -t pixelrp-imager:dev .
+```
+Expected: builds cleanly (the change is a two-line source edit; `tsc` must still succeed).
+
+- [ ] **Step 5: Run the container and verify headonly now returns a head crop AND clothing still renders**
+
+Run the container against beta's public assets (note the `/nitro-assets/assets/...` path — the served bundles live under `assets/`):
+```bash
+docker run -d --name imager-crop -p 3030:3030 \
+  -e API_HOST=0.0.0.0 -e API_PORT=3030 \
+  -e AVATAR_ACTIONS_URL=https://beta.pixelrp.co/nitro-assets/assets/gamedata/HabboAvatarActions.json \
+  -e AVATAR_FIGUREDATA_URL=https://beta.pixelrp.co/nitro-assets/assets/gamedata/FigureData.json \
+  -e AVATAR_FIGUREMAP_URL=https://beta.pixelrp.co/nitro-assets/assets/gamedata/FigureMap.json \
+  -e AVATAR_EFFECTMAP_URL=https://beta.pixelrp.co/nitro-assets/assets/gamedata/EffectMap.json \
+  -e AVATAR_ASSET_URL='https://beta.pixelrp.co/nitro-assets/assets/bundled/figure/%libname%.nitro' \
+  -e AVATAR_ASSET_EFFECT_URL='https://beta.pixelrp.co/nitro-assets/assets/bundled/effect/%libname%.nitro' \
+  pixelrp-imager:dev
+sleep 8
+```
+
+Head-crop check — a headonly render must now be roughly head-shaped (height not much greater than width), not 128×220:
+```bash
+curl -fsS "http://localhost:3030/?figure=hd-6021-1.ch-3059-72&headonly=1&size=l" -o /tmp/head.png
+python3 -c "import struct;d=open('/tmp/head.png','rb').read();w,h=struct.unpack('>II',d[16:24]);print('dims',w,h);assert h < w*1.4, f'still not a head crop: {w}x{h}'"
+```
+Expected: small `dims` with `h < w*1.4` (a head crop). Contrast with the pre-patch `128 220`.
+
+Clothing must still render (no regression):
+```bash
+scripts/imager-smoke-test.sh http://localhost:3030
+```
+Expected: `PASS: clothing rendered`.
+
+- [ ] **Step 6: Tear down**
+
+```bash
+docker rm -f imager-crop
+```
+
+(No new main-repo files change here beyond the submodule bump already committed in Step 3.)
+
+---
+
+### Task 4: Wire the imager into compose and the web nginx proxy
 
 Add the service to the base compose and beta overlay, mount a cache volume, and expose it at `beta.pixelrp.co/imaging/` through the web container's nginx. Point its asset URLs at the internal `web` service.
 
@@ -213,7 +312,7 @@ Add the service to the base compose and beta overlay, mount a cache volume, and 
 - Modify: `docker/web/nginx.conf` (add `location /imaging/`)
 
 **Interfaces:**
-- Consumes: image built from `docker/imager/Dockerfile` (Task 2); `web` service serving `/nitro-assets/`.
+- Consumes: image built from `docker/imager/Dockerfile` (Task 2) including the crop patch (Task 3); `web` service serving `/nitro-assets/assets/`.
 - Produces: internal service `imager` on port 3030; public path `…/imaging/?figure=…` proxied to it.
 
 - [ ] **Step 1: Add the volume and service to `compose.yaml`**
@@ -234,12 +333,12 @@ Add a new service (place it after `web:`), mirroring the existing build/network 
       API_HOST: 0.0.0.0
       API_PORT: "3030"
       AVATAR_SAVE_PATH: /cache
-      AVATAR_ACTIONS_URL: http://web/nitro-assets/gamedata/HabboAvatarActions.json
-      AVATAR_FIGUREDATA_URL: http://web/nitro-assets/gamedata/FigureData.json
-      AVATAR_FIGUREMAP_URL: http://web/nitro-assets/gamedata/FigureMap.json
-      AVATAR_EFFECTMAP_URL: http://web/nitro-assets/gamedata/EffectMap.json
-      AVATAR_ASSET_URL: http://web/nitro-assets/bundled/figure/%libname%.nitro
-      AVATAR_ASSET_EFFECT_URL: http://web/nitro-assets/bundled/effect/%libname%.nitro
+      AVATAR_ACTIONS_URL: http://web/nitro-assets/assets/gamedata/HabboAvatarActions.json
+      AVATAR_FIGUREDATA_URL: http://web/nitro-assets/assets/gamedata/FigureData.json
+      AVATAR_FIGUREMAP_URL: http://web/nitro-assets/assets/gamedata/FigureMap.json
+      AVATAR_EFFECTMAP_URL: http://web/nitro-assets/assets/gamedata/EffectMap.json
+      AVATAR_ASSET_URL: http://web/nitro-assets/assets/bundled/figure/%libname%.nitro
+      AVATAR_ASSET_EFFECT_URL: http://web/nitro-assets/assets/bundled/effect/%libname%.nitro
     volumes:
       - imager-cache:/cache
     depends_on:
@@ -301,16 +400,16 @@ git commit -m "feat(imager): add imager service + /imaging/ nginx route (beta)"
 
 ---
 
-### Task 4: Repoint the CMS setting (seeder default) and changelog
+### Task 5: Repoint the CMS setting (seeder default) and changelog
 
-Update the seeder default so fresh installs use the self-hosted imager, and add the changelog entry. The running beta DB row is flipped by hand in Task 5 (per the non-git-deploy rule).
+Update the seeder default so fresh installs use the self-hosted imager, and add the changelog entry. The running beta DB row is flipped by hand in Task 6 (per the non-git-deploy rule).
 
 **Files:**
 - Modify: `cms/database/seeders/WebsiteSettingsSeeder.php` (the `avatar_imager` default value)
 - Modify: `CHANGELOG.md`
 
 **Interfaces:**
-- Consumes: the `/imaging/` route from Task 3.
+- Consumes: the `/imaging/` route from Task 4.
 - Produces: seeder default `https://beta.pixelrp.co/imaging/?figure=` (documented as environment-specific).
 
 - [ ] **Step 1: Update the seeder default**
@@ -345,14 +444,14 @@ git commit -m "feat(cms): point avatar_imager at self-hosted imager + changelog"
 
 ---
 
-### Task 5: Deploy to beta, flip the beta DB row, and validate live
+### Task 6: Deploy to beta, flip the beta DB row, and validate live
 
 Ship the branch to beta via the deploy workflow (which handles the update screen / graceful shutdown), then make the manual DB change and confirm the widget renders clothed on the live site.
 
 **Files:** none (deploy + data change)
 
 **Interfaces:**
-- Consumes: everything from Tasks 1–4 on the `beta` branch.
+- Consumes: everything from Tasks 1–5 on the `beta` branch.
 
 - [ ] **Step 1: Push the branch**
 
@@ -389,9 +488,9 @@ WHERE `key` = 'avatar_imager';
 ```
 Then clear the CMS settings/config cache if the CMS caches settings (e.g. `php artisan config:clear` / cache clear per this app's setting layer), so the new value is served.
 
-- [ ] **Step 5: Validate the Online Friends widget live**
+- [ ] **Step 5: Validate the Online Friends widget and headshot spots live**
 
-Load the profile page on beta (`https://beta.pixelrp.co/me` while logged in) with online friends present, and confirm the friend avatars now render **with clothing** (and as head crops, since the widget uses `headonly=1`). Spot-check other avatar surfaces (articles, leaderboard) render clothed too.
+Load the profile page on beta (`https://beta.pixelrp.co/me` while logged in) with online friends present, and confirm the friend avatars now render **with clothing** and as centered **head crops** in the circular chips (the crop patch from Task 3 makes `headonly=1` return a head). Then spot-check the other `headonly` surfaces — leaderboard, article bylines, the top-header avatar — and the full-body spots (me-backdrop, staff cards) render clothed and framed sensibly. If a specific spot anchors the (now content-cropped) image wrong — e.g. a fixed box using a top-left `background-position` — apply a minimal CSS fix (a `background-position`/sizing tweak) to that template only; note any such tweak in the commit. This is the visual-verification pass agreed for the crop approach.
 
 - [ ] **Step 6: Update project memory / notes**
 
@@ -407,7 +506,9 @@ Once beta is confirmed stable: add the `imager` service override to `compose.pro
 
 ## Self-Review Notes
 
-- **Spec coverage:** service (T2/T3), asset-over-HTTP config (T3), nginx route (T3), param compat — verified unnecessary in-source, noted in Global Constraints; setting flip + seeder + changelog (T4/T5), beta-first deploy + manual DB change (T5), caching volume (T3), testing (T2 smoke + headonly, T5 live). Fork+submodule (T1).
-- **Param compat:** upstream `ProcessExpressionAction` already maps `action=wav`→wave; `GetSizeRequest` maps `s`→0.5/`l`→2/else→1 (so `m`/`b` render medium, never naked); `GetSetTypeRequest` honors `headonly=1`; `ProcessGestureRequest` handles `sml`. Hence no fork code patch.
+- **Spec coverage:** submodule/fork (T1), Dockerfile + clothing smoke test (T2), headonly crop patch (T3), compose + asset-over-HTTP config + nginx route + caching volume (T4), setting flip + seeder + changelog (T5), beta-first deploy + manual DB change + visual pass (T6).
+- **Param compat:** upstream `ProcessExpressionAction` already maps `action=wav`→wave; `GetSizeRequest` maps `s`→0.5/`l`→2/else→1 (so `m`/`b` render medium, never naked); `GetSetTypeRequest` honors `headonly=1`; `ProcessGestureRequest` handles `sml`. Hence no param-value fork patch — the only fork patch is the PNG content-crop (T3).
+- **Asset path:** the served path is `/nitro-assets/assets/...` (the `web` mount `./nitro`→`/var/www/nitro-assets`, files under `nitro/assets/...`); verified 200 vs 404 against beta. Internal URLs (T4) and standalone-run URLs (T2/T3) use `/nitro-assets/assets/...`.
+- **Headonly:** upstream leaves `cropTransparentPixels` disabled so `headonly` returns a full-height canvas with head-at-top; T3 crops the final composed PNG to fix it (and tightens full-body renders), with a T6 visual pass for anchor tweaks.
 - **Port consistency:** imager listens on 3030 (`API_PORT`) everywhere — Dockerfile default, smoke run, compose env, nginx `proxy_pass http://imager:3030/`.
 - **Naked-baseline test:** compares clothed vs `hd`-only byte size to programmatically prove clothing rendered, rather than eyeballing.
