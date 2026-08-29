@@ -38,6 +38,9 @@ any heading with nothing under it).
 
 - **The VIP countdown in your wallet is now a neat square** instead of a tall
   sliver.
+- **Backpack stacks cap at 10.** The same item now stacks up to 10 per slot,
+  then starts a new stack - and the little count badge sits neatly inside the
+  slot instead of poking out of it.
 
 ## 2026-08-28 — A shop you can actually browse
 
