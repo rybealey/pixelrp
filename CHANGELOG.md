@@ -23,6 +23,14 @@ any heading with nothing under it).
   automatically, gives you the Verified role, and keeps your server nickname
   matched to your in-game name. Your Discord details are never shown
   in-game, and you can disconnect any time from the website.
+
+### Changed
+
+- **Walking together is finally in step.** Avatars walking side by side or in
+  a line now move on one shared rhythm - a friend one tile behind stays
+  exactly one tile behind, with no slow drifting, merging, or catching up.
+  Groups of any size stay locked together, and laggy connections no longer
+  make other players stutter or slide.
 - **Patch notes post themselves to Discord.** New changelog entries now
   land in the official server automatically - #planned as they arrive on
   beta, #updates when they ship to the hotel.
