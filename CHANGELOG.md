@@ -18,6 +18,11 @@ any heading with nothing under it).
 
 ### Added
 
+- **Corporations are here.** The Corporations button in your side drawer now
+  opens the city's business directory - starting with the San Francisco
+  Police Department and its full rank ladder, from Cadet (15c per 10 minutes
+  worked) up to Police Chief (27c). Every rank runs tiers I-V. Getting hired
+  and paid shifts arrive next.
 - **The Mercury ATM has arrived.** A shiny new cash machine can now appear on
   street corners and building lobbies around the city - look for the glowing
   blue screen. (Builders will find it on the new Infrastructure page.)
