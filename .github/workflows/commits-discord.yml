@@ -1,0 +1,41 @@
+# Posts every commit pushed to beta to the staff-only #commits channel,
+# full message included. Skips gracefully (exit 0 + notice) while the
+# webhook secret is unset. Manual runs can override the diff range.
+name: Commits to Discord
+
+on:
+  push:
+    branches: [beta]
+  workflow_dispatch:
+    inputs:
+      before:
+        description: "Base commit to post from (default: HEAD~1)"
+        required: false
+      after:
+        description: "Head commit to post to (default: HEAD)"
+        required: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Post pushed commits
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_COMMITS }}
+          EVENT_BEFORE: ${{ github.event.before }}
+          INPUT_BEFORE: ${{ github.event.inputs.before }}
+          INPUT_AFTER: ${{ github.event.inputs.after }}
+        run: |
+          before="${INPUT_BEFORE:-$EVENT_BEFORE}"
+          # first push / manual run: no usable before-commit on the event
+          if [ -z "$before" ] || [ "$before" = "0000000000000000000000000000000000000000" ]; then
+            before="$(git rev-parse HEAD~1)"
+          fi
+
+          after="${INPUT_AFTER:-$GITHUB_SHA}"
+
+          node scripts/commits-to-discord.mjs --before "$before" --after "$after"

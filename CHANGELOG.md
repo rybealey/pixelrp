@@ -24,6 +24,12 @@ any heading with nothing under it).
   matched to your in-game name. Your Discord details are never shown
   in-game, and you can disconnect any time from the website.
 
+### Fixed
+
+- **No more freezing when crossing paths.** Walking past or through another
+  player no longer briefly freezes either avatar in place or makes them jump
+  to catch up afterward.
+
 ### Changed
 
 - **Walking together is finally in step.** Avatars walking side by side or in
