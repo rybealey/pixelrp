@@ -31,6 +31,9 @@ any heading with nothing under it).
   online, blue while on duty), their tier within the rank, and a spot for
   weekly and total shifts worked - counting starts once paid shifts arrive.
   Click a card to open that player's profile.
+- **Roleplay settings got section headers.** Macros and Messages now sit
+  under a Functions group, with an Interactions group reserved below for
+  what's coming.
 
 ## 2026-08-28 — Straight into the city
 
