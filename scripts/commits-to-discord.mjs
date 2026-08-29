@@ -19,6 +19,7 @@ const TITLE_MAX = 256;
 const DESCRIPTION_MAX = 4000;
 const COMMITS_MAX = 25;
 const EMBEDS_PER_POST = 10;
+const POST_CHARS_MAX = 5800; // headroom on Discord's 6000/message embed total
 
 const args = process.argv.slice(2);
 const opt = name =>
@@ -76,7 +77,7 @@ const buildEmbed = sha =>
     return {
         title: truncate((subject || sha), TITLE_MAX),
         url: `https://github.com/${ repo }/commit/${ sha }`,
-        description: truncate(body, DESCRIPTION_MAX),
+        ...(body ? { description: truncate(body, DESCRIPTION_MAX) } : {}),
         color: EMBED_COLOR,
         author: { name: author },
         footer: { text: `beta · ${ sha.slice(0, 7) }` },
@@ -139,6 +140,30 @@ const post = async batch =>
     }
 };
 
-for(let i = 0; i < embeds.length; i += EMBEDS_PER_POST) await post(embeds.slice(i, (i + EMBEDS_PER_POST)));
+// batch by count AND by Discord's total-characters-per-message embed limit
+const embedChars = embed => ((embed.title?.length ?? 0) + (embed.description?.length ?? 0) + (embed.author?.name.length ?? 0) + (embed.footer?.text.length ?? 0));
+
+const batches = [];
+let batch = [];
+let batchChars = 0;
+
+for(const embed of embeds)
+{
+    const chars = embedChars(embed);
+
+    if(batch.length && ((batch.length >= EMBEDS_PER_POST) || ((batchChars + chars) > POST_CHARS_MAX)))
+    {
+        batches.push(batch);
+        batch = [];
+        batchChars = 0;
+    }
+
+    batch.push(embed);
+    batchChars += chars;
+}
+
+if(batch.length) batches.push(batch);
+
+for(const entry of batches) await post(entry);
 
 console.log(`posted ${ embeds.length } embed(s) to #commits.`);
