@@ -55,6 +55,8 @@ any heading with nothing under it).
 - **Backpack stacks cap at 10.** The same item now stacks up to 10 per slot,
   then starts a new stack - and the little count badge sits neatly inside the
   slot instead of poking out of it.
+- **Organize your backpack.** Drag an item onto another slot to move it there
+  (or swap with what's already in it). A quick click still uses the item.
 
 ## 2026-08-28 — A shop you can actually browse
 
