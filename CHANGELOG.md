@@ -18,6 +18,11 @@ any heading with nothing under it).
 
 ### Changed
 
+- **Rearranging phone apps works like a real phone.** Hold an app icon for a
+  moment and the icons start jiggling - drag them around the home screen or
+  dock, then hit Done (top right) to finish. A quick tap just opens the app,
+  no more accidental shuffling.
+
 - **Username icons are back.** Pick an icon for your chat name again in
   Settings > Social > Personalization - now drawn from the hotel's own
   pixel-art icon set (bows, butterflies, the banana, the poop, and friends).
