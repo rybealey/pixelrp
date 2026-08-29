@@ -29,6 +29,10 @@ any heading with nothing under it).
 - **No more freezing when crossing paths.** Walking past or through another
   player no longer briefly freezes either avatar in place or makes them jump
   to catch up afterward.
+- **Sign-in errors for certain accounts are gone.** A permissions mix-up
+  behind the scenes made the website show an error page to some players
+  when they tried to log in - which accounts were affected was pure bad
+  luck. Everyone can sign in normally again.
 
 ### Changed
 

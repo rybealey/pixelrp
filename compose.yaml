@@ -117,6 +117,10 @@ services:
       context: .
       dockerfile: docker/cms/Dockerfile
     command: ["php", "artisan", "schedule:work"]
+    # Must match php-fpm's worker user: both containers write the shared file
+    # cache, and cache shard dirs created by one user are unwritable (0755)
+    # by the other — root-owned shards 500 web logins that hash into them.
+    user: www-data
     environment: *cms-env
     volumes:
       - ./cms:/var/www/html
