@@ -33,6 +33,9 @@ any heading with nothing under it).
   behind the scenes made the website show an error page to some players
   when they tried to log in - which accounts were affected was pure bad
   luck. Everyone can sign in normally again.
+- **Avatars showing up without clothes across the site are fixed.** Online
+  Friends, profiles, articles, and leaderboards now render avatars with our
+  own imager, so custom clothing appears correctly.
 
 ### Changed
 
