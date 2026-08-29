@@ -18,6 +18,10 @@ any heading with nothing under it).
 
 ### Changed
 
+- **The info panel glides in.** Clicking a player or furni now slides the info
+  panel in from the right (and back out when you close it), and its badge
+  area shows neat slot containers instead of floating badges.
+
 - **Search your Photos.** The Photos app has a new Search tab (bottom right):
   find pictures by the room they were taken in, who was in frame, how they
   were captured, when - or type "shared" for photos on the city feed.
