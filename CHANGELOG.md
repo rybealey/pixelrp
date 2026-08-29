@@ -16,6 +16,12 @@ any heading with nothing under it).
 
 ## 2026-08-28 — Straight into the city
 
+### Added
+
+- **The Mercury ATM has arrived.** A shiny new cash machine can now appear on
+  street corners and building lobbies around the city - look for the glowing
+  blue screen. (Builders will find it on the new Infrastructure page.)
+
 ### Changed
 
 - **The info panel glides in.** Clicking a player or furni now slides the info
