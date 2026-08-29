@@ -18,6 +18,10 @@ any heading with nothing under it).
 
 ### Changed
 
+- **Username icons are back.** Pick an icon for your chat name again in
+  Settings > Social > Personalization - now drawn from the hotel's own
+  pixel-art icon set (bows, butterflies, the banana, the poop, and friends).
+
 - **Logging in takes you to the game.** Signing in (or registering) on the
   website now drops you straight into the hotel instead of the website
   dashboard. Website pages are still there whenever you want them.
