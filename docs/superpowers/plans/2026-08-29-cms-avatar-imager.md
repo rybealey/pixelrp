@@ -410,15 +410,17 @@ Update the seeder default so fresh installs use the self-hosted imager, and add 
 
 **Interfaces:**
 - Consumes: the `/imaging/` route from Task 4.
-- Produces: seeder default `https://beta.pixelrp.co/imaging/?figure=` (documented as environment-specific).
+- Produces: seeder default `/imaging/?figure=` (relative — resolves against whichever origin serves the page, so beta and prod share one value).
 
 - [ ] **Step 1: Update the seeder default**
 
+`cms/` is a git submodule (fork `rybealey/atomcms`, branch/pixelrp-tracked), so this edit is committed IN the submodule, pushed to the fork, and the main repo's `cms` gitlink is bumped — the same three-step dance as the imager fork in Task 3. (`CHANGELOG.md` in Step 3 lives in the MAIN repo root, not the submodule.)
+
 In `cms/database/seeders/WebsiteSettingsSeeder.php`, change the `avatar_imager` value from
 `https://www.habbo.com/habbo-imaging/avatarimage?figure=`
-to
-`https://beta.pixelrp.co/imaging/?figure=`
-and add a short comment noting the value is environment-specific (prod uses `https://pixelrp.co/imaging/?figure=`) and that existing installs are updated by hand, since the seeder only runs on fresh installs.
+to the relative
+`/imaging/?figure=`
+and add a short comment: the value is relative on purpose so it resolves against whichever origin serves the page (works on beta and prod alike), and existing installs are updated by hand since the seeder only runs on fresh installs.
 
 - [ ] **Step 2: Verify the edit**
 
@@ -435,12 +437,23 @@ Add a bullet to the current unreleased section of `CHANGELOG.md` (match the exis
 - Fixed avatars showing up without clothes across the site (Online Friends, profiles, articles, leaderboards). The site now renders avatars with our own imager, so custom clothing appears correctly.
 ```
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 4: Commit the CMS seeder change in the submodule, push, and bump the gitlink**
 
+The seeder lives in the `cms` submodule (fork `rybealey/atomcms`). First determine the submodule's current branch and commit there (do NOT commit on a detached HEAD):
 ```bash
-git add cms/database/seeders/WebsiteSettingsSeeder.php CHANGELOG.md
-git commit -m "feat(cms): point avatar_imager at self-hosted imager + changelog"
+cd cms
+git rev-parse --abbrev-ref HEAD   # if this prints "HEAD" (detached), check out the tracked branch first, e.g. `git checkout main`
+git add database/seeders/WebsiteSettingsSeeder.php
+git commit -m "feat(cms): relative avatar_imager for self-hosted imager"
+git push origin HEAD               # pushes to the atomcms fork's current branch
+cd ..
 ```
+Then bump the gitlink and commit the changelog in the MAIN repo together:
+```bash
+git add cms CHANGELOG.md
+git commit -m "feat(cms): point avatar_imager at self-hosted imager + changelog (bump cms)"
+```
+If the `git push` to the atomcms fork fails on auth, report BLOCKED with the exact error — do not invent credentials.
 
 ---
 
@@ -480,10 +493,10 @@ Expected: `PASS: clothing rendered`. This proves the proxy + internal asset URLs
 
 - [ ] **Step 4: Flip the beta `avatar_imager` DB row (manual)**
 
-Update the setting on the **beta** database only (target the beta db container by name to avoid the prod-vs-beta compose trap):
+Update the setting on the **beta** database only (target the beta db container by name to avoid the prod-vs-beta compose trap). The value is the relative `/imaging/?figure=` — the same value prod will use, since it resolves against the page origin:
 ```sql
 UPDATE website_settings
-SET value = 'https://beta.pixelrp.co/imaging/?figure='
+SET value = '/imaging/?figure='
 WHERE `key` = 'avatar_imager';
 ```
 Then clear the CMS settings/config cache if the CMS caches settings (e.g. `php artisan config:clear` / cache clear per this app's setting layer), so the new value is served.
@@ -494,13 +507,13 @@ Load the profile page on beta (`https://beta.pixelrp.co/me` while logged in) wit
 
 - [ ] **Step 6: Update project memory / notes**
 
-Record on the beta-rollout notes that the beta `avatar_imager` row was flipped on 2026-08-29 and that **prod still points at habbo.com** — prod rollout is the outstanding follow-up (add the `imager` service to `compose.prod.yaml`, deploy prod, then flip the prod row to `https://pixelrp.co/imaging/?figure=`).
+Record on the beta-rollout notes that the beta `avatar_imager` row was flipped on 2026-08-29 and that **prod still points at habbo.com** — prod rollout is the outstanding follow-up (add the `imager` service to `compose.prod.yaml`, deploy prod, then flip the prod row to the same relative `/imaging/?figure=`).
 
 ---
 
 ## Prod rollout (follow-up, out of scope for this plan)
 
-Once beta is confirmed stable: add the `imager` service override to `compose.prod.yaml` (prod subnet IP `172.28.0.50` is already the base value, so likely no override needed — confirm no collision), deploy prod via `deploy.yml`, verify `https://pixelrp.co/imaging` with the smoke test, then flip the prod `website_settings.avatar_imager` row to `https://pixelrp.co/imaging/?figure=` and clear the CMS cache. Confirm prod currently still uses the habbo.com value before flipping.
+Once beta is confirmed stable: add the `imager` service override to `compose.prod.yaml` (prod subnet IP `172.28.0.50` is already the base value, so likely no override needed — confirm no collision), deploy prod via `deploy.yml`, verify `https://pixelrp.co/imaging` with the smoke test, then flip the prod `website_settings.avatar_imager` row to the relative `/imaging/?figure=` and clear the CMS cache. Confirm prod currently still uses the habbo.com value before flipping. (The seeder default is already this relative value, so a fresh prod install needs no separate value — but only run the seeder once the prod imager service is live.)
 
 ---
 
