@@ -24,6 +24,14 @@ any heading with nothing under it).
   matched to your in-game name. Your Discord details are never shown
   in-game, and you can disconnect any time from the website.
 
+### Changed
+
+- **Employee cards in the Corporations directory.** The tiny name pills grew
+  into proper cards: a full avatar portrait (tinted green when the player is
+  online, blue while on duty), their tier within the rank, and a spot for
+  weekly and total shifts worked - counting starts once paid shifts arrive.
+  Click a card to open that player's profile.
+
 ## 2026-08-28 — Straight into the city
 
 ### Added
