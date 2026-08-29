@@ -38,6 +38,13 @@ any heading with nothing under it).
   under a Functions group, with an Interactions group reserved below for
   what's coming.
 
+### Fixed
+
+- **Photos keep up with name changes.** The People groups in Photos >
+  Collections now always show players under their current name - photos
+  taken before someone changed their username no longer split off under
+  the old one.
+
 ## 2026-08-28 — Straight into the city
 
 ### Added
