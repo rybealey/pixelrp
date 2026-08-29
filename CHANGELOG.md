@@ -23,6 +23,10 @@ any heading with nothing under it).
   Police Department and its full rank ladder, from Cadet (15c per 10 minutes
   worked) up to Police Chief (27c). Every rank runs tiers I-V. Getting hired
   and paid shifts arrive next.
+- **Employment shows everywhere.** Once you're hired, your employer's badge
+  fills the reserved slot on your info panel and your profile gains a
+  corporation line with your rank and tier - both update the moment you're
+  hired. (Staff can hire with :superhire while proper hiring is built.)
 - **The Mercury ATM has arrived.** A shiny new cash machine can now appear on
   street corners and building lobbies around the city - look for the glowing
   blue screen. (Builders will find it on the new Infrastructure page.)
