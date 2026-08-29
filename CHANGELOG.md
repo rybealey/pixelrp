@@ -24,6 +24,9 @@ any heading with nothing under it).
 
 ### Changed
 
+- **Staff are verified.** Hotel staff now show a blue verified badge next to
+  their name when you click them.
+
 - **The info panel glides in.** Clicking a player or furni now slides the info
   panel in from the right (and back out when you close it), and its badge
   area shows neat slot containers instead of floating badges.
