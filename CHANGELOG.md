@@ -14,6 +14,23 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-30 — Discord, fully in-game
+
+### Changed
+
+- **Disconnect Discord without leaving the game.** Settings > Social >
+  Discord now handles connecting and disconnecting from the same in-game
+  panel - no more visiting the website to unlink.
+- **The Discord panel catches up on its own.** Finish linking your account
+  and Settings updates automatically, instead of sitting on "Waiting for
+  Discord."
+
+### Fixed
+
+- **No more flash of "not connected" when opening Discord settings.** The
+  panel no longer briefly shows the disconnected state before it catches up
+  with your actual link status.
+
 ## 2026-08-29 — Get verified
 
 ### Added
@@ -22,7 +39,7 @@ any heading with nothing under it).
   Discord account to PixelRP. Connecting joins you to the official server
   automatically, gives you the Verified role, and keeps your server nickname
   matched to your in-game name. Your Discord details are never shown
-  in-game, and you can disconnect any time from the website.
+  in-game, and you can disconnect any time from Settings > Social > Discord.
 
 ### Fixed
 
