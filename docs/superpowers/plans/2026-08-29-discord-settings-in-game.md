@@ -16,7 +16,7 @@
 - **The emulator never calls the Discord API.** It only reads/writes `users.discord_id` and enqueues into `discord_sync_queue`; the CMS makes every Discord REST call.
 - **Discord identity details never reach the game client.** The wire carries a boolean and a timestamp only — never a handle, avatar, or Discord id.
 - **Wire ids must be checked against BOTH header files' existing VALUES before use.** New incoming packets take a `439xx` internal constant with a `//39xx` wire comment. The wire id in `revisions/1.6.6.json` and the renderer must match; the internal `.cs` constant value may differ.
-- **`client/` is a git submodule** (`rybealey/nitro-react`, branch `pixelrp`). Client changes must be committed inside the submodule and pushed with `git push origin HEAD:pixelrp` before the pointer is bumped in `plus`.
+- **`emulator/`, `cms/`, `client/` and `imager/` are ALL git submodules** of the `plus` superproject (`rybealey/PlusEMU`, `rybealey/atomcms`, `rybealey/nitro-react` on branch `pixelrp`, `rybealey/nitro-imager`). Every task's commit lands INSIDE the relevant submodule: `cd emulator && git add <paths relative to emulator/> && git commit`. The commit commands in the task steps show superproject-relative paths for readability — strip the leading component and run them from inside the submodule. Each submodule must be pushed, and its pointer bumped in `plus`, in Task 7. A green deploy with an unbumped pointer ships nothing.
 - **Before any renderer patch reseal: run `yarn install` first**, and after resealing diff patch *content* against the prior layer, not just the file list.
 - **Deploy via `gh workflow run deploy.yml`**, never a manual SSH deploy.
 - There is **no test runner for the client or the emulator** (`emulator/Tests` is empty, `client/package.json` has no test script). CMS tests are Pest (`cd cms && ./vendor/bin/pest`). For client and emulator work the gate is a clean build plus the manual in-game test in Task 7.
@@ -1246,13 +1246,14 @@ git commit -m "feat(discord): skeleton loading + in-game disconnect in Settings"
 - Consumes: everything from Tasks 1-6.
 - Produces: the change live on beta, ready for the manual in-game test.
 
-- [ ] **Step 1: Push the client submodule**
+- [ ] **Step 1: Push all three touched submodules**
 
 ```bash
-cd client
-git push origin HEAD:pixelrp
+cd emulator && git push origin HEAD:$(git rev-parse --abbrev-ref HEAD) && cd ..
+cd cms && git push origin HEAD:$(git rev-parse --abbrev-ref HEAD) && cd ..
+cd client && git push origin HEAD:pixelrp && cd ..
 ```
-Expected: both Task 5 and Task 6 commits land on the `pixelrp` branch. Skipping this ships an unchanged client bundle while the deploy still reports green.
+Expected: Tasks 1-2 land in `emulator`, Tasks 3-4 in `cms`, Tasks 5-6 in `client`. Skipping any of these ships unchanged code while the deploy still reports green. Confirm each with `git -C <sub> status` showing nothing ahead of its remote.
 
 - [ ] **Step 2: Add the changelog entry**
 
@@ -1266,10 +1267,12 @@ In `CHANGELOG.md`, add under the current unreleased heading (match the surroundi
 
 ```bash
 cd /Users/rybealey/Documents/Personal/pixelrp/plus
-git add client CHANGELOG.md
-git commit -m "feat(discord): in-game connect/disconnect + skeleton settings (bump client)"
+git add emulator cms client CHANGELOG.md
+git commit -m "feat(discord): in-game connect/disconnect + skeleton settings (bump submodules)"
 git push origin beta
 ```
+
+Verify all three pointers moved before pushing: `git diff --cached --submodule=short` must show a new commit for `emulator`, `cms` and `client`.
 
 - [ ] **Step 4: Deploy**
 
