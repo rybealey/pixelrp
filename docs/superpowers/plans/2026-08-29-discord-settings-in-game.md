@@ -18,7 +18,7 @@
 - **Wire ids must be checked against BOTH header files' existing VALUES before use.** New incoming packets take a `439xx` internal constant with a `//39xx` wire comment. The wire id in `revisions/1.6.6.json` and the renderer must match; the internal `.cs` constant value may differ.
 - **`emulator/`, `cms/`, `client/` and `imager/` are ALL git submodules** of the `plus` superproject (`rybealey/PlusEMU`, `rybealey/atomcms`, `rybealey/nitro-react` on branch `pixelrp`, `rybealey/nitro-imager`). Every task's commit lands INSIDE the relevant submodule: `cd emulator && git add <paths relative to emulator/> && git commit`. The commit commands in the task steps show superproject-relative paths for readability — strip the leading component and run them from inside the submodule. Each submodule must be pushed, and its pointer bumped in `plus`, in Task 7. A green deploy with an unbumped pointer ships nothing.
 - **Before any renderer patch reseal: run `yarn install` first**, and after resealing diff patch *content* against the prior layer, not just the file list.
-- **Deploy via `gh workflow run deploy.yml`**, never a manual SSH deploy.
+- **Beta deploys AUTOMATICALLY on push to the `beta` branch** (`deploy-beta.yml`). The push IS the deploy. `deploy.yml` is the PRODUCTION workflow (compose.prod.yaml + backup step) - never run it for beta. Never deploy by manual SSH either.
 - There is **no test runner for the client or the emulator** (`emulator/Tests` is empty, `client/package.json` has no test script). CMS tests are Pest, run through Docker from the `plus/` root (`docker compose run --rm --no-deps -T cms ./vendor/bin/pest`) - the `db` host only resolves inside the compose network, so a bare `./vendor/bin/pest` cannot reach the database. For client and emulator work the gate is a clean build plus the manual in-game test in Task 7.
 
 ---
@@ -1386,7 +1386,7 @@ Verify all three pointers moved before pushing: `git diff --cached --submodule=s
 
 - [ ] **Step 4: Deploy**
 
-Run: `gh workflow run deploy.yml --ref beta`
+The push in Step 3 already triggered `deploy-beta.yml`. Do NOT run `gh workflow run deploy.yml` - that is the PRODUCTION deploy.
 Expected: the workflow starts. Watch it with `gh run watch`. Migration `46_DiscordUnlink.sql` auto-applies (tracked in `_applied_sql_updates`); no manual DB step is needed for this change.
 
 - [ ] **Step 5: Confirm the client bundle actually changed**
