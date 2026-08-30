@@ -78,7 +78,7 @@ jobs:
           git fetch -q origin beta
           git checkout -q beta
           git reset -q --hard origin/beta
-          git submodule update --init emulator cms
+          git submodule update --init emulator cms imager
           git -C emulator log --oneline -1
           REMOTE
 
