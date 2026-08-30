@@ -14,6 +14,17 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-30 — Your job on your profile
+
+### Changed
+
+- **Profiles show where you work.** The employment card on a player profile
+  now names the corporation they actually work for, with their rank
+  underneath - "Cadet II", or just the title for the top ranks that have no
+  tiers. Profiles opened from the corporation directory show it too. Anyone
+  without a job still reads as Unemployed. Shift counts and the duty label
+  are still placeholders for now.
+
 ## 2026-08-30 — Discord, fully in-game
 
 ### Changed
