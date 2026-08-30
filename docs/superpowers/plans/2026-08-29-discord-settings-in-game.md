@@ -737,6 +737,14 @@ In `cms/app/Services/FakeRcon.php`, add alongside the other recorded methods:
 
 Deferring the push until after commit is correct here: the callback links the account and saves the user inside the request, and a push that fired before a rolled-back save would tell the client it is linked when it is not.
 
+**`PlusRconService` needs one more change than the others.** Its `sendCommand()` translates CMS-dialect keys to PlusEMU wire commands through a `match`, whose `default` arm is `$this->unsupported($command)` — a logged no-op. A wrapper method alone would therefore make the push silently do nothing in production. Add the translation arm alongside the existing ones:
+
+```php
+            'syncdiscord' => $this->sendPlusCommand('reload_user_discord', [$data['user_id']]),
+```
+
+The command name and its single `%userId%` parameter must match the emulator command added in Task 2.
+
 - [ ] **Step 4: Create the result page**
 
 Create `cms/resources/views/discord/result.blade.php`. It must be self-contained — it is the only page left in the flow, and it renders inside a popup:
