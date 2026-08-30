@@ -101,9 +101,14 @@ In `emulator/HabboHotel/Discord/DiscordSyncUtility.cs`, replace the `IsLinked` m
     /// CMS scheduler. Both writes share one transaction: `discord:sweep`
     /// only reconciles users that are still linked, so a lost queue row
     /// would strand the player's roles forever.
-    /// Returns false when nothing was linked.
+    /// Returns the resulting link state so the caller needs no second
+    /// query: an unguarded follow-up read would throw out of the packet
+    /// handler, and PacketManager disconnects the session on a faulted
+    /// Parse - kicking a player out of the game for clicking Disconnect.
+    /// Null means the state could not be determined at all; the caller
+    /// sends nothing and the client's own refresh recovers.
     /// </summary>
-    public static bool Unlink(int userId)
+    public static DiscordLinkState? Unlink(int userId)
     {
         try
         {
@@ -208,12 +213,16 @@ internal class RpDiscordUnlinkEvent : IPacketEvent
         if (session.GetHabbo() == null)
             return Task.CompletedTask;
 
-        DiscordSyncUtility.Unlink(session.GetHabbo().Id);
+        // Unlink reports the resulting state itself. A second, unguarded
+        // read here would throw out of Parse on a DB blip, and PacketManager
+        // disconnects the session on a faulted Parse - a player must never
+        // be kicked from the game for clicking Disconnect.
+        var state = DiscordSyncUtility.Unlink(session.GetHabbo().Id);
 
-        // Answer with live state either way - an already-unlinked account and
-        // a failed write both correctly report the current truth.
-        var state = DiscordSyncUtility.GetLinkState(session.GetHabbo().Id);
-        session.Send(new RpDiscordStatusComposer(!string.IsNullOrEmpty(state.DiscordId), state.DiscordLinkedAt));
+        // Null means the state is genuinely unknown; say nothing rather than
+        // report a link status that might be wrong.
+        if (state != null)
+            session.Send(new RpDiscordStatusComposer(!string.IsNullOrEmpty(state.DiscordId), state.DiscordLinkedAt));
 
         return Task.CompletedTask;
     }
