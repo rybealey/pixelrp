@@ -127,9 +127,20 @@ jobs:
           $COMPOSE up -d < /dev/null
           # web's nginx.conf is a bind mount; `up -d` won't recreate web when
           # only the config changed, so reload to pick up route changes (e.g.
-          # /imaging/). Safe because the imager upstream now resolves at request
-          # time, so reload succeeds even if imager isn't ready yet.
-          $COMPOSE exec -T web nginx -s reload < /dev/null
+          # /imaging/). Gate the reload on `nginx -t` and retry: `up -d` may
+          # have just recreated cms/emulator, and nginx SILENTLY rejects a
+          # reload (exit 0, keeps old config) while any static upstream is
+          # momentarily unresolvable — which would ship a stale config. Fail
+          # loudly if it never passes rather than pretend success.
+          reloaded=
+          for _ in $(seq 1 15); do
+            if $COMPOSE exec -T web nginx -t < /dev/null >/dev/null 2>&1; then
+              $COMPOSE exec -T web nginx -s reload < /dev/null
+              reloaded=1; break
+            fi
+            sleep 2
+          done
+          [ -n "$reloaded" ] || { echo "::error::web nginx never passed config test; /imaging/ route not reloaded"; exit 1; }
           $COMPOSE exec -T cms php artisan optimize:clear < /dev/null
           REMOTE
 
