@@ -14,6 +14,19 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-30 — Smoother movement
+
+### Fixed
+
+- **Walking no longer freezes and snaps.** Rooms were occasionally missing a
+  beat entirely - avatars stood still for half a second and then jumped to
+  where they should have been. The hotel was waiting on itself rather than
+  actually being busy, so movement now keeps its rhythm.
+- **Busy rooms stay as smooth as quiet ones.** The hotel was writing a
+  diagnostic note for every step every avatar took, and that work grew faster
+  than the crowd did. Those notes are off unless someone is debugging, so a
+  packed room now feels like an empty one.
+
 ## 2026-08-30 — Your job on your profile
 
 ### Changed
