@@ -984,7 +984,7 @@ yarn patch -u "$DESC"
 Expected: prints a temp extract directory with ALL current patches applied. Confirm before editing:
 
 ```bash
-grep -c "AUTH_MOVE_ENTER" <extract-dir>/src/room/renderer/PixelRPMovementAuthority.ts
+grep -c "ROOMAUTH_QUEUE_CORRECTION" <extract-dir>/src/room/renderer/PixelRPMovementAuthority.ts
 ```
 Expected: non-zero. A zero here means the extract is not the patched tree — stop and re-extract.
 
@@ -1105,7 +1105,7 @@ Expected: the new delta touches ONLY the five files listed at the top of this ta
 
 ```bash
 yarn install
-grep -c "AUTH_MOVE_ENTER" node_modules/@nitrots/nitro-renderer/src/room/renderer/PixelRPMovementAuthority.ts
+grep -c "ROOMAUTH_QUEUE_CORRECTION" node_modules/@nitrots/nitro-renderer/src/room/renderer/PixelRPMovementAuthority.ts
 grep -c "RP_MOVEMENT_CYCLE" node_modules/@nitrots/nitro-renderer/src/nitro/communication/messages/incoming/IncomingHeader.ts
 grep -c "RP_DISCORD_UNLINK" node_modules/@nitrots/nitro-renderer/src/nitro/communication/messages/outgoing/OutgoingHeader.ts
 ```
