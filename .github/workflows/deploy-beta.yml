@@ -125,22 +125,6 @@ jobs:
           [ -n "$theme" ] || { echo "::error::could not read the built theme from docker/cms/Dockerfile"; exit 1; }
           printf "UPDATE website_settings SET value='%s' WHERE \`key\`='theme';\n" "$theme" | dbsql
           $COMPOSE up -d < /dev/null
-          # web's nginx.conf is a bind mount; `up -d` won't recreate web when
-          # only the config changed, so reload to pick up route changes (e.g.
-          # /imaging/). Gate the reload on `nginx -t` and retry: `up -d` may
-          # have just recreated cms/emulator, and nginx SILENTLY rejects a
-          # reload (exit 0, keeps old config) while any static upstream is
-          # momentarily unresolvable — which would ship a stale config. Fail
-          # loudly if it never passes rather than pretend success.
-          reloaded=
-          for _ in $(seq 1 15); do
-            if $COMPOSE exec -T web nginx -t < /dev/null >/dev/null 2>&1; then
-              $COMPOSE exec -T web nginx -s reload < /dev/null
-              reloaded=1; break
-            fi
-            sleep 2
-          done
-          [ -n "$reloaded" ] || { echo "::error::web nginx never passed config test; /imaging/ route not reloaded"; exit 1; }
           $COMPOSE exec -T cms php artisan optimize:clear < /dev/null
           REMOTE
 
@@ -165,6 +149,15 @@ jobs:
             sleep 5
           done
           echo "Beta emulator is READY."
+          # Pick up bind-mounted nginx.conf changes (e.g. the /imaging/ route).
+          # A single-file bind mount is pinned to the inode the container was
+          # created with; `git reset --hard` replaces the file (new inode), so a
+          # long-running web keeps serving the OLD config and `nginx -s reload`
+          # just re-reads that stale inode. Recreating web re-binds the current
+          # file. Done here (not right after `up -d`) so cms+emulator are fully
+          # up and their static upstreams resolve at web startup; the imager
+          # upstream resolves at request time, so it need not be up yet.
+          $COMPOSE up -d --force-recreate web
           REMOTE
 
       # Cap the BuildKit cache so it can't balloon (it hit 54GB once because
