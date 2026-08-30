@@ -14,6 +14,24 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-30 — A sharper Corporations window
+
+### Changed
+
+- **Corporations got a proper front page.** Each corporation now opens with
+  an identity header - its badge on a plate in your chosen UI colour, its
+  description, and at-a-glance counts of employees, who's on duty right
+  now, and stock. The window itself is roomier, so names stop getting cut
+  off.
+- **You can finally tell who's around.** A small legend explains the
+  portrait colours (gray offline, green online, blue on duty), and every
+  employee card carries a matching status dot.
+- **Pay looks like pay.** Each rank's wage now sits in a little coin chip
+  instead of plain text, and the top rank is marked so the ladder reads
+  top-down at a glance.
+- **The display-options drawer stopped shoving the roster around.** It now
+  slides over the list instead of squeezing it into a single column.
+
 ## 2026-08-30 — Smoother movement
 
 ### Fixed
