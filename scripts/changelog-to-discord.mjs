@@ -187,10 +187,36 @@ if(!toPost.length)
 
 const channel = CHANNELS[channelName];
 
+// The embed title summarises THIS push, not the dated release heading — that
+// heading is shared by every push on the same day, so it would read the same
+// (e.g. "Get verified") across unrelated pushes. Use the first added bullet's
+// bold headline, with "(+N more)" when the push added others.
+const BULLET_HEADLINE = /\*\*(.+?)\*\*/;
+const TITLE_HEADLINE_MAX = 200;
+
+const pushTitle = entry =>
+{
+    const bullets = entry.sections.flatMap(s => s.bullets);
+    const match = bullets[0].match(BULLET_HEADLINE);
+
+    let headline = (match ? match[1] : bullets[0])
+        .replace(/\*\*/g, '')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .replace(/\.$/, '');
+
+    if(headline.length > TITLE_HEADLINE_MAX) headline = `${ headline.slice(0, (TITLE_HEADLINE_MAX - 1)).trimEnd() }…`;
+
+    const extra = (bullets.length - 1);
+
+    return (extra > 0 ? `${ headline } (+${ extra } more)` : headline);
+};
+
 const buildEmbeds = entry =>
 {
     const footer = { text: `${ channel.footer } - ${ entry.date }` };
-    const makeEmbed = cont => ({ title: (cont ? `${ entry.title } (cont.)` : entry.title), color: channel.color, footer, fields: [] });
+    const title = pushTitle(entry);
+    const makeEmbed = cont => ({ title: (cont ? `${ title } (cont.)` : title), color: channel.color, footer, fields: [] });
     const embeds = [ makeEmbed(false) ];
 
     const embedSize = embed => (embed.title.length + footer.text.length + embed.fields.reduce((sum, field) => (sum + field.name.length + field.value.length), 0));
