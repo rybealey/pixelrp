@@ -19,7 +19,7 @@
 - **`emulator/`, `cms/`, `client/` and `imager/` are ALL git submodules** of the `plus` superproject (`rybealey/PlusEMU`, `rybealey/atomcms`, `rybealey/nitro-react` on branch `pixelrp`, `rybealey/nitro-imager`). Every task's commit lands INSIDE the relevant submodule: `cd emulator && git add <paths relative to emulator/> && git commit`. The commit commands in the task steps show superproject-relative paths for readability — strip the leading component and run them from inside the submodule. Each submodule must be pushed, and its pointer bumped in `plus`, in Task 7. A green deploy with an unbumped pointer ships nothing.
 - **Before any renderer patch reseal: run `yarn install` first**, and after resealing diff patch *content* against the prior layer, not just the file list.
 - **Deploy via `gh workflow run deploy.yml`**, never a manual SSH deploy.
-- There is **no test runner for the client or the emulator** (`emulator/Tests` is empty, `client/package.json` has no test script). CMS tests are Pest (`cd cms && ./vendor/bin/pest`). For client and emulator work the gate is a clean build plus the manual in-game test in Task 7.
+- There is **no test runner for the client or the emulator** (`emulator/Tests` is empty, `client/package.json` has no test script). CMS tests are Pest, run through Docker from the `plus/` root (`docker compose run --rm --no-deps -T cms ./vendor/bin/pest`) - the `db` host only resolves inside the compose network, so a bare `./vendor/bin/pest` cannot reach the database. For client and emulator work the gate is a clean build plus the manual in-game test in Task 7.
 
 ---
 
@@ -36,7 +36,7 @@
 
 **Interfaces:**
 - Consumes: nothing (first task).
-- Produces: `DiscordSyncUtility.GetLinkState(int userId) -> DiscordLinkState` (public class with `string? DiscordId`, `int DiscordLinkedAt`); `DiscordSyncUtility.Unlink(int userId) -> bool`; `RpDiscordStatusComposer(bool linked, int linkedAt = 0)`. Task 2 uses `GetLinkState` and the widened composer.
+- Produces: `DiscordSyncUtility.GetLinkState(int userId) -> DiscordLinkState` (public class with `string? DiscordId`, `int DiscordLinkedAt`); `DiscordSyncUtility.Unlink(int userId) -> DiscordLinkState?`; `RpDiscordStatusComposer(bool linked, int linkedAt = 0)`. Task 2 uses `GetLinkState` and the widened composer.
 
 Wire id `3956` was verified free on the incoming side: `3954` is burned (stock collision), `3955` is stock `ModerationTradeLockEvent`, `3960` is `RefreshCampaignEvent`. Internal constant is `43956`.
 
@@ -350,6 +350,7 @@ git commit -m "feat(discord): RCON reload_user_discord to push link status live"
 ### Task 3: CMS — unlink by id and unlink queue rows
 
 **Files:**
+- Create: `cms/database/migrations/2026_08_30_000000_plus_discord_link_columns.php`
 - Modify: `cms/app/Services/Discord/DiscordSyncService.php:82-114`
 - Modify: `cms/app/Console/Commands/DiscordProcessQueue.php`
 - Test: `cms/tests/Feature/Discord/DiscordProcessQueueTest.php`
@@ -359,6 +360,78 @@ git commit -m "feat(discord): RCON reload_user_discord to push link status live"
 - Produces: `DiscordSyncService::unlinkById(string $discordId): void`. Task 4 does not use it; only the queue command does.
 
 `unlinkUser(User $user)` is called from exactly one place — `DiscordController::unlink()`, which Task 4 deletes — so it is replaced outright rather than kept alongside.
+
+- [ ] **Step 0: Mirror the emulator's Discord schema for the Laravel-managed test database**
+
+The CMS test suite runs `migrate:fresh` (`RefreshDatabase` in `cms/tests/TestCase.php`), so its schema comes from Laravel migrations only. The Discord columns are owned by the emulator's SQL updates (`45_DiscordLink.sql`, `46_DiscordUnlink.sql`), which never run against the `testing` database — so without this step every test in this task fails on a missing table, not on the behaviour under test.
+
+The established house pattern for exactly this is `cms/database/migrations/2014_10_12_300000_plus_users_compatibility_columns.php`: a migration guarded on the emulator driver that adds emulator-owned columns only when they are absent. Follow it exactly.
+
+Create `cms/database/migrations/2026_08_30_000000_plus_discord_link_columns.php`:
+
+```php
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+/**
+ * Mirrors the emulator-owned Discord schema (PlusEMU's 45_DiscordLink.sql and
+ * 46_DiscordUnlink.sql) into the Laravel-managed schema, so the test database
+ * - which is built by migrate:fresh and never sees the emulator's SQL updates
+ * - has the columns the Discord services read and write.
+ *
+ * Every add is guarded, so this is a no-op on beta and prod where the
+ * emulator's own SQL updates already applied the same schema.
+ */
+return new class extends Migration
+{
+    public function up(): void
+    {
+        if (config('emulator.driver') !== 'plus') {
+            return;
+        }
+
+        Schema::table('users', function (Blueprint $table) {
+            if (! Schema::hasColumn('users', 'discord_id')) {
+                $table->string('discord_id', 32)->nullable()->default(null)->unique('idx_users_discord_id');
+            }
+
+            if (! Schema::hasColumn('users', 'discord_linked_at')) {
+                $table->integer('discord_linked_at')->default(0);
+            }
+        });
+
+        if (! Schema::hasTable('discord_sync_queue')) {
+            Schema::create('discord_sync_queue', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('user_id');
+                $table->string('discord_id', 32)->nullable()->default(null);
+                $table->string('reason', 24)->default('');
+                $table->integer('created_at')->default(0);
+
+                $table->index('user_id', 'idx_dsq_user');
+            });
+
+            return;
+        }
+
+        // The table predates 46_DiscordUnlink.sql on this database.
+        if (! Schema::hasColumn('discord_sync_queue', 'discord_id')) {
+            Schema::table('discord_sync_queue', function (Blueprint $table) {
+                $table->string('discord_id', 32)->nullable()->default(null)->after('user_id');
+            });
+        }
+    }
+
+    public function down(): void
+    {
+    }
+};
+```
+
+Verify it takes effect before writing any test: `docker compose run --rm --no-deps -T cms php artisan migrate:fresh --env=testing` must complete, and `discord_sync_queue` must then exist with a `discord_id` column.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -421,7 +494,7 @@ it('still syncs ordinary rows for linked users', function () {
 
 - [ ] **Step 2: Run the tests to verify they fail**
 
-Run: `cd cms && ./vendor/bin/pest tests/Feature/Discord/DiscordProcessQueueTest.php`
+Run: `docker compose run --rm --no-deps -T cms ./vendor/bin/pest tests/Feature/Discord/DiscordProcessQueueTest.php`
 Expected: FAIL — `unlinkById` does not exist on `DiscordSyncService`, and the queue command ignores the `reason` column.
 
 - [ ] **Step 3: Split unlinkUser into unlinkById**
@@ -515,7 +588,7 @@ In `cms/app/Console/Commands/DiscordProcessQueue.php`, replace everything from t
 
 - [ ] **Step 5: Run the tests to verify they pass**
 
-Run: `cd cms && ./vendor/bin/pest tests/Feature/Discord/DiscordProcessQueueTest.php`
+Run: `docker compose run --rm --no-deps -T cms ./vendor/bin/pest tests/Feature/Discord/DiscordProcessQueueTest.php`
 Expected: PASS, 2 tests.
 
 - [ ] **Step 6: Commit**
@@ -609,7 +682,7 @@ it('no longer exposes the discord status page or unlink form', function () {
 
 - [ ] **Step 2: Run the tests to verify they fail**
 
-Run: `cd cms && ./vendor/bin/pest tests/Feature/Discord/DiscordCallbackTest.php`
+Run: `docker compose run --rm --no-deps -T cms ./vendor/bin/pest tests/Feature/Discord/DiscordCallbackTest.php`
 Expected: FAIL — `syncDiscordStatus` is not on `FakeRcon`, and `/discord` still returns 200.
 
 - [ ] **Step 3: Add syncDiscordStatus to the RCON contract and both implementations**
@@ -829,12 +902,12 @@ rm cms/resources/views/discord/status.blade.php
 
 - [ ] **Step 7: Run the tests to verify they pass**
 
-Run: `cd cms && ./vendor/bin/pest tests/Feature/Discord/`
+Run: `docker compose run --rm --no-deps -T cms ./vendor/bin/pest tests/Feature/Discord/`
 Expected: PASS, 5 tests across both files (3 callback + 2 queue).
 
 - [ ] **Step 8: Run the full CMS suite for regressions**
 
-Run: `cd cms && ./vendor/bin/pest`
+Run: `docker compose run --rm --no-deps -T cms ./vendor/bin/pest`
 Expected: PASS. Any failure naming `discord.show` is a leftover reference to the retired route — fix it.
 
 - [ ] **Step 9: Commit**
