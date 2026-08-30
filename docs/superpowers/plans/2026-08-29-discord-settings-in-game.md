@@ -685,7 +685,16 @@ it('no longer exposes the discord status page or unlink form', function () {
 Run: `docker compose run --rm --no-deps -T cms ./vendor/bin/pest tests/Feature/Discord/DiscordCallbackTest.php`
 Expected: FAIL — `syncDiscordStatus` is not on `FakeRcon`, and `/discord` still returns 200.
 
-- [ ] **Step 3: Add syncDiscordStatus to the RCON contract and both implementations**
+- [ ] **Step 3: Add syncDiscordStatus to the RCON contract and ALL FOUR implementations**
+
+There are four classes implementing `Rcon`. Adding the interface method without implementing it in every one of them is a fatal PHP error, so all four change together:
+
+| Class | Role |
+|-------|------|
+| `RconService` | Arcturus dialect (JSON) |
+| `PlusRconService` | **PlusEMU dialect — what production resolves to**, since PixelRP runs `EMULATOR_DRIVER=plus` |
+| `AfterCommitRcon` | Decorator that defers sends until the surrounding DB transaction commits |
+| `FakeRcon` | Test double |
 
 In `cms/app/Contracts/Rcon.php`, add below `alertUser`:
 
@@ -697,7 +706,7 @@ In `cms/app/Contracts/Rcon.php`, add below `alertUser`:
     public function syncDiscordStatus(User $user): void;
 ```
 
-In `cms/app/Services/RconService.php`, add alongside the other command wrappers:
+In **both** `cms/app/Services/RconService.php` and `cms/app/Services/PlusRconService.php`, add alongside the other command wrappers (both classes use the same CMS-dialect `dispatchCommand` shape and translate internally):
 
 ```php
     public function syncDiscordStatus(User $user): void
@@ -705,6 +714,15 @@ In `cms/app/Services/RconService.php`, add alongside the other command wrappers:
         $this->dispatchCommand('syncdiscord', [
             'user_id' => $user->id,
         ]);
+    }
+```
+
+In `cms/app/Services/AfterCommitRcon.php`, follow the decorator's deferral pattern:
+
+```php
+    public function syncDiscordStatus(User $user): void
+    {
+        $this->defer(fn () => $this->inner->syncDiscordStatus($user));
     }
 ```
 
@@ -716,6 +734,8 @@ In `cms/app/Services/FakeRcon.php`, add alongside the other recorded methods:
         $this->record(__FUNCTION__, ['user' => $user->id]);
     }
 ```
+
+Deferring the push until after commit is correct here: the callback links the account and saves the user inside the request, and a push that fired before a rolled-back save would tell the client it is linked when it is not.
 
 - [ ] **Step 4: Create the result page**
 
