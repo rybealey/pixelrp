@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-31 — Six seven
+
+### Added
+
+- **Say "67" out loud.** Typing or shouting 67 in a room makes your avatar
+  throw the six-seven hands for a second - dance paused, enable briefly
+  tucked away, then everything back to normal. Whispering it does nothing;
+  some things have to be said out loud.
+
 ## 2026-08-30 — A sharper Corporations window
 
 ### Changed
