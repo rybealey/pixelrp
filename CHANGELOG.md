@@ -26,8 +26,12 @@ any heading with nothing under it).
   payday and you'll be 3 minutes from payday when you clock back in. Going
   idle clocks you out automatically and banks your time.
 - **Watch people work.** Employee cards in the Corporations window and the
-  job card on profiles now show real weekly and lifetime shift time - and
-  they tick up live while someone is on duty.
+  job card on profiles count full shifts worked - weekly and lifetime, one
+  shift per 10 minutes on the clock - updating live while someone is on
+  duty.
+- **Wear your shift.** While you're on duty your motto shows it - like
+  "[WORKING] San Francisco Police Department · Officer II" - and flips back
+  to normal the moment you clock out.
 
 ## 2026-08-31 — Six seven
 
