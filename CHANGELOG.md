@@ -29,9 +29,10 @@ any heading with nothing under it).
   job card on profiles count full shifts worked - weekly and lifetime, one
   shift per 10 minutes on the clock - updating live while someone is on
   duty.
-- **Wear your shift.** While you're on duty your motto shows it - like
-  "[WORKING] San Francisco Police Department · Officer II" - and flips back
-  to normal the moment you clock out.
+- **Wear your shift.** While you're on duty your motto shows it - your
+  corporation's acronym with your rank on its own line, like "[WORKING]
+  SFPD" over "Officer II" - and it flips back to normal the moment you
+  clock out.
 
 ## 2026-08-31 — Six seven
 
