@@ -33,6 +33,9 @@ any heading with nothing under it).
   corporation's acronym with your rank on its own line, like "[WORKING]
   SFPD" over "Officer II" - and it flips back to normal the moment you
   clock out.
+- **The city has a hospital.** The Harvey Milk Medical Center (HMMC) has
+  opened its doors - Nurse through Chief of Medicine, on the same pay
+  ladder as the SFPD. Find it in the Corporations window.
 - **Everyone sees the paperwork.** Hires, fires and rank changes now update
   the Corporations window, profiles and infostands everywhere the moment
   they happen - even mid-shift, where your next paycheck follows your new
