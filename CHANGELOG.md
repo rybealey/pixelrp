@@ -14,6 +14,21 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-31 — Clock in, get paid
+
+### Added
+
+- **Shifts are live.** If you have a job, type :startwork to clock in and
+  :stopwork to clock out. Every 10 minutes on the clock pays your rank's
+  wage straight into your coins, with a whisper each minute counting down
+  to payday.
+- **Your progress never resets.** Clock out (or log off) 3 minutes before
+  payday and you'll be 3 minutes from payday when you clock back in. Going
+  idle clocks you out automatically and banks your time.
+- **Watch people work.** Employee cards in the Corporations window and the
+  job card on profiles now show real weekly and lifetime shift time - and
+  they tick up live while someone is on duty.
+
 ## 2026-08-31 — Six seven
 
 ### Added
