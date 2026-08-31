@@ -33,6 +33,9 @@ any heading with nothing under it).
   corporation's acronym with your rank on its own line, like "[WORKING]
   SFPD" over "Officer II" - and it flips back to normal the moment you
   clock out.
+- **The city has leadership.** San Francisco Leadership (SFL) runs the
+  town - Construction, Support and Management, no tiers, top wage across
+  the board.
 - **Every corporation has its own badge.** The SFPD's gold star, HMMC's
   stethoscope, The Muse's coffee cup and Elite Armory's crossed swords now
   mark the Corporations window, infostands and profiles.
