@@ -39,9 +39,9 @@ any heading with nothing under it).
 - **The city has an armory.** Elite Armory (EA) is forging - Apprentice,
   Smith, Bladesmith and Weaponsmith at the tiered rungs, Forgemaster up
   through Master at Arms at the top. Blades and axes, never guns.
-- **The city has a cafe.** The Muse (MUSE) is hiring too - Busser,
-  Barista, Baker and DJ on the tiered rungs, Curator up through Creative
-  Director at the top, same pay ladder as everyone else.
+- **The city has a juice bar.** The Muse (MUSE) is hiring too - Busser,
+  Juicer, Mixologist and DJ on the tiered rungs, Curator up through
+  Creative Director at the top, same pay ladder as everyone else.
 - **The city has a hospital.** The Harvey Milk Medical Center (HMMC) has
   opened its doors - Nurse through Chief of Medicine, on the same pay
   ladder as the SFPD. Find it in the Corporations window.
