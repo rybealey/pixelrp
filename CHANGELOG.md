@@ -33,6 +33,10 @@ any heading with nothing under it).
   corporation's acronym with your rank on its own line, like "[WORKING]
   SFPD" over "Officer II" - and it flips back to normal the moment you
   clock out.
+- **Everyone sees the paperwork.** Hires, fires and rank changes now update
+  the Corporations window, profiles and infostands everywhere the moment
+  they happen - even mid-shift, where your next paycheck follows your new
+  rank. Clocking in and out is announced to the room.
 
 ## 2026-08-31 — Six seven
 
