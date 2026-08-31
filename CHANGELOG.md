@@ -33,6 +33,9 @@ any heading with nothing under it).
   corporation's acronym with your rank on its own line, like "[WORKING]
   SFPD" over "Officer II" - and it flips back to normal the moment you
   clock out.
+- **The city has an armory.** Elite Armory (EA) is forging - Apprentice,
+  Smith, Bladesmith and Weaponsmith at the tiered rungs, Forgemaster up
+  through Master at Arms at the top. Blades and axes, never guns.
 - **The city has a cafe.** The Muse (MUSE) is hiring too - Busser,
   Barista, Baker and DJ on the tiered rungs, Curator up through Creative
   Director at the top, same pay ladder as everyone else.
