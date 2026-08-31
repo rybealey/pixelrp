@@ -29,6 +29,14 @@ any heading with nothing under it).
   job card on profiles count full shifts worked - weekly and lifetime, one
   shift per 10 minutes on the clock - updating live while someone is on
   duty.
+- **Bosses hire and fire.** Corporation leadership - the top two ranks,
+  or Management at PixelRP Leadership - can :hire an unemployed player
+  into the bottom rung and :fire anyone beneath them, but only while on
+  duty. Firing works even when the target is offline, and so do the staff
+  super-commands now.
+- **You can walk out.** :quitjob resigns on the spot, with the room told
+  in the blue shout. Fired or resigned, your shift record goes with you -
+  a rehire starts from zero.
 - **Wear your shift.** While you're on duty your motto shows it - your
   corporation's acronym with your rank on its own line, like "[WORKING]
   SFPD" over "Officer II" - and it flips back to normal the moment you
