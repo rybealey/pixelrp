@@ -23,8 +23,8 @@ any heading with nothing under it).
   zone picker - so new roleplay room options have an obvious home as they
   arrive.
 - **A Corporations section is taking shape in the Roleplay tab.**
-  Headquarters and Authorizations links now sit under it - empty for now,
-  with room-and-corporation settings coming soon.
+  Headquarters, Authorizations and Emergencies links now sit under it -
+  empty for now, with room-and-corporation settings coming soon.
 
 ## 2026-08-31 — Clock in, get paid
 
