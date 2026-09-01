@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-31 — Room settings, roleplay edition
+
+### Changed
+
+- **The Roleplay tab in Room settings got the Settings treatment.** Its
+  options now sit in a sidebar on the left - Zoning holds the safe/unsafe
+  zone picker - so new roleplay room options have an obvious home as they
+  arrive.
+
 ## 2026-08-31 — Clock in, get paid
 
 ### Added
