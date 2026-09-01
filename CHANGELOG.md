@@ -14,6 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-31 — Medical ranks reshuffled
+
+### Changed
+
+- **The Harvey Milk Medical Center renamed two ranks.** What was Doctor is
+  now Surgeon, and the rank above it is now Paramedic.
+
 ## 2026-08-31 — Headquarters, authorizations and emergencies
 
 ### Added
