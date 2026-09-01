@@ -22,6 +22,9 @@ any heading with nothing under it).
   options now sit in a sidebar on the left - Zoning holds the safe/unsafe
   zone picker - so new roleplay room options have an obvious home as they
   arrive.
+- **A Corporations section is taking shape in the Roleplay tab.**
+  Headquarters and Authorizations links now sit under it - empty for now,
+  with room-and-corporation settings coming soon.
 
 ## 2026-08-31 — Clock in, get paid
 
