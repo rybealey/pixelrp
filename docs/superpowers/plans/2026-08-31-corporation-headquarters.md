@@ -33,7 +33,7 @@ int    allowPolice            // 1/0
 int    allowStaff             // 1/0
 ```
 **`RpSetRoomCorpEvent`** — wire **3958**, client→server: `int corpId`.
-**`RpSetHqRankEvent`** — wire **3959**, client→server: `int rankId, int authorized`.
+**`RpSetHqRankEvent`** — wire **3962**, client→server: `int rankId, int authorized`. (Wire 3959 was burned — stock client `PHOTO_COMPETITION`; 3961 is `CHAT_REVIEW_GUIDE_VOTE`. 3962 verified clear.)
 **`RpSetEmergencyEvent`** — wire **3960**, client→server: `int category` (0=medical,1=police,2=staff), `int enabled`.
 
 ---
@@ -199,13 +199,13 @@ In `ClientPacketHeader.cs`, near `RpRoomZoneSaveEvent = 3923;`, add:
 
 ```csharp
     public const uint RpSetRoomCorpEvent = 43958; //3958
-    public const uint RpSetHqRankEvent = 43959; //3959
+    public const uint RpSetHqRankEvent = 43962; //3962
     public const uint RpSetEmergencyEvent = 43960; //3960
 ```
 
 - [ ] **Step 2: Add the wire ids to the revision map**
 
-In `emulator/Resources/Revisions/1.6.6.json`: in the **outgoing** map (where `"RpRoomZoneComposer": 3924` lives, ~line 591) add `"RpRoomCorpComposer": 3957,`. In the **incoming** map (where `"RpRoomZoneSaveEvent": 3923` lives, ~line 303) add `"RpSetRoomCorpEvent": 3958,`, `"RpSetHqRankEvent": 3959,`, `"RpSetEmergencyEvent": 3960,`. Keep valid JSON (commas, no trailing comma at a map's end).
+In `emulator/Resources/Revisions/1.6.6.json`: in the **outgoing** map (where `"RpRoomZoneComposer": 3924` lives, ~line 591) add `"RpRoomCorpComposer": 3957,`. In the **incoming** map (where `"RpRoomZoneSaveEvent": 3923` lives, ~line 303) add `"RpSetRoomCorpEvent": 3958,`, `"RpSetHqRankEvent": 3962,`, `"RpSetEmergencyEvent": 3960,`. Keep valid JSON (commas, no trailing comma at a map's end).
 
 - [ ] **Step 3: Write the composer**
 
@@ -648,7 +648,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 - Then reseal: produces changed `client/package.json`, `client/yarn.lock`, `client/.yarn/patches/*`
 
 **Interfaces:**
-- Consumes: the wire contract (top of plan) — client Incoming `RP_ROOM_CORP = 3957`; client Outgoing `RP_SET_ROOM_CORP = 3958`, `RP_SET_HQ_RANK = 3959`, `RP_SET_EMERGENCY = 3960`.
+- Consumes: the wire contract (top of plan) — client Incoming `RP_ROOM_CORP = 3957`; client Outgoing `RP_SET_ROOM_CORP = 3958`, `RP_SET_HQ_RANK = 3962`, `RP_SET_EMERGENCY = 3960`.
 - Produces (client `@nitrots/nitro-renderer` exports for Task 6): `RpRoomCorpEvent` (+ parser getters `roomId, corpId, ranks: RpRoomCorpRank[], allowMedical, allowPolice, allowStaff`), `RpSetRoomCorpComposer(corpId)`, `RpSetHqRankComposer(rankId, authorized)`, `RpSetEmergencyComposer(category, enabled)`.
 
 - [ ] **Step 1: Open the patch for editing**
@@ -708,7 +708,7 @@ export class RpSetRoomCorpComposer implements IMessageComposer<ConstructorParame
 - `incoming/index.ts`: `export *` the new event (and parser file if separate), beside the RpRoomZone lines.
 - `outgoing/index.ts`: `export *` the three composers.
 - `incoming/IncomingHeader.ts`: `public static readonly RP_ROOM_CORP: number = 3957;` (match the file's declaration style, near `RP_ROOM_ZONE`).
-- `outgoing/OutgoingHeader.ts`: `RP_SET_ROOM_CORP = 3958`, `RP_SET_HQ_RANK = 3959`, `RP_SET_EMERGENCY = 3960` (match style near `RP_ROOM_ZONE_SAVE`).
+- `outgoing/OutgoingHeader.ts`: `RP_SET_ROOM_CORP = 3958`, `RP_SET_HQ_RANK = 3962`, `RP_SET_EMERGENCY = 3960` (match style near `RP_ROOM_ZONE_SAVE`).
 - `NitroMessages.ts`: import the four classes; `this._events.set(IncomingHeader.RP_ROOM_CORP, RpRoomCorpEvent);` beside the RP_ROOM_ZONE registration; `this._composers.set(OutgoingHeader.RP_SET_ROOM_CORP, RpSetRoomCorpComposer);` and the other two beside RP_ROOM_ZONE_SAVE.
 
 - [ ] **Step 5: Reseal the patch**

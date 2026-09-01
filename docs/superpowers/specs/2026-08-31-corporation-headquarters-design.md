@@ -77,13 +77,17 @@ room R:
 
 1. If C has **no** HQ rooms (`SELECT COUNT(*) FROM rooms WHERE
    corporation_id=C` == 0) → **permitted** anywhere (unchanged fallback).
-2. Otherwise permitted iff **any** of:
-   - `R.corporation_id == C` **and** a row `(R, K)` exists in
-     `rp_hq_room_ranks` (their HQ, rank authorized); or
+2. Otherwise, if `R.corporation_id == C` (R is their own corp's HQ), the
+   rank authorization is **definitive**: permitted iff a row `(R, K)` exists
+   in `rp_hq_room_ranks`, else **denied**. (Rank auth wins here on purpose:
+   an emergency fallback at your own HQ would make deauthorizing a rank a
+   no-op for exactly the service corps that default their emergency flags
+   on — so the emergency check does *not* apply at your own HQ.)
+3. Otherwise (R is not their HQ) permitted iff **any** of:
    - `C.service_type == 'medical'` and `R.allow_medical`; or
    - `C.service_type == 'police'` and `R.allow_police`; or
    - `C.service_type == 'staff'` and `R.allow_staff`.
-3. Else **denied**.
+4. Else **denied**.
 
 Implemented once as `ShiftManager.EvaluateWork(Habbo) -> (bool ok, string
 reason)`, called at clock-in and on each minute boundary for on-duty

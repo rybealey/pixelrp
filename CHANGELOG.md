@@ -14,6 +14,27 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-31 — Headquarters, authorizations and emergencies
+
+### Added
+
+- **Rooms can be a corporation's headquarters.** In Room settings >
+  Roleplay > Corporations, staff can point a room at a corporation. Once a
+  corporation has a headquarters, its employees can only clock in where
+  they're meant to work - at that headquarters, or anywhere an emergency
+  service lets them in. Corporations with no headquarters keep working
+  anywhere, as before.
+- **Pick who works where.** Authorizations lists the corporation's ranks
+  with a checkbox each - uncheck a rank and they can't clock in at that
+  headquarters. Every rank starts allowed.
+- **Emergency services.** Emergencies lets a room admit Medical, Police
+  and Staff from outside - so hospital staff and officers can work a scene
+  anywhere that allows them. All three are allowed by default; the room
+  owner or staff can change them.
+- **Leave your post, clock out.** If you walk away from where you're
+  allowed to work - or your rank loses access mid-shift - you're clocked
+  out on the spot.
+
 ## 2026-08-31 — Room settings, roleplay edition
 
 ### Changed
@@ -23,8 +44,7 @@ any heading with nothing under it).
   zone picker - so new roleplay room options have an obvious home as they
   arrive.
 - **A Corporations section is taking shape in the Roleplay tab.**
-  Headquarters, Authorizations and Emergencies links now sit under it -
-  empty for now, with room-and-corporation settings coming soon.
+  Headquarters, Authorizations and Emergencies links now sit under it.
 
 ## 2026-08-31 — Clock in, get paid
 
