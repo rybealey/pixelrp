@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-08-31 — City Government
+
+### Changed
+
+- **PixelRP Leadership is now City Government.** The corporation, and its
+  GOVT tag, show up across the Corporations window, profiles and the
+  on-duty motto.
+
 ## 2026-08-31 — Medical ranks reshuffled
 
 ### Changed
