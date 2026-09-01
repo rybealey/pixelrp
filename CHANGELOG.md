@@ -34,10 +34,12 @@ any heading with nothing under it).
 - **Pick who works where.** Authorizations lists the corporation's ranks
   with a checkbox each - uncheck a rank and they can't clock in at that
   headquarters. Every rank starts allowed.
-- **Emergency services.** Emergencies lets a room admit Medical, Police
-  and Staff from outside - so hospital staff and officers can work a scene
-  anywhere that allows them. All three are allowed by default; the room
-  owner or staff can change them.
+- **Emergency services.** A room can admit Medical and Police from
+  outside: an on-duty officer (any rank) or senior medic (Paramedic and
+  above) can keep working in a room that allows their service, even when
+  it isn't their headquarters - though they still clock in at their own
+  headquarters first. PixelRP Leadership can work in any room. Both are
+  allowed by default; the room owner or staff can change them.
 - **Leave your post, clock out.** If you walk away from where you're
   allowed to work - or your rank loses access mid-shift - you're clocked
   out on the spot.
