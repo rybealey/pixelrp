@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-01 — Pay for Diamonds with crypto
+
+### Added
+
+- **You can now buy Diamonds with cryptocurrency.** The Diamonds store has a
+  new "Pay with crypto" button that opens a secure checkout in a new tab,
+  where you can pay in USDC and other stablecoins from your wallet. Your
+  Diamonds arrive in-game automatically once the payment goes through. Card
+  payments work exactly as before.
+
 ## 2026-08-31 — City Government
 
 ### Changed
