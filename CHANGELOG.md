@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-01 — Passive status aura
+
+### Added
+
+- **Passive players now have a visible aura.** While your passive status is
+  active, your avatar wears a passive effect so everyone around you can see
+  you're passive at a glance. It turns on the moment you go passive and comes
+  back on its own after a dance or other effect. It disappears automatically
+  the instant passive ends, whether the timer runs out or you cancel it early.
+
 ## 2026-09-01 — Pay for Diamonds with crypto
 
 ### Added
