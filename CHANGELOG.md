@@ -24,6 +24,14 @@ any heading with nothing under it).
   back on its own after a dance or other effect. It disappears automatically
   the instant passive ends, whether the timer runs out or you cancel it early.
 
+### Fixed
+
+- **The PASSIVE tag now shows on your HUD when you log in already passive.**
+  Previously the tag only appeared right after you drank a smoothie; if your
+  passive status carried over from a previous session it stayed hidden (so you
+  couldn't see it or cancel it). It now reliably shows for you and on other
+  passive players you look at.
+
 ## 2026-09-01 — Pay for Diamonds with crypto
 
 ### Added
