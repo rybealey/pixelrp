@@ -237,6 +237,10 @@ def classify(f):
         return None
     if line in ('ad_sales', 'test', 'testing', 'clothing') or line.startswith(('ad_', 'buildersclub')):
         return None
+    # pixelrp/infrastructure lines are Builders-owned (nav teleporters, the ATM);
+    # they live in the Builders tree, never as a Furni theme.
+    if line in ('pixelrp', 'infrastructure'):
+        return None
     # staff shelves
     if line.startswith('nft'):
         return ('STAFF', 'NFT', (pretty(line),))

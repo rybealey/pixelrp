@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-01 — Catalog tidy-up
+
+### Removed
+
+- **The "Pixelrp" theme is gone from the Furni catalog.** It only ever
+  duplicated a handful of builder teleporters that already live under Builders,
+  so it has been cleared out to keep the Themes list tidy. Builders still find
+  those pieces in Builders > Navigation.
+
 ## 2026-09-01 — Cartier furniture
 
 ### Added
