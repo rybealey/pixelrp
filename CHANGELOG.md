@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-01 — Staff stress testing
+
+### Added
+
+- Staff can now spawn a horde of harmless zombie clones of a player to stress
+  test a room, and clear them all just as fast. If you see twenty copies of
+  someone shuffling around, the hotel is being load-tested; they vanish
+  without a trace.
+
 ## 2026-09-01 — Catalog tidy-up
 
 ### Removed
