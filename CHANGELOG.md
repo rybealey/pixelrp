@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-01 — Cartier furniture
+
+### Added
+
+- **A new Cartier collection of furniture.** Builders will find a fresh Cartier
+  section at the bottom of the Builders catalog, set apart by its own divider,
+  stocked with 25 new luxury pieces to decorate rooms with.
+
 ## 2026-09-01 — Passive status aura
 
 ### Added
