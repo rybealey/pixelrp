@@ -36,8 +36,8 @@ Each zombie is a `RoomBot` constructed in memory and deployed with
   (`GetRandomWalkableSquare`), which is the desired random wandering.
 - Name / Look / Gender copied from the target Habbo. Empty speech list,
   `AutomaticChat` off.
-- Initial position: a random walkable square per zombie so they spread out
-  instead of stacking at the door.
+- Initial position: the room's entrance (door) tile, so zombies visibly
+  enter the room like players; the freeroam AI disperses them from there.
 - **No database rows.** Spawn and despawn are purely in-memory
   (`RemoveBot` verified to do no DB work for bots).
 
@@ -50,6 +50,13 @@ overwrite entries. Zombies take unique negative ids from a static
 - No collision with real (positive, DB-backed) bot ids.
 - Despawn scans room users for `IsBot && BotData.Id < 0` and calls
   `RemoveBot(virtualId, false)` on each.
+
+### Online count
+
+Zombies count toward the hotel online count: `ServerStatusUpdater` adds the
+live zombie total (summed across loaded rooms via the `IsZombie` predicate)
+to `GameClientManager.Count` when writing `server_status.users_online` and
+the console title, so load tests move the number the CMS reports.
 
 ### Cap and validation
 
