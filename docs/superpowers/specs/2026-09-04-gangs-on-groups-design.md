@@ -25,16 +25,22 @@ Gangs repurpose the stock group system rather than growing a parallel one:
   (migration). Gangs are hidden from the normal Groups UI/catalog surface,
   and groups are hidden from gang surfaces, by filtering on the flag.
 
-## Create flow (reference: the habrp.com Gang window)
+## Create flow (approved: the "Palette tabs" direction, 2026-09-04)
 
 One compact "Gang" NitroCard, not the 4-step group wizard:
 
-1. Identity band across the top previewing the two selected colors.
-2. Badge well + "Enter gang name..." input.
-3. `EDITING: PRIMARY | SECONDARY` chip toggle; a swatch grid below edits
-   whichever is active. The palettes are the stock `GroupBadgePartsEvent`
-   `colorsA`/`colorsB` lists (ids, not hexes, are what the emulator stores).
-4. `[cost] [Create Gang]` — one control: cost tab + green button.
+1. Gang crest + "Enter gang name..." input. The crest is a 50/50 vertical
+   split — primary color fills the left half, secondary the right — inside
+   a neutral outline. No banner band.
+2. `PRIMARY | SECONDARY` are TABS attached to the swatch panel: the open tab
+   is the color being edited, so no separate EDITING label exists.
+3. The swatches are the standard Choose Your Looks palette (the clothing
+   palette from figure data, HC un-gated in this fork) — gang colors and
+   outfit colors speak one language. The stock purchase stores group colour
+   IDS, so slice 1 maps each chosen color to the nearest group colour;
+   slice 2's own composer may store the exact hex instead.
+4. `[cost] [Create Gang]` — one control: cost tab + green button. The close
+   button is the stock NitroCardHeaderView one, like every other window.
 
 ### Differences from stock group purchase (server slice)
 
