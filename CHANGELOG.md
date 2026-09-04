@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-04 — Jukebox player
+
+### Changed
+
+- **The music player got a new look** to match the jukebox prompt: a light
+  card with a soft colour glow, the video's own artwork beside the title,
+  volume, and a Queue chip that shows how many songs are waiting. The skip
+  button is gone; the room's jukebox decides what plays next.
+
 ## 2026-09-04 — Gang and corporation alerts
 
 ### Added
