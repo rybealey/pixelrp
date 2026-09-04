@@ -1,7 +1,7 @@
 # Gangs on Groups — Design
 
 **Date:** 2026-09-04 · **Scope:** client (this slice), emulator + renderer patch (next slices) · **Branch:** beta
-**Status:** PROPOSED — slice 1 (create window UI) shipped; server slices need approval.
+**Status:** slices 1 + 2 SHIPPED (create window; server purchase, membership gate, realtime profile). Slice 3 (management) and 4 (turfs) open.
 
 ## Problem
 
@@ -51,18 +51,33 @@ One compact "Gang" NitroCard, not the 4-step group wizard:
 | buyable by anyone with HC | one gang per player (owner or member); rank/level gates TBD |
 | badge from the 5-part editor | slice 1 sends a default badge (first base, first part color); a gang badge editor is a later slice |
 
-## Packets (renderer patch + emulator, slice 2)
+## Packets (SHIPPED, slice 2) — client-source, no renderer patch
 
-Following the corp pattern (`RpCorpsEvent` / `RpUserCorpEvent`):
+The renderer's `connection.registerMessages()` is public and ADDITIVE, so
+the gang packets live in CLIENT source (`client/src/api/rp-gangs/`) and
+register at `CONNECTION_AUTHENTICATED` in App.tsx — before any
+`useMessageEvent` consumer mounts. No yarn patch (the dev Mac has no
+node/yarn); this is the pattern for future packets. Wire ids (in
+`Revisions/1.6.6.json`, verified free on all four header tables):
 
-- `RpGetUserGangComposer` → `RpUserGangEvent { gangId, name, colorA, colorB, badge, rank, isOwner }`
-  (gangId 0 = not in a gang). Client gates the window: no gang → Create
-  view (slice 1); in a gang → gang view (roster, leave, manage — slice 3).
-- `RpBuyGangComposer { name, colorA, colorB }` → validates uniqueness of
-  name, one-gang-per-player, charges RP cash, inserts the `is_gang` group,
-  auto-joins the buyer as owner. Slice 1 temporarily sends the stock
-  `GroupBuyComposer` (roomless, so a stock server refuses it harmlessly);
-  swap the composer when this lands.
+- **3970** `RpUserGangComposer` (server→client):
+  `{ userId, gangId, name, colourA '#rrggbb', colourB, isOwner, gangCost }`
+  — gangId 0 = no gang. Broadcast HOTEL-WIDE by
+  `GangUtility.BroadcastGangMembership(userId)` (the corp
+  `BroadcastEmployment` twin) on every mutation, so open profiles and the
+  Gang window update in real time.
+- **3971** `RpGetUserGangEvent` (client→server; emulator internal `43971`):
+  request one user's membership — the Gang window's gate and profile opens.
+- **3972** `RpBuyGangEvent` (client→server): `{ name, colourA int, colourB
+  int }` — validates (name ≤29 + wordfilter, unique among gangs,
+  one-gang-per-player, affordable) BEFORE charging `gang.cost` credits
+  (server_settings, default 500 — the "RP cash" open question resolved to
+  credits), then `TryCreateGroup` roomless + `is_gang='1'` + broadcast.
+
+Gang colours are RAW RGB ints in `groups.colour1/colour2` (stock groups
+store `groups_items` ids there; `GetColourCode` never sees gangs — the
+future turf-tint path must branch on `is_gang`). Migration:
+`64_Gangs.sql`.
 
 ## Slices
 
