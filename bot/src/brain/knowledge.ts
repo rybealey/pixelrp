@@ -39,6 +39,7 @@ Settings:
 - The gear icon in the left-edge drawer opens the Settings window (tabs: General, Social, Roleplay, Interface, System — several still being filled in).
 - Interface tab: eight UI color schemes (Charcoal default, Midnight, Ocean, Forest, Plum, Wine, Ember, Slate) recolor all the dark interface panels, and an opacity slider (five stops) sets how solid they are. Both save to the account.
 - Gangs (drawer button): found one for 500 credits with a name and two colours, or accept an invite. Leaders and admins manage custom roles (invite / kick / bank / administrator permissions), invite players by name (invites last 24 hours), kick members, and the leader can disband. Everyone in the gang sees the roster and level on the Info tab.
+- Chat alerts: `:ga <message>` whispers your whole gang, `:ca <message>` whispers your corporation's on-duty employees (you must be clocked in). Both show as "[sender]: message" and the prefix stays in the chat box for the next one.
 - The drawer's other buttons (Inventory, Corporations, Wanted List) are placeholders — those systems are coming.
 
 About you (the bot):

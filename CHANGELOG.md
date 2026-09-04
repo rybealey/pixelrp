@@ -14,6 +14,17 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-04 — Gang and corporation alerts
+
+### Added
+
+- **`:ga <message>`** whispers your message to everyone in your gang, wherever
+  they are in the hotel, and **`:ca <message>`** does the same for your
+  corporation. Corporation alerts are strictly on the clock: you must be
+  clocked in to send one, and only clocked-in colleagues receive it.
+  Messages arrive as "[sender]: message", and the `:ga` or `:ca` prefix stays
+  in your chat box for the next one until you clear it.
+
 ## 2026-09-04 — Gangs
 
 ### Added
