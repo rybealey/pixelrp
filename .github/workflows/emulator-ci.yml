@@ -25,6 +25,17 @@ jobs:
         with:
           dotnet-version: '7.0.x'
 
-      # setup-dotnet's problem matchers turn compiler errors into annotations
+      # Annotate ERRORS ONLY: the stock csc problem matcher floods the
+      # 10-annotation cap with the codebase's pre-existing nullability
+      # warnings, crowding the actual compile errors out.
+      - name: Disable the warning-flooding matcher
+        run: echo "::remove-matcher owner=csc::"
+
       - name: Build
-        run: dotnet build "emulator/Plus Emulator.csproj" -c Release
+        run: |
+          set -o pipefail
+          dotnet build "emulator/Plus Emulator.csproj" -c Release 2>&1 | tee build.log | tail -5 || true
+          if grep -qE "error [A-Z]+[0-9]+" build.log; then
+            grep -E "error [A-Z]+[0-9]+" build.log | sort -u | head -10 | while IFS= read -r line; do echo "::error::${line}"; done
+            exit 1
+          fi
