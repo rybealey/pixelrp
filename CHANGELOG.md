@@ -14,6 +14,24 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-04 — Gangs
+
+### Added
+
+- **Gangs are live.** Open the Gang window from the side drawer to found one
+  for 500 credits: pick a name and two colours, and your crest appears on
+  your profile.
+- **Invite your crew.** Leaders (and anyone given the invite permission) can
+  invite players by name from the Invites tab. Invites last 24 hours; the
+  invited player sees them in their own Gang window and can accept or
+  decline on the spot.
+- **Roles and management.** The Manage tab lets leaders create custom roles
+  with invite, kick, bank and administrator permissions, drag them into
+  rank order, assign them to members, and kick. The roster on the Info tab
+  is grouped by role with who is online.
+- **Leave or disband.** Members can leave from the Info tab; a leader
+  leaving disbands the gang and every member is told.
+
 ## 2026-09-01 — Staff stress testing
 
 ### Added

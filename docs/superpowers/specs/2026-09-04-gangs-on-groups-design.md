@@ -1,7 +1,7 @@
 # Gangs on Groups — Design
 
 **Date:** 2026-09-04 · **Scope:** client (this slice), emulator + renderer patch (next slices) · **Branch:** beta
-**Status:** slices 1 + 2 SHIPPED (create window; server purchase, membership gate, realtime profile). Slice 3 (management) and 4 (turfs) open.
+**Status:** slices 1-3 SHIPPED (create window; server purchase, membership gate, realtime profile; roster, roles, invites, leave/kick/disband). Slice 4 (turfs) open.
 
 ## Problem
 
@@ -86,7 +86,22 @@ future turf-tint path must branch on `is_gang`). Migration:
    stock group packets, always shows Create (nobody has a gang yet).
 2. **Server purchase + membership gate** — migration, the two packet pairs
    above, window gates on `RpUserGangEvent`, cost tab switches to RP cash.
-3. **Gang view + management** — roster, disband/leave, badge editor.
+3. **Gang view + management** — SHIPPED 2026-09-04. Info / Manage /
+   Invites tabs on the Gang window (design canvas under
+   `docs/superpowers/design/gangs/`). Membership stays canonical in
+   `group_memberships`; `rp_gang_members` (role + join date),
+   `rp_gang_roles` (name, order, invite/kick/bank/admin flags) and
+   `rp_gang_invites` (24h expiry, `gang.invite.hours`) are the gang-only
+   sidecars (`65_GangManagement.sql`). Permission bits (`GangManager.Perm*`):
+   invite 1, kick 2, bank 4, admin 8, leader 16; admin implies invite + kick;
+   the leader (`groups.owner_id`) holds everything and is the only one who
+   can grant, edit, assign or kick Administrator. Leader "leaving" disbands.
+   Packets 3973/3974 out (`RpGangDetail`, `RpGangInvites`), 3976-3985 in
+   (detail request, invite, cancel invite, respond, leave, kick, save role,
+   delete role, set member role, reorder roles). Every mutation pushes the
+   detail to all online members with THEIR permission bits. Bank access is a
+   flag only until a gang bank exists; nothing awards gang XP yet (level bar
+   wired at 200 XP x level). Badge editor deferred.
 4. **Turfs** — HQ room as group homeroom, group furni in gang colors, turf
    capture mechanics (own spec when we get there).
 
