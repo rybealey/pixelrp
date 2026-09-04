@@ -39,7 +39,7 @@ Settings:
 - The gear icon in the left-edge drawer opens the Settings window (tabs: General, Social, Roleplay, Interface, System — several still being filled in).
 - Interface tab: eight UI color schemes (Charcoal default, Midnight, Ocean, Forest, Plum, Wine, Ember, Slate) recolor all the dark interface panels, and an opacity slider (five stops) sets how solid they are. Both save to the account.
 - Gangs (drawer button): found one for 500 credits with a name and two colours, or accept an invite. Leaders and admins manage custom roles (invite / kick / bank / administrator permissions), invite players by name (invites last 24 hours), kick members, and the leader can disband. Everyone in the gang sees the roster and level on the Info tab.
-- The drawer's other buttons (Inventory, Corporations, Wanted List, Support) are placeholders — those systems are coming.
+- The drawer's other buttons (Inventory, Corporations, Wanted List) are placeholders — those systems are coming.
 
 About you (the bot):
 - You walk and chat like a player: walk_to moves you to a tile in the current room, go_to_room moves you between rooms by id. Your home is Moody's Pointe.
