@@ -108,7 +108,10 @@ jobs:
           set -euo pipefail
           cd "$DEPLOY_PATH"
           COMPOSE="docker compose -p pixelrp-beta -f compose.yaml -f compose.prod.yaml -f compose.beta.yaml"
-          $COMPOSE build emulator cms cms-scheduler imager 2>&1 | tail -3
+          # tail -60, not -3: a failed docker build must leave its compiler
+          # errors readable in the step log (the 2026-09-04 gang deploy died
+          # blind behind tail -3).
+          $COMPOSE build emulator cms cms-scheduler imager 2>&1 | tail -60
           # Always restart the emulator, even when its image is unchanged
           # (client-only deploys): the READY wait below reads the log since
           # container start, and on a long-lived container the boot line has

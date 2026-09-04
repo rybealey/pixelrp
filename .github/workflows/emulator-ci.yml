@@ -1,0 +1,30 @@
+# Compile-checks the emulator on every beta/main push so a C# error surfaces
+# as readable annotations here instead of dying inside the VPS docker build
+# (whose output the deploy trims to a few lines). No deploy, no secrets.
+
+name: Emulator Build Check
+
+on:
+  push:
+    branches: [beta, main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: dotnet build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Check out the emulator submodule
+        run: git submodule update --init emulator
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '7.0.x'
+
+      # setup-dotnet's problem matchers turn compiler errors into annotations
+      - name: Build
+        run: dotnet build "emulator/Plus Emulator.csproj" -c Release
