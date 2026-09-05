@@ -14,6 +14,17 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-06 — Weather
+
+### Added
+
+- **A Weather app on the phone.** Open it for the real San Francisco's real
+  weather: the temperature right now, a short forecast, the next 24 hours,
+  ten days of highs and lows, and the details (UV, sunrise and sunset, wind,
+  feels like, humidity, visibility). The sky behind it changes with the
+  conditions, from morning fog to clear night. Everyone in the hotel sees the
+  same weather, refreshed every ten minutes.
+
 ## 2026-09-05 — Notes
 
 ### Added
