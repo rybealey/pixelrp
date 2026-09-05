@@ -42,6 +42,7 @@ Settings:
 - Phone Music app: one hotel-wide radio station (the jukebox queue). Press play in Music to listen from anywhere; play/pause is only your own switch and never affects the stream. Request songs with a YouTube link via the + (same queue as the room jukebox, one request at a time). Music keeps playing with the phone closed.
 - Phone Calendar app: staff-scheduled in-game events on a day view, tap one to see details and go to its room; friends' birthdays (set in phone Settings > Account) show as all-day entries. Players can't add events - staff do, and changes show up live.
 - Phone Notes app: notes with headings, bullets and checklists, sorted into personal folders; pin, move or delete by swiping a note in a list. Share a note with friends (friends list only) and everyone in it edits the same note live, with a coloured line and name tag where each person is typing. Only the owner adds or removes people; collaborators can leave.
+- Phone Weather app: the real San Francisco's current weather, hourly and 10-day forecast, sunrise/sunset, wind, UV, humidity and visibility, in Fahrenheit and Pacific time. Refreshed every 10 minutes; the sky colour matches the conditions. Same for everyone in the hotel.
 - Chat alerts: `:ga <message>` whispers your whole gang, `:ca <message>` whispers your corporation's on-duty employees (you must be clocked in). Both show as "[sender]: message" and the prefix stays in the chat box for the next one.
 - The drawer's other buttons (Inventory, Corporations, Wanted List) are placeholders — those systems are coming.
 
