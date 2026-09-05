@@ -14,6 +14,24 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-05 — Music
+
+### Added
+
+- **A Music app on the phone.** The hotel now has one radio station: whatever
+  the jukebox plays, plays for everyone. Open Music to see what's on, who
+  requested it and what's next, and press play to listen from anywhere - no
+  jukebox in the room needed. Play and pause are yours alone; they never
+  interrupt the song for anyone else. Music keeps playing when you put the
+  phone away.
+- **Request from your phone.** The + in Music takes a YouTube link into the
+  same queue as the room jukebox. One request at a time per player.
+
+### Changed
+
+- Walking into a room with a jukebox while your phone is playing keeps the
+  phone as the source, so nothing overlaps or cuts out.
+
 ## 2026-09-05 — Calendar
 
 ### Added
