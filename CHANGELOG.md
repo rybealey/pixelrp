@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-05 — Birthday
+
+### Added
+
+- **Set your birthday on the phone.** Settings › your account row › Birthday.
+  Pick a month and a day; that's all that's stored, never a year. Remove it
+  again any time from the same screen.
+
 ## 2026-09-04 — Bring your macros with you
 
 ### Added
