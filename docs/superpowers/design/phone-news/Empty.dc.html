@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&amp;display=swap">
+  <style>
+    body { margin: 0; background: #5b6b7f; font-family: Ubuntu, sans-serif; }
+    a { color: #d9342b; } a:hover { color: #a8231c; }
+
+  .pulse { animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { box-shadow:0 0 0 0 rgba(255,107,107,.45) } 50% { box-shadow:0 0 0 5px rgba(255,107,107,0) } }
+  @media (prefers-reduced-motion: reduce) { .pulse { animation:none } }
+  </style>
+</helmet>
+<div style="display:inline-flex;padding:36px;background:#5b6b7f"><div style="position:relative;width:336px;height:700px;border-radius:30px;overflow:hidden;background:#100d14;font-family:Ubuntu, 'Segoe UI', system-ui, sans-serif;display:flex;flex-direction:column;box-shadow:0 0 0 8px #1a0a14, 0 0 0 10px #e87332"><div style="height:44px;flex:none"></div><div style="padding:0 18px 4px;display:flex;align-items:flex-end;justify-content:space-between"><div style="display:flex;align-items:center"><div style="width:30px;height:30px;display:flex;align-items:center;justify-content:center;margin-left:-10px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M15 5l-7 7 7 7"/></svg></div><div><div style="font-weight:700;font-size:9px;letter-spacing:1.5px;color:#ff6b6b">SATURDAY, 6 SEPTEMBER</div><div style="font-size:27px;font-weight:700;color:#f4f0f7;letter-spacing:-.5px;line-height:1.1">Today</div></div></div><div style="display:flex;gap:6px;align-items:center"><div style="width:30px;height:30px;border-radius:50%;background:#251d31;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div></div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:0 40px 60px;text-align:center"><div style="width:56px;height:56px;border-radius:18px;background:#251d31;display:flex;align-items:center;justify-content:center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 5h13a2 2 0 0 1 2 2v11a2 2 0 0 0 2-2V9"/><path d="M4 5v13a2 2 0 0 0 2 2h13"/><path d="M8 9h5M8 13h8M8 16h8"/></svg></div><div style="font-size:17px;font-weight:700;color:#f4f0f7">Nothing in the news yet</div><div style="font-size:13px;line-height:1.5;color:#9a90a5">Stories from hotel staff show up here the moment they are posted.</div><div style="margin-top:6px;padding:10px 18px;border-radius:14px;background:#ff6b6b;color:#1a0a14;font-size:14px;font-weight:700">Write the first story</div></div></div></div>
+</x-dc>
+</body>
+</html>

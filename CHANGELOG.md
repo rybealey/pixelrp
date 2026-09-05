@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-06 — News
+
+### Added
+
+- **A News app on the phone.** Hotel staff post stories about the city, with
+  a headline, a category and a featured picture, and everyone reads them in
+  the Today feed the moment they go up. The top story is the one staff have
+  pinned, or the newest. Pictures come from the hotel's own news image
+  library rather than uploads.
+
 ## 2026-09-06 — Weather
 
 ### Added
