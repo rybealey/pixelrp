@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-05 — Calendar
+
+### Added
+
+- **A Calendar app on the phone.** Staff schedule in-game events; open the
+  Calendar to see what's on each day, tap an event for the details and jump
+  straight to its room. Your friends' birthdays (and your own) show on the
+  day once set. New events and changes appear on everyone's calendar the
+  moment staff post them.
+
 ## 2026-09-05 — Birthday
 
 ### Added
