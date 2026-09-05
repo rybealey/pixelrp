@@ -61,7 +61,9 @@ def build_bundle(lib: str, effect_id: int, png_bytes: bytes, w: int, h: int, fra
         "assets": assets,
         "animations": {lib: {
             "name": f"fx.{effect_id}", "desc": lib,
-            "sprites": [{"id": sprite_id, "member": member, "ink": 33, "staticY": 1,
+            # ink 0 = normal blending. The stock Staff layer used 33 (additive),
+            # which glows and washes a badge toward white over light floors.
+            "sprites": [{"id": sprite_id, "member": member, "ink": 0, "staticY": 1,
                          "directionList": [{"id": d, "dz": 0} for d in range(8)]}],
             "frames": anim_frames}},
         "name": lib,
