@@ -6,7 +6,15 @@ name: Emulator Build Check
 
 on:
   push:
-    branches: [beta, main]
+    # Feature branches are included deliberately. Pushing to `beta` AUTO-DEPLOYS
+    # (deploy-beta.yml), so while this only fired on beta/main the only way to
+    # compile-check anything was to deploy it - and there is no .NET SDK on the
+    # dev machine, so "does it build" could not be answered any other way. That
+    # is how a freeze reached the live beta hotel three times.
+    # Now a long-running branch like movement-v2-cutover gets a real compile
+    # gate with no deploy attached.
+    branches: [beta, main, 'movement-**', 'feat/**', 'fix/**']
+  pull_request:
   workflow_dispatch:
 
 jobs:
