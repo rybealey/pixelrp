@@ -1,0 +1,15 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "Siri twin · playing", "x": 0, "y": 0, "w": 256, "h": 330 },
+    { "file": "MainEmptyQueue.dc.html", "title": "Siri twin · nothing queued", "x": 340, "y": 0, "w": 256, "h": 330 },
+    { "file": "SiriReference.dc.html", "title": "Reference · Siri bar", "x": 680, "y": 0, "w": 476, "h": 120 },
+    { "file": "DarkChrome.dc.html", "title": "Alt · dark chrome, halo ring", "x": 0, "y": 460, "w": 256, "h": 320 },
+    { "file": "Compact.dc.html", "title": "Alt · compact strip", "x": 340, "y": 460, "w": 256, "h": 200 }
+  ],
+  "annotations": [
+    { "id": "halo-states", "x": 680, "y": 160, "w": 300, "text": "Halo at rest is the Siri halo, softer (blur 11, 55%). It flares like Siri's queued beat when a song is added, and dims to a faint ring while paused/nothing queued. Slides in from the right exactly as today." },
+    { "id": "controls", "x": 680, "y": 320, "w": 300, "text": "No play/skip. The thumbnail is the YouTube video thumbnail (i.ytimg.com hqdefault by video id). Tapping UP NEXT / Queue a song opens Siri, as the panel does now." },
+    { "id": "dark-tradeoff", "x": 0, "y": 800, "w": 300, "text": "Dark alternate keeps the purse's plate so the column stays one material, and spends the Siri glow only on the thumbnail ring + waveform. Less 'Siri', more consistent." }
+  ],
+  "launch": { "view": "canvas" }
+}

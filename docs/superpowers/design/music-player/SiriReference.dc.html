@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&amp;display=swap">
+  <style>
+    body { margin: 0; background: #5b6b7f; font-family: Ubuntu, 'Segoe UI', system-ui, sans-serif; }
+    a { color: #1E7295; } a:hover { color: #185D79; }
+
+  .halo { position:absolute; inset:-5px; border-radius:13px; overflow:hidden; filter:blur(9px); opacity:.9; }
+  .halo::before { content:''; position:absolute; left:50%; top:50%; width:220%; aspect-ratio:1;
+    background:conic-gradient(#8a3566, #1E7295, #59a9c0, #b3549c, #8a3566); animation:halo-spin 14s linear infinite; }
+  .halo.is-soft { opacity:.55; filter:blur(11px); }
+  @keyframes halo-spin { from { transform:translate(-50%,-50%) rotate(0deg) } to { transform:translate(-50%,-50%) rotate(360deg) } }
+  .wave path { fill:none; stroke-width:1.5; stroke-linecap:round; }
+  .wave .drift { animation:wave-drift linear infinite; }
+  .wave .breathe { transform-box:fill-box; transform-origin:center; animation:wave-breathe ease-in-out infinite; }
+  .wave .a { animation-duration:2.1s } .wave .a path { stroke:#8a3566; opacity:.9 } .wave .a .breathe { animation-duration:1.7s }
+  .wave .b { animation-duration:3.4s } .wave .b path { stroke:#1E7295; opacity:.7 } .wave .b .breathe { animation-duration:2.6s; animation-delay:-.9s }
+  .wave .c { animation-duration:5.1s } .wave .c path { stroke:#59a9c0; opacity:.5 } .wave .c .breathe { animation-duration:3.9s; animation-delay:-2.1s }
+  .wave.on-dark .a path { stroke:#d67bb4 } .wave.on-dark .b path { stroke:#59a9c0 } .wave.on-dark .c path { stroke:#9fd6e6 }
+  @keyframes wave-drift { from { transform:translateX(0) } to { transform:translateX(-22px) } }
+  @keyframes wave-breathe { 0%,100% { transform:scaleY(.4) } 50% { transform:scaleY(1) } }
+  @media (prefers-reduced-motion: reduce) { .halo::before, .wave .drift, .wave .breathe { animation:none } }
+  </style>
+</helmet>
+<div style="display:inline-flex;padding:28px;background:#5b6b7f"><div style="position:relative;width:420px"><div class="halo"></div><div style="position:relative;border-radius:8px;border:2px solid #000;background:#EDEDED;overflow:hidden;font-family:Ubuntu, 'Segoe UI', system-ui, sans-serif;color:#283F5D"><div style="position:absolute;top:1px;left:0;right:0;height:5px;background:#fff"></div><div style="display:flex;align-items:center;gap:8px;padding:8px 10px"><span class="wave" style="flex-shrink:0;display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg, rgba(138,53,102,0.12), rgba(30,114,149,0.14));box-shadow:inset 0 0 0 1px rgba(40,63,93,0.18)"><svg width="22" height="16" viewBox="0 0 22 16"><g class="drift a"><g class="breathe"><path d="M0 8 C2.75 3 8.25 3 11 8 C13.75 13 19.25 13 22 8 C24.75 3 30.25 3 33 8 C35.75 13 41.25 13 44 8"></path></g></g><g class="drift b"><g class="breathe"><path d="M0 8 C2.75 3 8.25 3 11 8 C13.75 13 19.25 13 22 8 C24.75 3 30.25 3 33 8 C35.75 13 41.25 13 44 8"></path></g></g><g class="drift c"><g class="breathe"><path d="M0 8 C2.75 3 8.25 3 11 8 C13.75 13 19.25 13 22 8 C24.75 3 30.25 3 33 8 C35.75 13 41.25 13 44 8"></path></g></g></svg></span><div style="flex:1;height:32px;display:flex;align-items:center;padding:0 10px;border:1px solid #b9bfc6;border-radius:4px;background:#fff;color:#9aa3ab;font-size:13px">Paste a YouTube link</div><div style="height:32px;display:flex;align-items:center;padding:0 16px;border:1px solid #185D79;border-radius:4px;background:#1E7295;color:#fff;font-size:13px;font-weight:700">Add</div></div></div></div></div>
+</x-dc>
+</body>
+</html>
