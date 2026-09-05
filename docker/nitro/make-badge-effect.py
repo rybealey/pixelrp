@@ -40,13 +40,15 @@ def to_png(src: pathlib.Path, tmpdir: pathlib.Path) -> pathlib.Path:
     sys.exit("error: badge is not a PNG and no converter (sips) is available - convert it to PNG first")
 
 # ---- bundle -----------------------------------------------------------------
-def build_bundle(lib: str, effect_id: int, png_bytes: bytes, w: int, h: int, frames: int, glyph_center=(32.5, -100)):
+def build_bundle(lib: str, effect_id: int, png_bytes: bytes, w: int, h: int, frames: int, lift: int = 0, glyph_center=(32.5, -100)):
     # The stock Staff glyph's visible centre in avatar coordinates (measured):
     # x 32.5 (the avatar's midline), y -100 (just above the head). Asset x/y are
     # the registration offsets: the image draws at (-x, -y) from the anchor, so
     # centring a w*h badge there means x = w/2 - cx, y = h/2 - cy.
+    # --lift raises the badge further above the head (a bare badge sits
+    # closer to the hair than the stock glyph's soft glow did)
     cx, cy = glyph_center
-    ox, oy = round(w / 2 - cx), round(h / 2 - cy)
+    ox, oy = round(w / 2 - cx), round(h / 2 - cy + lift)
     sprite_id = f"fx{effect_id}_1"
     member = f"std_{sprite_id}_1"
     frame_json = {"frame": {"x": 0, "y": 0, "w": w, "h": h}, "rotated": False, "trimmed": False,
@@ -84,13 +86,14 @@ def main():
     p.add_argument('--effectmap', type=pathlib.Path, required=True, help='current EffectMap.json (copied and retargeted)')
     p.add_argument('--out', type=pathlib.Path, required=True, help='overrides root (gets bundled/effect/<lib>.nitro and gamedata/EffectMap.json)')
     p.add_argument('--frames', type=int, default=1)
+    p.add_argument('--lift', type=int, default=10, help='extra pixels of air between the badge and the head (default 10)')
     args = p.parse_args()
 
     with tempfile.TemporaryDirectory() as td:
         png_path = to_png(args.badge, pathlib.Path(td))
         w, h = read_png_size(png_path)
         png_bytes = png_path.read_bytes()
-        bundle = build_bundle(args.lib, args.effect_id, png_bytes, w, h, args.frames)
+        bundle = build_bundle(args.lib, args.effect_id, png_bytes, w, h, args.frames, args.lift)
 
     effect_dir = args.out / 'bundled' / 'effect'
     effect_dir.mkdir(parents=True, exist_ok=True)
