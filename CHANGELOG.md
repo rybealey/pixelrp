@@ -14,6 +14,16 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-04 — Bring your macros with you
+
+### Added
+
+- **Import macros from another hotel.** Exported a macro preset from HabRP
+  or a similar client? Open Settings › Macros › Import and paste it, drop
+  the file in, or use Open file. Keys written any way (`4`, `Digit4`,
+  `Ctrl+Q`, `Space`) are translated to this client's bindings, and the
+  preset appears ready to use.
+
 ## 2026-09-04 — Jukebox player
 
 ### Changed
