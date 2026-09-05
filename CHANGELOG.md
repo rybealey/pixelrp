@@ -20,7 +20,8 @@ any heading with nothing under it).
 
 - **Set your birthday on the phone.** Settings › your account row › Birthday.
   Pick a month and a day; that's all that's stored, never a year. Remove it
-  again any time from the same screen.
+  again any time from the same screen. It shows on your profile card, and
+  the hotel wishes you a happy birthday when you log in on the day.
 
 ## 2026-09-04 — Bring your macros with you
 
