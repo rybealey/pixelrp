@@ -1,0 +1,14 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "Account · not set", "x": 0, "y": 0, "w": 408, "h": 772 },
+    { "file": "Picking.dc.html", "title": "Account · picking", "x": 500, "y": 0, "w": 408, "h": 772 },
+    { "file": "Set.dc.html", "title": "Account · set (light)", "x": 1000, "y": 0, "w": 408, "h": 772 },
+    { "file": "WheelSheet.dc.html", "title": "Alt · wheel sheet", "x": 1500, "y": 0, "w": 408, "h": 772 }
+  ],
+  "annotations": [
+    { "id": "scope", "x": 0, "y": 820, "w": 320, "text": "Opens from the account row on Settings. Only the birthday for now - the identity card just anchors whose account it is. Day + month only, never a year." },
+    { "id": "picker", "x": 500, "y": 820, "w": 320, "text": "Inline picker (recommended): the row expands in place; month chips 4x3, day grid 7 across, Save/Cancel. Day 29-31 grey out when the month is shorter." },
+    { "id": "alt", "x": 1500, "y": 820, "w": 320, "text": "Alternate: a bottom sheet with two wheels. More iOS, but wheels need custom scroll-snap work and read worse at this screen size." }
+  ],
+  "launch": { "view": "canvas" }
+}

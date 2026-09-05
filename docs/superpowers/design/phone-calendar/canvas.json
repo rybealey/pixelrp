@@ -1,0 +1,93 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "title": "Day view \u00b7 with events",
+      "x": 0,
+      "y": 0,
+      "w": 408,
+      "h": 772
+    },
+    {
+      "file": "Empty.dc.html",
+      "title": "Day view \u00b7 empty (light)",
+      "x": 500,
+      "y": 0,
+      "w": 408,
+      "h": 772
+    },
+    {
+      "file": "Detail.dc.html",
+      "title": "Event sheet",
+      "x": 1000,
+      "y": 0,
+      "w": 408,
+      "h": 772
+    },
+    {
+      "file": "Agenda.dc.html",
+      "title": "Alt \u00b7 agenda list",
+      "x": 1500,
+      "y": 0,
+      "w": 408,
+      "h": 772
+    },
+    {
+      "file": "StaffDay.dc.html",
+      "title": "Staff \u00b7 day view",
+      "x": 0,
+      "y": 900,
+      "w": 408,
+      "h": 772
+    },
+    {
+      "file": "NewEvent.dc.html",
+      "title": "Staff \u00b7 new event",
+      "x": 500,
+      "y": 900,
+      "w": 408,
+      "h": 772
+    },
+    {
+      "file": "StaffDetail.dc.html",
+      "title": "Staff \u00b7 event sheet (light)",
+      "x": 1000,
+      "y": 900,
+      "w": 408,
+      "h": 772
+    }
+  ],
+  "annotations": [
+    {
+      "id": "source",
+      "x": 0,
+      "y": 820,
+      "w": 320,
+      "text": "Read-only for players. Events come from a staff-managed table (title, description, start/end, room, colour, host) - a Housekeeping resource in the CMS, or :addevent in chat. Friends' birthdays are the rp_user_birthdays rows of the player's friends list."
+    },
+    {
+      "id": "dayview",
+      "x": 500,
+      "y": 820,
+      "w": 320,
+      "text": "iOS day view: week strip (swipe or tap to change day, dots mark days with events, Today jumps back), all-day row for birthdays, hourly timeline from 3 PM (hotel evenings) with a now line. Tap an event for the sheet."
+    },
+    {
+      "id": "alt",
+      "x": 1500,
+      "y": 820,
+      "w": 320,
+      "text": "Alternate: an agenda list of upcoming days. Denser, no timeline - could also be a second tab in the day view."
+    },
+    {
+      "id": "realtime",
+      "x": 1500,
+      "y": 900,
+      "w": 320,
+      "text": "Staff see a + in the header and Edit / Delete on any event sheet; players never do. Post/Edit/Delete go to the emulator, which broadcasts the change to every online client - open calendars redraw at once, no refresh. Edit reuses the New Event sheet pre-filled; Delete confirms first."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

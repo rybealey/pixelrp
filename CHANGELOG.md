@@ -14,6 +14,21 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-05 — Notes
+
+### Added
+
+- **A Notes app on the phone.** Write notes with headings, bullet points and
+  checklists, sort them into folders you name yourself, and pin the ones you
+  keep coming back to. Swipe a note in a list for Pin, Move or Delete. Type
+  `- `, `[] ` or `# ` at the start of a line to turn it into a bullet, a
+  checkbox or a heading.
+- **Share a note with friends and write it together.** Everyone in a shared
+  note sees changes as they happen, with a coloured line and a name tag
+  showing where each person is typing. Notes can only be shared with people
+  on your friends list; the owner decides who is in. Anyone else can leave a
+  note at any time, and files it into whichever of their own folders they like.
+
 ## 2026-09-05 — Music
 
 ### Added

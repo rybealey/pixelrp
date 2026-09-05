@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&amp;display=swap">
+  <style>
+    body { margin: 0; background: #5b6b7f; font-family: Ubuntu, sans-serif; }
+    a { color: #fa2d55; } a:hover { color: #d81e46; }
+
+  .eq { display:inline-flex; align-items:flex-end; gap:2px; height:12px; }
+  .eq i { display:block; width:3px; border-radius:1.5px; background:currentColor; animation: eq 1s ease-in-out infinite; }
+  .eq i:nth-child(2){ animation-delay:-.3s } .eq i:nth-child(3){ animation-delay:-.6s } .eq i:nth-child(4){ animation-delay:-.15s }
+  @keyframes eq { 0%,100% { height:4px } 50% { height:12px } }
+  .art-breathe { animation: breathe 6s ease-in-out infinite; }
+  @keyframes breathe { 0%,100% { transform: scale(1) } 50% { transform: scale(1.015) } }
+  @media (prefers-reduced-motion: reduce) { .eq i, .art-breathe { animation: none } }
+
+  .wave path { fill:none; stroke-width:1.5; stroke-linecap:round; }
+  .wave .drift { animation: wave-drift linear infinite; }
+  .wave .breathe { transform-box:fill-box; transform-origin:center; animation: wave-breathe ease-in-out infinite; }
+  .wave .a { animation-duration:2.1s } .wave .a path { stroke:#8a3566; opacity:.9 } .wave .a .breathe { animation-duration:1.7s }
+  .wave .b { animation-duration:3.4s } .wave .b path { stroke:#1E7295; opacity:.7 } .wave .b .breathe { animation-duration:2.6s; animation-delay:-.9s }
+  .wave .c { animation-duration:5.1s } .wave .c path { stroke:#59a9c0; opacity:.5 } .wave .c .breathe { animation-duration:3.9s; animation-delay:-2.1s }
+  @keyframes wave-drift { from { transform:translateX(0) } to { transform:translateX(-22px) } }
+  @keyframes wave-breathe { 0%,100% { transform:scaleY(.4) } 50% { transform:scaleY(1) } }
+  @media (prefers-reduced-motion: reduce) { .wave .drift, .wave .breathe { animation:none } }
+  </style>
+</helmet>
+<div style="display:inline-flex;padding:36px;background:#5b6b7f"><div style="position:relative;width:336px;height:700px;border-radius:30px;overflow:hidden;background:#171021;font-family:Ubuntu, 'Segoe UI', system-ui, sans-serif;display:flex;flex-direction:column;box-shadow:0 0 0 8px #1a0a14, 0 0 0 10px #e87332"><div style="padding:10px 18px 4px;display:flex;align-items:flex-end;justify-content:space-between"><div style="display:flex;align-items:center"><div style="width:30px;height:30px;display:flex;align-items:center;justify-content:center;margin-left:-10px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fa2d55" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></div><div><div style="font-weight:700;font-size:9px;letter-spacing:1.5px;color:#fa2d55">PIXELRP RADIO</div><div style="font-size:27px;font-weight:700;color:#f4f0f7;letter-spacing:-.5px;line-height:1.1">Now Playing</div></div></div><div style="width:30px;height:30px;border-radius:50%;background:#fa2d55;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></div></div><div style="display:flex;flex-direction:column;align-items:center;padding:14px 26px 0;gap:18px"><div style="width:240px;height:240px;border-radius:18px;background:#251d31;display:flex;align-items:center;justify-content:center"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#7d7590" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></div><div style="text-align:center"><div style="font-size:17px;font-weight:700;color:#f4f0f7">The station is quiet</div><div style="font-size:12px;line-height:1.5;color:#9a90a5;margin-top:4px">Nothing is queued anywhere in the hotel. Request a song and it starts right away.</div></div><div style="height:44px;padding:0 22px;border-radius:14px;background:#fa2d55;color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Request a song</div></div></div></div>
+</x-dc>
+</body>
+</html>
