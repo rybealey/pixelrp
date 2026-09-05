@@ -72,6 +72,12 @@ jobs:
             --exclude 'renderer-config.json' \
             --exclude 'ui-config.json' \
             client/dist/ vps:"$DEPLOY_PATH/nitro/client/"
+          # Repo-tracked asset overrides (nitro/overrides/, e.g. a custom effect
+          # bundle + the retargeted EffectMap.json) laid over the rsynced,
+          # git-ignored asset tree. No --delete: it only ever adds/replaces.
+          if [ -d nitro/overrides ]; then
+            rsync -az --info=stats2 nitro/overrides/ vps:"$DEPLOY_PATH/nitro/assets/"
+          fi
           ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
           set -euo pipefail
           cd "$DEPLOY_PATH"
