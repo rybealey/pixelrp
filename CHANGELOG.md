@@ -19,10 +19,10 @@ any heading with nothing under it).
 ### Added
 
 - **Import macros from another hotel.** Exported a macro preset from HabRP
-  or a similar client? Open Settings › Macros › Import and paste it, drop
-  the file in, or use Open file. Keys written any way (`4`, `Digit4`,
-  `Ctrl+Q`, `Space`) are translated to this client's bindings, and the
-  preset appears ready to use.
+  or a similar client? Open Settings › Macros › Import and paste it in.
+  Keys written any way (`4`, `Digit4`, `Ctrl+Q`, `Space`) are translated to
+  this client's bindings, and the preset appears ready to use. The Import
+  and Export dialog can be dragged anywhere on screen by its title bar.
 
 ## 2026-09-04 — Jukebox player
 
