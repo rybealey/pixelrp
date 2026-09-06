@@ -1,0 +1,39 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Now Playing"
+    },
+    {
+      "file": "Queue.dc.html",
+      "x": 500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Queue"
+    },
+    {
+      "file": "Idle.dc.html",
+      "x": 1000,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "State \u00b7 Nothing playing"
+    },
+    {
+      "file": "Icon.dc.html",
+      "x": 1500,
+      "y": 0,
+      "w": 480,
+      "h": 240,
+      "title": "Home tile"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
