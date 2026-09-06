@@ -14,6 +14,19 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-06 — News byline
+
+### Added
+
+- **Stories can be published as Trina.** Staff writing a story can publish it
+  under the newsroom byline instead of their own name, and that is the default.
+  Readers see Trina; staff can still see who wrote it.
+
+### Changed
+
+- The Hotel category is gone from News. Existing Hotel stories now sit under
+  City Hall.
+
 ## 2026-09-06 — Fixes
 
 ### Changed

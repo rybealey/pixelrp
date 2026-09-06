@@ -1,0 +1,47 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Composer \u00b7 Publish as Trina (on, default)"
+    },
+    {
+      "file": "Own.dc.html",
+      "x": 500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Composer \u00b7 own name"
+    },
+    {
+      "file": "Reader.dc.html",
+      "x": 1000,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Article \u00b7 as readers see it"
+    },
+    {
+      "file": "Staff.dc.html",
+      "x": 1500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Article \u00b7 staff options"
+    },
+    {
+      "file": "Feed.dc.html",
+      "x": 2000,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Today feed"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
