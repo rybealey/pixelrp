@@ -14,6 +14,14 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-06 — Gang Manage
+
+### Changed
+
+- **Gang › Manage reads like the roster.** Members now sit under their role
+  instead of in a separate list. Each role is a card: its controls on top,
+  its members underneath, with the role dropdown and Kick on each row.
+
 ## 2026-09-06 — General settings
 
 ### Added

@@ -1,0 +1,31 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 592,
+      "h": 712,
+      "title": "Manage \u00b7 leader"
+    },
+    {
+      "file": "Admin.dc.html",
+      "x": 680,
+      "y": 0,
+      "w": 592,
+      "h": 712,
+      "title": "Manage \u00b7 administrator"
+    },
+    {
+      "file": "Dragging.dc.html",
+      "x": 1360,
+      "y": 0,
+      "w": 592,
+      "h": 712,
+      "title": "Manage \u00b7 reordering a role"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
