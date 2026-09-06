@@ -14,6 +14,18 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-06 — Fixes
+
+### Fixed
+
+- **Profiles opened from the infostand showed the wrong details.** Opening a
+  player's profile from the infostand, an avatar menu, the phone or a group
+  list could show someone else's job, gang, birthday and staff mark. Every way
+  of opening a profile now shows the right player, the same as the HUD.
+- **Weather wind tile.** The compass no longer sits over the gusts line, and
+  with Celsius chosen wind and visibility read in km/h and km.
+- **Tunes** centres the "Playing on your phone" line.
+
 ## 2026-09-06 — Gang Manage
 
 ### Changed
