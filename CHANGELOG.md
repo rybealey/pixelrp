@@ -14,6 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-06 — General settings
+
+### Added
+
+- **Clock and temperature settings on the phone.** Settings › General now has
+  two choices: a 12-hour or 24-hour clock, and Fahrenheit or Celsius. They
+  apply across the phone: the status bar, Calendar, News, Weather and the sky
+  preview. The defaults are 24-hour and Celsius.
+
 ## 2026-09-06 — Environment
 
 ### Added

@@ -1,0 +1,31 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "General \u00b7 dark \u00b7 defaults"
+    },
+    {
+      "file": "Light.dc.html",
+      "x": 500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "General \u00b7 light \u00b7 24-hour and \u00b0C"
+    },
+    {
+      "file": "Weather.dc.html",
+      "x": 1000,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Weather in 24-hour and \u00b0C"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
