@@ -16,6 +16,13 @@ any heading with nothing under it).
 
 ## 2026-09-06 — Tunes
 
+### Added
+
+- **Staff can steer the station.** In Tunes, staff see a skip button next to
+  play and can remove any request from the queue; skipping asks once since it
+  moves the whole hotel on. Everyone can now remove their own queued request
+  to free their slot. If staff skip or remove your song, you get a short note.
+
 ### Changed
 
 - **The Music app is now Tunes, with a new look.** A dark, streaming-style layout: a big

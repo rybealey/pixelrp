@@ -1,0 +1,39 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Now Playing \u00b7 staff"
+    },
+    {
+      "file": "Skip.dc.html",
+      "x": 500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Skip \u00b7 confirm"
+    },
+    {
+      "file": "Queue.dc.html",
+      "x": 1000,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Queue \u00b7 staff"
+    },
+    {
+      "file": "QueuePlayer.dc.html",
+      "x": 1500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Queue \u00b7 player"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
