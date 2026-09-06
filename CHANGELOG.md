@@ -14,11 +14,11 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
-## 2026-09-06 — Music restyle
+## 2026-09-06 — Tunes
 
 ### Changed
 
-- **The Music app has a new look.** A dark, streaming-style layout: a big
+- **The Music app is now Tunes, with a new look.** A dark, streaming-style layout: a big
   square cover, a green play button, and the queue as a simple list. The
   home-screen tile is now black with green equaliser bars. Requesting a song
   works exactly as before.
