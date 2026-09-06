@@ -16,6 +16,11 @@ any heading with nothing under it).
 
 ## 2026-09-06 — Fixes
 
+### Changed
+
+- **Wanted stars glint.** Lit stars on the player and target HUDs catch the
+  light every few seconds; unlit ones stay still.
+
 ### Fixed
 
 - **Profiles opened from the infostand showed the wrong details.** Opening a
