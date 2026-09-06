@@ -14,6 +14,17 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-06 — Environment
+
+### Added
+
+- **The sky behind rooms.** The black around a room now follows San
+  Francisco: dark blue in the day, warm at dusk, near-black with faint stars
+  at night, grey with drifting fog when the Weather app says fog, faint rain
+  when it rains. It always stays darker than the room, so it never gets in the
+  way of play. Turn it off under Settings › UI › Environment › Weather to get
+  the classic black back.
+
 ## 2026-09-06 — Tunes
 
 ### Added
