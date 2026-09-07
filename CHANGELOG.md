@@ -26,6 +26,13 @@ any heading with nothing under it).
   Buying one puts a Clothing Token in your Backpack; use the token to unlock
   the piece for good. Until then it is a normal backpack item.
 
+### Changed
+
+- **Everyone shops the same store.** Sellable clothing is no longer a staff
+  perk — staff buy pieces with credits from the Clothing Store like every
+  other player. Anything a staff member was wearing but had not bought is
+  swapped for a plain piece the next time they log in.
+
 ## 2026-09-06 — Hotel time and phone polish
 
 ### Added

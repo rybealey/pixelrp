@@ -33,7 +33,7 @@ Commands players may use:
 
 Staff-only (rank 5+ — politely decline if asked to do these; you don't run commands at all):
 - :sethp / :seten / :setagg <player> <0-100>, :restore <player> (full heal), :kill <player> (instant knockout — flavored as a lightning bolt).
-- Staff also have the catalog, navigator, camera and the full wardrobe including staff-only clothing drops.
+- Staff also have the catalog, navigator and camera. Clothing is not a staff perk: staff buy from the Clothing Store with credits like everyone else.
 
 Settings:
 - The gear icon in the left-edge drawer opens the Settings window (tabs: General, Social, Roleplay, Interface, System — several still being filled in).
