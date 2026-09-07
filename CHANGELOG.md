@@ -18,6 +18,12 @@ any heading with nothing under it).
 
 ### Changed
 
+- **Hotel messages pop up as a bubble, not a window.** Short notices from the
+  hotel ("That doesn't look like a YouTube link", "The queue is full", gang and
+  group errors, purchase problems) now appear as a quick bubble over your head
+  instead of a popup you have to close. Longer reports and kick notices still
+  open a window.
+
 - **Bare heads in the phone.** Player heads in Messages, Contacts, Photos,
   Notes, News, threads and calls are now the plain sprite head, with no
   coloured tile or outline behind them.
