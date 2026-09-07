@@ -51,6 +51,11 @@ any heading with nothing under it).
 
 ### Changed
 
+- **Every piece of clothing has a real name.** The Clothing Store's 2,445
+  pieces were mostly showing the placeholder an import left behind — "Staff
+  3499" and the like. They now have proper descriptive names (Shortsweep,
+  Neonstreaks, Rollerskates, Cargoshorts), so you can search the shelf for
+  what a piece actually looks like.
 - **Shared albums fill up live.** Being invited to a shared album, or someone
   adding photos to one you are in, now shows up in Photos straight away
   instead of the next time you reopen the app.
