@@ -158,6 +158,11 @@ jobs:
             sleep 5
           done
           echo "Beta emulator is READY."
+          # Leave the boot tail in the step log so a crash right after READY
+          # (the 2026-09-07 clothing store loop) can be read from here.
+          sleep 20
+          echo "--- emulator log tail ---"
+          timeout 20 docker logs --since "$started" --tail 60 "$cid" 2>&1 || true
           # Pick up bind-mounted nginx.conf changes (e.g. the /imaging/ route).
           # A single-file bind mount is pinned to the inode the container was
           # created with; `git reset --hard` replaces the file (new inode), so a
