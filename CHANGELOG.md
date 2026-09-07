@@ -16,7 +16,17 @@ any heading with nothing under it).
 
 ## 2026-09-06 — Hotel time and phone polish
 
+### Added
+
+- **All-day events.** Staff can post a Calendar event as all-day. It sits in
+  the day's all-day row beside birthdays, in its colour, and opens like any
+  other event.
+
 ### Changed
+
+- The Calendar's all-day row now stays pinned under the week strip while the
+  timeline scrolls, and the day title uses the short weekday so it no longer
+  wraps.
 
 - **Hotel messages pop up as a bubble, not a window.** Short notices from the
   hotel ("That doesn't look like a YouTube link", "The queue is full", gang and
