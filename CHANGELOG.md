@@ -14,9 +14,13 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
-## 2026-09-06 — Hotel time
+## 2026-09-06 — Hotel time and phone polish
 
 ### Changed
+
+- **Bare heads in the phone.** Player heads in Messages, Contacts, Photos,
+  Notes, News, threads and calls are now the plain sprite head, with no
+  coloured tile or outline behind them.
 
 - **The hotel runs on San Francisco time.** The phone's clock, Calendar,
   Messages, Notes, News, Photos, chat timestamps and gang dates all show the
