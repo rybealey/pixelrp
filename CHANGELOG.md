@@ -70,9 +70,11 @@ any heading with nothing under it).
 
 - **A slap now stings.** `:slap` used to be pure theatre. In an unsafe zone it
   takes 1 health off and makes you aggressive, like any other attack — the
-  light end of fighting, against `:hit`'s 3 to 5, but from further away (it
-  still reaches the diagonals, which `:hit` does not). Inside a safe zone it
-  stays exactly what it was: a slap that hurts nobody.
+  light end of fighting, against `:hit`'s 3 to 5. Inside a safe zone it stays
+  exactly what it was: a slap that hurts nobody.
+- **One reach for fighting.** `:slap` now needs you as close as `:hit` does —
+  their tile, or one directly beside you, no diagonals. It used to land from
+  anywhere in the square around you.
 - **Every piece of clothing has a real name.** The Clothing Store's 2,445
   pieces were mostly showing the placeholder an import left behind — "Staff
   3499" and the like. They now have proper descriptive names (Shortsweep,
