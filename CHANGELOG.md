@@ -18,6 +18,11 @@ any heading with nothing under it).
 
 ### Added
 
+- **Phone accessibility.** Settings › Accessibility: a Text Size slider,
+  Bold Text, Increase Contrast, Reduce Transparency, Switch Labels (I and O
+  on every switch) and Reduce Motion. A preview at the top shows the effect
+  as you change them. Yours alone, and only the phone changes.
+
 - **Phone wallpapers.** Settings › Wallpaper lets you pick one of six
   built-in wallpapers or any photo you have taken, and your home screen wears
   it right away. Yours alone, like Appearance.

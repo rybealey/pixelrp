@@ -1,0 +1,31 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Accessibility \u00b7 defaults"
+    },
+    {
+      "file": "Adjusted.dc.html",
+      "x": 500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Accessibility \u00b7 Larger, bold, contrast, labels, reduced motion"
+    },
+    {
+      "file": "Notes.dc.html",
+      "x": 1000,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Notes under those settings"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
