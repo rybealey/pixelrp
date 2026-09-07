@@ -20,14 +20,17 @@ any heading with nothing under it).
 
 - **Throwing punches.** `:hit x` swings at whoever you have targeted. It only
   connects if they are on one of the four tiles directly beside you — no
-  diagonals — and then it takes 3 to 5 health off them; from anywhere else you
-  swing and miss, in front of everyone. Either way you turn aggressive, which
-  cools off over about 45 seconds, and you wait three seconds before you can
-  swing again.
+  diagonals — or standing on your tile, and then it takes 3 to 5 health off
+  them; from anywhere else you swing and miss, in front of everyone. Either way
+  you turn aggressive, which cools off over about 45 seconds, and you wait three
+  seconds before you can swing again.
 - **Fighting stops at the zone line.** You can only throw a punch in an unsafe
   zone, with one exception: two players who are both still aggressive can carry
-  on inside a safe zone until it runs out, so nobody escapes a fight by stepping
-  through a door. Nobody standing in a safe zone calmly can be dragged into one.
+  on inside a safe zone until it runs out. Throwing a punch is what makes you
+  aggressive — being hit does not — so that takes both of you swinging, and a
+  real brawl can spill through a safe zone while someone who never swings back
+  cannot be chased into one. Nobody standing in a safe zone calmly can be
+  dragged into a fight.
 - **Passive means passive.** A player on a Passive Smoothie, or City Government
   on duty, can neither throw a punch nor be hit by one. Run out of health and
   you drop where you stand until staff patch you up.
@@ -65,6 +68,11 @@ any heading with nothing under it).
 
 ### Changed
 
+- **A slap now stings.** `:slap` used to be pure theatre. In an unsafe zone it
+  takes 1 health off and makes you aggressive, like any other attack — the
+  light end of fighting, against `:hit`'s 3 to 5, but from further away (it
+  still reaches the diagonals, which `:hit` does not). Inside a safe zone it
+  stays exactly what it was: a slap that hurts nobody.
 - **Every piece of clothing has a real name.** The Clothing Store's 2,445
   pieces were mostly showing the placeholder an import left behind — "Staff
   3499" and the like. They now have proper descriptive names (Shortsweep,
