@@ -16,6 +16,12 @@ any heading with nothing under it).
 
 ## 2026-09-06 — Hotel time and phone polish
 
+### Added
+
+- **Wallet app.** Opens on your Resident ID: your name, motto, birthday if
+  you have set one, Combat and Farming levels, and your job and gang when you
+  have them. It updates itself as those change.
+
 ### Fixed
 
 - **A pale bar sat under the title of every hotel window.** Gone from the

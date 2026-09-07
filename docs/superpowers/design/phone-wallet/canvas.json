@@ -1,0 +1,23 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Wallet \u00b7 full ID (job, gang, birthday)"
+    },
+    {
+      "file": "Bare.dc.html",
+      "x": 500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Wallet \u00b7 light phone, nothing optional set"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
