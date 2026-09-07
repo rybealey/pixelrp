@@ -18,6 +18,10 @@ any heading with nothing under it).
 
 ### Added
 
+- **Phone wallpapers.** Settings › Wallpaper lets you pick one of six
+  built-in wallpapers or any photo you have taken, and your home screen wears
+  it right away. Yours alone, like Appearance.
+
 - **All-day events.** Staff can post a Calendar event as all-day. It sits in
   the day's all-day row beside birthdays, in its colour, and opens like any
   other event.
