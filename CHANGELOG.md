@@ -32,6 +32,11 @@ any heading with nothing under it).
   perk — staff buy pieces with credits from the Clothing Store like every
   other player. Anything a staff member was wearing but had not bought is
   swapped for a plain piece the next time they log in.
+- **Pieces, not costumes.** The store no longer sells whole outfits. Eighteen
+  costume bundles — the Santa Claus Suit, Mrs. Claus Outfit, the kimonos, the
+  dino onesie and the rest — are off the shelf, and every garment in them is
+  on sale on its own instead, twenty of them for the first time. Build the look
+  you want a piece at a time. Anything you already bought is still yours.
 
 ## 2026-09-06 — Hotel time and phone polish
 
