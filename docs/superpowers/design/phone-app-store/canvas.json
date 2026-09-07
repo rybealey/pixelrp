@@ -82,7 +82,7 @@
       "x": 40,
       "y": 830,
       "w": 470,
-      "text": "SETTLED\n• Most apps free; either currency available when one is priced; re-download always free.\n• No unlocking by job or rank — corporation apps are the one gate, and they gate OPENING, not getting.\n• A new install does NOT notify.\n• Stocks, Tasks and Translate came off the home screen; they return through the Store once built.\n\nSTILL OPEN\n• Where does the money go — a sink, or a corporation’s account?"
+      "text": "SETTLED\n• Most apps free; either currency available when one is priced; re-download always free.\n• No unlocking by job or rank — corporation apps are the one gate, and they gate OPENING, not getting.\n• A new install does NOT notify.\n• Stocks, Tasks and Translate came off the home screen; they return through the Store once built.• Money paid for an app is a SINK — it leaves the economy rather than crediting anyone.\n\nSTILL OPEN\n• Ownership lives in localStorage today, which is fine while everything is free. Before an app carries a price it has to move server-side: ownership is the receipt."
     }
   ],
   "launch": {
