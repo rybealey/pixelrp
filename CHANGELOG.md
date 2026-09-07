@@ -16,6 +16,12 @@ any heading with nothing under it).
 
 ## 2026-09-06 — Hotel time and phone polish
 
+### Fixed
+
+- **A pale bar sat under the title of every hotel window.** Gone from the
+  Shop, Navigator, Inventory, Catalog, Camera, Groups, Avatar Editor and the
+  furniture windows.
+
 ### Added
 
 - **Phone accessibility.** Settings › Accessibility: a Text Size slider,
