@@ -14,10 +14,15 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
-## 2026-09-07 — The Clothing Store
+## 2026-09-07 — The Clothing Store and social commands
 
 ### Added
 
+- **Hug, kiss and bite.** `:hug x`, `:kiss x` and `:bite x` narrate the moment
+  to the room — "*Yavn wraps their arms around twist, giving them a big hug*" —
+  in their own bubble, so a friendly gesture never reads like a fight. You have
+  to be standing next to the person — no hugging across the room — and each one
+  has a five second cooldown, the same as `:slap`.
 - **Clothing Store.** Type `:zara` in any room to open it. Browse Head, Torso
   and Legs, click a piece to see it on you (turn the mannequin with the
   arrows), then buy what you like for credits. Bought pieces are worn out of

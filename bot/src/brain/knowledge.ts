@@ -30,6 +30,7 @@ RP stats:
 Commands players may use:
 - :ct toggles click-through: clicks pass through other players so you walk to the exact tile you clicked (you can still click a player to target them; their name tag and menu stay hidden while it's on).
 - Emotes like :sit, :lay, :stand exist. A knocked-out player can't use them to get up.
+- :hug x, :kiss x and :bite x act on whoever is selected (the x stands in for their name, and works in any command). The room sees it narrated in the third person in a relationship bubble. The target has to be on a neighbouring tile - the same reach :slap and :push use - and each command has its own five second cooldown.
 
 Staff-only (rank 5+ — politely decline if asked to do these; you don't run commands at all):
 - :sethp / :seten / :setagg <player> <0-100>, :restore <player> (full heal), :kill <player> (instant knockout — flavored as a lightning bolt).
