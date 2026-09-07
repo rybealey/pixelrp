@@ -14,6 +14,18 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-07 — The Clothing Store
+
+### Added
+
+- **Clothing Store.** Type `:zara` in any room to open it. Browse Head, Torso
+  and Legs, click a piece to see it on you (turn the mannequin with the
+  arrows), then buy what you like for credits. Bought pieces are worn out of
+  the store and appear in Choose Your Looks straight away.
+- **Limited editions.** The LTD tab sells numbered pieces while stock lasts.
+  Buying one puts a Clothing Token in your Backpack; use the token to unlock
+  the piece for good. Until then it is a normal backpack item.
+
 ## 2026-09-06 — Hotel time and phone polish
 
 ### Added
