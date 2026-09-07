@@ -14,6 +14,19 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-06 — Hotel time
+
+### Changed
+
+- **The hotel runs on San Francisco time.** The phone's clock, Calendar,
+  Messages, Notes, News, Photos, chat timestamps and gang dates all show the
+  city's local time, wherever you are playing from.
+
+### Fixed
+
+- The switches in the News composer (Publish as Trina, Pin to top of Today)
+  now slide their knob when toggled instead of only changing colour.
+
 ## 2026-09-06 — News byline
 
 ### Added
