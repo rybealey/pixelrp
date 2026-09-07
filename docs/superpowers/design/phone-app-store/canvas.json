@@ -1,0 +1,91 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "App Store · Discover"
+    },
+    {
+      "file": "Detail.dc.html",
+      "x": 500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "App page · Stocks"
+    },
+    {
+      "file": "Installing.dc.html",
+      "x": 1000,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Installing · it lands on the home screen"
+    },
+    {
+      "file": "Library.dc.html",
+      "x": 1500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Library · what's on, what's off"
+    },
+    {
+      "file": "Unauthorized.dc.html",
+      "x": 2000,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Corporation app · wrong payroll"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "note-1",
+      "x": 40,
+      "y": -196,
+      "w": 300,
+      "text": "WHAT IS ACTUALLY IN THE CATALOGUE\nThe phone's app registry already carries four apps marked inactive: App Store, Stocks, Tasks and Translate. Three of those are the launch catalogue — the Store is how you get them. Nothing here invents an app that does not already have a name, a glyph and a plate colour in the code."
+    },
+    {
+      "id": "note-2",
+      "x": 500,
+      "y": -196,
+      "w": 300,
+      "text": "WHAT AN APP COSTS\nMost are free. An app can be priced in EITHER currency — coins or diamonds — and the pill just reads the price instead of GET. You buy an app once: remove it and getting it back is always free, so the Library marks those owned.\n\nShipped today: the model is in place, nothing is charged, every catalogue app is free."
+    },
+    {
+      "id": "note-3",
+      "x": 1000,
+      "y": -196,
+      "w": 300,
+      "text": "WHERE APPS LAND\nAn install drops the tile into the first free slot on the home screen, dimmed behind a progress ring, exactly where an iOS install lands. Note this home screen is SHORTER than today's: Stocks, Tasks and Translate are no longer there by default — that is the whole point of the Store."
+    },
+    {
+      "id": "note-4",
+      "x": 1500,
+      "y": -196,
+      "w": 300,
+      "text": "REMOVING\nRemove an app from its own page, or by swiping its row here. Phone, Messages, Camera, Settings and the App Store are part of the phone and are never listed, so a player can never strand themselves without a way back."
+    },
+    {
+      "id": "note-6",
+      "x": 2000,
+      "y": -196,
+      "w": 300,
+      "text": "CORPORATION APPS\nSome apps belong to a corporation. Anyone can see one in the Store and get it, but opening it without being on that payroll lands here rather than in the app. Nothing carries a corporation yet — the client has no membership to check — so the screen is built and dormant."
+    },
+    {
+      "id": "note-5",
+      "x": 40,
+      "y": 830,
+      "w": 470,
+      "text": "SETTLED\n• Most apps free; either currency available when one is priced; re-download always free.\n• No unlocking by job or rank — corporation apps are the one gate, and they gate OPENING, not getting.\n• A new install does NOT notify.\n• Stocks, Tasks and Translate came off the home screen; they return through the Store once built.\n\nSTILL OPEN\n• Where does the money go — a sink, or a corporation’s account?"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

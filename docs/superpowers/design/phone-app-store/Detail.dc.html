@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&amp;family=Barlow:wght@400;500;600;700&amp;family=Silkscreen&amp;display=swap">
+  <style>
+:root{
+  --ph-bg:#fdfcff; --ph-text:#1a0a14; --ph-muted:#9a94a0; --ph-faint:#a7a2ae;
+  --ph-soft:#8a8390; --ph-hairline:#f0edf3; --ph-inset:#efedf3; --ph-group:#f1f0f4;
+  --ph-glass2:rgba(253,252,255,.72); --ph-glass-brd:rgba(255,255,255,.7);
+  --store:#1a86f5;
+}
+body{margin:0;background:#5b6b7f;font-family:Ubuntu,'Segoe UI',system-ui,sans-serif}
+a{color:#e93a7d}a:hover{color:#c22a62}
+.stage{display:inline-flex;padding:36px;background:#5b6b7f}
+.ph{position:relative;width:336px;height:700px;border-radius:30px;overflow:hidden;
+  background:#100d14;font-family:Ubuntu,'Segoe UI',system-ui,sans-serif;
+  box-shadow:0 0 0 8px #1a0a14,0 0 0 10px #e87332}
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--ph-group)}
+.island{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:112px;height:33px;
+  background:#000;border-radius:18px;z-index:41}
+.sb{position:absolute;top:0;left:0;right:0;height:44px;z-index:40;display:flex;align-items:center;
+  justify-content:space-between;padding:0 22px;box-sizing:border-box;color:var(--ph-text)}
+.sb--light{color:#fff}
+.sb-t{font-weight:500;font-size:13px;letter-spacing:.5px}
+.sb-r{display:flex;align-items:center;gap:7px}
+.sb-c{font-weight:500;font-size:11px;letter-spacing:.5px}
+.bars{display:flex;align-items:flex-end;gap:1.5px;height:12px}
+.bars i{width:3px;border-radius:1px;background:currentColor;align-self:flex-end;display:block}
+.batt{position:relative;width:18px;height:10px;border:1.3px solid currentColor;border-radius:3px;display:inline-block}
+.batt i{position:absolute;inset:1.5px;background:currentColor;border-radius:1px;display:block}
+.hi{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:112px;height:5px;
+  border-radius:3px;background:var(--ph-text);opacity:.85;z-index:45}
+.hi--light{background:#fff}
+.glare{position:absolute;inset:0;pointer-events:none;z-index:100;border-radius:30px;
+  background:linear-gradient(125deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.05) 15%,
+  rgba(255,255,255,0) 34%,rgba(255,255,255,0) 66%,rgba(255,255,255,.04) 100%)}
+.body{flex:1;min-height:0;overflow:hidden;padding-top:44px}
+.hdr{padding:10px 18px 6px;display:flex;align-items:flex-end;justify-content:space-between}
+.kicker{font-weight:700;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ph-faint)}
+.title{font-weight:700;font-size:27px;letter-spacing:-.5px;line-height:1.1;color:var(--ph-text)}
+.avatar{width:30px;height:30px;border-radius:50%;background:#e93a7d;color:#fff;font-weight:700;
+  font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
+.search{margin:6px 18px 2px;display:flex;align-items:center;gap:8px;height:34px;padding:0 11px;
+  box-sizing:border-box;background:var(--ph-glass2);border:1px solid var(--ph-glass-brd);
+  border-radius:11px;color:var(--ph-muted);font-family:Barlow,sans-serif;font-size:14px}
+.seclabel{margin:15px 20px 3px;font-weight:700;font-size:10px;letter-spacing:1.2px;
+  text-transform:uppercase;color:var(--ph-faint)}
+.card{margin:4px 18px 0;background:var(--ph-bg);border:1.5px solid var(--ph-hairline);
+  border-radius:16px;overflow:hidden}
+.item{display:flex;align-items:center;gap:11px;padding:10px 14px}
+.item+.item{border-top:1px solid var(--ph-hairline)}
+.grow{flex:1;min-width:0}
+.plate{border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none;
+  border:1px solid rgba(26,10,20,.14);
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.45),inset 0 -1.5px 0 rgba(0,0,0,.22),0 1px 3px rgba(0,0,0,.14)}
+.p46{width:46px;height:46px}
+.p60{width:60px;height:60px;border-radius:15px}
+.p88{width:88px;height:88px;border-radius:21px}
+.name{font-weight:700;font-size:14.5px;color:var(--ph-text);line-height:1.2}
+.sub{font-family:Barlow,sans-serif;font-size:12px;color:var(--ph-soft);line-height:1.35;margin-top:1px}
+.get{height:27px;padding:0 15px;border-radius:14px;background:var(--ph-inset);color:var(--store);
+  font-weight:700;font-size:12.5px;letter-spacing:.4px;display:flex;align-items:center;
+  justify-content:center;flex:none;text-transform:uppercase}
+.get--on{background:var(--store);color:#fff}
+.footnote{padding:12px 26px 0;text-align:center;font-family:Barlow,sans-serif;font-size:11.5px;
+  line-height:1.5;color:var(--ph-soft)}
+.feat{margin:8px 18px 0;border:1.5px solid var(--ph-hairline);border-radius:16px;overflow:hidden;
+  background:var(--ph-bg)}
+.feat-band{height:118px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.feat-band .ghost{position:absolute;right:-16px;bottom:-26px;opacity:.16}
+.feat-tag{position:absolute;top:11px;left:13px;font-weight:700;font-size:9px;letter-spacing:1.4px;
+  text-transform:uppercase;color:rgba(255,255,255,.86)}
+.feat-line{position:absolute;left:13px;right:13px;bottom:12px;color:#fff;font-weight:700;
+  font-size:19px;letter-spacing:-.3px;line-height:1.15;text-shadow:0 1px 4px rgba(0,0,0,.45)}
+.chev{opacity:.35;flex:none}
+.back{display:flex;align-items:center;gap:2px;color:var(--store);font-weight:500;font-size:14px}
+.meta{display:flex;gap:0;margin:10px 18px 0;border-top:1px solid var(--ph-hairline);
+  border-bottom:1px solid var(--ph-hairline)}
+.meta div{flex:1;padding:8px 0;text-align:center}
+.meta b{display:block;font-weight:700;font-size:11px;color:var(--ph-text);letter-spacing:.2px}
+.meta span{display:block;font-weight:700;font-size:8.5px;letter-spacing:1.1px;text-transform:uppercase;
+  color:var(--ph-faint);margin-bottom:2px}
+.shots{display:flex;gap:10px;padding:12px 18px 0;overflow:hidden}
+.shot{width:112px;height:196px;border-radius:13px;border:1.5px solid var(--ph-hairline);flex:none;
+  background:var(--ph-bg);overflow:hidden;position:relative}
+.desc{padding:12px 18px 0;font-family:Barlow,sans-serif;font-size:13px;line-height:1.5;color:var(--ph-text)}
+.wall{position:absolute;inset:0;background:url("lobby.jpg") center / cover no-repeat;
+  image-rendering:pixelated;opacity:.92}
+.wallshade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,10,20,.35) 0%,
+  rgba(26,10,20,.05) 30%,rgba(26,10,20,.35) 100%)}
+.grid{position:absolute;top:64px;left:22px;right:22px;display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(3,74px);
+  align-items:start;justify-items:center;gap:18px 12px}
+.app{display:flex;flex-direction:column;align-items:center;gap:6px}
+.tile{position:relative;width:54px;height:54px;border-radius:14px;border:2px solid rgba(26,10,20,.55);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.5),inset 0 -2px 0 rgba(0,0,0,.28),0 3px 8px rgba(0,0,0,.35);
+  display:flex;align-items:center;justify-content:center;flex:none}
+.applabel{font-family:Silkscreen,monospace;font-size:9px;letter-spacing:.3px;color:#fff;
+  text-shadow:0 1px 2px rgba(0,0,0,.8);white-space:nowrap}
+.dock{position:absolute;left:16px;right:16px;bottom:26px;min-height:76px;box-sizing:border-box;
+  border-radius:26px;background:rgba(255,255,255,.14);backdrop-filter:blur(18px) saturate(1.8);
+  -webkit-backdrop-filter:blur(18px) saturate(1.8);border:1px solid rgba(255,255,255,.28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 8px 24px rgba(0,0,0,.28);
+  display:flex;align-items:center;justify-content:center;gap:16px}
+.installing .tile{filter:saturate(.35) brightness(.62)}
+.ring{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.swipe{display:flex;align-items:stretch}
+.swipe .del{width:78px;background:#e03131;color:#fff;font-weight:700;font-size:12px;
+  display:flex;align-items:center;justify-content:center;flex:none;letter-spacing:.3px}
+</style>
+</helmet>
+<div class="stage"><div class="ph"><div class="scr" style="background:var(--ph-bg)"><div class="body">
+<div class="hdr" style="align-items:center"><div class="back"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1a86f5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m15 5-7 7 7 7"/></svg><span>Store</span></div></div>
+
+<div style="display:flex;gap:14px;align-items:center;padding:6px 18px 0">
+  <div class="plate p88" style="background:linear-gradient(160deg,#3a3a46,#211c28 60%,#0f0b14)"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 4v16h16"/><path d="m7.2 15.4 3.5-4.1 3 2.6L18 8"/></svg></div>
+  <div class="grow">
+    <div style="font-weight:700;font-size:22px;letter-spacing:-.4px;color:var(--ph-text);line-height:1.15">Stocks</div>
+    <div class="sub" style="font-size:12.5px">PixelRP &middot; Finance</div>
+    <div style="display:flex;gap:8px;margin-top:9px"><div class="get get--on">5 diamonds</div></div>
+  </div>
+</div>
+
+<div class="meta">
+  <div><span>Price</span><b>5 diamonds</b></div>
+  <div style="border-left:1px solid var(--ph-hairline);border-right:1px solid var(--ph-hairline)"><span>Category</span><b>Finance</b></div>
+  <div><span>Size</span><b>1 tile</b></div>
+</div>
+
+<div class="shots">
+  <div class="shot"><div style="position:absolute;inset:0;background:linear-gradient(160deg,#3a3a46,#211c28 60%,#0f0b14)"><div style="padding:8px 9px 4px;color:#fff;font-weight:700;font-size:11px">Watchlist</div><div style="display:flex;align-items:center;justify-content:space-between;padding:7px 9px;border-bottom:1px solid rgba(255,255,255,.08)"><div><div style="color:#fff;font-weight:700;font-size:9.5px">BRDG</div><div style="font-family:Barlow,sans-serif;font-size:7.5px;color:rgba(255,255,255,.45)">Golden Gate Hldg</div></div><div style="background:#30d158;color:#fff;font-weight:700;font-size:8.5px;padding:2px 5px;border-radius:4px">+2.4%</div></div><div style="display:flex;align-items:center;justify-content:space-between;padding:7px 9px;border-bottom:1px solid rgba(255,255,255,.08)"><div><div style="color:#fff;font-weight:700;font-size:9.5px">CBLE</div><div style="font-family:Barlow,sans-serif;font-size:7.5px;color:rgba(255,255,255,.45)">Cable Car Co</div></div><div style="background:#30d158;color:#fff;font-weight:700;font-size:8.5px;padding:2px 5px;border-radius:4px">+0.8%</div></div><div style="display:flex;align-items:center;justify-content:space-between;padding:7px 9px;border-bottom:1px solid rgba(255,255,255,.08)"><div><div style="color:#fff;font-weight:700;font-size:9.5px">FOG</div><div style="font-family:Barlow,sans-serif;font-size:7.5px;color:rgba(255,255,255,.45)">Bay Fog Energy</div></div><div style="background:#e03131;color:#fff;font-weight:700;font-size:8.5px;padding:2px 5px;border-radius:4px">-1.2%</div></div><div style="display:flex;align-items:center;justify-content:space-between;padding:7px 9px;border-bottom:1px solid rgba(255,255,255,.08)"><div><div style="color:#fff;font-weight:700;font-size:9.5px">PIER</div><div style="font-family:Barlow,sans-serif;font-size:7.5px;color:rgba(255,255,255,.45)">Pier 39 Retail</div></div><div style="background:#30d158;color:#fff;font-weight:700;font-size:8.5px;padding:2px 5px;border-radius:4px">+4.1%</div></div></div></div>
+  <div class="shot"><div style="position:absolute;inset:0;background:linear-gradient(160deg,#3a3a46,#211c28 60%,#0f0b14)"><div style="padding:8px 9px 0;color:#fff;font-weight:700;font-size:11px">BRDG</div><div style="padding:0 9px;font-family:Barlow,sans-serif;font-size:8px;color:#30d158">+2.4% today</div><svg width="112" height="196" viewBox="0 0 112 196" fill="none" style="display:block"><polyline points="8,150 24,138 40,146 56,112 72,120 88,78 104,66" stroke="#30d158" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 150 24 138 40 146 56 112 72 120 88 78 104 66V186H8Z" fill="#30d158" opacity=".14"/></svg></div></div>
+</div>
+
+<div class="desc">Follow the companies that run this city &mdash; the bridge, the cable cars,
+the piers. Build a watchlist, put your credits somewhere, and check the ticker without
+leaving the room you're standing in.</div>
+</div></div><div class="island"></div><div class="sb"><div class="sb-t">21:04</div><div class="sb-r"><span class="sb-c">PXL</span><span class="bars"><i style="height:5px"></i><i style="height:7.5px"></i><i style="height:10px"></i><i style="height:12px"></i></span><span class="batt"><i></i></span></div></div><div class="hi"></div><div class="glare"></div></div></div>
+</x-dc>
+</body>
+</html>
