@@ -14,9 +14,23 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
-## 2026-09-07 — The Clothing Store, social commands and phone notifications
+## 2026-09-07 — The Clothing Store, social commands, phone notifications and melee
 
 ### Added
+
+- **Throwing punches.** `:hit x` swings at whoever you have targeted. It only
+  connects if they are on one of the four tiles directly beside you — no
+  diagonals — and then it takes 3 to 5 health off them; from anywhere else you
+  swing and miss, in front of everyone. Either way you turn aggressive, which
+  cools off over about 45 seconds, and you wait three seconds before you can
+  swing again.
+- **Fighting stops at the zone line.** You can only throw a punch in an unsafe
+  zone, with one exception: two players who are both still aggressive can carry
+  on inside a safe zone until it runs out, so nobody escapes a fight by stepping
+  through a door. Nobody standing in a safe zone calmly can be dragged into one.
+- **Passive means passive.** A player on a Passive Smoothie, or City Government
+  on duty, can neither throw a punch nor be hit by one. Run out of health and
+  you drop where you stand until staff patch you up.
 
 - **Your phone tells you things.** A banner slides in at the top of the phone
   when something happens: a message, a friend request, an invite to a shared
