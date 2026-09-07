@@ -1,0 +1,39 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Wallpaper \u00b7 Dusk chosen"
+    },
+    {
+      "file": "Photo.dc.html",
+      "x": 500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Wallpaper \u00b7 a photo chosen, all photos open"
+    },
+    {
+      "file": "Home.dc.html",
+      "x": 1000,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Home screen \u00b7 Dusk applied"
+    },
+    {
+      "file": "Settings.dc.html",
+      "x": 1500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Settings list \u00b7 Wallpaper row live"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
