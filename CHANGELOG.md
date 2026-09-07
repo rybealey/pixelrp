@@ -37,6 +37,10 @@ any heading with nothing under it).
   dino onesie and the rest — are off the shelf, and every garment in them is
   on sale on its own instead, twenty of them for the first time. Build the look
   you want a piece at a time. Anything you already bought is still yours.
+- **The store shows your size first.** The shelf now lists unisex pieces plus
+  the ones cut for your avatar's gender, so you are not scrolling past clothes
+  that will not fit. A checkbox under the search bar brings the rest back when
+  you want a look at them, and tells you how many it is holding off.
 
 ## 2026-09-06 — Hotel time and phone polish
 
