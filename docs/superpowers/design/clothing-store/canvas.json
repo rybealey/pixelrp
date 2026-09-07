@@ -1,0 +1,78 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 692,
+      "h": 532,
+      "title": "Torso \u00b7 Shirts, one piece on"
+    },
+    {
+      "file": "Fitting.dc.html",
+      "x": 780,
+      "y": 0,
+      "w": 692,
+      "h": 532,
+      "title": "Legs \u00b7 two pieces on, confirm armed"
+    },
+    {
+      "file": "Search.dc.html",
+      "x": 1560,
+      "y": 0,
+      "w": 692,
+      "h": 532,
+      "title": "Head \u00b7 Hair, searching"
+    },
+    {
+      "file": "Ltd.dc.html",
+      "x": 0,
+      "y": 660,
+      "w": 692,
+      "h": 532,
+      "title": "LTD tab"
+    },
+    {
+      "file": "Empty.dc.html",
+      "x": 780,
+      "y": 660,
+      "w": 692,
+      "h": 532,
+      "title": "Nothing tried on yet"
+    },
+    {
+      "file": "Token.dc.html",
+      "x": 1560,
+      "y": 660,
+      "w": 520,
+      "h": 340,
+      "title": "Backpack \u00b7 Clothing Token"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "ownership",
+      "x": 2340,
+      "y": 0,
+      "w": 300,
+      "text": "Owned = the set ids the server already sends (FigureSetIds). Buying inserts user_clothing rows and re-sends that packet, so Choose Your Looks unlocks the piece with no reload."
+    },
+    {
+      "id": "prices",
+      "x": 2340,
+      "y": 200,
+      "w": 300,
+      "text": "catalog_clothing has names and part ids but no price. The store needs price, an optional LTD stock pair (sold / total), and a set-type to derive the tab. Names shown are placeholders for the humanised names we would add."
+    },
+    {
+      "id": "tokens",
+      "x": 2340,
+      "y": 660,
+      "w": 300,
+      "text": "LTD purchase = one backpack item keyed by the clothing id (a numbered edition). Using it consumes the token and unlocks the set. Until used it is a normal backpack item, so it can be traded or gifted later."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
