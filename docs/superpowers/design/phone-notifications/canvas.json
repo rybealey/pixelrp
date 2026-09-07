@@ -1,0 +1,84 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Home screen \u00b7 badges, and one banner arriving"
+    },
+    {
+      "file": "Stack.dc.html",
+      "x": 500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Three at once \u00b7 over a light app screen"
+    },
+    {
+      "file": "Center.dc.html",
+      "x": 1000,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Notification Center \u00b7 proposal"
+    },
+    {
+      "file": "Settings.dc.html",
+      "x": 1500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Settings \u203a Notifications \u00b7 proposal"
+    },
+    {
+      "file": "Banners.dc.html",
+      "x": 0,
+      "y": 900,
+      "w": 768,
+      "h": 1180,
+      "title": "Every notification in the brief, at real size"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "note-1",
+      "x": 40,
+      "y": -170,
+      "w": 300,
+      "text": "THE BANNER\nOne material for every app: the phone\u2019s own glass, so it reads the same over a wallpaper, over a light app screen and in dark mode. It arrives from behind the island, sits for 5 seconds and leaves. Clicking it opens the thing it is about; flicking it up dismisses it."
+    },
+    {
+      "id": "note-2",
+      "x": 500,
+      "y": -170,
+      "w": 300,
+      "text": "THE BADGE\nA badge counts ITEMS, not banners, and an item clears when you open it \u2014 the thread, the album, the note, the event, the story. Opening the app alone clears nothing, so a glance never wipes the list.\n\nFriends coming and going never badge: there is nothing to go back and read."
+    },
+    {
+      "id": "note-3",
+      "x": 960,
+      "y": -170,
+      "w": 300,
+      "text": "THE TOOLBAR\nThe phone button already carries the sum of every app badge (Messages + Contacts today), so the six new sources just join that total. 3+1+2+4+1+1 = 12 on this board."
+    },
+    {
+      "id": "note-4",
+      "x": 1420,
+      "y": -170,
+      "w": 300,
+      "text": "ONE FOR YOU\nWhile the phone is away, do banners still show? This board assumes NOT \u2014 the phone is in your pocket, so the count on the toolbar button is the only signal, and the Center holds what you missed. Say the word and banners can float over the client instead."
+    },
+    {
+      "id": "note-5",
+      "x": 40,
+      "y": 1130,
+      "w": 300,
+      "text": "ALSO WORTH DECIDING\n\u2022 A sound on arrival, or silent?\n\u2022 A cap on how many banners can queue at once (this board collapses at 3)?\n\u2022 Should News notify everyone, or only for pinned stories?"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

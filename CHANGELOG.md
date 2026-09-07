@@ -14,10 +14,28 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
-## 2026-09-07 — The Clothing Store and social commands
+## 2026-09-07 — The Clothing Store, social commands and phone notifications
 
 ### Added
 
+- **Your phone tells you things.** A banner slides in at the top of the phone
+  when something happens: a message, a friend request, an invite to a shared
+  album, a note shared with you, a story in the News, an event posted or moved.
+  Tap it to go to the app; it leaves on its own after a few seconds. Several
+  arriving at once stack, newest in front.
+- **Badges on the apps.** Every app that has something waiting carries a
+  number, and the phone button in the toolbar adds them all up so a closed
+  phone still says how much there is. A badge counts *things*, and a thing
+  clears when you open it — the conversation, the album, the note, the event,
+  the story. Glancing at an app clears nothing.
+- **Notification Center.** Tap the clock at the top of the phone to pull down
+  everything you have been told, newest first, with Mark read and Clear all.
+- **Event reminders.** Ten minutes before an event on the Calendar starts,
+  your phone says so.
+- **Settings › Notifications.** A switch per app, plus event reminders and
+  friends coming online — that last one is off to begin with, since it fires
+  all day and there is nothing to go back and read. Airplane mode silences
+  every banner while badges keep counting.
 - **Hug, kiss and bite.** `:hug x`, `:kiss x` and `:bite x` narrate the moment
   to the room — "*Yavn wraps their arms around twist, giving them a big hug*" —
   in their own bubble, so a friendly gesture never reads like a fight. You have
@@ -33,6 +51,9 @@ any heading with nothing under it).
 
 ### Changed
 
+- **Shared albums fill up live.** Being invited to a shared album, or someone
+  adding photos to one you are in, now shows up in Photos straight away
+  instead of the next time you reopen the app.
 - **Everyone shops the same store.** Sellable clothing is no longer a staff
   perk — staff buy pieces with credits from the Clothing Store like every
   other player. Anything a staff member was wearing but had not bought is
