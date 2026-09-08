@@ -14,6 +14,17 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-07 — Escorts work on everyone
+
+### Fixed
+
+- **Being marched off works no matter who got to the room first.** One player
+  in every room — whoever walked in first — could be stunned and cuffed and
+  taken into custody, and then simply would not move: the officer walked away
+  and left them standing there, frozen, until the cuffs came off. It was the
+  same player every time in a given room, which is what made it look like one
+  person's game was broken. Escorts now walk anyone.
+
 ## 2026-09-07 — The shop, back to basics
 
 ### Changed
