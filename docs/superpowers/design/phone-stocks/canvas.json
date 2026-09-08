@@ -34,6 +34,13 @@
       "text": "A STOCK ROOM, NOT A STOCK MARKET\nrp_corporations.stock is how much a corporation is HOLDING, and nobody buys a share. So falling is the opportunity: stores draining means they are consuming, which means they will pay for a haul.\n\nThat inverts the convention the shape borrows, so the palette went with it. Red is gone entirely — there is no bad news for someone with a cart full of ore — and $phone-pink means one thing only: they are buying. A restocked corporation goes quiet instead."
     },
     {
+      "id": "note-5",
+      "x": -430,
+      "y": 620,
+      "w": 350,
+      "text": "EYEBROWS FOLLOW THE CONVENTION\nThe two headers on the watchlist are .phone-section-label to the letter — 10px, 1px tracking, uppercase, --ph-faint, 18px of air above and 6px beneath, the first one dropping its top margin because the header supplies that air, and the group below contributing no top gap of its own.\n\nThe live line above the title is a different component and stays one: .phone-app-kicker, 9px at 1.5px tracking in $phone-pink, the same as SETTINGS above Notifications. The 8.5px labels in the stats strip are the meta-strip vocabulary from the App Store page, not eyebrows.\n\nGrouping the list under those two headers also retired the \"most room first\" subtitle — the eyebrows say it better than a sentence did."
+    },
+    {
       "id": "note-1",
       "x": 40,
       "y": -260,

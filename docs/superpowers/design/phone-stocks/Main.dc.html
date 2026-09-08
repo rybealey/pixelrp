@@ -41,17 +41,28 @@ a{color:#e93a7d}a:hover{color:#c22a62}
 
 .hdr{padding:10px 18px 6px}
 .kicker{display:flex;align-items:center;gap:5px;font-weight:700;font-size:9px;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--faint)}
+  text-transform:uppercase;color:var(--need)}
 .dot{width:5px;height:5px;border-radius:50%;background:var(--need);flex:none;
   box-shadow:0 0 0 3px rgba(233,58,125,.16)}
 .title{font-weight:700;font-size:27px;letter-spacing:-.5px;line-height:1.1;color:var(--text)}
 .sub-h{margin-top:3px;font-family:Barlow,sans-serif;font-size:12px;line-height:1.4;color:var(--muted)}
 
+/* Eyebrows follow .phone-section-label exactly - 10px, 1px tracking, faint,
+   18px of air above and 6px beneath, and the first one drops its top margin
+   because the header above supplies the air. */
+.seclabel{margin:18px 20px 6px;font-family:Ubuntu,sans-serif;font-weight:700;font-size:10px;
+  letter-spacing:1px;text-transform:uppercase;color:var(--faint)}
+.seclabel:first-child{margin-top:0}
+/* the group an eyebrow heads owns no top gap */
+.seclabel + .group{margin-top:0}
+
 /* a row is the horizontal read plus, at its foot, how full they are */
-.list{padding:6px 18px 0;display:flex;flex-direction:column}
+.list{padding:6px 0 0;display:flex;flex-direction:column}
+.group{padding:0 18px;display:flex;flex-direction:column}
 .row{display:flex;flex-direction:column;justify-content:center;gap:9px;height:76px;
   box-sizing:border-box}
 .row+.row{border-top:1px solid var(--hair)}
+.group+.seclabel{margin-top:18px}
 .rmain{display:flex;align-items:center;gap:12px}
 .rlead{flex:1;min-width:0}
 .tick{font-weight:700;font-size:16px;letter-spacing:.2px;line-height:1.2;color:var(--text)}
@@ -101,7 +112,8 @@ a{color:#e93a7d}a:hover{color:#c22a62}
 
 .sheet{width:408px;box-sizing:border-box;padding:26px 24px 28px;background:#100d14;
   display:flex;flex-direction:column;gap:20px}
-.sheet-h{font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint)}
+.sheet-h{margin-bottom:-14px;font-family:Ubuntu,sans-serif;font-weight:700;font-size:10px;
+  letter-spacing:1px;text-transform:uppercase;color:var(--faint)}
 .spec{display:flex;flex-direction:column;gap:7px}
 .spec-l{font-family:Barlow,sans-serif;font-size:11.5px;line-height:1.4;color:var(--muted)}
 .frame{width:300px;padding:0 12px;box-sizing:border-box;border-radius:12px;background:var(--card);
@@ -114,9 +126,13 @@ a{color:#e93a7d}a:hover{color:#c22a62}
 <div class="hdr">
   <div class="kicker"><span class="dot"></span>Live &middot; updated 12s ago</div>
   <div class="title">Stocks</div>
-  <div class="sub-h">Most room first.</div>
 </div>
-<div class="list"><div class="row"><div class="rmain"><div class="rlead"><div class="tick">EA</div><div class="corp">Elite Armory</div></div><svg class="spark" viewBox="0 0 60 30" fill="none" aria-hidden="true"><polyline points="0.0,2.0 5.5,3.3 10.9,6.8 16.4,9.1 21.8,12.1 27.3,15.7 32.7,17.0 38.2,20.5 43.6,22.7 49.1,24.9 54.5,26.7 60.0,28.0" stroke="#e93a7d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">302</div><div class="chip" style="background:#e93a7d">-12.46%</div></div></div><div class="cap"><div class="capfill" style="width:31%;background:#e93a7d"></div></div></div><div class="row"><div class="rmain"><div class="rlead"><div class="tick">MUSE</div><div class="corp">The Muse</div></div><svg class="spark" viewBox="0 0 60 30" fill="none" aria-hidden="true"><polyline points="0.0,2.0 5.5,4.1 10.9,7.6 16.4,6.2 21.8,11.8 27.3,15.4 32.7,17.5 38.2,20.3 43.6,22.4 49.1,25.2 54.5,26.6 60.0,28.0" stroke="#e93a7d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">415</div><div class="chip" style="background:#e93a7d">-8.19%</div></div></div><div class="cap"><div class="capfill" style="width:35%;background:#e93a7d"></div></div></div><div class="row"><div class="rmain"><div class="rlead"><div class="tick">HMMC</div><div class="corp">Harvey Milk Medical</div></div><svg class="spark" viewBox="0 0 60 30" fill="none" aria-hidden="true"><polyline points="0.0,4.2 5.5,8.5 10.9,2.0 16.4,12.8 21.8,10.7 27.3,19.3 32.7,15.0 38.2,21.5 43.6,19.3 49.1,25.8 54.5,23.7 60.0,28.0" stroke="#e93a7d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">980</div><div class="chip" style="background:#e93a7d">-1.11%</div></div></div><div class="cap"><div class="capfill" style="width:70%;background:#4b4359"></div></div></div><div class="row"><div class="rmain"><div class="rlead"><div class="tick">SFPD</div><div class="corp">SF Police Department</div></div><svg class="spark" viewBox="0 0 60 30" fill="none" aria-hidden="true"><polyline points="0.0,28.0 5.5,23.5 10.9,25.3 16.4,19.9 21.8,20.8 27.3,14.6 32.7,16.3 38.2,11.0 43.6,11.9 49.1,6.5 54.5,4.7 60.0,2.0" stroke="#6b6280" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">1&#8239;240</div><div class="chip" style="background:#4b4359">+2.40%</div></div></div><div class="cap"><div class="capfill" style="width:78%;background:#4b4359"></div></div></div><div class="row"><div class="rmain"><div class="rlead"><div class="tick">GOVT</div><div class="corp">City Government</div></div><svg class="spark" viewBox="0 0 60 30" fill="none" aria-hidden="true"><polyline points="0.0,28.0 5.5,22.2 10.9,25.1 16.4,16.4 21.8,19.3 27.3,10.7 32.7,13.6 38.2,7.8 43.6,10.7 49.1,4.9 54.5,7.8 60.0,2.0" stroke="#6b6280" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">2&#8239;180</div><div class="chip" style="background:#4b4359">+0.41%</div></div></div><div class="cap"><div class="capfill" style="width:91%;background:#4b4359"></div></div></div></div>
+<div class="list">
+  <div class="seclabel">Needs stock</div>
+  <div class="group"><div class="row"><div class="rmain"><div class="rlead"><div class="tick">EA</div><div class="corp">Elite Armory</div></div><svg class="spark" viewBox="0 0 60 30" fill="none" aria-hidden="true"><polyline points="0.0,2.0 5.5,3.3 10.9,6.8 16.4,9.1 21.8,12.1 27.3,15.7 32.7,17.0 38.2,20.5 43.6,22.7 49.1,24.9 54.5,26.7 60.0,28.0" stroke="#e93a7d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">302</div><div class="chip" style="background:#e93a7d">-12.46%</div></div></div><div class="cap"><div class="capfill" style="width:31%;background:#e93a7d"></div></div></div><div class="row"><div class="rmain"><div class="rlead"><div class="tick">MUSE</div><div class="corp">The Muse</div></div><svg class="spark" viewBox="0 0 60 30" fill="none" aria-hidden="true"><polyline points="0.0,2.0 5.5,4.1 10.9,7.6 16.4,6.2 21.8,11.8 27.3,15.4 32.7,17.5 38.2,20.3 43.6,22.4 49.1,25.2 54.5,26.6 60.0,28.0" stroke="#e93a7d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">415</div><div class="chip" style="background:#e93a7d">-8.19%</div></div></div><div class="cap"><div class="capfill" style="width:35%;background:#e93a7d"></div></div></div></div>
+  <div class="seclabel">Well stocked</div>
+  <div class="group"><div class="row"><div class="rmain"><div class="rlead"><div class="tick">HMMC</div><div class="corp">Harvey Milk Medical</div></div><svg class="spark" viewBox="0 0 60 30" fill="none" aria-hidden="true"><polyline points="0.0,4.2 5.5,8.5 10.9,2.0 16.4,12.8 21.8,10.7 27.3,19.3 32.7,15.0 38.2,21.5 43.6,19.3 49.1,25.8 54.5,23.7 60.0,28.0" stroke="#e93a7d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">980</div><div class="chip" style="background:#e93a7d">-1.11%</div></div></div><div class="cap"><div class="capfill" style="width:70%;background:#4b4359"></div></div></div><div class="row"><div class="rmain"><div class="rlead"><div class="tick">SFPD</div><div class="corp">SF Police Department</div></div><svg class="spark" viewBox="0 0 60 30" fill="none" aria-hidden="true"><polyline points="0.0,28.0 5.5,23.5 10.9,25.3 16.4,19.9 21.8,20.8 27.3,14.6 32.7,16.3 38.2,11.0 43.6,11.9 49.1,6.5 54.5,4.7 60.0,2.0" stroke="#6b6280" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">1&#8239;240</div><div class="chip" style="background:#4b4359">+2.40%</div></div></div><div class="cap"><div class="capfill" style="width:78%;background:#4b4359"></div></div></div><div class="row"><div class="rmain"><div class="rlead"><div class="tick">GOVT</div><div class="corp">City Government</div></div><svg class="spark" viewBox="0 0 60 30" fill="none" aria-hidden="true"><polyline points="0.0,28.0 5.5,22.2 10.9,25.1 16.4,16.4 21.8,19.3 27.3,10.7 32.7,13.6 38.2,7.8 43.6,10.7 49.1,4.9 54.5,7.8 60.0,2.0" stroke="#6b6280" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">2&#8239;180</div><div class="chip" style="background:#4b4359">+0.41%</div></div></div><div class="cap"><div class="capfill" style="width:91%;background:#4b4359"></div></div></div></div>
+</div>
 </div></div><div class="island"></div><div class="sb"><div class="sb-t">21:04</div><div class="sb-r"><span class="sb-c">PXL</span><span class="bars"><i style="height:5px"></i><i style="height:7.5px"></i><i style="height:10px"></i><i style="height:12px"></i></span><span class="batt"><i></i></span></div></div><div class="hi"></div><div class="glare"></div></div></div>
 </x-dc>
 </body>
