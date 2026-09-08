@@ -17,6 +17,28 @@ Two directories, two different mechanisms:
   Entries whose classname (or text key) is already present are left alone, so
   the official library always wins and a re-run adds nothing.
 
+## Furniture catalog icons (`dcr/hof_furni/icons/`)
+
+The client fetches `dcr/hof_furni/icons/<classname>_icon.png` (a `*variant`
+becomes `<base>_<param>_icon.png`). Two sources, in this order:
+
+1. `docker/nitro/extract-furni-icons.py` crops the icon out of our own `.nitro`
+   bundles. Free, and it works for custom furni — but only when the bundle
+   actually contains an icon frame, and plenty do not.
+2. `habbo-downloader` for the rest:
+   ```bash
+   npx habbo-downloader -c ficons        # NOT "ficon" - the tool's table is wrong
+   ```
+   It writes `dcr/hof_furni/<classname>_icon.png` **flat**, while the client
+   wants them under `icons/`, so move them. The full set is ~18k files / 121 MB;
+   only ever commit the ones the server is actually missing.
+
+A missing icon is silent — the catalog just shows a blank tile — so the way to
+find them is to probe `<classname>_icon.png` for every classname in
+`FurnitureData.json`. As of 2026-09-08 that was 269 of 18,348 (1.5%), of which
+253 existed officially and 16 (Chess, TicTacToe, BattleShip, Poker, post.it,
+tile_cursor, floortile ...) have no icon anywhere and never will.
+
 Custom furniture ships as **four** things, and missing any one of them breaks
 something quietly:
 
