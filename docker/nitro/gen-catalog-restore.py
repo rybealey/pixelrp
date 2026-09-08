@@ -66,12 +66,18 @@ or duplicated by id.
 
 Idempotent: the emitted SQL rebuilds the whole non-Builders catalog from
 scratch, so it can be re-applied at any time.
+
+CHANGING THIS GENERATOR MEANS A NEW `OUT` NUMBER. The deploy replays
+Updates/*.sql by FILENAME and records each one in `_applied_sql_updates`; an
+edit to a file that has already run anywhere is silently skipped forever. 81
+was applied to beta on 2026-09-08 before the Bots and Furni-trim changes were
+written, which is exactly how that was learned - hence 82.
 """
 import re
 import sys
 
 SRC = 'emulator/Resources/SQLs/Original Database.sql'
-OUT = 'emulator/Resources/SQLs/Updates/81_CatalogRestoreDefault.sql'
+OUT = 'emulator/Resources/SQLs/Updates/82_CatalogRestoreDefault.sql'
 
 PAGE_COLS = ['id', 'parent_id', 'caption', 'icon_image', 'visible', 'enabled',
              'min_rank', 'min_vip', 'order_num', 'page_link', 'page_layout',
