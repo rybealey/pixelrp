@@ -117,8 +117,13 @@ a{color:#e93a7d}a:hover{color:#c22a62}
 .spec{display:flex;flex-direction:column;gap:7px}
 .spec-l{font-family:Barlow,sans-serif;font-size:11.5px;line-height:1.4;color:var(--muted)}
 .frame{width:300px;padding:0 12px;box-sizing:border-box;border-radius:12px;background:var(--card);
-  border:1px solid var(--hair)}
-.flash{animation:pulse 2.4s ease-in-out infinite}
+  border:1px solid var(--hair);overflow:hidden}
+/* Full-bleed: the highlight runs the whole width of the row, escaping the
+   list's horizontal inset rather than stopping short of it. The equal padding
+   puts the content back where it was. In the real list the inset is 18px, so
+   the same rule reads margin:0 -18px;padding:0 18px and the flash reaches the
+   screen edges. */
+.flash{margin:0 -12px;padding:0 12px;animation:pulse 2.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{background:rgba(233,58,125,0)}18%{background:rgba(233,58,125,.14)}}
 </style>
 </helmet>
@@ -146,7 +151,8 @@ a{color:#e93a7d}a:hover{color:#c22a62}
 
 <div class="spec">
   <div class="spec-l">A reading landing. The row lifts for a beat when a fresh sample
-  arrives &mdash; nothing here ever closes, so this is the only "it is live" the list needs.</div>
+  arrives, edge to edge &mdash; the highlight escapes the list's inset rather than stopping
+  short of it. Nothing here ever closes, so this is the only "it is live" the list needs.</div>
   <div class="frame"><div class="row flash"><div class="rmain"><div class="rlead"><div class="tick">MUSE</div><div class="corp">The Muse</div></div><svg class="spark" viewBox="0 0 60 30" fill="none" aria-hidden="true"><polyline points="0.0,2.0 5.5,4.1 10.9,7.6 16.4,6.2 21.8,11.8 27.3,15.4 32.7,17.5 38.2,20.3 43.6,22.4 49.1,25.2 54.5,26.6 60.0,28.0" stroke="#e93a7d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">415</div><div class="chip" style="background:#e93a7d">-8.19%</div></div></div><div class="cap"><div class="capfill" style="width:35%;background:#e93a7d"></div></div></div></div>
 </div>
 </div>
