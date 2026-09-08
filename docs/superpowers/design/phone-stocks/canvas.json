@@ -38,7 +38,7 @@
       "x": -430,
       "y": 620,
       "w": 350,
-      "text": "EYEBROWS FOLLOW THE CONVENTION\nThe two headers on the watchlist are .phone-section-label to the letter — 10px, 1px tracking, uppercase, --ph-faint, 18px of air above and 6px beneath, the first one dropping its top margin because the header supplies that air, and the group below contributing no top gap of its own.\n\nThe live line above the title is a different component and stays one: .phone-app-kicker, 9px at 1.5px tracking in $phone-pink, the same as SETTINGS above Notifications. The 8.5px labels in the stats strip are the meta-strip vocabulary from the App Store page, not eyebrows.\n\nGrouping the list under those two headers also retired the \"most room first\" subtitle — the eyebrows say it better than a sentence did."
+      "text": "EYEBROWS FOLLOW THE CONVENTION\nThe two headers on the watchlist are .phone-section-label to the letter — 10px, 1px tracking, uppercase, --ph-faint, 18px of air above and 6px beneath, the first one dropping its top margin because the header supplies that air, and the group below contributing no top gap of its own.\n\nThe 8.5px labels in the stats strip are a different vocabulary again - the meta strip from the App Store's app page - and are not eyebrows.\n\nGrouping the list under those two headers also retired the \"most room first\" subtitle — the eyebrows say it better than a sentence did."
     },
     {
       "id": "note-1",
@@ -59,14 +59,14 @@
       "x": 1000,
       "y": -260,
       "w": 300,
-      "text": "TWO CLOCKS, ONE ALWAYS OFF\n• The LEDGER samples every 15 minutes server-side. That is the history: five rows a quarter-hour, ~43k across three months.\n• The APP asks on open, then every 60s while it stays open, and NOTHING while the phone is shut.\n\nStock only moves when a player sells, so anything finer is sampling silence. Ranges stop at 3M because a nightly purge keeps only 90 days — 1D is 96 samples, 3M about 8,600, so the long ranges want downsampling before they reach the phone."
+      "text": "TWO CLOCKS, ONE ALWAYS OFF\n• The LEDGER samples every 10 minutes server-side. That is the history: five rows every ten minutes, ~65k across three months.\n• The APP asks on open, then every 60s while it stays open, and NOTHING while the phone is shut.\n\nStock only moves when a player sells, so anything finer is sampling silence. Ranges stop at 3M because a nightly purge keeps only 90 days — 1D is 144 samples and arrives whole — that is the range players sit on, so it is deliberately never thinned. 3M is ~13,000 and is strided to 144 evenly spaced points on the server first."
     },
     {
       "id": "note-4",
       "x": 40,
       "y": 900,
       "w": 470,
-      "text": "WHAT THIS NEEDS FROM THE SERVER\n• stock_capacity on rp_corporations — an int beside stock. Everything on these boards that says \"full\" depends on it.\n• A samples table: corporation, value, timestamp. Written every 15 minutes, purged past 90 days.\n• One packet the app can ask for: current values plus a window of samples.\n\nSettled already: free to download, the corporation page stays purely a number with no employee list, and nothing here ever closes."
+      "text": "WHAT THIS NEEDS FROM THE SERVER\n• stock_capacity on rp_corporations — an int beside stock. Everything on these boards that says \"full\" depends on it.\n• A samples table: corporation, value, timestamp. Written every 10 minutes, purged past 90 days. BUILT.\n• One packet the app can ask for: current values plus a window of samples.\n\nAll three are built and on beta, along with :setstock <acronym> <quantity> for staff — nothing in the game writes stock yet, so that is how the number moves until farming and mining land."
     }
   ],
   "launch": {
