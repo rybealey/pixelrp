@@ -14,6 +14,25 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-07 — The shop, back to basics
+
+### Changed
+
+- **The shop is back to its classic layout.** Furni is sorted the way it always
+  was — Furni By Line, Furni By Item, the Game Shop, Wired, Badges, the Pet Shop
+  and the rest — instead of the Lines / Themes / Seasonal / Games tree from
+  August. The trade-off is stock: the thousands of extra pieces that came with
+  the full library are no longer on the shelves, so what you see is the classic
+  range again. Anything you already own is still yours and still places.
+- **Nothing costs Duckets.** Every price in the shop is in Coins. Items that
+  used to want Duckets — on their own or on top of Coins — now ask for the
+  whole amount in Coins instead.
+- **Clothes are sold in one place.** The shop no longer stocks clothing boxes;
+  the Clothing Store is where you buy what you wear, and it is untouched by
+  this change.
+- **The Jukebox moved to Builders › Corporations › Cafe.** Only its spot in the
+  shop changed — place one and it plays music exactly as it did before.
+
 ## 2026-09-07 — The Clothing Store, social commands, phone notifications and melee
 
 ### Added
