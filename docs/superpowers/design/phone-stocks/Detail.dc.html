@@ -12,10 +12,10 @@
 :root{
   --bg:#100d14; --card:#171021; --hair:#292136; --inset:#251d31;
   --text:#f4f0f7; --muted:#8f8699; --faint:#7d7590; --soft:#9a90a5;
-  --need:#30d158; --idle:#4b4359;
+  --need:#e93a7d; --idle:#4b4359;
 }
 body{margin:0;background:#3d4654;font-family:Ubuntu,'Segoe UI',system-ui,sans-serif}
-a{color:#30d158}a:hover{color:#25a844}
+a{color:#e93a7d}a:hover{color:#c22a62}
 .stage{display:inline-flex;padding:36px;background:#3d4654}
 .ph{position:relative;width:336px;height:700px;border-radius:30px;overflow:hidden;
   background:#100d14;font-family:Ubuntu,'Segoe UI',system-ui,sans-serif;color:var(--text);
@@ -43,42 +43,52 @@ a{color:#30d158}a:hover{color:#25a844}
 .kicker{display:flex;align-items:center;gap:5px;font-weight:700;font-size:9px;letter-spacing:1.5px;
   text-transform:uppercase;color:var(--faint)}
 .dot{width:5px;height:5px;border-radius:50%;background:var(--need);flex:none;
-  box-shadow:0 0 0 3px rgba(48,209,88,.16)}
+  box-shadow:0 0 0 3px rgba(233,58,125,.16)}
 .title{font-weight:700;font-size:27px;letter-spacing:-.5px;line-height:1.1;color:var(--text)}
 .sub-h{margin-top:3px;font-family:Barlow,sans-serif;font-size:12px;line-height:1.4;color:var(--muted)}
 
+/* a row is the horizontal read plus, at its foot, how full they are */
 .list{padding:6px 18px 0;display:flex;flex-direction:column}
-.row{display:flex;align-items:center;gap:12px;height:74px;box-sizing:border-box}
+.row{display:flex;flex-direction:column;justify-content:center;gap:9px;height:76px;
+  box-sizing:border-box}
 .row+.row{border-top:1px solid var(--hair)}
+.rmain{display:flex;align-items:center;gap:12px}
 .rlead{flex:1;min-width:0}
 .tick{font-weight:700;font-size:16px;letter-spacing:.2px;line-height:1.2;color:var(--text)}
 .corp{font-family:Barlow,sans-serif;font-size:11.5px;line-height:1.35;color:var(--muted);
   margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:128px}
-.spark{flex:none;width:64px;height:32px}
+.spark{flex:none;width:60px;height:30px}
 .rtail{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:4px;min-width:74px}
 .val{font-weight:500;font-size:16px;font-variant-numeric:tabular-nums;letter-spacing:-.2px}
 .chip{min-width:64px;box-sizing:border-box;padding:3px 7px;border-radius:6px;text-align:center;
   font-weight:700;font-size:11px;font-variant-numeric:tabular-nums;color:#fff}
+.cap{position:relative;height:3px;border-radius:2px;background:var(--inset);overflow:hidden}
+.capfill{position:absolute;left:0;top:0;bottom:0;border-radius:2px}
 
 .back{display:flex;align-items:center;gap:2px;color:var(--need);font-weight:500;font-size:14px}
 .dhead{padding:2px 18px 0}
 .dtick{font-weight:700;font-size:30px;letter-spacing:-.4px;line-height:1.1}
 .dcorp{font-family:Barlow,sans-serif;font-size:13px;color:var(--muted);margin-top:2px}
-.dval{margin-top:14px;font-weight:500;font-size:40px;line-height:1;letter-spacing:-1px;
+.dval{margin-top:12px;font-weight:500;font-size:38px;line-height:1;letter-spacing:-1px;
   font-variant-numeric:tabular-nums}
 .dunit{font-size:15px;font-weight:500;color:var(--faint);letter-spacing:0}
-.dchg{margin-top:6px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;
+.dfull{margin-top:9px;display:flex;align-items:baseline;justify-content:space-between}
+.dfull b{font-weight:700;font-size:12.5px;color:var(--need);letter-spacing:.2px}
+.dfull span{font-family:Barlow,sans-serif;font-size:11.5px;color:var(--faint)}
+.dcap{margin-top:6px;position:relative;height:6px;border-radius:3px;background:var(--inset);
+  overflow:hidden}
+.dchg{margin-top:11px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;
   font-variant-numeric:tabular-nums}
 .dstamp{font-family:Barlow,sans-serif;font-weight:400;font-size:11.5px;color:var(--faint);
   letter-spacing:.2px}
-.banner{margin:14px 18px 0;padding:9px 12px;border-radius:11px;
-  background:rgba(48,209,88,.12);border:1px solid rgba(48,209,88,.3)}
+.banner{margin:13px 18px 0;padding:9px 12px;border-radius:11px;
+  background:rgba(233,58,125,.12);border:1px solid rgba(233,58,125,.3)}
 .banner b{font-weight:700;font-size:12px;color:var(--need);letter-spacing:.2px}
-.seg{margin:14px 18px 0;display:flex;padding:2px;border-radius:11px;background:var(--inset)}
+.seg{margin:13px 18px 0;display:flex;padding:2px;border-radius:11px;background:var(--inset)}
 .segopt{flex:1;padding:5px 0;border-radius:9px;text-align:center;font-weight:700;font-size:11.5px;
   font-variant-numeric:tabular-nums;color:var(--soft)}
 .segopt.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.4)}
-.stats{margin:16px 18px 0;display:flex;border-top:1px solid var(--hair);
+.stats{margin:14px 18px 0;display:flex;border-top:1px solid var(--hair);
   border-bottom:1px solid var(--hair)}
 .stat{flex:1;padding:9px 0}
 .stat+.stat{padding-left:12px;border-left:1px solid var(--hair)}
@@ -86,36 +96,38 @@ a{color:#30d158}a:hover{color:#25a844}
   color:var(--faint)}
 .stat b{display:block;margin-top:3px;font-weight:500;font-size:15px;font-variant-numeric:tabular-nums;
   color:var(--text)}
-.desc{padding:14px 18px 0;font-family:Barlow,sans-serif;font-size:12.5px;line-height:1.5;
+.desc{padding:12px 18px 0;font-family:Barlow,sans-serif;font-size:12.5px;line-height:1.5;
   color:var(--soft)}
 
 .sheet{width:408px;box-sizing:border-box;padding:26px 24px 28px;background:#100d14;
-  display:flex;flex-direction:column;gap:22px}
+  display:flex;flex-direction:column;gap:20px}
 .sheet-h{font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint)}
 .spec{display:flex;flex-direction:column;gap:7px}
 .spec-l{font-family:Barlow,sans-serif;font-size:11.5px;line-height:1.4;color:var(--muted)}
 .frame{width:300px;padding:0 12px;box-sizing:border-box;border-radius:12px;background:var(--card);
   border:1px solid var(--hair)}
 .flash{animation:pulse 2.4s ease-in-out infinite}
-@keyframes pulse{0%,100%{background:rgba(48,209,88,0)}18%{background:rgba(48,209,88,.14)}}
+@keyframes pulse{0%,100%{background:rgba(233,58,125,0)}18%{background:rgba(233,58,125,.14)}}
 </style>
 </helmet>
 <div class="stage"><div class="ph"><div class="scr"><div class="body">
-<div class="hdr" style="padding-bottom:0"><div class="back"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#30d158" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m15 5-7 7 7 7"/></svg><span>Stocks</span></div></div>
+<div class="hdr" style="padding-bottom:0"><div class="back"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#e93a7d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m15 5-7 7 7 7"/></svg><span>Stocks</span></div></div>
 <div class="dhead">
   <div class="dtick">EA</div>
   <div class="dcorp">Elite Armory</div>
-  <div class="dval">302 <span class="dunit">in store</span></div>
-  <div class="dchg" style="color:#30d158">-43 (-12.46%)
+  <div class="dval">302 <span class="dunit">of 960</span></div>
+  <div class="dfull"><b>Under a third full</b><span>room for 658</span></div>
+  <div class="dcap"><div class="capfill" style="width:31%;background:#e93a7d"></div></div>
+  <div class="dchg" style="color:#e93a7d">-43 (-12.46%)
     <span class="dstamp">&middot; updated 12s ago</span></div>
 </div>
-<div class="banner"><b>Buying &mdash; stores down 12% today</b></div>
+<div class="banner"><b>Buying &mdash; and emptying by the hour</b></div>
 <div class="seg"><div class="segopt on">1D</div><div class="segopt">1W</div><div class="segopt">1M</div><div class="segopt">3M</div></div>
-<div style="padding:12px 18px 0"><svg viewBox="0 0 300 148" fill="none" style="display:block;width:100%;height:148px"><path d="M0.0,8.0 L27.3,14.2 L54.5,30.7 L81.8,41.1 L109.1,55.6 L136.4,72.1 L163.6,78.3 L190.9,94.8 L218.2,105.2 L245.5,115.5 L272.7,123.8 L300.0,130.0 L300,148 L0,148 Z" fill="#30d158" opacity=".10"/><polyline points="0.0,8.0 27.3,14.2 54.5,30.7 81.8,41.1 109.1,55.6 136.4,72.1 163.6,78.3 190.9,94.8 218.2,105.2 245.5,115.5 272.7,123.8 300.0,130.0" stroke="#30d158" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="300.0" cy="130.0" r="3.4" fill="#30d158"/></svg></div>
+<div style="padding:10px 18px 0"><svg viewBox="0 0 300 132" fill="none" style="display:block;width:100%;height:132px"><path d="M0.0,8.0 L27.3,13.5 L54.5,28.1 L81.8,37.3 L109.1,50.1 L136.4,64.7 L163.6,70.2 L190.9,84.9 L218.2,94.0 L245.5,103.2 L272.7,110.5 L300.0,116.0 L300,132 L0,132 Z" fill="#e93a7d" opacity=".10"/><polyline points="0.0,8.0 27.3,13.5 54.5,28.1 81.8,37.3 109.1,50.1 136.4,64.7 163.6,70.2 190.9,84.9 218.2,94.0 245.5,103.2 272.7,110.5 300.0,116.0" stroke="#e93a7d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="300.0" cy="116.0" r="3.4" fill="#e93a7d"/></svg></div>
 <div class="stats">
   <div class="stat"><span>24h high</span><b>361</b></div>
   <div class="stat"><span>24h low</span><b>298</b></div>
-  <div class="stat"><span>24h open</span><b>345</b></div>
+  <div class="stat"><span>Capacity</span><b>960</b></div>
 </div>
 <div class="desc">Swords, axes and battle-ready steel.</div>
 </div></div><div class="island"></div><div class="sb"><div class="sb-t">21:04</div><div class="sb-r"><span class="sb-c">PXL</span><span class="bars"><i style="height:5px"></i><i style="height:7.5px"></i><i style="height:10px"></i><i style="height:12px"></i></span><span class="batt"><i></i></span></div></div><div class="hi"></div><div class="glare"></div></div></div>

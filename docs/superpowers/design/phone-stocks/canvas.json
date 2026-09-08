@@ -6,7 +6,7 @@
       "y": 0,
       "w": 408,
       "h": 772,
-      "title": "Stocks · who needs it"
+      "title": "Stocks · who has room"
     },
     {
       "file": "Detail.dc.html",
@@ -21,7 +21,7 @@
       "x": 1000,
       "y": 0,
       "w": 408,
-      "h": 620,
+      "h": 640,
       "title": "The row, and what a reading does to it"
     }
   ],
@@ -29,37 +29,37 @@
     {
       "id": "note-0",
       "x": -430,
-      "y": -250,
+      "y": -260,
       "w": 350,
-      "text": "A STOCK ROOM, NOT A STOCK MARKET\nrp_corporations.stock is how much a corporation is HOLDING, and nobody buys a share. So falling is the opportunity: stores draining means they are consuming, which means they will pay for a haul.\n\nThat inverts the convention the shape borrows, so the palette had to go with it. Red is gone entirely — there is no bad news for someone with a cart full of ore — and green means one thing only: they are buying. A restocked corporation goes quiet instead."
+      "text": "A STOCK ROOM, NOT A STOCK MARKET\nrp_corporations.stock is how much a corporation is HOLDING, and nobody buys a share. So falling is the opportunity: stores draining means they are consuming, which means they will pay for a haul.\n\nThat inverts the convention the shape borrows, so the palette went with it. Red is gone entirely — there is no bad news for someone with a cart full of ore — and $phone-pink means one thing only: they are buying. A restocked corporation goes quiet instead."
     },
     {
       "id": "note-1",
       "x": 40,
-      "y": -250,
+      "y": -260,
       "w": 300,
-      "text": "THE FIVE TICKERS ARE REAL\nEA, MUSE, HMMC, GOVT and SFPD are the acronyms already in rp_corporations. The list is sorted by movement, fastest-emptying first, so the corporation worth walking to sits at the top. Every number is SAMPLE — the stock column reads 0 for all five today."
+      "text": "CAPACITY IS THE NEW COLUMN\nstock_capacity does not exist yet — this design asks for it. Without it a farmer cannot tell whether 302 is low, and the whole app rests on that judgement.\n\nWith it, every row carries a bar at its foot: how full they are, at a glance, down the column. Below half full it turns pink — that is the threshold where a haul is worth carrying. The corporation page then says it in words, \"under a third full, room for 658\", which is the sentence the reader was trying to form."
     },
     {
       "id": "note-2",
       "x": 500,
-      "y": -250,
+      "y": -260,
       "w": 300,
-      "text": "HOW OFTEN IT POLLS — A RECOMMENDATION\nTwo clocks, and only one is always running:\n\n• The LEDGER samples every 15 minutes, server-side. That is the history. Five rows a quarter-hour is 480 a day, about 43k across three months — nothing.\n\n• The APP asks for current values when you open it, then every 60s while it stays open, and NOTHING while the phone is shut. A closed app costs zero.\n\nStock only moves when a player sells, so anything finer would be sampling silence."
+      "text": "SORTED BY ROOM, NOT MOVEMENT\nYou said sort by movement, and that was right when the number was all we had. Capacity beats it: \"who can take my haul\" is answered by how empty they are, not by who twitched most. So fullness leads and the chip still carries direction — a corporation can be nearly full and draining fast, and you can see both.\n\nEasy to flip back if you would rather movement led."
     },
     {
       "id": "note-3",
       "x": 1000,
-      "y": -250,
+      "y": -260,
       "w": 300,
-      "text": "THREE MONTHS, THEN GONE\nThe ranges stop at 3M because that is the whole record — a nightly purge drops samples older than 90 days, so there is no All to offer. 1D is 96 samples; 3M is about 8,600, so the longer ranges want downsampling on the server before they reach the phone."
+      "text": "TWO CLOCKS, ONE ALWAYS OFF\n• The LEDGER samples every 15 minutes server-side. That is the history: five rows a quarter-hour, ~43k across three months.\n• The APP asks on open, then every 60s while it stays open, and NOTHING while the phone is shut.\n\nStock only moves when a player sells, so anything finer is sampling silence. Ranges stop at 3M because a nightly purge keeps only 90 days — 1D is 96 samples, 3M about 8,600, so the long ranges want downsampling before they reach the phone."
     },
     {
       "id": "note-4",
       "x": 40,
-      "y": 880,
+      "y": 900,
       "w": 470,
-      "text": "ONE GAP WORTH CLOSING\nA farmer cannot tell whether 302 is low, because nothing on the board says what full looks like. The trend and the 24h range are all the context this data can give.\n\nA stock_capacity column on rp_corporations would fix it outright: the row could then read \"a third full\" rather than \"302\", which is the sentence the reader is actually trying to form. Worth deciding before this is built — it changes the row, not just the copy.\n\nAlso settled: the corporation page stays purely a number, no employee list."
+      "text": "WHAT THIS NEEDS FROM THE SERVER\n• stock_capacity on rp_corporations — an int beside stock. Everything on these boards that says \"full\" depends on it.\n• A samples table: corporation, value, timestamp. Written every 15 minutes, purged past 90 days.\n• One packet the app can ask for: current values plus a window of samples.\n\nSettled already: free to download, the corporation page stays purely a number with no employee list, and nothing here ever closes."
     }
   ],
   "launch": {
