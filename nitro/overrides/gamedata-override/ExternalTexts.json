@@ -3,5 +3,7 @@
  "infostand.button.tools": "Tools",
  "infostand.tools.position": "Position",
  "infostand.tools.height": "Height",
- "infostand.tools.opacity": "Opacity"
+ "infostand.tools.opacity": "Opacity",
+ "infostand.tools.floor": "Floor",
+ "infostand.tools.ontop": "On top"
 }
