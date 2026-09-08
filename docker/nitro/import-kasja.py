@@ -9,8 +9,14 @@ metadata straight out of its SWF, and emits:
       per furni.
   docker/nitro/kasja/furnidata-entries.json
       the FurnitureData.json furnitype entries and ExternalTexts name/desc keys
-      for the same set, to be merged into the (git-ignored) asset tree by
-      merge-kasja-furnidata.py.
+      for the same set, merged into the (git-ignored) asset tree on deploy by
+      apply-gamedata-fragments.py.
+  nitro/overrides/dcr/hof_furni/icons/<classname>_icon.png
+      the pack's own catalog icons. The client does NOT read the icon out of
+      the .nitro bundle even though it is in there: renderer-config's
+      furni.asset.icon.url points at ${hof.furni.url}/icons/%libname%_icon.png,
+      a plain static PNG. Ship the bundle without these and every icon in the
+      shop is blank, which is exactly what happened on the first import.
 
 A Habbo furni SWF carries its own definition as DefineBinaryData tags: the
 logic XML gives <dimensions x y z>, the object XML gives the logic and
@@ -35,6 +41,7 @@ nitro/overrides/bundled/furniture/.
 """
 import json
 import os
+import shutil
 import re
 import struct
 import sys
@@ -43,6 +50,7 @@ import zlib
 ROOT = os.path.expanduser(sys.argv[1] if len(sys.argv) > 1 else '~/Downloads/Kasja')
 SQL_OUT = 'emulator/Resources/SQLs/Updates/84_KasjaFurniture.sql'
 JSON_OUT = 'docker/nitro/kasja/furnidata-entries.json'
+ICON_OUT = 'nitro/overrides/dcr/hof_furni/icons'
 
 FURNI_BASE = 100035     # 100001-100005 navigation, 100010-100034 Cartier
 PAGE_BASE = 940000      # clear of the catalog restore's 930000 range
@@ -181,6 +189,22 @@ json.dump({
 }, open(JSON_OUT, 'w'), indent=1)
 
 
+# ---- catalog icons ---------------------------------------------------------
+os.makedirs(ICON_OUT, exist_ok=True)
+wanted = {r['classname'] for r in rows}
+found = {}
+for dirpath, _dirs, files in os.walk(ROOT):
+    if any(p.lower().startswith('clothing')
+           for p in os.path.relpath(dirpath, ROOT).split(os.sep)):
+        continue
+    for fn in files:
+        if fn.lower().endswith('_icon.png') and fn[:-9] in wanted:
+            found[fn[:-9]] = os.path.join(dirpath, fn)
+for classname, src in found.items():
+    shutil.copy2(src, os.path.join(ICON_OUT, '%s_icon.png' % classname))
+missing_icons = sorted(wanted - set(found))
+
+
 def esc(v):
     return "'%s'" % str(v).replace('\\', '\\\\').replace("'", "\\'")
 
@@ -256,5 +280,8 @@ VALUES
 print('packs: %d   pages: %d   furni: %d   ids %d-%d'
       % (len({p for p, _ in packs}), len(pages) + 2, len(rows),
          FURNI_BASE, FURNI_BASE + len(rows) - 1))
+print('icons: %d copied to %s%s'
+      % (len(found), ICON_OUT,
+         '' if not missing_icons else '   MISSING: ' + ', '.join(missing_icons)))
 print('inferred can_sit (%d): %s' % (len(guessed['sit']), ', '.join(guessed['sit'][:8])))
 print('inferred is_walkable (%d): %s' % (len(guessed['walk']), ', '.join(guessed['walk'][:8])))
