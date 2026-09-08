@@ -1,0 +1,25 @@
+{
+ "libraries": [
+  {
+   "id": "hh_human_item",
+   "parts": [
+    {
+     "id": 314,
+     "type": "ri"
+    },
+    {
+     "id": 315,
+     "type": "ri"
+    },
+    {
+     "id": 1112,
+     "type": "ri"
+    },
+    {
+     "id": 1115,
+     "type": "ri"
+    }
+   ]
+  }
+ ]
+}

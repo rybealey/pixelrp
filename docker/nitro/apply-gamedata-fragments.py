@@ -13,6 +13,13 @@ in on the server, after the rsync and before the client is restarted:
   FurnitureData.json   fragment {"roomitemtypes": {"furnitype": [...]}}; entries
                        whose classname is already present are left alone, so an
                        official entry always wins and a re-run is a no-op.
+  FigureMap.json       fragment {"libraries": [{"id": ..., "parts": [...]}]};
+                       parts are added to the named library, matched on
+                       (id, type), and an unknown library is appended whole.
+                       This is what makes a handitem REACHABLE: the bundle can
+                       hold ri_314 all it likes, but until FigureMap says
+                       hh_human_item provides part 314 the client never asks
+                       for it, and :carry 314 renders nothing.
   ExternalTexts.json   fragment {key: text}; existing keys are left alone.
 
 Run from the deploy checkout root. Idempotent by construction.
@@ -54,6 +61,30 @@ def merge_furnituredata(fragment, target):
     return added
 
 
+def merge_figuremap(fragment, target):
+    added = 0
+    libraries = target.setdefault('libraries', [])
+    by_id = {lib.get('id'): lib for lib in libraries}
+    for lib in fragment.get('libraries') or []:
+        existing = by_id.get(lib.get('id'))
+        if existing is None:
+            libraries.append(lib)
+            added += len(lib.get('parts') or [])
+            continue
+        parts = existing.setdefault('parts', [])
+        # Ids arrive as ints here and as ints in the served file, but compare
+        # as strings so a fragment written with "314" still matches 314.
+        have = {(str(p.get('id')), p.get('type')) for p in parts}
+        for part in lib.get('parts') or []:
+            key = (str(part.get('id')), part.get('type'))
+            if key in have:
+                continue
+            parts.append(part)
+            have.add(key)
+            added += 1
+    return added
+
+
 def merge_texts(fragment, target):
     added = 0
     for key, value in fragment.items():
@@ -77,6 +108,8 @@ for name in sorted(os.listdir(MERGE_DIR)):
     fragment, target = load(os.path.join(MERGE_DIR, name)), load(target_path)
     if name == 'FurnitureData.json':
         added = merge_furnituredata(fragment, target)
+    elif name == 'FigureMap.json':
+        added = merge_figuremap(fragment, target)
     else:
         added = merge_texts(fragment, target)
     if added:

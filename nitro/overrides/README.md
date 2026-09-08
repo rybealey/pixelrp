@@ -42,6 +42,15 @@ server's outright; convert a new one from its SWF with
 `node ./dist/Main.js --convert-swf` (see `docker/nitro/README.md`) and drop it
 in.
 
+**The bundle alone does not make a handitem reachable.** The client asks
+`FigureMap.json` which library provides part *N* before it fetches anything, so
+an id that is in the bundle but not in the map is simply never requested and
+`:carry <id>` renders nothing at all — no error, no missing-asset box. Any id a
+new library adds has to be registered too, as a `gamedata-merge/FigureMap.json`
+fragment listing `{"id": N, "type": "ri"}` under `hh_human_item`. To find what
+is missing, list the `ri`/`li` ids in the bundle's asset names
+(`h_std_ri_<id>_<dir>_<frame>`) and subtract the ids the map already has.
+
 **Clients cache it for a week.** `renderer-config`'s `avatar.asset.url` ends in
 `?v=YYYYMMDD` and nginx serves the assets tree with `max-age=604800`, so
 replacing the file does nothing for anyone who already has it until that `v=`
