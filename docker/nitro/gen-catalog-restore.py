@@ -19,6 +19,9 @@ Exceptions to a literal restore, all asked for by Ry:
                 and items survive the wipe untouched. The default's own public
                 'Furni > Builders Club' section (9027 + 34 children, 1595 items)
                 is NOT restored: builders furni stays exclusive to that tab.
+                Neither is the Bots page (id 9), which beta has re-parented into
+                Builders - bots are sold from there and nowhere else, so the
+                frontpage blurb drops its dead 'or a Bot' link too.
   Duckets       No item may charge them. Every restored row folds cost_pixels
                 into cost_credits (the convention 33_CatalogRebuild set) and
                 ships with cost_pixels = 0; a final sweep catches any row that
@@ -85,6 +88,7 @@ FURNI_COLS = ['id', 'item_name', 'public_name', 'type', 'width', 'length',
               'clothing_id', 'extra_rot']
 
 BUILDERS_CLUB = '9027'      # default's public Furni > Builders Club root
+BOTS_PAGE = '9'             # stays in Builders, not restored publicly
 PAGE_BASE = 930000          # restored pages get fresh ids from here (see above)
 JUKEBOX = 'jukebox*1'       # relocated to Builders > Corporations > Cafe
 
@@ -147,6 +151,10 @@ def read(table, cols):
 
 
 def rebrand(text):
+    # The Bots page lives in Builders now, so the frontpage must not send
+    # players to a page they cannot open.
+    text = text.replace(
+        ' or a <a href=\\"event:catalog/open/bots\\">Bot</a>', '')
     text = text.replace('easybuy.pw/packages/currency', 'pixelrp.co')
     text = text.replace('habboon.com', 'pixelrp.co')
     text = text.replace('Habboon', 'PixelRP').replace('habboon', 'pixelrp')
@@ -180,7 +188,7 @@ def is_clothing(item):
                         or f['interaction_type'] == 'purchasable_clothing')
 
 
-drop = subtree(BUILDERS_CLUB)
+drop = subtree(BUILDERS_CLUB) | subtree(BOTS_PAGE)
 
 # Pages whose whole stock is clothing (and that parent nothing) go with it.
 on_page = {}
