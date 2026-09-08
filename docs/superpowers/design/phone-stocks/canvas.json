@@ -6,7 +6,7 @@
       "y": 0,
       "w": 408,
       "h": 772,
-      "title": "Stocks · the watchlist"
+      "title": "Stocks · who needs it"
     },
     {
       "file": "Detail.dc.html",
@@ -14,7 +14,7 @@
       "y": 0,
       "w": 408,
       "h": 772,
-      "title": "SFPD · the symbol page"
+      "title": "EA · the corporation page"
     },
     {
       "file": "Rows.dc.html",
@@ -22,44 +22,44 @@
       "y": 0,
       "w": 408,
       "h": 620,
-      "title": "The row, and what a poll does to it"
+      "title": "The row, and what a reading does to it"
     }
   ],
   "annotations": [
     {
       "id": "note-0",
-      "x": -420,
-      "y": -210,
-      "w": 340,
-      "text": "WHO OPENS THIS\nFarmers and miners, deciding who to sell a haul to. Not traders — nobody buys a share. A corporation's number is a signal about a BUYER, which is why the chip and the line matter more than the absolute value: what a player wants at a glance is who is climbing.\n\nThat is also the one place this departs from the iOS app it is shaped like: there, the order is yours to arrange. Here the list is five fixed corporations, so sorting by movement — best buyer at the top — may serve the actual reader better than the table's sort_order. Flagged, not assumed."
+      "x": -430,
+      "y": -250,
+      "w": 350,
+      "text": "A STOCK ROOM, NOT A STOCK MARKET\nrp_corporations.stock is how much a corporation is HOLDING, and nobody buys a share. So falling is the opportunity: stores draining means they are consuming, which means they will pay for a haul.\n\nThat inverts the convention the shape borrows, so the palette had to go with it. Red is gone entirely — there is no bad news for someone with a cart full of ore — and green means one thing only: they are buying. A restocked corporation goes quiet instead."
     },
     {
       "id": "note-1",
       "x": 40,
-      "y": -210,
+      "y": -250,
       "w": 300,
-      "text": "THE FIVE TICKERS ARE REAL\nSFPD, HMMC, MUSE, EA and GOVT are the acronyms already in rp_corporations, listed in that table's own sort_order. The table even has a stock column waiting for a value — it reads 0 for all five today, so every number on these boards is SAMPLE."
+      "text": "THE FIVE TICKERS ARE REAL\nEA, MUSE, HMMC, GOVT and SFPD are the acronyms already in rp_corporations. The list is sorted by movement, fastest-emptying first, so the corporation worth walking to sits at the top. Every number is SAMPLE — the stock column reads 0 for all five today."
     },
     {
       "id": "note-2",
       "x": 500,
-      "y": -210,
+      "y": -250,
       "w": 300,
-      "text": "IT NEVER CLOSES\nSo there is no Closed state, no pre-market, no previous close. The stats are windows instead of sessions — 24h high, 24h low, 24h open — and the header's live dot plus \"updated 8s ago\" is what tells you the number is current."
+      "text": "HOW OFTEN IT POLLS — A RECOMMENDATION\nTwo clocks, and only one is always running:\n\n• The LEDGER samples every 15 minutes, server-side. That is the history. Five rows a quarter-hour is 480 a day, about 43k across three months — nothing.\n\n• The APP asks for current values when you open it, then every 60s while it stays open, and NOTHING while the phone is shut. A closed app costs zero.\n\nStock only moves when a player sells, so anything finer would be sampling silence."
     },
     {
       "id": "note-3",
       "x": 1000,
-      "y": -210,
+      "y": -250,
       "w": 300,
-      "text": "WHY NO LOGOS\nThe corporations all have badges, but a watchlist reads down a column of tickers, and a badge in front of each one breaks that column. The acronym is the identity here."
+      "text": "THREE MONTHS, THEN GONE\nThe ranges stop at 3M because that is the whole record — a nightly purge drops samples older than 90 days, so there is no All to offer. 1D is 96 samples; 3M is about 8,600, so the longer ranges want downsampling on the server before they reach the phone."
     },
     {
       "id": "note-4",
       "x": 40,
       "y": 880,
       "w": 470,
-      "text": "WORTH DECIDING\n• What IS the value? rp_corporations.stock is an int. These boards read it as a plain index — no currency, no coin icon — because a share price you cannot buy would invite the question. If it is meant to be coins, say so and the rows pick up the purse icon.\n• How often does it poll? \"8s ago\" on these boards is a placeholder for whatever cadence you want; the design only needs it to be shorter than a player's attention.\n• Where does history come from? The ranges (1D through All) and the 24h stats need stored samples, not just the current int — that is a table of its own.\n• Does a corporation's own page link to its employee list, or stay purely a number?\n• Should the watchlist sort by movement rather than sort_order, given who is reading it?"
+      "text": "ONE GAP WORTH CLOSING\nA farmer cannot tell whether 302 is low, because nothing on the board says what full looks like. The trend and the 24h range are all the context this data can give.\n\nA stock_capacity column on rp_corporations would fix it outright: the row could then read \"a third full\" rather than \"302\", which is the sentence the reader is actually trying to form. Worth deciding before this is built — it changes the row, not just the copy.\n\nAlso settled: the corporation page stays purely a number, no employee list."
     }
   ],
   "launch": {

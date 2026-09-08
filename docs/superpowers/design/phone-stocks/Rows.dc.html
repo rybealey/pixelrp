@@ -12,7 +12,7 @@
 :root{
   --bg:#100d14; --card:#171021; --hair:#292136; --inset:#251d31;
   --text:#f4f0f7; --muted:#8f8699; --faint:#7d7590; --soft:#9a90a5;
-  --up:#30d158; --down:#e03131;
+  --need:#30d158; --idle:#4b4359;
 }
 body{margin:0;background:#3d4654;font-family:Ubuntu,'Segoe UI',system-ui,sans-serif}
 a{color:#30d158}a:hover{color:#25a844}
@@ -39,47 +39,49 @@ a{color:#30d158}a:hover{color:#25a844}
   rgba(255,255,255,0) 34%,rgba(255,255,255,0) 66%,rgba(255,255,255,.04) 100%)}
 .body{flex:1;min-height:0;overflow:hidden;padding-top:44px}
 
-/* header: the phone's kicker + 27px title, the kicker carrying live state */
-.hdr{padding:10px 18px 6px;display:flex;align-items:flex-end;justify-content:space-between}
+.hdr{padding:10px 18px 6px}
 .kicker{display:flex;align-items:center;gap:5px;font-weight:700;font-size:9px;letter-spacing:1.5px;
   text-transform:uppercase;color:var(--faint)}
-.dot{width:5px;height:5px;border-radius:50%;background:var(--up);flex:none;
+.dot{width:5px;height:5px;border-radius:50%;background:var(--need);flex:none;
   box-shadow:0 0 0 3px rgba(48,209,88,.16)}
 .title{font-weight:700;font-size:27px;letter-spacing:-.5px;line-height:1.1;color:var(--text)}
+.sub-h{margin-top:3px;font-family:Barlow,sans-serif;font-size:12px;line-height:1.4;color:var(--muted)}
 
-/* watchlist */
-.list{padding:8px 18px 0;display:flex;flex-direction:column}
+.list{padding:6px 18px 0;display:flex;flex-direction:column}
 .row{display:flex;align-items:center;gap:12px;height:74px;box-sizing:border-box}
 .row+.row{border-top:1px solid var(--hair)}
 .rlead{flex:1;min-width:0}
 .tick{font-weight:700;font-size:16px;letter-spacing:.2px;line-height:1.2;color:var(--text)}
 .corp{font-family:Barlow,sans-serif;font-size:11.5px;line-height:1.35;color:var(--muted);
-  margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:132px}
+  margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:128px}
 .spark{flex:none;width:64px;height:32px}
 .rtail{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:4px;min-width:74px}
 .val{font-weight:500;font-size:16px;font-variant-numeric:tabular-nums;letter-spacing:-.2px}
-.chip{min-width:62px;box-sizing:border-box;padding:3px 7px;border-radius:6px;text-align:center;
+.chip{min-width:64px;box-sizing:border-box;padding:3px 7px;border-radius:6px;text-align:center;
   font-weight:700;font-size:11px;font-variant-numeric:tabular-nums;color:#fff}
 
-/* detail */
-.back{display:flex;align-items:center;gap:2px;color:var(--up);font-weight:500;font-size:14px}
+.back{display:flex;align-items:center;gap:2px;color:var(--need);font-weight:500;font-size:14px}
 .dhead{padding:2px 18px 0}
 .dtick{font-weight:700;font-size:30px;letter-spacing:-.4px;line-height:1.1}
 .dcorp{font-family:Barlow,sans-serif;font-size:13px;color:var(--muted);margin-top:2px}
 .dval{margin-top:14px;font-weight:500;font-size:40px;line-height:1;letter-spacing:-1px;
   font-variant-numeric:tabular-nums}
+.dunit{font-size:15px;font-weight:500;color:var(--faint);letter-spacing:0}
 .dchg{margin-top:6px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;
   font-variant-numeric:tabular-nums}
 .dstamp{font-family:Barlow,sans-serif;font-weight:400;font-size:11.5px;color:var(--faint);
   letter-spacing:.2px}
+.banner{margin:14px 18px 0;padding:9px 12px;border-radius:11px;
+  background:rgba(48,209,88,.12);border:1px solid rgba(48,209,88,.3)}
+.banner b{font-weight:700;font-size:12px;color:var(--need);letter-spacing:.2px}
 .seg{margin:14px 18px 0;display:flex;padding:2px;border-radius:11px;background:var(--inset)}
 .segopt{flex:1;padding:5px 0;border-radius:9px;text-align:center;font-weight:700;font-size:11.5px;
   font-variant-numeric:tabular-nums;color:var(--soft)}
 .segopt.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.4)}
-.stats{margin:16px 18px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-  border-top:1px solid var(--hair)}
-.stat{padding:11px 0 10px;border-bottom:1px solid var(--hair)}
-.stat:nth-child(even){padding-left:14px;border-left:1px solid var(--hair)}
+.stats{margin:16px 18px 0;display:flex;border-top:1px solid var(--hair);
+  border-bottom:1px solid var(--hair)}
+.stat{flex:1;padding:9px 0}
+.stat+.stat{padding-left:12px;border-left:1px solid var(--hair)}
 .stat span{display:block;font-weight:700;font-size:8.5px;letter-spacing:1.1px;text-transform:uppercase;
   color:var(--faint)}
 .stat b{display:block;margin-top:3px;font-weight:500;font-size:15px;font-variant-numeric:tabular-nums;
@@ -87,7 +89,6 @@ a{color:#30d158}a:hover{color:#25a844}
 .desc{padding:14px 18px 0;font-family:Barlow,sans-serif;font-size:12.5px;line-height:1.5;
   color:var(--soft)}
 
-/* the row-anatomy board */
 .sheet{width:408px;box-sizing:border-box;padding:26px 24px 28px;background:#100d14;
   display:flex;flex-direction:column;gap:22px}
 .sheet-h{font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint)}
@@ -103,27 +104,27 @@ a{color:#30d158}a:hover{color:#25a844}
 <div class="sheet-h">The row, at real size</div>
 
 <div class="spec">
-  <div class="spec-l">Gaining. The ticker leads because the acronym IS the corporation's
-  name here; the line carries the shape, the chip carries the number.</div>
-  <div class="frame"><div class="row"><div class="rlead"><div class="tick">MUSE</div><div class="corp">The Muse</div></div><svg class="spark" viewBox="0 0 64 32" fill="none" aria-hidden="true"><polyline points="0.0,30.0 5.8,26.3 11.6,22.7 17.5,20.3 23.3,17.8 29.1,14.8 34.9,9.3 40.7,10.5 46.5,8.1 52.4,3.2 58.2,4.4 64.0,2.0" stroke="#30d158" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">415</div><div class="chip" style="background:#30d158">+5.32%</div></div></div></div>
+  <div class="spec-l">Running low. Green is not "up" here &mdash; it is "they are buying".
+  The stores are draining, which is the only thing a farmer walked in to find out.</div>
+  <div class="frame"><div class="row"><div class="rlead"><div class="tick">EA</div><div class="corp">Elite Armory</div></div><svg class="spark" viewBox="0 0 64 32" fill="none" aria-hidden="true"><polyline points="0.0,2.0 5.8,3.4 11.6,7.2 17.5,9.6 23.3,12.9 29.1,16.7 34.9,18.1 40.7,21.9 46.5,24.3 52.4,26.7 58.2,28.6 64.0,30.0" stroke="#30d158" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">302</div><div class="chip" style="background:#30d158">-12.46%</div></div></div></div>
 </div>
 
 <div class="spec">
-  <div class="spec-l">Falling. Same anatomy, one colour swapped &mdash; nothing moves.</div>
-  <div class="frame"><div class="row"><div class="rlead"><div class="tick">HMMC</div><div class="corp">Harvey Milk Medical</div></div><svg class="spark" viewBox="0 0 64 32" fill="none" aria-hidden="true"><polyline points="0.0,2.0 5.8,4.2 11.6,10.6 17.5,8.5 23.3,11.7 29.1,18.2 34.9,17.1 40.7,23.5 46.5,21.4 52.4,27.8 58.2,25.7 64.0,30.0" stroke="#e03131" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">980</div><div class="chip" style="background:#e03131">-1.11%</div></div></div></div>
+  <div class="spec-l">Restocked. Nothing is wrong, there is just no errand in it, so the
+  row goes quiet rather than red. Nothing on this board is bad news.</div>
+  <div class="frame"><div class="row"><div class="rlead"><div class="tick">SFPD</div><div class="corp">SF Police Department</div></div><svg class="spark" viewBox="0 0 64 32" fill="none" aria-hidden="true"><polyline points="0.0,30.0 5.8,25.2 11.6,27.1 17.5,21.3 23.3,22.3 29.1,15.5 34.9,17.4 40.7,11.7 46.5,12.6 52.4,6.8 58.2,4.9 64.0,2.0" stroke="#6b6280" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">1&#8239;240</div><div class="chip" style="background:#4b4359">+2.40%</div></div></div></div>
 </div>
 
 <div class="spec">
-  <div class="spec-l">Flat. A zero still reads as a chip, so the column never goes ragged;
-  the line stays grey rather than picking a side.</div>
-  <div class="frame"><div class="row"><div class="rlead"><div class="tick">EA</div><div class="corp">Elite Armory</div></div><svg class="spark" viewBox="0 0 64 32" fill="none" aria-hidden="true"><polyline points="0.0,16.0 5.8,16.0 11.6,16.0 17.5,16.0 23.3,16.0 29.1,16.0 34.9,16.0 40.7,16.0 46.5,16.0 52.4,16.0 58.2,16.0 64.0,16.0" stroke="#7d7590" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">302</div><div class="chip" style="background:#7d7590">0.00%</div></div></div></div>
+  <div class="spec-l">Untouched. A flat line stays flat instead of magnifying a unit of
+  noise into a mountain, and the chip still holds its column.</div>
+  <div class="frame"><div class="row"><div class="rlead"><div class="tick">GOVT</div><div class="corp">City Government</div></div><svg class="spark" viewBox="0 0 64 32" fill="none" aria-hidden="true"><polyline points="0.0,16.0 5.8,16.0 11.6,16.0 17.5,16.0 23.3,16.0 29.1,16.0 34.9,16.0 40.7,16.0 46.5,16.0 52.4,16.0 58.2,16.0 64.0,16.0" stroke="#6b6280" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">2&#8239;180</div><div class="chip" style="background:#4b4359">0.00%</div></div></div></div>
 </div>
 
 <div class="spec">
-  <div class="spec-l">The poll landing. Every row lifts for a beat when a new value
-  arrives &mdash; the market never closes, so this is the only "it is live" signal
-  the list needs.</div>
-  <div class="frame"><div class="row flash"><div class="rlead"><div class="tick">GOVT</div><div class="corp">City Government</div></div><svg class="spark" viewBox="0 0 64 32" fill="none" aria-hidden="true"><polyline points="0.0,30.0 5.8,23.8 11.6,25.3 17.5,19.1 23.3,20.7 29.1,12.9 34.9,16.0 40.7,8.2 46.5,9.8 52.4,2.0 58.2,6.7 64.0,3.6" stroke="#30d158" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">2 180</div><div class="chip" style="background:#30d158">+0.41%</div></div></div></div>
+  <div class="spec-l">A reading landing. The row lifts for a beat when a fresh sample
+  arrives &mdash; nothing here ever closes, so this is the only "it is live" the list needs.</div>
+  <div class="frame"><div class="row flash"><div class="rlead"><div class="tick">MUSE</div><div class="corp">The Muse</div></div><svg class="spark" viewBox="0 0 64 32" fill="none" aria-hidden="true"><polyline points="0.0,2.0 5.8,4.3 11.6,8.1 17.5,6.5 23.3,12.6 29.1,16.4 34.9,18.6 40.7,21.7 46.5,23.9 52.4,27.0 58.2,28.5 64.0,30.0" stroke="#30d158" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="rtail"><div class="val">415</div><div class="chip" style="background:#30d158">-8.19%</div></div></div></div>
 </div>
 </div>
 </x-dc>
