@@ -18,6 +18,11 @@ any heading with nothing under it).
 
 ### Fixed
 
+- **Turning your head no longer marches your prisoner around.** An officer
+  who stood still and just changed which way they faced — clicking someone
+  across the room, or looking about — used to swing whoever they were
+  escorting round them a tile at a time. The person in custody now stays put
+  until the officer actually walks.
 - **Being marched off works no matter who got to the room first.** One player
   in every room — whoever walked in first — could be stunned and cuffed and
   taken into custody, and then simply would not move: the officer walked away
