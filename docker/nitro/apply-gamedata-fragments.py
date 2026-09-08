@@ -30,6 +30,12 @@ in on the server, after the rsync and before the client is restarted:
                        CarryItem's params before it ever looks for a sprite, and
                        an unmapped id silently falls back to default = the cup.
 
+There is a second directory, `gamedata-override/`, for the opposite case: keys
+that must REPLACE what the official gamedata already says. Merging cannot do
+that by design - it exists to protect the official library from being clobbered
+- so changing a shipped string (renaming a button, say) needs the override
+channel, and putting a file there is the deliberate act that says so.
+
 Run from the deploy checkout root. Idempotent by construction.
 """
 import json
@@ -37,6 +43,7 @@ import os
 import sys
 
 MERGE_DIR = 'nitro/assets/gamedata-merge'
+OVERRIDE_DIR = 'nitro/assets/gamedata-override'
 TARGET_DIR = 'nitro/assets/gamedata'
 
 
@@ -121,8 +128,37 @@ def merge_texts(fragment, target):
     return added
 
 
+def apply_overrides():
+    """gamedata-override/: keys here REPLACE the shipped ones.
+
+    Only flat {key: text} files are supported - a structural override (a whole
+    furnitype, a whole action) is a merge with different rules, and guessing at
+    one silently would be worse than refusing it.
+    """
+    if not os.path.isdir(OVERRIDE_DIR):
+        return
+    for name in sorted(os.listdir(OVERRIDE_DIR)):
+        if not name.endswith('.json'):
+            continue
+        target_path = os.path.join(TARGET_DIR, name)
+        if not os.path.exists(target_path):
+            print('skipped override %s: no %s on this server' % (name, target_path))
+            continue
+        fragment, target = load(os.path.join(OVERRIDE_DIR, name)), load(target_path)
+        if not isinstance(fragment, dict) or not isinstance(target, dict) \
+                or any(not isinstance(v, str) for v in fragment.values()):
+            print('skipped override %s: only flat {key: text} files are supported' % name)
+            continue
+        changed = sum(1 for k, v in fragment.items() if target.get(k) != v)
+        target.update(fragment)
+        if changed:
+            save(target_path, target)
+        print('%s: %d keys overridden' % (name, changed))
+
+
 if not os.path.isdir(MERGE_DIR):
-    print('no gamedata fragments to apply')
+    print('no gamedata fragments to merge')
+    apply_overrides()
     sys.exit(0)
 
 for name in sorted(os.listdir(MERGE_DIR)):
@@ -144,3 +180,5 @@ for name in sorted(os.listdir(MERGE_DIR)):
     if added:
         save(target_path, target)
     print('%s: %d entries added' % (name, added))
+
+apply_overrides()

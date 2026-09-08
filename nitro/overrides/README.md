@@ -9,6 +9,10 @@ Two directories, two different mechanisms:
 - **`bundled/`, `gamedata/`** — a plain overlay. A file here REPLACES the
   server's file outright, which suits a bundle or a small custom file like
   `EffectMap.json`.
+- **`gamedata-override/`** — flat `{key: text}` files whose keys REPLACE what
+  the shipped gamedata says. Merging deliberately cannot do that (its whole job
+  is protecting the official library), so renaming a shipped string lives here,
+  and putting a file in this directory is the deliberate act that says so.
 - **`gamedata-merge/`** — fragments, merged into the matching
   `gamedata/<name>.json` on the server by
   `docker/nitro/apply-gamedata-fragments.py` (a deploy step). This exists
