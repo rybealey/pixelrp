@@ -33,3 +33,18 @@ All four are generated together — see `docker/nitro/import-kasja.py`.
 
 Note: the prod deploy does not rsync this directory at all; its asset tree is
 maintained separately. That has to be resolved before any of this reaches prod.
+
+## Avatar libraries (`bundled/figure/`)
+
+`hh_human_item.nitro` is the handitem library — every item `:carry <id>` can put
+in an avatar's hand. It is an overlay file, so the copy here REPLACES the
+server's outright; convert a new one from its SWF with
+`node ./dist/Main.js --convert-swf` (see `docker/nitro/README.md`) and drop it
+in.
+
+**Clients cache it for a week.** `renderer-config`'s `avatar.asset.url` ends in
+`?v=YYYYMMDD` and nginx serves the assets tree with `max-age=604800`, so
+replacing the file does nothing for anyone who already has it until that `v=`
+is bumped. That config is VPS-only — excluded from the deploy rsync — so it is
+a manual edit on the box, in `nitro/client/renderer-config.json`. A hard reload
+gets you the new file for testing without touching it.
