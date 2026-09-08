@@ -73,11 +73,12 @@ edit to a file that has already run anywhere is silently skipped forever. 81
 was applied to beta on 2026-09-08 before the Bots and Furni-trim changes were
 written, which is exactly how that was learned - hence 82.
 """
+import collections
 import re
 import sys
 
 SRC = 'emulator/Resources/SQLs/Original Database.sql'
-OUT = 'emulator/Resources/SQLs/Updates/82_CatalogRestoreDefault.sql'
+OUT = 'emulator/Resources/SQLs/Updates/83_CatalogRestoreDefault.sql'
 
 PAGE_COLS = ['id', 'parent_id', 'caption', 'icon_image', 'visible', 'enabled',
              'min_rank', 'min_vip', 'order_num', 'page_link', 'page_layout',
@@ -112,7 +113,32 @@ REPARENT = {
     '57895': '14',    # Pet Horse       -> Pet Shop
     '9056': '14',     # Baby Pets Shop  -> Pet Shop
     '503': '9225',    # Game Shop       -> Staff
+    '301': '9225',    # Wired           -> Staff
 }
+
+# --- Furni By Holiday -------------------------------------------------------
+# The dump scatters holiday furni across Furni By Line as flat year-suffixed
+# pages (Habboween 2011, Christmas 2013, Valentines 2015 ...). They gather here
+# as Holiday > Year: the year pages keep their stock and are renamed to the bare
+# year, and a line with no year in its name (Christmas, Valentines, New Years)
+# folds onto the holiday page itself, which is where the undated stock belongs.
+HOLIDAY_SECTION = ('Furni By Holiday', 320, 6)   # caption, icon, order under Furni
+HOLIDAYS = [
+    # caption, icon, undated source page, [(year, source page)]
+    ('Christmas', 168, '27',
+     [('2012', '399'), ('2013', '791'), ('2014', '912346'), ('2015', '9222')]),
+    ('Halloween', 34, None,
+     [('2011', '66'), ('2012', '234'), ('2013', '9053'), ('2014', '135'), ('2015', '9212')]),
+    ('Easter', 181, None, [('2011', '59'), ('2013', '259')]),
+    ("Valentine's", 144, '76', [('2015', '9063')]),
+    ('New Year', 91, '501', [('2015', '22')]),
+    ('Carnival', 160, None, [('2015', '912350')]),
+]
+# Unreachable in the dump (parent 9049 / 90213 never existed). The Halloween LTD
+# stock is worth rescuing into its year; the rest is a gnome box, some
+# construction walls, a guild forum and one wired extra, none of them reachable.
+HOLIDAY_RESCUE = {'9211': ('Halloween', '2015')}
+UNREACHABLE = ['21', '176', '9223', '912357']
 # Subtrees that collapse into one new page. The Builders ones are created by
 # the SQL itself, against a parent it resolves live.
 FLATTEN_STAFF = ('13', 'Exchange', 197, 1)      # PixelRP Exchange -> Staff > Exchange
@@ -222,13 +248,15 @@ def is_clothing(item):
                         or f['interaction_type'] == 'purchasable_clothing')
 
 
-drop = subtree(BUILDERS_CLUB) | subtree(BOTS_PAGE)
+drop = subtree(BUILDERS_CLUB) | subtree(BOTS_PAGE) | set(UNREACHABLE)
 for gone in DROP_SUBTREES:
     drop |= subtree(gone)
 
-# The flattened subtrees lose their pages; their stock is re-homed below.
+# The flattened subtrees lose their pages; their stock is re-homed below. The
+# holidays' undated lines flatten the same way, onto the holiday page.
 flat_src = {src: subtree(src)
-            for src in [FLATTEN_STAFF[0]] + [f[0] for f in FLATTEN_BUILDERS]}
+            for src in [FLATTEN_STAFF[0]] + [f[0] for f in FLATTEN_BUILDERS]
+            + [h[2] for h in HOLIDAYS if h[2]] + list(HOLIDAY_RESCUE)}
 for pages_gone in flat_src.values():
     drop |= pages_gone
 
@@ -244,6 +272,33 @@ for p in pages:
     if stock and not children.get(p['id']) and all(is_clothing(i) for i in stock):
         drop |= subtree(p['id'])
 
+# The clothing sweep leaves the odd non-clothing straggler on a page captioned
+# "Clothing" (two pumpkins under Halloween 2015). The page must not appear in a
+# shop that sells no clothing, so it goes and its stock moves up to its parent.
+route = {p['id']: p['parent_id'] for p in pages
+         if p['caption'] == 'Clothing' and p['id'] not in drop
+         and p['parent_id'] in by_id}
+drop |= set(route)
+
+# A page with nothing in it, nothing under it, no link pointing at it and the
+# plain furni grid for a layout is a dead end - the dump ships fifteen, four of
+# them visible under Pet Horse. Repeat until it settles: emptying a page's last
+# child empties the page. A functional layout (marketplace, frontpage) IS its
+# own content and never counts as empty.
+while True:
+    live_items = collections.Counter(
+        route.get(it['page_id'], it['page_id']) for it in items
+        if route.get(it['page_id'], it['page_id']) not in drop and not is_clothing(it))
+    dead = {p['id'] for p in pages
+            if p['id'] not in drop
+            and not live_items[p['id']]
+            and not [c for c in children.get(p['id'], []) if c not in drop]
+            and p['page_layout'] == 'default_3x3'
+            and not p['page_link']}
+    if not dead:
+        break
+    drop |= dead
+
 kept_pages = [p for p in pages if p['id'] not in drop]
 
 # Staff > Exchange takes the old PixelRP Exchange stock. It is an ordinary
@@ -256,6 +311,34 @@ kept_pages.append({
     'order_num': str(_order), 'page_link': '', 'page_layout': 'default_3x3',
     'page_strings_1': '', 'page_strings_2': '',
 })
+# Furni By Holiday and its holiday pages are ordinary restored pages; the year
+# pages below just move under them and lose the holiday from their caption.
+_cap, _icon, _ord = HOLIDAY_SECTION
+HOLIDAY_ROOT = 'holiday'
+
+
+def synthetic(key, parent, caption, icon, order, rank='1'):
+    # Dump values arrive pre-escaped; captions written here are raw Python, so
+    # they have to be escaped by hand or Valentine's ends the string early.
+    caption = caption.replace('\\', '\\\\').replace("'", "\\'")
+    kept_pages.append({
+        'id': key, 'parent_id': parent, 'caption': caption, 'icon_image': str(icon),
+        'visible': '1', 'enabled': '1', 'min_rank': rank, 'min_vip': '0',
+        'order_num': str(order), 'page_link': '', 'page_layout': 'default_3x3',
+        'page_strings_1': '', 'page_strings_2': '',
+    })
+
+
+synthetic(HOLIDAY_ROOT, '9224', _cap, _icon, _ord)
+for n, (caption, icon, undated, years) in enumerate(HOLIDAYS):
+    synthetic('holiday:' + caption, HOLIDAY_ROOT, caption, icon, n + 1)
+    for year, src in years:
+        if src in drop:
+            continue
+        by_id[src]['parent_id'] = 'holiday:' + caption
+        by_id[src]['caption'] = year
+        by_id[src]['order_num'] = year
+
 kept_ids = {p['id'] for p in kept_pages}
 jukebox_fid = next((fid for fid, f in furni.items() if f['item_name'] == JUKEBOX), None)
 if jukebox_fid is None:
@@ -275,12 +358,25 @@ for n, (src, caption, icon, anchor) in enumerate(FLATTEN_BUILDERS):
     builders_pages.append((pid, caption, icon, anchor))
 
 # Every page of a flattened subtree routes its stock to that subtree's new page.
+undated = {h[2]: 'holiday:' + h[0] for h in HOLIDAYS if h[2]}
+HOLIDAYS_BY_CAPTION = [(h[0], [(y, src) for y, src in h[3]]) for h in HOLIDAYS]
 for src, subtree_ids in flat_src.items():
+    if src == FLATTEN_STAFF[0]:
+        target = page_id[EXCHANGE]
+    elif src in undated:
+        target = page_id[undated[src]]           # undated stock sits on the holiday
+    elif src in HOLIDAY_RESCUE:
+        holiday, year = HOLIDAY_RESCUE[src]
+        target = page_id[dict(dict(HOLIDAYS_BY_CAPTION)[holiday])[year]]
+    else:
+        target = page_id[src]                    # Builders > Club / Turfs
     for old_page in subtree_ids:
-        page_id[old_page] = page_id[EXCHANGE] if src == FLATTEN_STAFF[0] else page_id[src]
+        page_id[old_page] = target
+for src, parent in route.items():
+    page_id[src] = page_id[parent]
 
 kept_items, dropped = [], {'page': 0, 'clothing': 0, 'jukebox': 0}
-flattened = {pg for ids in flat_src.values() for pg in ids}
+flattened = {pg for ids in flat_src.values() for pg in ids} | set(route)
 for it in items:
     if it['page_id'] not in kept_ids and it['page_id'] not in flattened:
         dropped['page'] += 1          # Builders Club, clothing pages, orphans

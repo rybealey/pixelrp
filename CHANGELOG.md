@@ -36,6 +36,17 @@ any heading with nothing under it).
   the Badge Shop and the Duckets Shop are gone. Pet Horse and the Baby Pets
   Shop now sit with the rest of the pets in the Pet Shop, and the Game Shop
   moved to Staff.
+- **Furni by Holiday.** Christmas, Halloween, Easter, Valentine's, New Year and
+  Carnival each get a section in the Furni tab, with a page per year beneath
+  them — Halloween › 2011 through 2015, Christmas › 2012 through 2015, and so
+  on. Furni from a holiday that was never tied to a year sits on the holiday
+  itself. That is 815 pieces that used to be scattered through Furni By Line as
+  a flat list, including sixteen Halloween 2015 limited editions that no page
+  in the shop actually linked to.
+- **Wired moved to Staff**, alongside the Game Shop.
+- **Dead ends swept out.** Nineteen pages that opened onto nothing are gone —
+  four of them under Pet Horse — along with a page called Clothing that had two
+  pumpkins left on it after the clothing pull.
 - **Club and turf furni moved to Builders.** Everything the old Club pages sold
   is now one Club page in Builders, under Cartier, and group furni is a Turfs
   page above Bots. Bots stay in Builders too. The Exchange moved to Staff.
