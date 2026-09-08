@@ -14,6 +14,17 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-08 — Empty rooms are findable again
+
+### Fixed
+
+- **Your room shows in the navigator even when nobody is in it.** Browsing a
+  category, or the recommended list, only ever showed rooms that had someone
+  standing in them — a room dropped out of sight about a minute after the last
+  person left and only reappeared when somebody walked back in. Searching by
+  name always found them, which is why it looked so arbitrary. Both lists now
+  show every room, busiest first, so a quiet room is still there to be found.
+
 ## 2026-09-07 — Escorts work on everyone
 
 ### Fixed
