@@ -32,6 +32,13 @@ any heading with nothing under it).
   this change.
 - **The Jukebox moved to Builders › Corporations › Cafe.** Only its spot in the
   shop changed — place one and it plays music exactly as it did before.
+- **The Furni tab lost a lot of clutter.** Silver VIP, Gold VIP, Event Staff,
+  the Badge Shop and the Duckets Shop are gone. Pet Horse and the Baby Pets
+  Shop now sit with the rest of the pets in the Pet Shop, and the Game Shop
+  moved to Staff.
+- **Club and turf furni moved to Builders.** Everything the old Club pages sold
+  is now one Club page in Builders, under Cartier, and group furni is a Turfs
+  page above Bots. Bots stay in Builders too. The Exchange moved to Staff.
 
 ## 2026-09-07 — The Clothing Store, social commands, phone notifications and melee
 

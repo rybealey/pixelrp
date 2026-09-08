@@ -92,6 +92,30 @@ BOTS_PAGE = '9'             # stays in Builders, not restored publicly
 PAGE_BASE = 930000          # restored pages get fresh ids from here (see above)
 JUKEBOX = 'jukebox*1'       # relocated to Builders > Corporations > Cafe
 
+# --- Furni tab restructuring (Ry, 2026-09-07) -------------------------------
+# Pages (and everything under them) that no longer exist anywhere.
+DROP_SUBTREES = {
+    '9210': 'Badges (Badge Shop, Badge Of The Week)',
+    '50': 'Duckets Shop (Room Promo, Stacktiles)',
+    '6': 'Silver VIP',
+    '912347': 'Gold VIP',
+    '9170': 'Event Staff',
+}
+# Pages that keep their contents but hang somewhere else.
+REPARENT = {
+    '57895': '14',    # Pet Horse       -> Pet Shop
+    '9056': '14',     # Baby Pets Shop  -> Pet Shop
+    '503': '9225',    # Game Shop       -> Staff
+}
+# Subtrees that collapse into one new page. The Builders ones are created by
+# the SQL itself, against a parent it resolves live.
+FLATTEN_STAFF = ('13', 'Exchange', 197, 1)      # PixelRP Exchange -> Staff > Exchange
+FLATTEN_BUILDERS = [
+    # source subtree, caption, icon, where the SQL puts it
+    ('5', 'Club', 172, 'cartier'),              # PixelRP Club  -> Builders > Club
+    ('9036', 'Turfs', 268, 'bots'),             # PixelRP Groups -> Builders > Turfs
+]
+
 # Habboon custom icon id -> closest official icon (see docker/nitro/gen-catalog.py
 # for the curated caption->icon picks these come from).
 ICON_FIX = {
@@ -155,6 +179,10 @@ def rebrand(text):
     # players to a page they cannot open.
     text = text.replace(
         ' or a <a href=\\"event:catalog/open/bots\\">Bot</a>', '')
+    text = text.replace(
+        '<li>Join <a href=\\"event:catalog/open/habbo_club\\">Habboon Club</a></li>', '')
+    text = text.replace('Upgrade your clothing with Habboon Club, adopt a pet',
+                        'Adopt a pet')
     text = text.replace('easybuy.pw/packages/currency', 'pixelrp.co')
     text = text.replace('habboon.com', 'pixelrp.co')
     text = text.replace('Habboon', 'PixelRP').replace('habboon', 'pixelrp')
@@ -189,6 +217,17 @@ def is_clothing(item):
 
 
 drop = subtree(BUILDERS_CLUB) | subtree(BOTS_PAGE)
+for gone in DROP_SUBTREES:
+    drop |= subtree(gone)
+
+# The flattened subtrees lose their pages; their stock is re-homed below.
+flat_src = {src: subtree(src)
+            for src in [FLATTEN_STAFF[0]] + [f[0] for f in FLATTEN_BUILDERS]}
+for pages_gone in flat_src.values():
+    drop |= pages_gone
+
+for page, parent in REPARENT.items():
+    by_id[page]['parent_id'] = parent
 
 # Pages whose whole stock is clothing (and that parent nothing) go with it.
 on_page = {}
@@ -200,6 +239,17 @@ for p in pages:
         drop |= subtree(p['id'])
 
 kept_pages = [p for p in pages if p['id'] not in drop]
+
+# Staff > Exchange takes the old PixelRP Exchange stock. It is an ordinary
+# restored page - only the Builders ones need a parent resolved on the server.
+_src, _caption, _icon, _order = FLATTEN_STAFF
+EXCHANGE = 'exchange'
+kept_pages.append({
+    'id': EXCHANGE, 'parent_id': '9225', 'caption': _caption, 'icon_image': str(_icon),
+    'visible': '1', 'enabled': '1', 'min_rank': '5', 'min_vip': '0',
+    'order_num': str(_order), 'page_link': '', 'page_layout': 'default_3x3',
+    'page_strings_1': '', 'page_strings_2': '',
+})
 kept_ids = {p['id'] for p in kept_pages}
 jukebox_fid = next((fid for fid, f in furni.items() if f['item_name'] == JUKEBOX), None)
 if jukebox_fid is None:
@@ -209,10 +259,24 @@ if jukebox_fid is None:
 # five pages whose parent never existed) keep their number and stay orphaned,
 # exactly as they are in the default.
 page_id = {p['id']: str(PAGE_BASE + n + 1) for n, p in enumerate(kept_pages)}
+# Builders > Club and Builders > Turfs are inserted by the SQL against a live
+# parent, so they sit just past the staged range; their stock is staged like
+# any other row and lands on them.
+builders_pages = []
+for n, (src, caption, icon, anchor) in enumerate(FLATTEN_BUILDERS):
+    pid = str(PAGE_BASE + len(kept_pages) + n + 1)
+    page_id[src] = pid
+    builders_pages.append((pid, caption, icon, anchor))
+
+# Every page of a flattened subtree routes its stock to that subtree's new page.
+for src, subtree_ids in flat_src.items():
+    for old_page in subtree_ids:
+        page_id[old_page] = page_id[EXCHANGE] if src == FLATTEN_STAFF[0] else page_id[src]
 
 kept_items, dropped = [], {'page': 0, 'clothing': 0, 'jukebox': 0}
+flattened = {pg for ids in flat_src.values() for pg in ids}
 for it in items:
-    if it['page_id'] not in kept_ids:
+    if it['page_id'] not in kept_ids and it['page_id'] not in flattened:
         dropped['page'] += 1          # Builders Club, clothing pages, orphans
     elif is_clothing(it):
         dropped['clothing'] += 1
@@ -225,6 +289,16 @@ for it in items:
 def esc(v):
     return "'%s'" % v
 
+
+ANCHORS = {
+    # where a Builders page hangs, in terms the SQL resolves on the server
+    'cartier': ('@builders', 'COALESCE(@cartier_order, 1001) + 1'),
+    'bots': ('COALESCE(@bots_parent, @builders)', 'COALESCE(@bots_order, 1) - 1'),
+}
+builders_sql = ',\n'.join(
+    "    (%s, %s, %s, %d, 2, 0, %s, '', 'default_3x3', '', '', b'1', b'1')"
+    % (pid, ANCHORS[anchor][0], esc(caption), icon, ANCHORS[anchor][1])
+    for pid, caption, icon, anchor in builders_pages) + ';'
 
 with open(OUT, 'w', encoding='utf-8') as o:
     o.write("""\
@@ -268,12 +342,38 @@ INSERT IGNORE INTO `_catalog_keep` (`id`)
 INSERT IGNORE INTO `_catalog_keep` (`id`)
     SELECT c.`id` FROM `catalog_pages` c JOIN `_catalog_keep` k ON c.`parent_id` = k.`id`;
 
+-- Club and Turfs (section 3) live under Builders once this has run, so a re-run
+-- finds them in the KEEP set and would then collide with itself. Everything
+-- this file generates is id >= %d and nothing else ever is, so lift that range
+-- back out: the wipe clears the previous run's copies and rebuilds them.
+DELETE FROM `_catalog_keep` WHERE `id` >= %d;
+
 -- 2. Wipe everything else, orphaned items (rows whose page no longer exists)
 --    included.
 DELETE FROM `catalog_items` WHERE `page_id` NOT IN (SELECT `id` FROM `_catalog_keep`);
 DELETE FROM `catalog_pages` WHERE `id` NOT IN (SELECT `id` FROM `_catalog_keep`);
 
--- 3. Stage the default catalog, then move it across filtered against the KEEP
+-- 3. Two pages join the Builders tab, holding stock that used to sit in Furni:
+--    Club (the old PixelRP Club - Buy Club, Club Shop, HC Executive) and Turfs
+--    (the old Group Furni). Parent and order are resolved live, because every
+--    page under Builders is data-only. Club goes under Cartier; Turfs goes
+--    above Bots, wherever in the tab Bots has been put.
+SET @builders := COALESCE(
+    (SELECT `id` FROM `catalog_pages` WHERE `parent_id` = -1 AND `caption` = 'Builders' LIMIT 1),
+    912362);
+SET @cartier_order := (SELECT `order_num` FROM `catalog_pages`
+                       WHERE `parent_id` = @builders AND `caption` = 'Cartier' LIMIT 1);
+SET @bots := (SELECT p.`id` FROM `catalog_pages` p JOIN `_catalog_keep` k ON k.`id` = p.`id`
+              WHERE p.`caption` = 'Bots' LIMIT 1);
+SET @bots_parent := (SELECT `parent_id` FROM `catalog_pages` WHERE `id` = @bots);
+SET @bots_order := (SELECT `order_num` FROM `catalog_pages` WHERE `id` = @bots);
+INSERT INTO `catalog_pages`
+    (`id`,`parent_id`,`caption`,`icon_image`,`min_rank`,`min_vip`,`order_num`,`page_link`,
+     `page_layout`,`page_strings_1`,`page_strings_2`,`visible`,`enabled`)
+VALUES
+%s
+
+-- 4. Stage the default catalog, then move it across filtered against the KEEP
 --    set, so nothing the Builders tab holds can be clobbered or duplicated by
 --    id no matter what it has been re-parented to hold.
 DROP TABLE IF EXISTS `_catalog_new_pages`;
@@ -281,10 +381,10 @@ DROP TABLE IF EXISTS `_catalog_new_items`;
 CREATE TABLE `_catalog_new_pages` LIKE `catalog_pages`;
 CREATE TABLE `_catalog_new_items` LIKE `catalog_items`;
 
--- 4. The default pages. `visible`/`enabled` are bit(1) here (11_ChangeCatalog
+-- 5. The default pages. `visible`/`enabled` are bit(1) here (11_ChangeCatalog
 --    PagesEnumToBit moved them to the end of the row), so these are written by
 --    name, never positionally like the dump.
-""" % PAGE_BASE)
+""" % (PAGE_BASE, PAGE_BASE, PAGE_BASE, builders_sql))
     for p in kept_pages:
         icon = ICON_FIX.get(p['id'], p['icon_image'])
         o.write(
@@ -298,7 +398,7 @@ CREATE TABLE `_catalog_new_items` LIKE `catalog_items`;
                 esc(rebrand(p['page_strings_1'])), esc(rebrand(p['page_strings_2'])),
                 p['visible'], p['enabled']))
 
-    o.write("\n-- 5. The default items, duckets folded into credits and priced in coins only.\n"
+    o.write("\n-- 6. The default items, duckets folded into credits and priced in coins only.\n"
             "--    No explicit ids: AUTO_INCREMENT hands out values above anything Builders\n"
             "--    kept, which is one more id collision that cannot happen.\n")
     head = ("INSERT INTO `_catalog_new_items` (`page_id`,`item_id`,`catalog_name`,`cost_credits`,"
@@ -316,7 +416,7 @@ CREATE TABLE `_catalog_new_items` LIKE `catalog_items`;
             ';' if (n % 250 == 249 or n == len(kept_items) - 1) else ','))
 
     o.write("""
--- 6. Move the staged catalog in, KEEP set excluded on both tables.
+-- 7. Move the staged catalog in, KEEP set excluded on both tables.
 INSERT INTO `catalog_pages`
     (`id`,`parent_id`,`caption`,`icon_image`,`min_rank`,`min_vip`,`order_num`,`page_link`,
      `page_layout`,`page_strings_1`,`page_strings_2`,`visible`,`enabled`)
@@ -332,7 +432,7 @@ FROM `_catalog_new_items` WHERE `page_id` NOT IN (SELECT `id` FROM `_catalog_kee
 DROP TABLE `_catalog_new_pages`;
 DROP TABLE `_catalog_new_items`;
 
--- 7. The Jukebox moves to Builders > Corporations > Cafe (resolved by caption:
+-- 8. The Jukebox moves to Builders > Corporations > Cafe (resolved by caption:
 --    those pages are data-only). The catalog row is all that moves - the
 --    furniture row and its interaction are untouched, so a placed jukebox keeps
 --    playing audio.
@@ -353,7 +453,7 @@ INSERT INTO `catalog_items`
 SELECT @cafe, CAST(@jukebox AS CHAR), 'Jukebox', 5, 0, 0, 1, 0, 0, '1', '', '', -1
 FROM DUAL WHERE @cafe IS NOT NULL AND @jukebox IS NOT NULL;
 
--- 8. Sweeps. Duckets are hotel-wide policy, so this one covers Builders too - a
+-- 9. Sweeps. Duckets are hotel-wide policy, so this one covers Builders too - a
 --    price update cannot restructure the tab. The clothing sweep is a net under
 --    the generation-time filter and does leave Builders alone (its Corporations
 --    > Clothing page sells dressing booths, not clothing boxes).
