@@ -719,3 +719,24 @@ Legacy/purged names and other emulators' custom-pack names (e.g. `vipheader1`,
 `habboclub`, `customheader`) are no longer on images.habbo.com and stay blank —
 those pages still work, just without a banner. Supply custom art under
 `nitro/assets/c_images/catalogue/<name>.gif` to fill them.
+
+## Converting SWFs to .nitro bundles
+
+`billsonnn/nitro-converter` is cloned at `../nitro-converter` (sibling of this
+repo; needs Node, installed with `brew install node`). Its `--convert-swf` mode
+converts a folder of SWFs with no network access and no furnidata at all, which
+is what custom furni packs need:
+
+```bash
+cp /path/to/pack/*.swf ../nitro-converter/assets/swf/furniture/
+cd ../nitro-converter && npm run build && node ./dist/Main.js --convert-swf
+# bundles land in ../nitro-converter/assets/bundled/furniture/*.nitro
+```
+
+Copy the bundles into `nitro/overrides/bundled/furniture/` so the deploy ships
+them, and generate the gamedata fragment + SQL alongside — `import-kasja.py`
+does all of that for the Kasja packs and is the template for the next one.
+
+The tool's full-run mode (no flag) is the one used to build the original asset
+tree: it reads Habbo's live gamedata endpoints and converts the entire library.
+That is documented in the retro-stack spec, not here.

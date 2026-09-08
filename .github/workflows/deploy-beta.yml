@@ -86,6 +86,11 @@ jobs:
           git reset -q --hard origin/beta
           git submodule update --init emulator cms imager
           git -C emulator log --oneline -1
+          # Gamedata that cannot ship as a whole-file override: FurnitureData.json
+          # holds the entire official library and lives only here, so custom furni
+          # arrive as a fragment under nitro/assets/gamedata-merge/ (rsynced above)
+          # and are merged in. Existing classnames always win; a re-run adds nothing.
+          python3 docker/nitro/apply-gamedata-fragments.py
           REMOTE
 
       - name: Apply database patches
