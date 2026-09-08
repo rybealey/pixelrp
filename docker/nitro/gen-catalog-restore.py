@@ -49,6 +49,18 @@ Exceptions to a literal restore, all asked for by Ry:
 
 Also dropped: the 196 default rows sitting on page ids that no page defines.
 
+Restored pages take FRESH ids from PAGE_BASE, they do not reuse the dump's.
+The first run of this migration died on `Duplicate entry '9' for key
+catalog_pages.PRIMARY`: beta's Builders tab has the default's Bots page (id 9)
+re-parented into it, so a dump id can and does collide with a KEEP page. Nothing
+outside this table keys on a catalog page id - the emulator and the frontpage
+blurbs address pages by `page_link` - so remapping is free, and it makes the
+collision impossible instead of unlikely. Items are inserted without ids and
+take AUTO_INCREMENT values, which start above whatever Builders kept. The rows
+also land in staging tables first and are filtered against the KEEP set on the
+way in, so a page a future Builders tab happens to hold can never be clobbered
+or duplicated by id.
+
 Idempotent: the emitted SQL rebuilds the whole non-Builders catalog from
 scratch, so it can be re-applied at any time.
 """
@@ -73,6 +85,7 @@ FURNI_COLS = ['id', 'item_name', 'public_name', 'type', 'width', 'length',
               'clothing_id', 'extra_rot']
 
 BUILDERS_CLUB = '9027'      # default's public Furni > Builders Club root
+PAGE_BASE = 930000          # restored pages get fresh ids from here (see above)
 JUKEBOX = 'jukebox*1'       # relocated to Builders > Corporations > Cafe
 
 # Habboon custom icon id -> closest official icon (see docker/nitro/gen-catalog.py
@@ -184,6 +197,11 @@ jukebox_fid = next((fid for fid, f in furni.items() if f['item_name'] == JUKEBOX
 if jukebox_fid is None:
     sys.exit('jukebox*1 is missing from the base dump')
 
+# Fresh page ids, assigned in dump order. Parents outside the map (the dump's
+# five pages whose parent never existed) keep their number and stay orphaned,
+# exactly as they are in the default.
+page_id = {p['id']: str(PAGE_BASE + n + 1) for n, p in enumerate(kept_pages)}
+
 kept_items, dropped = [], {'page': 0, 'clothing': 0, 'jukebox': 0}
 for it in items:
     if it['page_id'] not in kept_ids:
@@ -214,7 +232,12 @@ with open(OUT, 'w', encoding='utf-8') as o:
 --   * nothing charges duckets - cost_pixels is folded into cost_credits;
 --   * no sellable clothing, and the Clothing Store is left alone;
 --   * the Jukebox moves to Builders > Corporations > Cafe, catalog row only;
---   * 'Habboon' branding is rewritten to PixelRP.
+--   * 'Habboon' branding is rewritten to PixelRP;
+--   * restored pages take fresh ids (>= %d), because a dump id can collide with
+--     a page the Builders tab holds - beta parents the default's Bots page
+--     (id 9) under Builders, which is what killed the first run of this file.
+--     Nothing outside this table keys on a page id; `page_link` is what the
+--     emulator and the frontpage blurbs address pages by, and that is intact.
 -- Idempotent: rebuilds the whole non-Builders catalog, safe to re-apply.
 
 -- 1. KEEP set: the Builders tab and every descendant. Resolved live because
@@ -242,39 +265,66 @@ INSERT IGNORE INTO `_catalog_keep` (`id`)
 DELETE FROM `catalog_items` WHERE `page_id` NOT IN (SELECT `id` FROM `_catalog_keep`);
 DELETE FROM `catalog_pages` WHERE `id` NOT IN (SELECT `id` FROM `_catalog_keep`);
 
--- 3. The default pages. `visible`/`enabled` are bit(1) here (11_ChangeCatalog
+-- 3. Stage the default catalog, then move it across filtered against the KEEP
+--    set, so nothing the Builders tab holds can be clobbered or duplicated by
+--    id no matter what it has been re-parented to hold.
+DROP TABLE IF EXISTS `_catalog_new_pages`;
+DROP TABLE IF EXISTS `_catalog_new_items`;
+CREATE TABLE `_catalog_new_pages` LIKE `catalog_pages`;
+CREATE TABLE `_catalog_new_items` LIKE `catalog_items`;
+
+-- 4. The default pages. `visible`/`enabled` are bit(1) here (11_ChangeCatalog
 --    PagesEnumToBit moved them to the end of the row), so these are written by
 --    name, never positionally like the dump.
-""")
+""" % PAGE_BASE)
     for p in kept_pages:
         icon = ICON_FIX.get(p['id'], p['icon_image'])
         o.write(
-            "INSERT INTO `catalog_pages` (`id`,`parent_id`,`caption`,`icon_image`,`min_rank`,"
+            "INSERT INTO `_catalog_new_pages` (`id`,`parent_id`,`caption`,`icon_image`,`min_rank`,"
             "`min_vip`,`order_num`,`page_link`,`page_layout`,`page_strings_1`,`page_strings_2`,"
             "`visible`,`enabled`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,b'%s',b'%s');\n" % (
-                p['id'], p['parent_id'], esc(rebrand(p['caption'])), icon,
+                page_id[p['id']], page_id.get(p['parent_id'], p['parent_id']),
+                esc(rebrand(p['caption'])), icon,
                 p['min_rank'], p['min_vip'], p['order_num'],
                 esc(p['page_link']), esc(p['page_layout']),
                 esc(rebrand(p['page_strings_1'])), esc(rebrand(p['page_strings_2'])),
                 p['visible'], p['enabled']))
 
-    o.write("\n-- 4. The default items, duckets folded into credits and priced in coins only.\n")
-    head = ("INSERT INTO `catalog_items` (`id`,`page_id`,`item_id`,`catalog_name`,`cost_credits`,"
+    o.write("\n-- 5. The default items, duckets folded into credits and priced in coins only.\n"
+            "--    No explicit ids: AUTO_INCREMENT hands out values above anything Builders\n"
+            "--    kept, which is one more id collision that cannot happen.\n")
+    head = ("INSERT INTO `_catalog_new_items` (`page_id`,`item_id`,`catalog_name`,`cost_credits`,"
             "`cost_pixels`,`cost_diamonds`,`amount`,`limited_sells`,`limited_stack`,`offer_active`,"
             "`extradata`,`badge`,`offer_id`) VALUES\n")
     for n, it in enumerate(kept_items):
         if n % 250 == 0:
             o.write(head)
         credits = int(it['cost_credits']) + int(it['cost_pixels'])
-        o.write("(%s,%s,%s,%s,%d,0,%s,%s,%s,%s,%s,%s,%s,%s)%s\n" % (
-            it['id'], it['page_id'], esc(it['item_id']), esc(rebrand(it['catalog_name'])),
+        o.write("(%s,%s,%s,%d,0,%s,%s,%s,%s,%s,%s,%s,%s)%s\n" % (
+            page_id[it['page_id']], esc(it['item_id']), esc(rebrand(it['catalog_name'])),
             credits, it['cost_diamonds'], it['amount'], it['limited_sells'],
             it['limited_stack'], esc(it['offer_active']), esc(it['extradata']),
             esc(it['badge']), it['offer_id'],
             ';' if (n % 250 == 249 or n == len(kept_items) - 1) else ','))
 
     o.write("""
--- 5. The Jukebox moves to Builders > Corporations > Cafe (resolved by caption:
+-- 6. Move the staged catalog in, KEEP set excluded on both tables.
+INSERT INTO `catalog_pages`
+    (`id`,`parent_id`,`caption`,`icon_image`,`min_rank`,`min_vip`,`order_num`,`page_link`,
+     `page_layout`,`page_strings_1`,`page_strings_2`,`visible`,`enabled`)
+SELECT `id`,`parent_id`,`caption`,`icon_image`,`min_rank`,`min_vip`,`order_num`,`page_link`,
+       `page_layout`,`page_strings_1`,`page_strings_2`,`visible`,`enabled`
+FROM `_catalog_new_pages` WHERE `id` NOT IN (SELECT `id` FROM `_catalog_keep`);
+INSERT INTO `catalog_items`
+    (`page_id`,`item_id`,`catalog_name`,`cost_credits`,`cost_pixels`,`cost_diamonds`,`amount`,
+     `limited_sells`,`limited_stack`,`offer_active`,`extradata`,`badge`,`offer_id`)
+SELECT `page_id`,`item_id`,`catalog_name`,`cost_credits`,`cost_pixels`,`cost_diamonds`,`amount`,
+       `limited_sells`,`limited_stack`,`offer_active`,`extradata`,`badge`,`offer_id`
+FROM `_catalog_new_items` WHERE `page_id` NOT IN (SELECT `id` FROM `_catalog_keep`);
+DROP TABLE `_catalog_new_pages`;
+DROP TABLE `_catalog_new_items`;
+
+-- 7. The Jukebox moves to Builders > Corporations > Cafe (resolved by caption:
 --    those pages are data-only). The catalog row is all that moves - the
 --    furniture row and its interaction are untouched, so a placed jukebox keeps
 --    playing audio.
@@ -282,9 +332,11 @@ SET @builders := (SELECT `id` FROM `catalog_pages` WHERE `parent_id` = -1 AND `c
 SET @corps    := (SELECT `id` FROM `catalog_pages` WHERE `parent_id` = @builders AND `caption` = 'Corporations' LIMIT 1);
 SET @cafe     := (SELECT `id` FROM `catalog_pages` WHERE `parent_id` = @corps AND (`caption` = 'Cafe' OR `caption` LIKE 'Caf_') LIMIT 1);
 -- Degrade gracefully - Cafe, else Corporations, else the Builders root, else
--- the default home (Staff > Other Furni > System) - so the Jukebox is always
--- buyable somewhere, even where the Builders tab lacks those data-only pages.
-SET @cafe     := COALESCE(@cafe, @corps, @builders, 134);
+-- the restored default home (Staff > Other Furni > System) - so the Jukebox is
+-- always buyable somewhere, even where Builders lacks those data-only pages.
+SET @system   := (SELECT p.`id` FROM `catalog_pages` p JOIN `catalog_pages` par ON par.`id` = p.`parent_id`
+                  WHERE p.`caption` = 'System' AND par.`caption` = 'Other Furni' LIMIT 1);
+SET @cafe     := COALESCE(@cafe, @corps, @builders, @system);
 SET @jukebox  := (SELECT `id` FROM `furniture` WHERE `item_name` = 'jukebox*1' LIMIT 1);
 DELETE FROM `catalog_items` WHERE `item_id` = CAST(@jukebox AS CHAR);
 INSERT INTO `catalog_items`
@@ -293,7 +345,7 @@ INSERT INTO `catalog_items`
 SELECT @cafe, CAST(@jukebox AS CHAR), 'Jukebox', 5, 0, 0, 1, 0, 0, '1', '', '', -1
 FROM DUAL WHERE @cafe IS NOT NULL AND @jukebox IS NOT NULL;
 
--- 6. Sweeps. Duckets are hotel-wide policy, so this one covers Builders too - a
+-- 8. Sweeps. Duckets are hotel-wide policy, so this one covers Builders too - a
 --    price update cannot restructure the tab. The clothing sweep is a net under
 --    the generation-time filter and does leave Builders alone (its Corporations
 --    > Clothing page sells dressing booths, not clothing boxes).
