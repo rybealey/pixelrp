@@ -21,6 +21,14 @@ in on the server, after the rsync and before the client is restarted:
                        hh_human_item provides part 314 the client never asks
                        for it, and :carry 314 renders nothing.
   ExternalTexts.json   fragment {key: text}; existing keys are left alone.
+  HabboAvatarActions.json
+                       fragment {"actions": [{"id": ..., "params": [...]}]};
+                       params are added to the named action, keyed on the param
+                       id, and existing ids (including "default") are never
+                       overwritten. This is what makes `:carry <id>` reach a
+                       handitem at all: the renderer maps the id through
+                       CarryItem's params before it ever looks for a sprite, and
+                       an unmapped id silently falls back to default = the cup.
 
 Run from the deploy checkout root. Idempotent by construction.
 """
@@ -85,6 +93,25 @@ def merge_figuremap(fragment, target):
     return added
 
 
+def merge_actions(fragment, target):
+    added = 0
+    actions = target.get('actions') if isinstance(target, dict) else target
+    by_id = {a.get('id'): a for a in actions}
+    for action in fragment.get('actions') or []:
+        existing = by_id.get(action.get('id'))
+        if existing is None:
+            continue                       # never invent an action
+        params = existing.setdefault('params', [])
+        have = {p.get('id') for p in params}
+        for param in action.get('params') or []:
+            if param.get('id') in have:
+                continue                   # an existing mapping always wins
+            params.append(param)
+            have.add(param.get('id'))
+            added += 1
+    return added
+
+
 def merge_texts(fragment, target):
     added = 0
     for key, value in fragment.items():
@@ -110,6 +137,8 @@ for name in sorted(os.listdir(MERGE_DIR)):
         added = merge_furnituredata(fragment, target)
     elif name == 'FigureMap.json':
         added = merge_figuremap(fragment, target)
+    elif name == 'HabboAvatarActions.json':
+        added = merge_actions(fragment, target)
     else:
         added = merge_texts(fragment, target)
     if added:

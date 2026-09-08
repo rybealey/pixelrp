@@ -42,6 +42,22 @@ server's outright; convert a new one from its SWF with
 `node ./dist/Main.js --convert-swf` (see `docker/nitro/README.md`) and drop it
 in.
 
+**A handitem needs THREE things, not one.** The bundle, a `FigureMap` entry, and
+a `CarryItem` parameter — miss any one and it fails silently:
+
+1. the `.nitro` bundle holding `h_crr_ri_<part>_<dir>_<frame>`;
+2. `gamedata-merge/FigureMap.json` registering `{"id": <part>, "type": "ri"}`
+   under `hh_human_item`, or the client never asks for the asset;
+3. `gamedata-merge/HabboAvatarActions.json` adding `{"id": "<carry id>",
+   "value": "<part>"}` to `CarryItem` (and `UseItem` for the drink animation).
+
+**`:carry N` does not draw part N.** The renderer maps the id through
+`CarryItem`'s parameter list first, and that list covers only ~224 ids. Anything
+unmapped falls through to `default = 1` — the cup of water — so an unmapped
+handitem renders as a cup with the correct name beside it, which reads as
+"nothing happened" rather than as an error. `docker/nitro/gen-handitem-params.py`
+generates identity mappings for every part no existing parameter points at.
+
 **The bundle alone does not make a handitem reachable.** The client asks
 `FigureMap.json` which library provides part *N* before it fetches anything, so
 an id that is in the bundle but not in the map is simply never requested and
