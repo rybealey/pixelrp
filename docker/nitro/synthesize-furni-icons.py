@@ -46,8 +46,9 @@ ICON_BOX = 35
 # Below this share of the fullest state's opaque pixels, state 0 is not
 # showing the furni and the fullest state is drawn instead.
 EMPTY_STATE_RATIO = 0.5
-# The room renderer's default facing; every one of these bundles has it.
-DIRECTION = '2'
+# The room renderer's default facing. Most bundles draw it, but not all - some
+# only ship direction 0 - so it is a preference, not an assumption.
+PREFERRED_DIRECTIONS = ('2', '0', '4')
 
 
 def bundle_entries(path):
@@ -88,6 +89,30 @@ def cut(sheet, frames, key):
     return out.rotate(90, expand=True) if frame.get('rotated') else out
 
 
+def pick_direction(vis):
+    directions = list((vis.get('directions') or {}).keys())
+    for wanted in PREFERRED_DIRECTIONS:
+        if wanted in directions:
+            return wanted
+    return directions[0] if directions else '2'
+
+
+def icon_alias(data, sheet):
+    """Some bundles name an icon in `assets` without giving it its own frame -
+    it is an alias of another sprite. That is the artist's icon after all, so
+    it is used before anything is composited."""
+    lib = data['name']
+    assets = data.get('assets') or {}
+    frames = (data.get('spritesheet') or {}).get('frames') or {}
+    asset = assets.get('%s_icon_a' % lib)
+    if asset is None or not sheet:
+        return None
+    image = cut(sheet, frames, '%s_%s' % (lib, asset.get('source', '%s_icon_a' % lib)))
+    if image is None:
+        return None
+    return image.transpose(Image.FLIP_LEFT_RIGHT) if asset.get('flipH') else image
+
+
 def compose(data, sheet, animation):
     """One state of the 64-size sprite, layers stacked by z the way a room draws it.
 
@@ -101,6 +126,7 @@ def compose(data, sheet, animation):
     vis = next((v for v in data.get('visualizations') or [] if v.get('size') == 64), None)
     if not vis or not sheet:
         return None
+    direction = pick_direction(vis)
     layers = vis.get('layers') or {}
     placed = []
     for index in range(vis.get('layerCount') or 1):
@@ -113,7 +139,7 @@ def compose(data, sheet, animation):
                 entries = sequence.get('frames') or {}
                 if entries:
                     frame_id = (entries.get('0') or list(entries.values())[0]).get('id', 0)
-        name = '%s_64_%s_%s_%d' % (lib, chr(97 + index), DIRECTION, frame_id)
+        name = '%s_64_%s_%s_%d' % (lib, chr(97 + index), direction, frame_id)
         asset = assets.get(name)
         if asset is None:
             continue
@@ -140,6 +166,9 @@ def opaque_pixels(image):
 
 
 def thumbnail(data, sheet):
+    alias = icon_alias(data, sheet)
+    if alias is not None and alias.getbbox():
+        return alias
     vis = next((v for v in data.get('visualizations') or [] if v.get('size') == 64), None)
     animations = (vis or {}).get('animations') or {}
     keys = sorted(animations, key=lambda k: int(k)) if animations else [None]
