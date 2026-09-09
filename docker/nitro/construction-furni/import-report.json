@@ -1,0 +1,35 @@
+{
+ "no_dims": [
+  "bc_panel",
+  "bc_block_small",
+  "bc_curvedramp"
+ ],
+ "no_icon": [
+  "bc_alpha1_a",
+  "bc_alpha1_b",
+  "bc_alpha1_e",
+  "bc_alpha1_f",
+  "bc_alpha1_g",
+  "bc_alpha1_i",
+  "bc_alpha1_q",
+  "bc_alpha1_r",
+  "bc_alpha1_s",
+  "bc_alpha1_t",
+  "bc_alpha1_u",
+  "ABC_city_nonos1",
+  "ABC_city_nonos2"
+ ],
+ "skipped": [
+  "blue_marble",
+  "gren_marble",
+  "lbue_marble",
+  "lgrn_marble",
+  "orge_marble",
+  "prpl_marble",
+  "rede_marble",
+  "whte_marble",
+  "yllw_marble"
+ ],
+ "sit": [],
+ "walk": []
+}
