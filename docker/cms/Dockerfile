@@ -15,7 +15,9 @@ COPY cms/ .
 # `@import "../../../../vendor/filament/filament/resources/css/theme.css"`, so
 # the asset build needs Composer's output present — hence vendor stage first.
 COPY --from=vendor /app/vendor ./vendor
-RUN npm ci && npm run build:pixelrp
+# build:pixelrp must stay first on this line: deploy-beta.yml reads the theme
+# name from it. build:housekeeping is the React housekeeping panel.
+RUN npm ci && npm run build:pixelrp && npm run build:housekeeping
 
 FROM php:8.5-fpm-alpine
 RUN apk add --no-cache icu-dev libzip-dev libpng-dev libjpeg-turbo-dev freetype-dev oniguruma-dev \
@@ -26,6 +28,7 @@ RUN apk add --no-cache icu-dev libzip-dev libpng-dev libjpeg-turbo-dev freetype-
 WORKDIR /var/www/html
 COPY --from=vendor /app .
 COPY --from=assets /app/public/build ./public/build
+COPY --from=assets /app/public/build-housekeeping ./public/build-housekeeping
 # Pristine copy of public/ at a path the cms-public volume does not shadow.
 # That volume is only seeded from the image when Docker first creates it and is
 # never refreshed afterwards, so without this the built theme assets and any
