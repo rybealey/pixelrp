@@ -737,6 +737,35 @@ Copy the bundles into `nitro/overrides/bundled/furniture/` so the deploy ships
 them, and generate the gamedata fragment + SQL alongside — `import-kasja.py`
 does all of that for the Kasja packs and is the template for the next one.
 
+**Pre-2013 SWFs lose their animation states.** `VisualizationXML` reads its
+sizes out of `<visualizationData><graphics>`, a wrapper Sulake added around
+2013; older furni put `<visualization>` straight under `<visualizationData>`,
+so the converter finds nothing and writes a bundle with no `visualizations`
+key at all. Nothing fails loudly — the client renders one layer and no states,
+which reads as "the animation is broken", not as a conversion error. Check for
+the key, and recover it from the SWF with:
+
+```bash
+python3 docker/nitro/fix-legacy-visualization.py \
+    nitro/overrides/bundled/furniture/<classname>.nitro /path/to/<classname>.swf
+```
+
+A furni whose layer-0 frame 0 is a blank image (the "off" state of a two-state
+machine) also loses that frame from the spritesheet — the packer drops empty
+images. That one is correct: an absent frame draws nothing, which is the
+intent.
+
+**Editing a custom's artwork is a bundle edit, not a re-convert.** A glow, a
+tint or an animation state that lives in its own visualization layer comes off
+by dropping the layer, its assets and its frames and decrementing
+`layerCount`; lettering or branding painted INTO a sprite has to be repainted
+out pixel by pixel, because the artwork underneath was never drawn.
+`atm-strip-sign.py` does both for the ATM Machine and is the worked example:
+an isometric top face is symmetric about its vertex, so its clean half mirrors
+onto the covered one and carries the outline and edge bevel with it, while
+features that are NOT symmetric (vertical ridges, flat panels) have to come
+from a column model instead.
+
 The tool's full-run mode (no flag) is the one used to build the original asset
 tree: it reads Habbo's live gamedata endpoints and converts the entire library.
 That is documented in the retro-stack spec, not here.

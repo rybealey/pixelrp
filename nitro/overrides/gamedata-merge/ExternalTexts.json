@@ -13436,5 +13436,7 @@
  "overige_raam3_name": "Other Window 3",
  "overige_raam3_desc": "Overige Raam 3",
  "overige_raam4_name": "Other Window 4",
- "overige_raam4_desc": "Overige Raam 4"
+ "overige_raam4_desc": "Overige Raam 4",
+ "atm_moneymachine_name": "ATM Machine",
+ "atm_moneymachine_desc": "Click it and the cash machine hands out a note."
 }
