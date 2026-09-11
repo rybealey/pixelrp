@@ -192,16 +192,32 @@ ban evasion. The housekeeping Characters panel is what separates the two: a
 shared IP with a shared `parent_id` is a feature, a shared IP without one is
 still worth a look.
 
-## 10. Still open
+## 10. Two identities on the website
 
-- **Does the website follow the active character, or only purchases?** Every
-  CMS page renders `AuthenticatedUser::from($request)` — the root row — so the
-  site would show the root's avatar, motto, credits and badges while you are
-  in the hotel as somebody else. With credits and diamonds per character that
-  is a second wrong-balance problem, not just a cosmetic one. Either the whole
-  site resolves through `active_character_id`, or it shows the root and says
-  so plainly. This wants deciding before step 2, because step 2 is where the
-  resolution helper gets written.
+**The site follows the active character** — which at login is simply the last
+one played, since `active_character_id` persists. No chooser for now; one
+arrives with the frontend overhaul.
+
+That means the CMS has two identities where it used to have one, and every
+call site has to say which it means:
+
+| | which row | examples |
+| --- | --- | --- |
+| **Account** | the root | password, email, 2FA, sessions, referrals, tickets, staff applications, Filament and housekeeping |
+| **Character** | `active_character_id` | avatar, motto, **credits and diamonds**, badges, the public profile, purchases, the RCON grants that reach into the hotel |
+
+`AuthenticatedUser::from()` keeps returning the **account**, and call sites opt
+in to the character through a new accessor. Deliberately that way round rather
+than flipping the default: a call site missed in the audit then renders the
+root — today's behaviour, wrong but harmless — instead of pointing a password
+change or a 2FA reset at a child row.
+
+The audit is not enormous but it is not one line either: 29 `AuthenticatedUser`
+calls across 25 files, plus about 20 `auth()->user()` reads in the pixelrp
+theme's blades. It belongs in step 2, before anything else reads the column.
+
+## 11. Still open
+
 - Does an abandoned character keep its corporation job and gang seat
   indefinitely? Nothing reclaims a seat today, and three characters each make
   that three times more likely to matter.
