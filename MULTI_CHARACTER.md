@@ -177,8 +177,31 @@ AccountOf(b)` — so it wants one helper, not seven copies.
 5. Creation.
 6. Anti-abuse pass — before creation is reachable on beta.
 
-## 9. Still open
+## 9. Two things checked since
 
+**Creating a character needs no call to the CMS.** The rules registration uses
+are database-backed, not code: `username_regex` and
+`website_wordfilter_enabled` are `settings` rows and the word list is the
+`website_wordfilter` table. The emulator reads the same rows and applies the
+same rules, so there is one word list rather than two that drift, and no HTTP
+hop between the phone and the website.
+
+**Alt detection gets noisier for staff.** Legitimate characters on one account
+now share an IP and machine id, which is exactly the signal staff use to spot
+ban evasion. The housekeeping Characters panel is what separates the two: a
+shared IP with a shared `parent_id` is a feature, a shared IP without one is
+still worth a look.
+
+## 10. Still open
+
+- **Does the website follow the active character, or only purchases?** Every
+  CMS page renders `AuthenticatedUser::from($request)` — the root row — so the
+  site would show the root's avatar, motto, credits and badges while you are
+  in the hotel as somebody else. With credits and diamonds per character that
+  is a second wrong-balance problem, not just a cosmetic one. Either the whole
+  site resolves through `active_character_id`, or it shows the root and says
+  so plainly. This wants deciding before step 2, because step 2 is where the
+  resolution helper gets written.
 - Does an abandoned character keep its corporation job and gang seat
   indefinitely? Nothing reclaims a seat today, and three characters each make
   that three times more likely to matter.
