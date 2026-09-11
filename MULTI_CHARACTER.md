@@ -87,16 +87,35 @@ Per **account** (the root row): login, mail, 2FA, and **discipline**.
 
 ### Consequence to handle: purchases attribute to the wrong row
 
-`DiamondCheckoutController` and the crypto/Stripe webhooks stamp `user_id` from
-the *authenticated* user — which after this change is the account **root**, not
-the character being played. With diamonds per character that silently credits
-the wrong one: buy while playing your second character, the diamonds land on
-your first.
+`DiamondCheckoutController` writes `WebsiteDiamondOrder.user_id` from the
+*authenticated* user — which after this change is the account **root**, not the
+character being played. Fulfilment then looks the order up by
+`stripe_session_id` and credits `User::find($order->user_id)`, so with diamonds
+per character that silently credits the wrong one: buy while playing your
+second character, the diamonds land on your first.
 
-Every purchase path must target the **active character**, not the
-authenticated row. Same for subscriptions if VIP is ever sold on the site.
-This is not optional polish; it is a money bug the moment a second character
-exists.
+Every purchase path targets the **active character**, not the authenticated
+row: the order row, the Stripe `metadata.user_id`, the crypto controller, and
+the RCON passive grant that shields the player while the form is open. This is
+not optional polish; it is a money bug the moment a second character exists.
+
+Worth being clear about what fulfilment does NOT use: the email address. It is
+prefilled on the Checkout form purely to spare the buyer a field. The order row
+is the source of truth, and it is written server-side before Stripe is ever
+called.
+
+**The buyer should also be able to SEE which character they are paying for**,
+because "I bought on the wrong character" is the mistake three slots invites.
+Two display-only places, both server-set:
+
+- the line item's `product_data.name` — `250 Diamonds — Marlowe` — which shows
+  on the payment page and on the receipt;
+- the page around the embedded Checkout, which is ours to write.
+
+Not a Stripe **custom field**. Those are an input control the customer fills,
+so a prefilled value is still editable at the payment screen — and anything
+fulfilment trusts from it becomes a self-serve way to credit somebody else's
+account, plus a support queue of typos. Confirmation, not identity.
 
 ## 5. Moderation
 
