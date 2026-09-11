@@ -8,8 +8,8 @@
  "infostand.tools.floor": "Floor",
  "infostand.tools.ontop": "On top",
  "catalog.quantity": "Quantity",
- "inventory.furni.delete": "Throw away",
- "inventory.furni.delete.confirm.title": "Throw away furni",
- "inventory.furni.delete.confirm": "Throw away all %count% of your %name%?\n\nThey are destroyed for good. You get nothing back and staff cannot return them.",
- "inventory.furni.delete.confirm.button": "Throw away"
+ "inventory.furni.delete": "Delete",
+ "inventory.furni.delete.confirm.title": "Delete furni",
+ "inventory.furni.delete.confirm": "Delete all %count% of your %name%?\n\nThey are destroyed for good. You get nothing back and staff cannot return them.",
+ "inventory.furni.delete.confirm.button": "Delete"
 }
