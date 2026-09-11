@@ -168,14 +168,33 @@ AccountOf(b)` — so it wants one helper, not seven copies.
 
 ## 8. Build order
 
-1. `parent_id` + `active_character_id`, migration, every row self-parented.
-   No behaviour change.
-2. CMS ticket resolution, account-wide bans, purchase attribution fix,
-   housekeeping Characters panel.
-3. Roster packet + Wallet cards, read-only. No create, no switch.
-4. Switching.
-5. Creation.
-6. Anti-abuse pass — before creation is reachable on beta.
+1. ~~`parent_id` + `active_character_id`, migration, every row self-parented.~~
+   **Done** — `101_MultiCharacter.sql`.
+2. CMS ticket resolution **done** (`activeCharacter()`, the client entry, the
+   diamond controllers). Account-wide bans **done** (`AccountBanCheckTask`).
+   **Housekeeping Characters panel still to do.**
+3. ~~Roster packet + Wallet cards.~~ **Done** — stacked, expanding.
+4. ~~Switching.~~ **Done** — sets the column, reloads the parent page.
+5. ~~Creation.~~ **Done** — name and starting look, rules read from the
+   website's own settings and wordfilter.
+6. Anti-abuse **done for**: bans, one-online-at-a-time, trade, friend
+   requests, and every police power (`:charge`, `:pardon`, `:stun`, `:cuff`,
+   `:escort`, the Wanted list's x). **Still to do: same corporation, same
+   gang.** Both are joins rather than commands, so neither is a one-line
+   guard the way the police chain was.
+
+### What is NOT done
+
+- **Same-corporation and same-gang membership.** Two of your characters can
+  still be hired into one corporation or join one gang. This is the remaining
+  hole in section 6 and it wants doing before the limit means anything.
+- **The housekeeping Characters panel.** Staff cannot see that two accounts
+  are one person, which is exactly the visibility the shared-IP noise makes
+  necessary.
+- **The website identity audit** (section 10): only the ticket path and the
+  purchase paths resolve the active character. Every other CMS page and blade
+  still renders the account root, so the site shows the root's avatar, motto
+  and credits while you play somebody else.
 
 ## 9. Two things checked since
 
