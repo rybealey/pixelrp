@@ -1,6 +1,7 @@
 {
  "infostand.button.pickup": "Pick Up",
  "infostand.button.tools": "Tools",
+ "infostand.button.function": "Function",
  "infostand.tools.position": "Position",
  "infostand.tools.height": "Height",
  "infostand.tools.opacity": "Opacity",
