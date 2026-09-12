@@ -89,11 +89,26 @@ def furnidata_classnames():
     return names
 
 
-def prune(sold, confirm):
+def prune(sold, confirm, have_furni):
     known = furnidata_classnames()
-    unrenderable = sorted(c for c in sold if c not in known)
+    missing_reg = sorted(c for c in sold if c not in known)
 
-    print(f"\nnot in FurnitureData    {len(unrenderable):>6}"
+    # Two very different things look the same from the database. A classname
+    # with NO FurnitureData entry and NO icon never had a bundle: it is a row
+    # the original dump carried and nothing can render it. A classname with no
+    # entry but WITH an icon has a bundle on disk - the icon was cropped out of
+    # it - so what is missing is only its FurnitureData registration, which is
+    # the documented half-finished state of a custom-pack import. Deleting
+    # those would throw away real furniture to fix a one-line omission.
+    orphaned = [c for c in missing_reg if icon_name(c) in have_furni]
+    unrenderable = [c for c in missing_reg if icon_name(c) not in have_furni]
+
+    if orphaned:
+        print(f"\nbundle but no registration {len(orphaned):>5}"
+              f"   NOT pruned - these need a FurnitureData entry, not deleting")
+        print("  sample:", ", ".join(orphaned[:10]))
+
+    print(f"\nno bundle, no icon      {len(unrenderable):>6}"
           f"   (unrenderable anywhere, not just in the catalog)")
     if not unrenderable:
         return
@@ -157,7 +172,7 @@ def main():
         print("  sample:", ", ".join(c for c, _ in missing_furni[:10]))
 
     if args.prune:
-        prune(sold, args.yes)
+        prune(sold, args.yes, have_furni)
 
     if not args.fetch or not (missing_furni or missing_cat):
         return
