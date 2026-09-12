@@ -20,7 +20,6 @@ import struct
 import zipfile
 import zlib
 
-from PIL import Image
 
 SEAT = re.compile(r'chair|sofa|bench|stool|puf|pouf|seat|couch|armchair|beanbag|throne'
                   r'|chaise|canape|fauteuil|tabouret|banc|siege')
@@ -143,6 +142,13 @@ def read_furni(path):
 
 
 def crop_icon(entries, png_name, frame, out_path):
+    # Pillow is imported HERE rather than at the top because it is needed by
+    # exactly this function. Importing it on the module made every consumer of
+    # the bundle reader depend on an image library - which is how
+    # show-furni-directions.py, whose whole job is to unzip a JSON blob and
+    # print a list, died on a server that has no Pillow installed.
+    from PIL import Image
+
     rect = frame.get('frame') or {}
     if not png_name or not rect:
         return False
