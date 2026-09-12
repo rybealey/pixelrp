@@ -23,6 +23,18 @@ icons from dcr/hof_furni/{revision}/ the way fetch-variant-icons does, category
 icons from c_images/catalogue/ - and reports what it could not find, which is
 the set that needs a local answer (a synthesised icon, or a different
 icon_image on the page).
+
+`--prune` takes the other kind of miss off the shelves. An item the client has
+no FurnitureData entry for cannot be rendered anywhere - not in the catalog and
+not in a room - so it is not a missing icon, it is a row that should never have
+been for sale. 119's A-Z catch-all shelves everything uncatalogued precisely so
+nothing stays invisible, and it has no way to ask that question: the answer is
+in a JSON file, not the database. This is where the two meet. Dry by default;
+pass --prune --yes to actually delete.
+
+Re-run it after any catalog rebuild, for the same reason the icon scripts are
+re-run after an asset regeneration: 119 is idempotent, so re-applying it puts
+the unrenderable rows back.
 """
 import argparse
 import json
@@ -62,10 +74,58 @@ def icon_name(classname):
     return f"{classname}_icon.png"
 
 
+def furnidata_classnames():
+    if not os.path.exists(FD):
+        sys.exit(f"no FurnitureData at {FD} - cannot tell renderable from not")
+    d = json.load(open(FD))
+    names = set()
+    for section in ("roomitemtypes", "wallitemtypes"):
+        for t in d[section]["furnitype"]:
+            cn = t["classname"]
+            names.add(cn)
+            # A shelf may sell the base of a starred classname, and the client
+            # resolves that against the same library.
+            names.add(cn.split("*", 1)[0])
+    return names
+
+
+def prune(sold, confirm):
+    known = furnidata_classnames()
+    unrenderable = sorted(c for c in sold if c not in known)
+
+    print(f"\nnot in FurnitureData    {len(unrenderable):>6}"
+          f"   (unrenderable anywhere, not just in the catalog)")
+    if not unrenderable:
+        return
+    print("  sample:", ", ".join(unrenderable[:10]))
+
+    rows = query(
+        "SELECT COUNT(*) FROM catalog_items ci JOIN furniture f "
+        "ON f.id = CAST(ci.item_id AS UNSIGNED) WHERE f.item_name IN (" +
+        ",".join("'" + c.replace("\\", "\\\\").replace("'", "\\'") + "'"
+                 for c in unrenderable) + ");")
+    print(f"  catalog rows they hold  {rows[0]:>6}")
+
+    if not confirm:
+        print("  dry run - pass --yes to delete these rows")
+        return
+
+    query(
+        "DELETE ci FROM catalog_items ci JOIN furniture f "
+        "ON f.id = CAST(ci.item_id AS UNSIGNED) WHERE f.item_name IN (" +
+        ",".join("'" + c.replace("\\", "\\\\").replace("'", "\\'") + "'"
+                 for c in unrenderable) + ");")
+    print(f"  deleted {rows[0]} catalog rows")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--fetch", action="store_true",
                     help="download what is missing instead of only listing it")
+    ap.add_argument("--prune", action="store_true",
+                    help="report catalog rows whose furni is not in FurnitureData")
+    ap.add_argument("--yes", action="store_true",
+                    help="with --prune, actually delete them")
     args = ap.parse_args()
 
     for path in (ICONS, CATALOGUE):
@@ -95,6 +155,9 @@ def main():
         print(f"    {missing_cat}")
     if missing_furni:
         print("  sample:", ", ".join(c for c, _ in missing_furni[:10]))
+
+    if args.prune:
+        prune(sold, args.yes)
 
     if not args.fetch or not (missing_furni or missing_cat):
         return
