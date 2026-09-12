@@ -116,7 +116,7 @@ def prune(sold, confirm, have_furni):
 
     rows = query(
         "SELECT COUNT(*) FROM catalog_items ci JOIN furniture f "
-        "ON f.id = CAST(ci.item_id AS UNSIGNED) WHERE f.item_name IN (" +
+        "ON f.id = CAST(ci.item_id AS UNSIGNED) WHERE f.type IN ('s','i') AND f.item_name IN (" +
         ",".join("'" + c.replace("\\", "\\\\").replace("'", "\\'") + "'"
                  for c in unrenderable) + ");")
     print(f"  catalog rows they hold  {rows[0]:>6}")
@@ -127,7 +127,7 @@ def prune(sold, confirm, have_furni):
 
     query(
         "DELETE ci FROM catalog_items ci JOIN furniture f "
-        "ON f.id = CAST(ci.item_id AS UNSIGNED) WHERE f.item_name IN (" +
+        "ON f.id = CAST(ci.item_id AS UNSIGNED) WHERE f.type IN ('s','i') AND f.item_name IN (" +
         ",".join("'" + c.replace("\\", "\\\\").replace("'", "\\'") + "'"
                  for c in unrenderable) + ");")
     print(f"  deleted {rows[0]} catalog rows")
@@ -146,9 +146,16 @@ def main():
     for path in (ICONS, CATALOGUE):
         os.makedirs(path, exist_ok=True)
 
+    # Floor and wall furniture ONLY. The catalog also sells bots ('r'), pets
+    # ('p'), effects ('e') and badges ('b'), and none of those is furni: they
+    # are not in FurnitureData, they do not use dcr/hof_furni icons, and the
+    # client draws them from their own data. Auditing them here reports every
+    # one as a missing icon, and - far worse - the prune below then reads that
+    # as "unrenderable" and takes the shop's bots off the shelf.
     sold = query(
         "SELECT DISTINCT f.item_name FROM catalog_items ci "
-        "JOIN furniture f ON f.id = CAST(ci.item_id AS UNSIGNED);")
+        "JOIN furniture f ON f.id = CAST(ci.item_id AS UNSIGNED) "
+        "WHERE f.type IN ('s','i');")
     page_icons = [int(n) for n in query(
         "SELECT DISTINCT icon_image FROM catalog_pages "
         "WHERE icon_image IS NOT NULL AND icon_image > 0;")]
