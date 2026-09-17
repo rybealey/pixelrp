@@ -434,12 +434,17 @@ VALUES
         'parent': PACK.get('parent_sql', '@builders'),
     })
 
-    o.write('INSERT INTO `catalog_pages` (`id`,`parent_id`,`caption`,`icon_image`,`min_rank`,'
-            '`min_vip`,`order_num`,`page_link`,`page_layout`,`page_strings_1`,`page_strings_2`,'
-            '`visible`,`enabled`) VALUES\n')
-    o.write(',\n'.join(
-        "    (%d,%d,%s,193,2,0,%d,'','default_3x3','','',b'1',b'1')"
-        % (page, parent, esc(caption), order) for page, parent, caption, order in pages) + ';\n')
+    # A FLAT pack - loose bundles and no subfolders - has no subpages at all,
+    # and an INSERT ... VALUES with nothing after it is a syntax error MySQL
+    # reports as "near ''". Every pack before Exterior Modern had folders, so
+    # the empty case only showed up the first time one did not.
+    if pages:
+        o.write('INSERT INTO `catalog_pages` (`id`,`parent_id`,`caption`,`icon_image`,`min_rank`,'
+                '`min_vip`,`order_num`,`page_link`,`page_layout`,`page_strings_1`,`page_strings_2`,'
+                '`visible`,`enabled`) VALUES\n')
+        o.write(',\n'.join(
+            "    (%d,%d,%s,193,2,0,%d,'','default_3x3','','',b'1',b'1')"
+            % (page, parent, esc(caption), order) for page, parent, caption, order in pages) + ';\n')
 
     o.write('\n-- Furniture. id == sprite_id, the convention every custom line here follows;\n'
             "-- interaction_modes_count is the bundle's own animation count.\n")
