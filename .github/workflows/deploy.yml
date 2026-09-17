@@ -36,11 +36,11 @@ jobs:
       DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || '/opt/pixelrp' }}
       COMPOSE: docker compose -f compose.yaml -f compose.prod.yaml
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: true # client source is needed for the build below
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
 
