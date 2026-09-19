@@ -83,9 +83,20 @@ root.MinimumRank = 6;
 Check(CatalogLookup.IsOpenable(shelf, 5, 0), "An out-of-rank ancestor must NOT hide the shelf from the search box");
 Check(!CatalogLookup.IsShoppable(index, shelf, 5, 0), "...but a link still has nowhere to land");
 root.MinimumRank = 0;
-root.ParentId = 404;
+// A parent_id pointing at a row that is gone ends the walk instead of failing
+// it. This catalog is full of them, and refusing hid the Buy button on
+// furniture that sells fine - there is no gate above a parent that does not
+// exist, and the client loads a page the tree never listed. A CYCLE is still
+// refused, which the "cyclic tree" case above covers.
+shelf.ParentId = 404;
 Check(CatalogLookup.IsOpenable(shelf, 5, 0), "Stock on a shelf orphaned from the tree is still findable and still sells");
-Check(!CatalogLookup.IsShoppable(index, shelf, 5, 0), "A broken chain to the root leaves a link nowhere to go");
-root.ParentId = -1;
+Check(CatalogLookup.IsShoppable(index, shelf, 5, 0), "...and is still linkable: a missing parent is no gate");
+root.MinimumRank = 9;
+Check(CatalogLookup.IsShoppable(index, shelf, 5, 0), "A gate on a page the broken chain never reaches cannot apply");
+root.MinimumRank = 0;
+shelf.ParentId = 1;
+root.MinimumRank = 9;
+Check(!CatalogLookup.IsShoppable(index, shelf, 5, 0), "An ancestor the chain DOES reach still gates the link");
+root.MinimumRank = 0;
 
 Console.WriteLine("Catalog regressions passed: identity, permissions, reasons, missing offers, moves, duplicates, selection and both shelf rules.");
