@@ -65,17 +65,27 @@ movedShelf.Items.Clear(); shelf.Items.Clear();
 Check(Find() == null, "Furniture removed from the catalog must have no Buy destination");
 Check(Status() == CatalogLocateStatus.NotSold, "An empty catalog reads as unsold, not as unreachable");
 
-// The search box filters its pages through this same call, so what it returns
-// and what Buy will link to cannot drift apart again.
+// The two rules answer DIFFERENT questions, and briefly making them one rule
+// emptied the search box: this catalog holds stock on pages whose chain to the
+// root does not survive the ancestor walk.
+//
+//   IsOpenable  - can this player BUY from this shelf? The search box's test,
+//                 and the only thing GetCatalogPageEvent asks before serving.
+//   IsShoppable - can a LINK land on this shelf? Adds the ancestors, because
+//                 the navigation tree is built by walking down from a root.
+//
+// Keep them apart. A search hit only has to be purchasable.
 chair.PageId = 2; shelf.Items.Add(chair.Id, chair);
 var index = CatalogLookup.Index(pages);
 Check(CatalogLookup.IsOpenable(shelf, 5, 0), "A plain shelf is one the shop will serve");
-Check(CatalogLookup.IsShoppable(index, shelf, 5, 0), "A plain shelf is one the search box may return");
+Check(CatalogLookup.IsShoppable(index, shelf, 5, 0), "A plain shelf is also one a link can land on");
 root.MinimumRank = 6;
-Check(!CatalogLookup.IsShoppable(index, shelf, 5, 0), "The search box drops a shelf the Buy link cannot reach");
+Check(CatalogLookup.IsOpenable(shelf, 5, 0), "An out-of-rank ancestor must NOT hide the shelf from the search box");
+Check(!CatalogLookup.IsShoppable(index, shelf, 5, 0), "...but a link still has nowhere to land");
 root.MinimumRank = 0;
-root.Visible = false;
-Check(CatalogLookup.IsShoppable(index, shelf, 5, 0), "An invisible ancestor hides a shelf from browsing, not from linking");
-root.Visible = true;
+root.ParentId = 404;
+Check(CatalogLookup.IsOpenable(shelf, 5, 0), "Stock on a shelf orphaned from the tree is still findable and still sells");
+Check(!CatalogLookup.IsShoppable(index, shelf, 5, 0), "A broken chain to the root leaves a link nowhere to go");
+root.ParentId = -1;
 
-Console.WriteLine("Catalog regressions passed: identity, permissions, reasons, missing offers, moves, duplicates, selection and the shared shelf rule.");
+Console.WriteLine("Catalog regressions passed: identity, permissions, reasons, missing offers, moves, duplicates, selection and both shelf rules.");
