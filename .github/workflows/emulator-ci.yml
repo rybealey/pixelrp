@@ -47,3 +47,6 @@ jobs:
             grep -E "error [A-Z]+[0-9]+" build.log | sort -u | head -10 | while IFS= read -r line; do echo "::error::${line}"; done
             exit 1
           fi
+
+      - name: Catalog regression checks
+        run: dotnet run --project tests/catalog/CatalogRegression.csproj -c Release
