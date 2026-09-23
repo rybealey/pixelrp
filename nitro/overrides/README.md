@@ -118,6 +118,12 @@ in the editor: give its set the set type it is worn like (a keychain is a
 belt, a sword a chest accessory) and keep its `mc*` parts. Pets have their own
 Companions tab, keyed on set type `pt`.
 
+**A new set TYPE needs a second list too.** `client/src/api/avatar/FigureData.ts`
+(`savePartSetId` / `savePartSetColourId`) only keeps set types it names, and
+everything the editor and the store's try-on do goes through it - an unlisted
+type is dropped before it is drawn or saved, so the item "works" everywhere
+except on the avatar. That is how pets first shipped invisible.
+
 **Clients cache it for a week.** `renderer-config`'s `avatar.asset.url` ends in
 `?v=YYYYMMDD` and nginx serves the assets tree with `max-age=604800`, so
 replacing the file does nothing for anyone who already has it until that `v=`
