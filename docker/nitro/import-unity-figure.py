@@ -2,17 +2,21 @@
 """Import a Habbo Unity-client clothing bundle (UnityFS) as a Nitro figure bundle.
 
 Usage:
-    python3 docker/nitro/import-unity-figure.py <unity-bundle-file>
+    python3 docker/nitro/import-unity-figure.py <unity-bundle-file> [...]
 
 Extracts the sprites and the AvatarPartBundleXml manifest (offsets, aliases)
 via UnityPy, packs a spritesheet, and writes
-nitro/assets/bundled/figure/<library>.nitro in the exact container format
+nitro/overrides/bundled/figure/<library>.nitro in the exact container format
 nitro-renderer parses (int16-BE entry count; per entry: int16-BE name length,
-name, int32-BE blob length, zlib blob).
+name, int32-BE blob length, zlib blob). The overrides tree is what the beta
+deploy rsyncs over the server's assets - nitro/assets/ itself is git-ignored
+and exists only on the server, so writing there from a dev machine shipped
+nothing.
 
 Registration checklist (the script reports, but does not invent, game data):
-  - FigureMap.json must map the library to its part ids (the script adds the
-    entry if missing, deriving parts from the sprite names).
+  - FigureMap must map the library to its part ids. The script adds the entry
+    to the gamedata-merge/FigureMap.json FRAGMENT (merged into the server's
+    file on deploy), deriving the parts from the sprite names.
   - FigureData.json must contain a selectable set referencing those parts —
     official items usually already have one; custom items need a hand-written
     set modeled on a same-type sibling.
@@ -32,8 +36,14 @@ import UnityPy
 from PIL import Image
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-FIGURE_DIR = os.path.join(REPO, 'nitro/assets/bundled/figure')
-FIGUREMAP = os.path.join(REPO, 'nitro/assets/gamedata/FigureMap.json')
+FIGURE_DIR = os.path.join(REPO, 'nitro/overrides/bundled/figure')
+FIGUREMAP = os.path.join(REPO, 'nitro/overrides/gamedata-merge/FigureMap.json')
+
+# h_<action>_<part type>_<part id>_<direction>_<frame>. The type is NOT always
+# two letters - hair backs (hrb), sleeves' misc hands (mcl/mcr) and pets'
+# (ptl/ptr) are three - and a part the map does not list is a part the client
+# never asks for, so it renders as nothing with no error anywhere.
+PART_NAME = re.compile(r'^h_[a-z]+_([a-z]+)_(\d+)_\d+_\d+$')
 
 def main(bundle_path):
     env = UnityPy.load(bundle_path)
@@ -111,14 +121,14 @@ def main(bundle_path):
     print(f'wrote {dest} ({len(out)} bytes, {len(assets)} assets, {len(frames)} frames)')
 
     # FigureMap: add the library if absent
-    fm = json.load(open(FIGUREMAP))
+    fm = json.load(open(FIGUREMAP)) if os.path.exists(FIGUREMAP) else { 'libraries': [] }
     if not any(l['id'] == library for l in fm['libraries']):
         parts = sorted({ (int(m.group(2)), m.group(1))
                          for n in assets
-                         for m in [re.match(r'h_\w+?_(\w{2})_(\d+)_', n)] if m })
+                         for m in [PART_NAME.match(n)] if m })
         fm['libraries'].append({ 'id': library, 'revision': 0,
                                  'parts': [ { 'id': i, 'type': t } for i, t in parts ] })
-        json.dump(fm, open(FIGUREMAP, 'w'), ensure_ascii=False, separators=(',', ':'))
+        json.dump(fm, open(FIGUREMAP, 'w'), ensure_ascii=False, indent=1)
         print(f'FigureMap: added {library} with parts {parts}')
         print('NOTE: FigureData needs a selectable set for these parts if none exists,')
         print('then: python3 docker/nitro/figuredata-json-to-xml.py && restart emulator')
@@ -126,6 +136,7 @@ def main(bundle_path):
         print(f'FigureMap: {library} already registered')
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         sys.exit(__doc__)
-    main(sys.argv[1])
+    for bundle in sys.argv[1:]:
+        main(bundle)
