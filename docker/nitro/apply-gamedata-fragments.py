@@ -20,6 +20,15 @@ in on the server, after the rsync and before the client is restarted:
                        hold ri_314 all it likes, but until FigureMap says
                        hh_human_item provides part 314 the client never asks
                        for it, and :carry 314 renders nothing.
+  FigureData.json      fragment {"setTypes": [{"type": ..., "sets": [...]}]};
+                       sets are added to the named set type, matched on set
+                       id, and an existing id is never replaced. A set type the
+                       server does not have is skipped rather than invented: it
+                       would need a palette and mandatory flags a fragment has
+                       no business guessing. The emulator validates looks
+                       against its own emulator/Config/figuredata.xml, so a set
+                       added here must be added there too or saving a look
+                       strips it.
   ExternalTexts.json   fragment {key: text}; existing keys are left alone.
   HabboAvatarActions.json
                        fragment {"actions": [{"id": ..., "params": [...]}]};
@@ -100,6 +109,25 @@ def merge_figuremap(fragment, target):
     return added
 
 
+def merge_figuredata(fragment, target):
+    added = 0
+    by_type = {t.get('type'): t for t in target.get('setTypes') or []}
+    for set_type in fragment.get('setTypes') or []:
+        existing = by_type.get(set_type.get('type'))
+        if existing is None:
+            print('FigureData.json: no set type %r on this server, skipped' % set_type.get('type'))
+            continue
+        sets = existing.setdefault('sets', [])
+        have = {str(s.get('id')) for s in sets}
+        for entry in set_type.get('sets') or []:
+            if str(entry.get('id')) in have:
+                continue                   # an official set always wins
+            sets.append(entry)
+            have.add(str(entry.get('id')))
+            added += 1
+    return added
+
+
 def merge_actions(fragment, target):
     added = 0
     actions = target.get('actions') if isinstance(target, dict) else target
@@ -173,6 +201,8 @@ for name in sorted(os.listdir(MERGE_DIR)):
         added = merge_furnituredata(fragment, target)
     elif name == 'FigureMap.json':
         added = merge_figuremap(fragment, target)
+    elif name == 'FigureData.json':
+        added = merge_figuredata(fragment, target)
     elif name == 'HabboAvatarActions.json':
         added = merge_actions(fragment, target)
     else:

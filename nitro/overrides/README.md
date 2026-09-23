@@ -93,6 +93,26 @@ fragment listing `{"id": N, "type": "ri"}` under `hh_human_item`. To find what
 is missing, list the `ri`/`li` ids in the bundle's asset names
 (`h_std_ri_<id>_<dir>_<frame>`) and subtract the ids the map already has.
 
+**A new garment needs FIVE things**, all generated from Habbo's own data:
+
+1. the bundle in `bundled/figure/` — Habbo's Flash files stop in March 2022, so
+   anything newer only exists as a Unity bundle; convert it with
+   `docker/nitro/import-unity-figure.py <bundle> [...]`, which also does (2);
+2. its libraries in `gamedata-merge/FigureMap.json`, or the client never asks
+   for the bundle;
+3. its sets in `gamedata-merge/FigureData.json`, copied from Habbo's
+   `gamedata/figuredata/1` with their `hiddenLayers`, or nothing lists it;
+4. the same sets in `emulator/Config/figuredata.xml`, or saving a look strips
+   it — regenerate with `docker/nitro/figuredata-json-to-xml.py` against the
+   merged JSON and check the diff is only additions;
+5. a `catalog_clothing` row, or the Clothing Store does not sell it.
+
+Match libraries against Habbo by PART, not by name. Many old `jacket_U_*`
+libraries were re-released as `misc_U_*` / `pet_U_*` with the same part ids,
+and a name-only diff reports them missing when the hotel already has them.
+Held items and pets (`mc` / `pt`) cannot be drawn by this client's renderer at
+all, so importing them makes them ready, not wearable.
+
 **Clients cache it for a week.** `renderer-config`'s `avatar.asset.url` ends in
 `?v=YYYYMMDD` and nginx serves the assets tree with `max-age=604800`, so
 replacing the file does nothing for anyone who already has it until that `v=`
