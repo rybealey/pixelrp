@@ -110,8 +110,13 @@ is missing, list the `ri`/`li` ids in the bundle's asset names
 Match libraries against Habbo by PART, not by name. Many old `jacket_U_*`
 libraries were re-released as `misc_U_*` / `pet_U_*` with the same part ids,
 and a name-only diff reports them missing when the hotel already has them.
-Held items and pets (`mc` / `pt`) cannot be drawn by this client's renderer at
-all, so importing them makes them ready, not wearable.
+Held items and pets (`mc` / `mcl` / `mcr`, `pt` / `ptl` / `ptr`) are part types
+the stock renderer does not know - it skips any part whose type is not in its
+avatar geometry, silently. `client/src/api/avatar/ExtendAvatarStructure.ts`
+adds them at startup, before Nitro bootstraps. A held item still needs a home
+in the editor: give its set the set type it is worn like (a keychain is a
+belt, a sword a chest accessory) and keep its `mc*` parts. Pets have their own
+Companions tab, keyed on set type `pt`.
 
 **Clients cache it for a week.** `renderer-config`'s `avatar.asset.url` ends in
 `?v=YYYYMMDD` and nginx serves the assets tree with `max-age=604800`, so
