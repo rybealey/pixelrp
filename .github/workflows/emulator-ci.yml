@@ -13,7 +13,7 @@ on:
     # is how a freeze reached the live beta hotel three times.
     # Now a long-running branch like movement-v2-cutover gets a real compile
     # gate with no deploy attached.
-    branches: [beta, main, 'movement-**', 'feat/**', 'fix/**', 'bug/**']
+    branches: [beta, main, movement, 'movement-**', 'feat/**', 'fix/**', 'bug/**']
   pull_request:
   workflow_dispatch:
 
