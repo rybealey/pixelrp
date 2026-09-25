@@ -18142,5 +18142,17 @@
  "asth_window6_1x1_name": "Window 6 1x 1",
  "asth_window6_1x1_desc": "Window 6 1x 1",
  "asth_window6_1x2_name": "Window 6 1x 2",
- "asth_window6_1x2_desc": "Window 6 1x 2"
+ "asth_window6_1x2_desc": "Window 6 1x 2",
+ "zara_clothing_name": "Clothing",
+ "zara_clothing_desc": "Clothing",
+ "zara_clothing1_name": "Clothing 1",
+ "zara_clothing1_desc": "Clothing 1",
+ "zara_clothing3_name": "Clothing 3",
+ "zara_clothing3_desc": "Clothing 3",
+ "zara_rack1_name": "Rack 1",
+ "zara_rack1_desc": "Rack 1",
+ "zara_rack2_name": "Rack 2",
+ "zara_rack2_desc": "Rack 2",
+ "zara_rack3_name": "Rack 3",
+ "zara_rack3_desc": "Rack 3"
 }
