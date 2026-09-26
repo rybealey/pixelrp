@@ -28,10 +28,6 @@ services:
   emulator:
     ports: !override
       - "127.0.0.1:12097:${NITRO_PORT}"
-    environment:
-      # Rejects non-staff (rank < 5) at SSO login — the beta hotel is a
-      # staff-only testing ground.
-      STAFF_ONLY_LOGIN: "1"
     networks:
       pixelrp:
         ipv4_address: 172.29.0.30
