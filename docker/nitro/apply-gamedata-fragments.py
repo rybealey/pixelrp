@@ -156,12 +156,36 @@ def merge_texts(fragment, target):
     return added
 
 
+def override_furnituredata(fragment, target):
+    """FurnitureData.json override: {classname: {"name": ..., "description": ...}}.
+
+    Renames furnitypes in place - only those two fields, only on entries whose
+    classname is listed, whichever of room or wall items they are. It is the
+    one way to rename a furni the merge has already put on the server: the
+    merge leaves an entry that exists alone by design, so a changed name in a
+    fragment never arrives. The shop reads the catalog row's name; rooms,
+    backpacks and the infostand read these.
+    """
+    changed = 0
+    for kind in ('roomitemtypes', 'wallitemtypes'):
+        for entry in target.get(kind, {}).get('furnitype') or []:
+            want = fragment.get(entry.get('classname'))
+            if not isinstance(want, dict):
+                continue
+            for field in ('name', 'description'):
+                if isinstance(want.get(field), str) and entry.get(field) != want[field]:
+                    entry[field] = want[field]
+                    changed += 1
+    return changed
+
+
 def apply_overrides():
     """gamedata-override/: keys here REPLACE the shipped ones.
 
-    Only flat {key: text} files are supported - a structural override (a whole
-    furnitype, a whole action) is a merge with different rules, and guessing at
-    one silently would be worse than refusing it.
+    Flat {key: text} files, plus FurnitureData.json, whose override names
+    furnitypes by classname (override_furnituredata). Any other structural
+    override (a whole furnitype, a whole action) is a merge with different
+    rules, and guessing at one silently would be worse than refusing it.
     """
     if not os.path.isdir(OVERRIDE_DIR):
         return
@@ -173,6 +197,12 @@ def apply_overrides():
             print('skipped override %s: no %s on this server' % (name, target_path))
             continue
         fragment, target = load(os.path.join(OVERRIDE_DIR, name)), load(target_path)
+        if name == 'FurnitureData.json' and isinstance(fragment, dict) and isinstance(target, dict):
+            changed = override_furnituredata(fragment, target)
+            if changed:
+                save(target_path, target)
+            print('%s: %d fields renamed' % (name, changed))
+            continue
         if not isinstance(fragment, dict) or not isinstance(target, dict) \
                 or any(not isinstance(v, str) for v in fragment.values()):
             print('skipped override %s: only flat {key: text} files are supported' % name)

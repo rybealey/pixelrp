@@ -1,0 +1,934 @@
+{
+ "ABC_city_arctique1": {
+  "name": "Arctic Alphabet 1",
+  "description": "Arctic Alphabet 1"
+ },
+ "ABC_city_arctique2": {
+  "name": "Arctic Alphabet 2",
+  "description": "Arctic Alphabet 2"
+ },
+ "ABC_city_basique1": {
+  "name": "Basic Alphabet 1",
+  "description": "Basic Alphabet 1"
+ },
+ "ABC_city_basique2": {
+  "name": "Basic Alphabet 2",
+  "description": "Basic Alphabet 2"
+ },
+ "ABC_city_battlebanzai1": {
+  "name": "Battle Banzai Alphabet 1",
+  "description": "Battle Banzai Alphabet 1"
+ },
+ "ABC_city_battlebanzai2": {
+  "name": "Battle Banzai Alphabet 2",
+  "description": "Battle Banzai Alphabet 2"
+ },
+ "ABC_city_bensalem1": {
+  "name": "Bensalem Alphabet 1",
+  "description": "Bensalem Alphabet 1"
+ },
+ "ABC_city_bensalem2": {
+  "name": "Bensalem Alphabet 2",
+  "description": "Bensalem Alphabet 2"
+ },
+ "ABC_city_dinerbleu1": {
+  "name": "Blue Diner Alphabet 1",
+  "description": "Blue Diner Alphabet 1"
+ },
+ "ABC_city_dinerbleu2": {
+  "name": "Blue Diner Alphabet 2",
+  "description": "Blue Diner Alphabet 2"
+ },
+ "ABC_city_dinerrouge1": {
+  "name": "Red Diner Alphabet 1",
+  "description": "Red Diner Alphabet 1"
+ },
+ "ABC_city_dinerrouge2": {
+  "name": "Red Diner Alphabet 2",
+  "description": "Red Diner Alphabet 2"
+ },
+ "ABC_city_dinervert1": {
+  "name": "Green Diner Alphabet 1",
+  "description": "Green Diner Alphabet 1"
+ },
+ "ABC_city_dinervert2": {
+  "name": "Green Diner Alphabet 2",
+  "description": "Green Diner Alphabet 2"
+ },
+ "ABC_city_nonos1": {
+  "name": "Nonos Alphabet 1",
+  "description": "Nonos Alphabet 1"
+ },
+ "ABC_city_nonos2": {
+  "name": "Nonos Alphabet 2",
+  "description": "Nonos Alphabet 2"
+ },
+ "ABC_city_palooza1": {
+  "name": "Palooza Alphabet 1",
+  "description": "Palooza Alphabet 1"
+ },
+ "ABC_city_palooza2": {
+  "name": "Palooza Alphabet 2",
+  "description": "Palooza Alphabet 2"
+ },
+ "ABC_city_western1": {
+  "name": "Western Alphabet 1",
+  "description": "Western Alphabet 1"
+ },
+ "ABC_city_western2": {
+  "name": "Western Alphabet 2",
+  "description": "Western Alphabet 2"
+ },
+ "ABC_city_wood1": {
+  "name": "Wood Alphabet 1",
+  "description": "Wood Alphabet 1"
+ },
+ "ABC_city_wood2": {
+  "name": "Wood Alphabet 2",
+  "description": "Wood Alphabet 2"
+ },
+ "axovtileblack": {
+  "name": "Matte Black Tile",
+  "description": "Matte Black Tile"
+ },
+ "baldosa_plateada": {
+  "name": "Silver Marble Tile",
+  "description": "Silver Marble Tile"
+ },
+ "bc_alpha1_a": {
+  "name": "Letter A Block",
+  "description": "Letter A Block"
+ },
+ "bc_alpha1_b": {
+  "name": "Letter B Block",
+  "description": "Letter B Block"
+ },
+ "bc_alpha1_c": {
+  "name": "Letter C Block",
+  "description": "Letter C Block"
+ },
+ "bc_alpha1_d": {
+  "name": "Letter D Block",
+  "description": "Letter D Block"
+ },
+ "bc_alpha1_e": {
+  "name": "Letter E Block",
+  "description": "Letter E Block"
+ },
+ "bc_alpha1_f": {
+  "name": "Letter F Block",
+  "description": "Letter F Block"
+ },
+ "bc_alpha1_g": {
+  "name": "Letter G Block",
+  "description": "Letter G Block"
+ },
+ "bc_alpha1_h": {
+  "name": "Letter H Block",
+  "description": "Letter H Block"
+ },
+ "bc_alpha1_i": {
+  "name": "Letter I Block",
+  "description": "Letter I Block"
+ },
+ "bc_alpha1_j": {
+  "name": "Letter J Block",
+  "description": "Letter J Block"
+ },
+ "bc_alpha1_k": {
+  "name": "Letter K Block",
+  "description": "Letter K Block"
+ },
+ "bc_alpha1_l": {
+  "name": "Letter L Block",
+  "description": "Letter L Block"
+ },
+ "bc_alpha1_m": {
+  "name": "Letter M Block",
+  "description": "Letter M Block"
+ },
+ "bc_alpha1_n": {
+  "name": "Letter N Block",
+  "description": "Letter N Block"
+ },
+ "bc_alpha1_num": {
+  "name": "Number Block",
+  "description": "Number Block"
+ },
+ "bc_alpha1_o": {
+  "name": "Letter O Block",
+  "description": "Letter O Block"
+ },
+ "bc_alpha1_p": {
+  "name": "Letter P Block",
+  "description": "Letter P Block"
+ },
+ "bc_alpha1_q": {
+  "name": "Letter Q Block",
+  "description": "Letter Q Block"
+ },
+ "bc_alpha1_r": {
+  "name": "Letter R Block",
+  "description": "Letter R Block"
+ },
+ "bc_alpha1_s": {
+  "name": "Letter S Block",
+  "description": "Letter S Block"
+ },
+ "bc_alpha1_t": {
+  "name": "Letter T Block",
+  "description": "Letter T Block"
+ },
+ "bc_alpha1_u": {
+  "name": "Letter U Block",
+  "description": "Letter U Block"
+ },
+ "bc_alpha1_v": {
+  "name": "Letter V Block",
+  "description": "Letter V Block"
+ },
+ "bc_alpha1_w": {
+  "name": "Letter W Block",
+  "description": "Letter W Block"
+ },
+ "bc_alpha1_x": {
+  "name": "Letter X Block",
+  "description": "Letter X Block"
+ },
+ "bc_alpha1_y": {
+  "name": "Letter Y Block",
+  "description": "Letter Y Block"
+ },
+ "bc_alpha1_z": {
+  "name": "Letter Z Block",
+  "description": "Letter Z Block"
+ },
+ "bc_alpha99_num": {
+  "name": "Numbers 1-99",
+  "description": "Numbers 1-99"
+ },
+ "bc_alpha_0_symbole_num": {
+  "name": "Numbers, Letters & Symbols",
+  "description": "Numbers, Letters & Symbols"
+ },
+ "bc_block_0": {
+  "name": "Mini Block",
+  "description": "Mini Block"
+ },
+ "bc_block_1": {
+  "name": "Large Block",
+  "description": "Large Block"
+ },
+ "bc_block_artdeco1": {
+  "name": "Art Deco Block",
+  "description": "Art Deco Block"
+ },
+ "bc_block_glass": {
+  "name": "Crystal Block",
+  "description": "Crystal Block"
+ },
+ "bc_block_grass": {
+  "name": "Grass Block",
+  "description": "Grass Block"
+ },
+ "bc_block_industrial": {
+  "name": "Industrial Block",
+  "description": "Industrial Block"
+ },
+ "bc_block_marble": {
+  "name": "Marble Block",
+  "description": "Marble Block"
+ },
+ "bc_block_metalgrip": {
+  "name": "Metal Block",
+  "description": "Metal Block"
+ },
+ "bc_block_redbrick": {
+  "name": "Brick Block",
+  "description": "Brick Block"
+ },
+ "bc_block_sand": {
+  "name": "Sand Block",
+  "description": "Sand Block"
+ },
+ "bc_block_small": {
+  "name": "Small Block",
+  "description": "Small Block"
+ },
+ "bc_block_water": {
+  "name": "Water Block",
+  "description": "Water Block"
+ },
+ "bc_block_wool": {
+  "name": "Wool Block",
+  "description": "Wool Block"
+ },
+ "bc_cone": {
+  "name": "Cone",
+  "description": "Cone"
+ },
+ "bc_curvedramp": {
+  "name": "Curved Ramp",
+  "description": "Curved Ramp"
+ },
+ "bc_cylinder": {
+  "name": "Cylinder",
+  "description": "Cylinder"
+ },
+ "bc_flowerhedge": {
+  "name": "Flower Hedge",
+  "description": "Flower Hedge"
+ },
+ "bc_glasspanel": {
+  "name": "Glass Panel",
+  "description": "Glass Panel"
+ },
+ "bc_halfcylinder": {
+  "name": "Horizontal Half Cylinder",
+  "description": "Horizontal Half Cylinder"
+ },
+ "bc_hemisphere": {
+  "name": "Hemisphere",
+  "description": "Hemisphere"
+ },
+ "bc_lavarock": {
+  "name": "Lava Block",
+  "description": "Lava Block"
+ },
+ "bc_metalcrate": {
+  "name": "Metal Crate Block",
+  "description": "Metal Crate Block"
+ },
+ "bc_panel": {
+  "name": "Panel",
+  "description": "Panel"
+ },
+ "bc_pyramidtip": {
+  "name": "Pyramid",
+  "description": "Pyramid"
+ },
+ "bc_quartercircle_color_01": {
+  "name": "Quarter Circle 1",
+  "description": "Quarter Circle 1"
+ },
+ "bc_quartercircle_color_02": {
+  "name": "Quarter Circle 2",
+  "description": "Quarter Circle 2"
+ },
+ "bc_quartercircle_color_03": {
+  "name": "Quarter Circle 3",
+  "description": "Quarter Circle 3"
+ },
+ "bc_quartercircle_color_04": {
+  "name": "Quarter Circle 4",
+  "description": "Quarter Circle 4"
+ },
+ "bc_quartercircle_color_05": {
+  "name": "Quarter Circle 5",
+  "description": "Quarter Circle 5"
+ },
+ "bc_quartercircle_color_06": {
+  "name": "Quarter Circle 6",
+  "description": "Quarter Circle 6"
+ },
+ "bc_quartercircle_color_07": {
+  "name": "Quarter Circle 7",
+  "description": "Quarter Circle 7"
+ },
+ "bc_quartercircle_color_08": {
+  "name": "Quarter Circle 8",
+  "description": "Quarter Circle 8"
+ },
+ "bc_quartercircle_color_09": {
+  "name": "Quarter Circle 9",
+  "description": "Quarter Circle 9"
+ },
+ "bc_quartercircle_color_10": {
+  "name": "Quarter Circle 10",
+  "description": "Quarter Circle 10"
+ },
+ "bc_quartercircle_color_11": {
+  "name": "Quarter Circle 11",
+  "description": "Quarter Circle 11"
+ },
+ "bc_quartercircle_color_12": {
+  "name": "Quarter Circle 12",
+  "description": "Quarter Circle 12"
+ },
+ "bc_quartercircle_color_13": {
+  "name": "Quarter Circle 13",
+  "description": "Quarter Circle 13"
+ },
+ "bc_quartercircle_color_14": {
+  "name": "Quarter Circle 14",
+  "description": "Quarter Circle 14"
+ },
+ "bc_quartercircle_color_15": {
+  "name": "Quarter Circle 15",
+  "description": "Quarter Circle 15"
+ },
+ "bc_quartercircle_color_16": {
+  "name": "Quarter Circle 16",
+  "description": "Quarter Circle 16"
+ },
+ "bc_quartercircle_color_17": {
+  "name": "Quarter Circle 17",
+  "description": "Quarter Circle 17"
+ },
+ "bc_quartercircle_color_18": {
+  "name": "Quarter Circle 18",
+  "description": "Quarter Circle 18"
+ },
+ "bc_quartercircle_color_19": {
+  "name": "Quarter Circle 19",
+  "description": "Quarter Circle 19"
+ },
+ "bc_quartercircle_color_20": {
+  "name": "Quarter Circle 20",
+  "description": "Quarter Circle 20"
+ },
+ "bc_quartercircle_color_21": {
+  "name": "Quarter Circle 21",
+  "description": "Quarter Circle 21"
+ },
+ "bc_quartercircle_color_22": {
+  "name": "Quarter Circle 22",
+  "description": "Quarter Circle 22"
+ },
+ "bc_quartercircle_color_23": {
+  "name": "Quarter Circle 23",
+  "description": "Quarter Circle 23"
+ },
+ "bc_quartercircle_color_24": {
+  "name": "Quarter Circle 24",
+  "description": "Quarter Circle 24"
+ },
+ "bc_quartercircle_color_25": {
+  "name": "Quarter Circle 25",
+  "description": "Quarter Circle 25"
+ },
+ "bc_quartercircle_color_26": {
+  "name": "Quarter Circle 26",
+  "description": "Quarter Circle 26"
+ },
+ "bc_quartercircle_color_27": {
+  "name": "Quarter Circle 27",
+  "description": "Quarter Circle 27"
+ },
+ "bc_quartercircle_color_28": {
+  "name": "Quarter Circle 28",
+  "description": "Quarter Circle 28"
+ },
+ "bc_quartercircle_color_29": {
+  "name": "Quarter Circle 29",
+  "description": "Quarter Circle 29"
+ },
+ "bc_quartercircle_color_30": {
+  "name": "Quarter Circle 30",
+  "description": "Quarter Circle 30"
+ },
+ "bc_quartercircle_color_31": {
+  "name": "Quarter Circle 31",
+  "description": "Quarter Circle 31"
+ },
+ "bc_quartercircle_color_32": {
+  "name": "Quarter Circle 32",
+  "description": "Quarter Circle 32"
+ },
+ "bc_quartercircle_color_33": {
+  "name": "Quarter Circle 33",
+  "description": "Quarter Circle 33"
+ },
+ "bc_quartercircle_color_34": {
+  "name": "Quarter Circle 34",
+  "description": "Quarter Circle 34"
+ },
+ "bc_quartercircle_color_35": {
+  "name": "Quarter Circle 35",
+  "description": "Quarter Circle 35"
+ },
+ "bc_quartercircle_color_36": {
+  "name": "Quarter Circle 36",
+  "description": "Quarter Circle 36"
+ },
+ "bc_quartercircle_color_37": {
+  "name": "Quarter Circle 37",
+  "description": "Quarter Circle 37"
+ },
+ "bc_quartercircle_color_38": {
+  "name": "Quarter Circle 38",
+  "description": "Quarter Circle 38"
+ },
+ "bc_quartercircle_color_39": {
+  "name": "Quarter Circle 39",
+  "description": "Quarter Circle 39"
+ },
+ "bc_quartercircle_color_40": {
+  "name": "Quarter Circle 40",
+  "description": "Quarter Circle 40"
+ },
+ "bc_quartercircle_color_41": {
+  "name": "Quarter Circle 41",
+  "description": "Quarter Circle 41"
+ },
+ "bc_quartercircle_color_42": {
+  "name": "Quarter Circle 42",
+  "description": "Quarter Circle 42"
+ },
+ "bc_quartercircle_color_43": {
+  "name": "Quarter Circle 43",
+  "description": "Quarter Circle 43"
+ },
+ "bc_quartercircle_color_44": {
+  "name": "Quarter Circle 44",
+  "description": "Quarter Circle 44"
+ },
+ "bc_quartercircle_color_45": {
+  "name": "Quarter Circle 45",
+  "description": "Quarter Circle 45"
+ },
+ "bc_quartercircle_color_46": {
+  "name": "Quarter Circle 46",
+  "description": "Quarter Circle 46"
+ },
+ "bc_quartercircle_color_47": {
+  "name": "Quarter Circle 47",
+  "description": "Quarter Circle 47"
+ },
+ "bc_quartercircle_color_48": {
+  "name": "Quarter Circle 48",
+  "description": "Quarter Circle 48"
+ },
+ "bc_quartercircle_color_49": {
+  "name": "Quarter Circle 49",
+  "description": "Quarter Circle 49"
+ },
+ "bc_quartercircle_color_50": {
+  "name": "Quarter Circle 50",
+  "description": "Quarter Circle 50"
+ },
+ "bc_quartercircle_color_61": {
+  "name": "Quarter Circle 61",
+  "description": "Quarter Circle 61"
+ },
+ "bc_quartercircle_color_62": {
+  "name": "Quarter Circle 62",
+  "description": "Quarter Circle 62"
+ },
+ "bc_quartercircle_color_63": {
+  "name": "Quarter Circle 63",
+  "description": "Quarter Circle 63"
+ },
+ "bc_quartercircle_color_64": {
+  "name": "Quarter Circle 64",
+  "description": "Quarter Circle 64"
+ },
+ "bc_quartercircle_color_65": {
+  "name": "Quarter Circle 65",
+  "description": "Quarter Circle 65"
+ },
+ "bc_quartercircle_color_66": {
+  "name": "Quarter Circle 66",
+  "description": "Quarter Circle 66"
+ },
+ "bc_quartercircle_color_67": {
+  "name": "Quarter Circle 67",
+  "description": "Quarter Circle 67"
+ },
+ "bc_quartercircle_color_68": {
+  "name": "Quarter Circle 68",
+  "description": "Quarter Circle 68"
+ },
+ "bc_quartercircle_color_69": {
+  "name": "Quarter Circle 69",
+  "description": "Quarter Circle 69"
+ },
+ "bc_quarterring": {
+  "name": "Quarter Ring",
+  "description": "Quarter Ring"
+ },
+ "bc_ramp": {
+  "name": "Ramp",
+  "description": "Ramp"
+ },
+ "bc_round": {
+  "name": "Rounded Block",
+  "description": "Rounded Block"
+ },
+ "bc_sphere": {
+  "name": "Sphere",
+  "description": "Sphere"
+ },
+ "bc_standinghalfcylinder": {
+  "name": "Vertical Half Cylinder",
+  "description": "Vertical Half Cylinder"
+ },
+ "bc_standingtriangularprism": {
+  "name": "Vertical Triangular Prism",
+  "description": "Vertical Triangular Prism"
+ },
+ "bc_stone": {
+  "name": "Stone Block",
+  "description": "Stone Block"
+ },
+ "bc_terra": {
+  "name": "Terra Block",
+  "description": "Terra Block"
+ },
+ "bc_tile": {
+  "name": "Tile Block",
+  "description": "Tile Block"
+ },
+ "bc_triangularprism": {
+  "name": "Triangular Prism",
+  "description": "Triangular Prism"
+ },
+ "bc_wedge": {
+  "name": "Wedge",
+  "description": "Wedge"
+ },
+ "bc_wood": {
+  "name": "Plain Wood Block",
+  "description": "Plain Wood Block"
+ },
+ "blck_marble": {
+  "name": "Black Marble Tile",
+  "description": "Black Marble Tile"
+ },
+ "cine_ti01": {
+  "name": "Pink Light-Up Tile",
+  "description": "Pink Light-Up Tile"
+ },
+ "cine_ti02": {
+  "name": "Blue Light-Up Tile",
+  "description": "Blue Light-Up Tile"
+ },
+ "cine_ti03": {
+  "name": "Yellow Light-Up Tile",
+  "description": "Yellow Light-Up Tile"
+ },
+ "cine_ti04": {
+  "name": "Red Light-Up Tile",
+  "description": "Red Light-Up Tile"
+ },
+ "cine_ti05": {
+  "name": "Green Light-Up Tile",
+  "description": "Green Light-Up Tile"
+ },
+ "cine_ti06": {
+  "name": "Violet Light-Up Tile",
+  "description": "Violet Light-Up Tile"
+ },
+ "escalier10_yvess": {
+  "name": "Staircase 10",
+  "description": "Staircase 10"
+ },
+ "escalier11_yvess": {
+  "name": "Staircase 11",
+  "description": "Staircase 11"
+ },
+ "escalier12_yvess": {
+  "name": "Staircase 12",
+  "description": "Staircase 12"
+ },
+ "escalier13_yvess": {
+  "name": "Staircase 13",
+  "description": "Staircase 13"
+ },
+ "escalier14_yvess": {
+  "name": "Staircase 14",
+  "description": "Staircase 14"
+ },
+ "escalier15_yvess": {
+  "name": "Staircase 15",
+  "description": "Staircase 15"
+ },
+ "escalier16_yvess": {
+  "name": "Staircase 16",
+  "description": "Staircase 16"
+ },
+ "escalier17_yvess": {
+  "name": "Staircase 17",
+  "description": "Staircase 17"
+ },
+ "escalier18_yvess": {
+  "name": "Staircase 18",
+  "description": "Staircase 18"
+ },
+ "escalier19_yvess": {
+  "name": "Staircase 19",
+  "description": "Staircase 19"
+ },
+ "escalier1_yvess": {
+  "name": "Staircase 1",
+  "description": "Staircase 1"
+ },
+ "escalier20_yvess": {
+  "name": "Staircase 20",
+  "description": "Staircase 20"
+ },
+ "escalier21_yvess": {
+  "name": "Staircase 21",
+  "description": "Staircase 21"
+ },
+ "escalier22_yvess": {
+  "name": "Staircase 22",
+  "description": "Staircase 22"
+ },
+ "escalier23_yvess": {
+  "name": "Staircase 23",
+  "description": "Staircase 23"
+ },
+ "escalier24_yvess": {
+  "name": "Staircase 24",
+  "description": "Staircase 24"
+ },
+ "escalier25_yvess": {
+  "name": "Staircase 25",
+  "description": "Staircase 25"
+ },
+ "escalier26_yvess": {
+  "name": "Staircase 26",
+  "description": "Staircase 26"
+ },
+ "escalier27_yvess": {
+  "name": "Staircase 27",
+  "description": "Staircase 27"
+ },
+ "escalier28_yvess": {
+  "name": "Staircase 28",
+  "description": "Staircase 28"
+ },
+ "escalier29_yvess": {
+  "name": "Staircase 29",
+  "description": "Staircase 29"
+ },
+ "escalier2_yvess": {
+  "name": "Staircase 2",
+  "description": "Staircase 2"
+ },
+ "escalier30_yvess": {
+  "name": "Staircase 30",
+  "description": "Staircase 30"
+ },
+ "escalier31_yvess": {
+  "name": "Staircase 31",
+  "description": "Staircase 31"
+ },
+ "escalier33_yvess": {
+  "name": "Staircase 33",
+  "description": "Staircase 33"
+ },
+ "escalier34_yvess": {
+  "name": "Staircase 34",
+  "description": "Staircase 34"
+ },
+ "escalier35_yvess": {
+  "name": "Staircase 35",
+  "description": "Staircase 35"
+ },
+ "escalier36_yvess": {
+  "name": "Staircase 36",
+  "description": "Staircase 36"
+ },
+ "escalier37_yvess": {
+  "name": "Staircase 37",
+  "description": "Staircase 37"
+ },
+ "escalier38_yvess": {
+  "name": "Staircase 38",
+  "description": "Staircase 38"
+ },
+ "escalier39_yvess": {
+  "name": "Staircase 39",
+  "description": "Staircase 39"
+ },
+ "escalier3_yvess": {
+  "name": "Staircase 3",
+  "description": "Staircase 3"
+ },
+ "escalier40_yvess": {
+  "name": "Staircase 40",
+  "description": "Staircase 40"
+ },
+ "escalier41_yvess": {
+  "name": "Staircase 41",
+  "description": "Staircase 41"
+ },
+ "escalier42_yvess": {
+  "name": "Staircase 42",
+  "description": "Staircase 42"
+ },
+ "escalier43_yvess": {
+  "name": "Staircase 43",
+  "description": "Staircase 43"
+ },
+ "escalier44_yvess": {
+  "name": "Staircase 44",
+  "description": "Staircase 44"
+ },
+ "escalier45_yvess": {
+  "name": "Staircase 45",
+  "description": "Staircase 45"
+ },
+ "escalier46_yvess": {
+  "name": "Staircase 46",
+  "description": "Staircase 46"
+ },
+ "escalier47_yvess": {
+  "name": "Staircase 47",
+  "description": "Staircase 47"
+ },
+ "escalier48_yvess": {
+  "name": "Staircase 48",
+  "description": "Staircase 48"
+ },
+ "escalier49_yvess": {
+  "name": "Staircase 49",
+  "description": "Staircase 49"
+ },
+ "escalier4_yvess": {
+  "name": "Staircase 4",
+  "description": "Staircase 4"
+ },
+ "escalier50_yvess": {
+  "name": "Staircase 50",
+  "description": "Staircase 50"
+ },
+ "escalier51_yvess": {
+  "name": "Staircase 51",
+  "description": "Staircase 51"
+ },
+ "escalier52_yvess": {
+  "name": "Staircase 52",
+  "description": "Staircase 52"
+ },
+ "escalier53_yvess": {
+  "name": "Staircase 53",
+  "description": "Staircase 53"
+ },
+ "escalier54_yvess": {
+  "name": "Staircase 54",
+  "description": "Staircase 54"
+ },
+ "escalier55_yvess": {
+  "name": "Staircase 55",
+  "description": "Staircase 55"
+ },
+ "escalier56_yvess": {
+  "name": "Staircase 56",
+  "description": "Staircase 56"
+ },
+ "escalier57_yvess": {
+  "name": "Staircase 57",
+  "description": "Staircase 57"
+ },
+ "escalier58_yvess": {
+  "name": "Staircase 58",
+  "description": "Staircase 58"
+ },
+ "escalier59_yvess": {
+  "name": "Staircase 59",
+  "description": "Staircase 59"
+ },
+ "escalier5_yvess": {
+  "name": "Staircase 5",
+  "description": "Staircase 5"
+ },
+ "escalier60_yvess": {
+  "name": "Staircase 60",
+  "description": "Staircase 60"
+ },
+ "escalier61_yvess": {
+  "name": "Staircase 61",
+  "description": "Staircase 61"
+ },
+ "escalier62_yvess": {
+  "name": "Staircase 62",
+  "description": "Staircase 62"
+ },
+ "escalier63_yvess": {
+  "name": "Staircase 63",
+  "description": "Staircase 63"
+ },
+ "escalier64_yvess": {
+  "name": "Staircase 64",
+  "description": "Staircase 64"
+ },
+ "escalier65_yvess": {
+  "name": "Staircase 65",
+  "description": "Staircase 65"
+ },
+ "escalier66_yvess": {
+  "name": "Staircase 66",
+  "description": "Staircase 66"
+ },
+ "escalier67_yvess": {
+  "name": "Staircase 67",
+  "description": "Staircase 67"
+ },
+ "escalier68_yvess": {
+  "name": "Staircase 68",
+  "description": "Staircase 68"
+ },
+ "escalier69_yvess": {
+  "name": "Staircase 69",
+  "description": "Staircase 69"
+ },
+ "escalier6_yvess": {
+  "name": "Staircase 6",
+  "description": "Staircase 6"
+ },
+ "escalier70_yvess": {
+  "name": "Staircase 70",
+  "description": "Staircase 70"
+ },
+ "escalier7_yvess": {
+  "name": "Staircase 7",
+  "description": "Staircase 7"
+ },
+ "escalier8_yvess": {
+  "name": "Staircase 8",
+  "description": "Staircase 8"
+ },
+ "escalier9_yvess": {
+  "name": "Staircase 9",
+  "description": "Staircase 9"
+ },
+ "hkey_greytile": {
+  "name": "Framed Grey Tile",
+  "description": "Framed Grey Tile"
+ },
+ "hkey_lava1": {
+  "name": "Lava Tile",
+  "description": "Lava Tile"
+ },
+ "hkey_lava2": {
+  "name": "Lava Tile 2x2",
+  "description": "Lava Tile 2x2"
+ },
+ "link_marble": {
+  "name": "Pink Marble Tile",
+  "description": "Pink Marble Tile"
+ },
+ "papibc_qc_color_01": {
+  "name": "Quarter Circle Special",
+  "description": "Quarter Circle Special"
+ },
+ "pink_marble": {
+  "name": "Pink Marble",
+  "description": "Pink Marble"
+ },
+ "px_baldosa_lava": {
+  "name": "Lava Paving Tile",
+  "description": "Lava Paving Tile"
+ },
+ "tile_ablue": {
+  "name": "Light Grey-Blue Marble Tile",
+  "description": "Light Grey-Blue Marble Tile"
+ },
+ "tile_bblue": {
+  "name": "Blue-Grey Marble Tile",
+  "description": "Blue-Grey Marble Tile"
+ }
+}
