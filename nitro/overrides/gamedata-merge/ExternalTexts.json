@@ -18158,5 +18158,6 @@
  "handitem400": "Baseball Bat",
  "handitem401": "Knife",
  "handitem402": "Axe",
- "handitem403": "Pistol"
+ "handitem403": "Pistol",
+ "navigator.filter.room.id": "Room ID"
 }
