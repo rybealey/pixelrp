@@ -179,11 +179,50 @@ def override_furnituredata(fragment, target):
     return changed
 
 
+# The figure set flags an override may change. Parts, ids and gender are the
+# figure's shape, not a setting, and stay the official library's.
+FIGURE_SET_FLAGS = {'sellable': bool, 'selectable': bool, 'preselectable': bool, 'club': int}
+
+
+def override_figuredata(fragment, target):
+    """FigureData.json override: {set type: {set id: {flag: value}}}.
+
+    Changes flags on sets that already exist - making an official face
+    sellable (owned, not free), say. Only FIGURE_SET_FLAGS, only with the
+    right type; an unknown set type or id is reported and skipped, never
+    invented. The emulator's own gate for a sellable set is a catalog_clothing
+    row, so one changed here usually wants one there too.
+    """
+    changed = 0
+    by_type = {t.get('type'): t for t in target.get('setTypes') or []}
+    for type_name, sets in fragment.items():
+        set_type = by_type.get(type_name)
+        if set_type is None or not isinstance(sets, dict):
+            print('FigureData.json override: no set type %r, skipped' % type_name)
+            continue
+        by_id = {str(s.get('id')): s for s in set_type.get('sets') or []}
+        for set_id, flags in sets.items():
+            entry = by_id.get(str(set_id))
+            if entry is None or not isinstance(flags, dict):
+                print('FigureData.json override: no %s set %s, skipped' % (type_name, set_id))
+                continue
+            for flag, value in flags.items():
+                kind = FIGURE_SET_FLAGS.get(flag)
+                if kind is None or type(value) is not kind:
+                    print('FigureData.json override: %s %s: %r is not a flag it may set, skipped' % (type_name, set_id, flag))
+                    continue
+                if entry.get(flag) != value:
+                    entry[flag] = value
+                    changed += 1
+    return changed
+
+
 def apply_overrides():
     """gamedata-override/: keys here REPLACE the shipped ones.
 
     Flat {key: text} files, plus FurnitureData.json, whose override names
-    furnitypes by classname (override_furnituredata). Any other structural
+    furnitypes by classname (override_furnituredata), and FigureData.json,
+    which sets flags on figure sets (override_figuredata). Any other structural
     override (a whole furnitype, a whole action) is a merge with different
     rules, and guessing at one silently would be worse than refusing it.
     """
@@ -202,6 +241,12 @@ def apply_overrides():
             if changed:
                 save(target_path, target)
             print('%s: %d fields renamed' % (name, changed))
+            continue
+        if name == 'FigureData.json' and isinstance(fragment, dict) and isinstance(target, dict):
+            changed = override_figuredata(fragment, target)
+            if changed:
+                save(target_path, target)
+            print('%s: %d set flags changed' % (name, changed))
             continue
         if not isinstance(fragment, dict) or not isinstance(target, dict) \
                 or any(not isinstance(v, str) for v in fragment.values()):
