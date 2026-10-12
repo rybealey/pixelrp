@@ -18159,5 +18159,7 @@
  "handitem401": "Knife",
  "handitem402": "Axe",
  "handitem403": "Pistol",
- "navigator.filter.room.id": "Room ID"
+ "navigator.filter.room.id": "Room ID",
+ "muse_vendingmachine_name": "Muse Vending Machine",
+ "muse_vendingmachine_desc": "Healthy snacks from The Muse."
 }
