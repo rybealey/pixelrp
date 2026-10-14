@@ -217,14 +217,46 @@ def override_figuredata(fragment, target):
     return changed
 
 
+# The action fields an override may change. What an action IS - its state,
+# part sets, params - stays the official library's.
+ACTION_FIELDS = {'prevents'}
+
+
+def override_actions(fragment, target):
+    """HabboAvatarActions.json override: {action id: {"prevents": [state, ...]}}.
+
+    Replaces what an action stops from showing at the same time - Dance
+    preventing "cri" is why a held handitem vanished while dancing (Twist,
+    2026-10-15: dancing keeps showing it). Only ACTION_FIELDS, as a list of
+    action states; an unknown action is reported and skipped, never invented.
+    """
+    changed = 0
+    by_id = {a.get('id'): a for a in (target.get('actions') or [])}
+    for action_id, fields in fragment.items():
+        entry = by_id.get(action_id)
+        if entry is None or not isinstance(fields, dict):
+            print('HabboAvatarActions.json override: no action %r, skipped' % action_id)
+            continue
+        for field, value in fields.items():
+            if field not in ACTION_FIELDS or not isinstance(value, list)                     or any(not isinstance(state, str) for state in value):
+                print('HabboAvatarActions.json override: %s: %r is not a field it may set, skipped' % (action_id, field))
+                continue
+            if entry.get(field) != value:
+                entry[field] = value
+                changed += 1
+    return changed
+
+
 def apply_overrides():
     """gamedata-override/: keys here REPLACE the shipped ones.
 
     Flat {key: text} files, plus FurnitureData.json, whose override names
-    furnitypes by classname (override_furnituredata), and FigureData.json,
-    which sets flags on figure sets (override_figuredata). Any other structural
-    override (a whole furnitype, a whole action) is a merge with different
-    rules, and guessing at one silently would be worse than refusing it.
+    furnitypes by classname (override_furnituredata), FigureData.json, which
+    sets flags on figure sets (override_figuredata), and HabboAvatarActions
+    .json, which sets what an action prevents (override_actions). Any other
+    structural override (a whole furnitype, a whole action) is a merge with
+    different rules, and guessing at one silently would be worse than
+    refusing it.
     """
     if not os.path.isdir(OVERRIDE_DIR):
         return
@@ -247,6 +279,12 @@ def apply_overrides():
             if changed:
                 save(target_path, target)
             print('%s: %d set flags changed' % (name, changed))
+            continue
+        if name == 'HabboAvatarActions.json' and isinstance(fragment, dict) and isinstance(target, dict):
+            changed = override_actions(fragment, target)
+            if changed:
+                save(target_path, target)
+            print('%s: %d action fields changed' % (name, changed))
             continue
         if not isinstance(fragment, dict) or not isinstance(target, dict) \
                 or any(not isinstance(v, str) for v in fragment.values()):

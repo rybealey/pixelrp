@@ -13,6 +13,9 @@ Two directories, two different mechanisms:
   the shipped gamedata says. Merging deliberately cannot do that (its whole job
   is protecting the official library), so renaming a shipped string lives here,
   and putting a file in this directory is the deliberate act that says so.
+  `HabboAvatarActions.json` here sets what an action PREVENTS
+  (`{"Dance": {"prevents": ["usei"]}}` keeps a held handitem showing while
+  dancing) - nothing else about an action can be overridden.
 - **`gamedata-merge/`** — fragments, merged into the matching
   `gamedata/<name>.json` on the server by
   `docker/nitro/apply-gamedata-fragments.py` (a deploy step). This exists
