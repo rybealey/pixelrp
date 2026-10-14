@@ -130,3 +130,22 @@ replacing the file does nothing for anyone who already has it until that `v=`
 is bumped. That config is VPS-only — excluded from the deploy rsync — so it is
 a manual edit on the box, in `nitro/client/renderer-config.json`. A hard reload
 gets you the new file for testing without touching it.
+
+## Room planes (`bundled/generic/room.nitro`)
+
+A WHOLE copy of the server's `room.nitro` (every floor, wall and landscape
+style), so it replaces the server's file outright. Its one change: wall
+`99999`, the test wall only the furni shop's preview wears (178 kept it off
+the Spaces page), is `#36383b` instead of `#c6c3be` - the preview's dark grey
+wall (`CatalogViewProductWidgetView`'s `PREVIEW_WALL`).
+
+So if the server's `room.nitro` is ever regenerated or replaced, this copy
+still wins: take the new server file and make the same one change to it
+rather than deleting this. Only the colour number in `room.json` was edited,
+in place; `room.png` and everything else is byte for byte the server's.
+
+**Cached for a week, like the avatar libraries above.** `generic.asset.url`
+in the VPS-only `renderer-config.json` has no `?v=`, so a browser that
+already has the old file keeps it until its copy expires - a hard reload
+shows the new wall at once. Adding a `?v=` there makes it immediate for
+everyone.
