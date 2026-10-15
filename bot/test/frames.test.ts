@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { encodeFrame, FrameAssembler } from "../src/protocol/frames.ts";
+import { encodeFrame, FrameAssembler, MAX_FRAME_LENGTH } from "../src/protocol/frames.ts";
 import { BinaryWriter } from "../src/protocol/buffer.ts";
 
 describe("frames", () => {
@@ -29,7 +29,7 @@ describe("frames", () => {
     expect(out[0].payload.toString()).toBe("payload");
   });
 
-  it("treats a malformed length (<2) as stream desync: drops pending bytes and returns frames decoded so far", () => {
+  it("treats a malformed length (<2) as stream desync: returns frames decoded so far, then nothing", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const good = encodeFrame(1, Buffer.from([9]));
     // A hand-built "frame" with length=1, which no real encodeFrame() output can produce (the
@@ -43,10 +43,36 @@ describe("frames", () => {
     // The good frame before the malformed one is still returned.
     expect(out).toEqual([{ id: 1, payload: Buffer.from([9]) }]);
     expect(warn).toHaveBeenCalled();
-    // The desync wipes the pending buffer, so more bytes arriving afterward start a clean
-    // parse rather than being misread against the garbage that was dropped.
-    const next = encodeFrame(2, Buffer.from([5]));
-    expect(asm.push(next)).toEqual([{ id: 2, payload: Buffer.from([5]) }]);
+    expect(asm.desynced).toBe(true);
+    // The stream is finished (Connection closes it): later bytes are neither decoded nor kept.
+    expect(asm.push(encodeFrame(2, Buffer.from([5])))).toEqual([]);
     warn.mockRestore();
+  });
+
+  it("treats a huge length as stream desync instead of buffering every chunk while it waits", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    // What a desynced stream sees when it lands on text: "{\"us" read as a length is ~2 GB.
+    const asm = new FrameAssembler();
+    expect(asm.push(Buffer.from('{"user":"x"}'))).toEqual([]);
+    expect(asm.desynced).toBe(true);
+    expect(warn).toHaveBeenCalled();
+    // Just over the cap is refused the same way.
+    const overCap = new FrameAssembler();
+    const header = Buffer.alloc(6);
+    header.writeInt32BE(MAX_FRAME_LENGTH + 1, 0);
+    expect(overCap.push(header)).toEqual([]);
+    expect(overCap.desynced).toBe(true);
+    warn.mockRestore();
+  });
+
+  it("still assembles a large real frame (a full room's furni list) split across chunks", () => {
+    const payload = Buffer.alloc(1024 * 1024, 7); // past the emulator's own incoming cap
+    const frame = encodeFrame(3, payload);
+    const asm = new FrameAssembler();
+    expect(asm.push(frame.subarray(0, 100_000))).toEqual([]);
+    const out = asm.push(frame.subarray(100_000));
+    expect(asm.desynced).toBe(false);
+    expect(out).toHaveLength(1);
+    expect(out[0].payload.equals(payload)).toBe(true);
   });
 });

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { WebSocketServer, WebSocket } from "ws";
 import { Connection } from "../src/protocol/connection.ts";
 import { encodeFrame } from "../src/protocol/frames.ts";
@@ -29,6 +29,24 @@ describe("Connection", () => {
     expect(frame.id).toBe(2491);
     expect(received[0].readUInt16BE(4)).toBe(4000);
     conn.close();
+  });
+
+  it("closes the connection when the stream desyncs", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    server = new WebSocketServer({ port: 0 });
+    // A good frame, then a length no real frame has: the server stays up, the client must go.
+    server.on("connection", (sock) =>
+      sock.send(Buffer.concat([encodeFrame(2491, Buffer.alloc(0)), Buffer.from("garbage!")])),
+    );
+    const port = (server.address() as { port: number }).port;
+    const conn = new Connection();
+    const frames: number[] = [];
+    conn.on("frame", (f: { id: number }) => frames.push(f.id));
+    const closed = new Promise((resolve) => conn.once("close", resolve));
+    await conn.connect(`ws://127.0.0.1:${port}`);
+    await closed;
+    expect(frames).toEqual([2491]);
+    warn.mockRestore();
   });
 
   it("emits close when the server drops the socket", async () => {
