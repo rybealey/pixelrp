@@ -95,6 +95,9 @@ services:
       RCON_HOST: emulator
       RCON_PORT: ${RCON_PORT}
       DEPLOY_CHANGELOG_PATH: /changelog/CHANGELOG.md
+      # The asset pass's shared secret, also given to web below. Locally a
+      # fixed default; compose.prod.yaml requires a real one.
+      ASSET_PASS_SECRET: ${ASSET_PASS_SECRET:-local-dev-asset-pass}
     volumes:
       - ./cms:/var/www/html
       # /api/deploy-status serves the newest release notes from here (outside
@@ -134,8 +137,14 @@ services:
 
   web:
     image: nginx:1.27-alpine
+    # The image's entrypoint renders docker/web/templates/ with this
+    # (asset-pass.conf.template - docs/asset-protection-plan.md).
+    environment:
+      ASSET_PASS_SECRET: ${ASSET_PASS_SECRET:-local-dev-asset-pass}
     volumes:
       - ./docker/web/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/web/asset-gate.conf:/etc/nginx/asset-gate.conf:ro
+      - ./docker/web/templates:/etc/nginx/templates:ro
       - ./cms:/var/www/html:ro
       - ./nitro:/var/www/nitro-assets:ro
       - gamedata:/var/www/gamedata:ro
@@ -156,12 +165,14 @@ services:
       API_HOST: 0.0.0.0
       API_PORT: "3030"
       AVATAR_SAVE_PATH: /cache
-      AVATAR_ACTIONS_URL: http://web/nitro-assets/assets/gamedata/HabboAvatarActions.json
-      AVATAR_FIGUREDATA_URL: http://web/nitro-assets/assets/gamedata/FigureData.json
-      AVATAR_FIGUREMAP_URL: http://web/nitro-assets/assets/gamedata/FigureMap.json
-      AVATAR_EFFECTMAP_URL: http://web/nitro-assets/assets/gamedata/EffectMap.json
-      AVATAR_ASSET_URL: http://web/nitro-assets/assets/bundled/figure/%libname%.nitro
-      AVATAR_ASSET_EFFECT_URL: http://web/nitro-assets/assets/bundled/effect/%libname%.nitro
+      # web's internal :8088 server - the same files with no asset pass check
+      # (the imager has no player's cookies); never published.
+      AVATAR_ACTIONS_URL: http://web:8088/nitro-assets/assets/gamedata/HabboAvatarActions.json
+      AVATAR_FIGUREDATA_URL: http://web:8088/nitro-assets/assets/gamedata/FigureData.json
+      AVATAR_FIGUREMAP_URL: http://web:8088/nitro-assets/assets/gamedata/FigureMap.json
+      AVATAR_EFFECTMAP_URL: http://web:8088/nitro-assets/assets/gamedata/EffectMap.json
+      AVATAR_ASSET_URL: http://web:8088/nitro-assets/assets/bundled/figure/%libname%.nitro
+      AVATAR_ASSET_EFFECT_URL: http://web:8088/nitro-assets/assets/bundled/effect/%libname%.nitro
     volumes:
       - imager-cache:/cache
     depends_on:

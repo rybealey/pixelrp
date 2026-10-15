@@ -91,6 +91,13 @@ jobs:
           # arrive as a fragment under nitro/assets/gamedata-merge/ (rsynced above)
           # and are merged in. Existing classnames always win; a re-run adds nothing.
           python3 docker/nitro/apply-gamedata-fragments.py
+          # The asset pass secret (docs/asset-protection-plan.md): made once,
+          # here on the box, and never leaves it - compose.prod.yaml refuses to
+          # start web or cms without it.
+          if ! grep -q '^ASSET_PASS_SECRET=.' .env; then
+            [ -z "$(tail -c1 .env)" ] || echo >> .env
+            printf 'ASSET_PASS_SECRET=%s\n' "$(openssl rand -hex 32)" >> .env
+          fi
           REMOTE
 
       - name: Apply database patches

@@ -115,6 +115,13 @@ jobs:
           git pull -q origin main
           git submodule update --init emulator cms
           git -C emulator log --oneline -1
+          # The asset pass secret (docs/asset-protection-plan.md): made once,
+          # here on the box, and never leaves it - compose.prod.yaml refuses to
+          # start web or cms without it.
+          if ! grep -q '^ASSET_PASS_SECRET=.' .env; then
+            [ -z "$(tail -c1 .env)" ] || echo >> .env
+            printf 'ASSET_PASS_SECRET=%s\n' "$(openssl rand -hex 32)" >> .env
+          fi
           # Fresh patch notes for the deployment screen (a bind mount would
           # pin the pre-pull inode).
           docker compose -f compose.yaml -f compose.prod.yaml exec -T cms mkdir -p /changelog
