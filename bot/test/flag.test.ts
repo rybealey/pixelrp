@@ -68,6 +68,29 @@ describe("FlagWatcher", () => {
     expect(watcher.isEnabled).toBe(true);
   });
 
+  it("skips a tick while the previous poll is still running instead of stacking queries", async () => {
+    vi.useFakeTimers();
+    try {
+      let release: (v: string) => void = () => {};
+      let calls = 0;
+      const watcher = new FlagWatcher(async () => {
+        calls++;
+        if (calls === 1) return "1"; // start()'s first poll
+        return new Promise<string>((resolve) => (release = resolve)); // a stalled DB
+      }, 10_000);
+      await watcher.start();
+      await vi.advanceTimersByTimeAsync(10_000); // poll 2 starts and hangs
+      await vi.advanceTimersByTimeAsync(30_000); // three ticks while it hangs
+      expect(calls).toBe(2);
+      release("1");
+      await vi.advanceTimersByTimeAsync(10_000); // settled: the next tick polls again
+      expect(calls).toBe(3);
+      watcher.stop();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("onDisable(null) clears the hook", async () => {
     const { watcher } = watcherWith(["1", "0"]);
     const close = vi.fn();

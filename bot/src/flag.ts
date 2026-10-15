@@ -12,6 +12,7 @@ export class FlagWatcher {
   private onDisableFn: (() => void) | null = null;
   private timer: ReturnType<typeof setInterval> | null = null;
   private errorStreak = 0;
+  private polling = false;
   // Plain fields, not constructor parameter properties: the container runs
   // this file through Node's strip-only TS loader, which rejects them.
   private readonly query: FlagQuery;
@@ -54,6 +55,11 @@ export class FlagWatcher {
   }
 
   async pollOnce(): Promise<void> {
+    // One query at a time: the timer doesn't wait for the last poll, so a
+    // stalled DB would otherwise stack a new query behind the stuck one every
+    // tick. Skipping a tick is harmless; the next one after it settles polls.
+    if (this.polling) return;
+    this.polling = true;
     let value: string | null;
     try {
       value = await this.query();
@@ -63,6 +69,8 @@ export class FlagWatcher {
       if (this.errorStreak === 0) console.error("[bot] bot.enabled poll error (keeping current state):", err);
       this.errorStreak++;
       return;
+    } finally {
+      this.polling = false;
     }
     this.errorStreak = 0;
     // Missing row = enabled: matches behavior before the toggle existed.
