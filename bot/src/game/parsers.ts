@@ -71,6 +71,9 @@ import { BinaryReader } from "../protocol/buffer.ts";
 //     Any other userType has no known tail shape in this composer, so for that case only we
 //     stop and return the entries decoded so far rather than risk misaligning the stream on
 //     an assumption we can't verify.
+//
+//   emulator/Communication/Packets/Outgoing/Rooms/Engine/UserRemoveComposer.cs (Compose)
+//     WriteString(id.ToString()) -> unitId, as decimal TEXT, not an int
 
 export function parseChat(payload: Buffer): { unitId: number; message: string } {
   const r = new BinaryReader(payload);
@@ -79,6 +82,10 @@ export function parseChat(payload: Buffer): { unitId: number; message: string } 
 
 export function parseRoomForward(payload: Buffer): { roomId: number } {
   return { roomId: new BinaryReader(payload).readInt() };
+}
+
+export function parseUserRemove(payload: Buffer): { unitId: number } {
+  return { unitId: Number(new BinaryReader(payload).readString()) };
 }
 
 export interface RoomUser {

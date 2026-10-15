@@ -62,6 +62,29 @@ describe("GameClient", () => {
     ]);
   });
 
+  it("forgets a user the server removes, and the whole roster on entering a room", () => {
+    const conn = new FakeConnection();
+    const client = new GameClient(conn as never, "ClaudeTest");
+    const roster = new BinaryWriter().writeInt(2);
+    for (const [id, name, unit] of [[100, "Ry", 1], [5, "ClaudeTest", 2]] as const) {
+      roster.writeInt(id).writeString(name).writeString("").writeString("")
+        .writeInt(unit).writeInt(0).writeInt(0).writeString("0").writeInt(0).writeInt(1)
+        .writeString("M").writeInt(-1).writeInt(-1).writeString("").writeString("")
+        .writeInt(0).writeBool(false);
+    }
+    conn.emit("frame", { id: 374, payload: roster.toBuffer() }); // UsersComposer
+    expect(client.usernameFor(1)).toBe("Ry");
+    expect(client.botUnitId).toBe(2);
+    // UserRemoveComposer (2661) carries the unit id as a string.
+    conn.emit("frame", { id: 2661, payload: new BinaryWriter().writeString("1").toBuffer() });
+    expect(client.usernameFor(1)).toBeUndefined();
+    expect(client.usernameFor(2)).toBe("ClaudeTest");
+    // RoomReadyComposer (2031): a new room, new unit ids — nothing carries over.
+    conn.emit("frame", { id: 2031, payload: new BinaryWriter().writeString("model_a").writeInt(7).toBuffer() });
+    expect(client.usernameFor(2)).toBeUndefined();
+    expect(client.botUnitId).toBeUndefined();
+  });
+
   it("drops staff-notify whisper forwards (WhisperEvent.cs L121 '[Whisper to X] ' prefix) instead of treating them as addressed to the bot", () => {
     const conn = new FakeConnection();
     const client = new GameClient(conn as never, "ClaudeTest");

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { BinaryWriter } from "../src/protocol/buffer.ts";
-import { parseChat, parseRoomForward, parseUsers } from "../src/game/parsers.ts";
+import { parseChat, parseRoomForward, parseUserRemove, parseUsers } from "../src/game/parsers.ts";
 
 // Field order verified against emulator source:
 //   emulator/Communication/Packets/Outgoing/Rooms/Chat/ChatComposer.cs (Compose, lines 21-29)
@@ -88,6 +88,11 @@ describe("parsers", () => {
   it("parses room forward", () => {
     const buf = new BinaryWriter().writeInt(10).toBuffer();
     expect(parseRoomForward(buf)).toEqual({ roomId: 10 });
+  });
+
+  it("parses user remove (UserRemoveComposer.cs writes the unit id as a string)", () => {
+    const buf = new BinaryWriter().writeString("42").toBuffer();
+    expect(parseUserRemove(buf)).toEqual({ unitId: 42 });
   });
 
   it("parses a two-user roster", () => {

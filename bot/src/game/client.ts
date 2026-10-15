@@ -2,7 +2,7 @@ import { EventEmitter } from "node:events";
 import type { Connection } from "../protocol/connection.ts";
 import { BinaryWriter } from "../protocol/buffer.ts";
 import { recvName, revisionName, sendId } from "../protocol/headers.ts";
-import { parseChat, parseRoomForward, parseUsers } from "./parsers.ts";
+import { parseChat, parseRoomForward, parseUserRemove, parseUsers } from "./parsers.ts";
 
 export interface ChatMessage {
   username: string;
@@ -128,6 +128,21 @@ export class GameClient extends EventEmitter {
         case "RoomForwardComposer":
           this.emit("roomForward", parseRoomForward(payload));
           break;
+        case "RoomReadyComposer":
+          // Sent once per room entry (Habbo.EnterRoom), ahead of the new room's UsersComposer.
+          // Unit ids are handed out per room entry, so the last room's roster means nothing
+          // here — and kept, it would grow with every room the bot ever visited.
+          this.roster.clear();
+          this.botUnitId = undefined;
+          break;
+        case "UserRemoveComposer": {
+          // Someone left the room (RoomUserManager.RemoveUserFromRoom / RemoveBot): drop their
+          // entry now rather than keep it until the bot next changes room.
+          const { unitId } = parseUserRemove(payload);
+          this.roster.delete(unitId);
+          if (unitId === this.botUnitId) this.botUnitId = undefined;
+          break;
+        }
         case "UsersComposer":
           for (const u of parseUsers(payload)) {
             this.roster.set(u.unitId, { username: u.username, userType: u.userType });
