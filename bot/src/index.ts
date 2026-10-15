@@ -23,6 +23,10 @@ if (disabledReason) {
   // checkout of .env.example). Staying up with an open (no-op) event loop lets the container
   // sit healthy-but-idle until the env is fixed and it's redeployed.
   console.log(`[bot] ${disabledReason} — idling (not connecting)`);
+  // The never-settling promise alone doesn't keep Node up: with nothing else scheduled, Node
+  // exits anyway (code 13, "unsettled top-level await") and Docker restarts the container about
+  // once a minute. A long no-op timer is what actually holds the event loop open.
+  setInterval(() => {}, 60 * 60 * 1000);
   await new Promise<void>(() => {});
 }
 
