@@ -123,8 +123,9 @@ Companions tab, keyed on set type `pt`.
 
 The misc overlay `mco` (so far only Habbo's Dark Aura) is the same story: an
 aura drawn around the body, which `ExtendAvatarStructure.ts` puts in the
-geometry's `bottom` body part - the one layer that stays behind the avatar at
-every rotation. Its set is a belt, like the held items.
+geometry's `top` body part - the one layer that stays in front of the avatar at
+every rotation (`bottom` would hide it behind the body). Its set is a belt, like
+the held items.
 
 **A new set TYPE needs a second list too.** `client/src/api/avatar/FigureData.ts`
 (`savePartSetId` / `savePartSetColourId`) only keeps set types it names, and
