@@ -4888,6 +4888,31 @@
        "colorindex": 0
       }
      ]
+    },
+    {
+     "id": 6562,
+     "gender": "U",
+     "club": 0,
+     "colorable": true,
+     "selectable": true,
+     "preselectable": false,
+     "sellable": true,
+     "parts": [
+      {
+       "id": 7579,
+       "type": "mco",
+       "colorable": true,
+       "index": 0,
+       "colorindex": 1
+      },
+      {
+       "id": 7580,
+       "type": "mco",
+       "colorable": false,
+       "index": 1,
+       "colorindex": 0
+      }
+     ]
     }
    ]
   },

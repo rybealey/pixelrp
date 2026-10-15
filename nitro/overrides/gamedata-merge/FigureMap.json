@@ -1006,6 +1006,20 @@
      "type": "fc"
     }
    ]
+  },
+  {
+   "id": "misc_U_darkaura",
+   "revision": 0,
+   "parts": [
+    {
+     "id": 7579,
+     "type": "mco"
+    },
+    {
+     "id": 7580,
+     "type": "mco"
+    }
+   ]
   }
  ]
 }

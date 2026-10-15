@@ -121,6 +121,11 @@ in the editor: give its set the set type it is worn like (a keychain is a
 belt, a sword a chest accessory) and keep its `mc*` parts. Pets have their own
 Companions tab, keyed on set type `pt`.
 
+The misc overlay `mco` (so far only Habbo's Dark Aura) is the same story: an
+aura drawn around the body, which `ExtendAvatarStructure.ts` puts in the
+geometry's `bottom` body part - the one layer that stays behind the avatar at
+every rotation. Its set is a belt, like the held items.
+
 **A new set TYPE needs a second list too.** `client/src/api/avatar/FigureData.ts`
 (`savePartSetId` / `savePartSetColourId`) only keeps set types it names, and
 everything the editor and the store's try-on do goes through it - an unlisted
