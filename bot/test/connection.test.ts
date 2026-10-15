@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { createServer, type Socket } from "node:net";
 import { WebSocketServer, WebSocket } from "ws";
 import { Connection } from "../src/protocol/connection.ts";
 import { encodeFrame } from "../src/protocol/frames.ts";
@@ -57,5 +58,46 @@ describe("Connection", () => {
     const closed = new Promise((resolve) => conn.once("close", resolve));
     await conn.connect(`ws://127.0.0.1:${port}`);
     await closed; // resolves = pass
+  });
+
+  it("closes a connection that stops answering pings", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    // autoPong off: the socket stays open but nothing ever comes back, like a dead peer.
+    server = new WebSocketServer({ port: 0, autoPong: false });
+    const port = (server.address() as { port: number }).port;
+    const conn = new Connection({ pingIntervalMs: 25, deadAfterMs: 100 });
+    const closed = new Promise((resolve) => conn.once("close", resolve));
+    await conn.connect(`ws://127.0.0.1:${port}`);
+    await closed;
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
+  it("keeps a silent connection open while the server answers pings", async () => {
+    server = new WebSocketServer({ port: 0 }); // answers pings, never sends a frame
+    const port = (server.address() as { port: number }).port;
+    const conn = new Connection({ pingIntervalMs: 25, deadAfterMs: 100 });
+    let closed = false;
+    conn.once("close", () => (closed = true));
+    await conn.connect(`ws://127.0.0.1:${port}`);
+    await new Promise((r) => setTimeout(r, 400));
+    expect(closed).toBe(false);
+    conn.close();
+  });
+
+  it("fails the connect when the server never answers the handshake", async () => {
+    // Accepts the TCP connection, then says nothing.
+    const sockets: Socket[] = [];
+    const silent = createServer((s) => void sockets.push(s));
+    await new Promise<void>((r) => silent.listen(0, "127.0.0.1", r));
+    const port = (silent.address() as { port: number }).port;
+    const conn = new Connection({ connectTimeoutMs: 100 });
+    conn.on("error", () => {});
+    try {
+      await expect(conn.connect(`ws://127.0.0.1:${port}`)).rejects.toThrow(/handshake has timed out/);
+    } finally {
+      for (const s of sockets) s.destroy();
+      silent.close();
+    }
   });
 });
