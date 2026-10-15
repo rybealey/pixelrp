@@ -40,7 +40,7 @@ def to_png(src: pathlib.Path, tmpdir: pathlib.Path) -> pathlib.Path:
     sys.exit("error: badge is not a PNG and no converter (sips) is available - convert it to PNG first")
 
 # ---- bundle -----------------------------------------------------------------
-def build_bundle(lib: str, effect_id: int, png_bytes: bytes, w: int, h: int, frames: int, lift: int = 0, glyph_center=(32.5, -100)):
+def build_bundle(lib: str, effect_id: int, png_bytes: bytes, w: int, h: int, frames: int, lift: int = 0, glyph_center=(32.5, -100), static_y: bool = False):
     # The stock Staff glyph's visible centre in avatar coordinates (measured):
     # x 32.5 (the avatar's midline), y -100 (just above the head). Asset x/y are
     # the registration offsets: the image draws at (-x, -y) from the anchor, so
@@ -65,7 +65,10 @@ def build_bundle(lib: str, effect_id: int, png_bytes: bytes, w: int, h: int, fra
             "name": f"fx.{effect_id}", "desc": lib,
             # ink 0 = normal blending. The stock Staff layer used 33 (additive),
             # which glows and washes a badge toward white over light floors.
-            "sprites": [{"id": sprite_id, "member": member, "ink": 0, "staticY": 1,
+            # staticY 1 holds the badge at standing height whatever the wearer
+            # does, so over a sitting or lying avatar (drawn 32px lower) it
+            # floats 32px higher above the head; 0 lets it drop with them.
+            "sprites": [{"id": sprite_id, "member": member, "ink": 0, "staticY": 1 if static_y else 0,
                          "directionList": [{"id": d, "dz": 0} for d in range(8)]}],
             "frames": anim_frames}},
         "name": lib,
@@ -86,14 +89,15 @@ def main():
     p.add_argument('--effectmap', type=pathlib.Path, required=True, help='current EffectMap.json (copied and retargeted)')
     p.add_argument('--out', type=pathlib.Path, required=True, help='overrides root (gets bundled/effect/<lib>.nitro and gamedata/EffectMap.json)')
     p.add_argument('--frames', type=int, default=1)
-    p.add_argument('--lift', type=int, default=10, help='extra pixels of air between the badge and the head (default 10)')
+    p.add_argument('--lift', type=int, default=10, help='extra pixels of air between the badge and the head (default 10; negative lowers it)')
+    p.add_argument('--static-y', action='store_true', help='keep the badge at standing height when the wearer sits or lies (default: it drops with them)')
     args = p.parse_args()
 
     with tempfile.TemporaryDirectory() as td:
         png_path = to_png(args.badge, pathlib.Path(td))
         w, h = read_png_size(png_path)
         png_bytes = png_path.read_bytes()
-        bundle = build_bundle(args.lib, args.effect_id, png_bytes, w, h, args.frames, args.lift)
+        bundle = build_bundle(args.lib, args.effect_id, png_bytes, w, h, args.frames, args.lift, static_y=args.static_y)
 
     effect_dir = args.out / 'bundled' / 'effect'
     effect_dir.mkdir(parents=True, exist_ok=True)

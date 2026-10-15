@@ -14,6 +14,302 @@ Group each dated release under Added / Changed / Fixed / Known issues (drop
 any heading with nothing under it).
 -->
 
+## 2026-09-08 — Empty rooms are findable again
+
+### Fixed
+
+- **Your room shows in the navigator even when nobody is in it.** Browsing a
+  category, or the recommended list, only ever showed rooms that had someone
+  standing in them — a room dropped out of sight about a minute after the last
+  person left and only reappeared when somebody walked back in. Searching by
+  name always found them, which is why it looked so arbitrary. Both lists now
+  show every room, busiest first, so a quiet room is still there to be found.
+
+## 2026-09-07 — Escorts work on everyone
+
+### Fixed
+
+- **Turning your head no longer marches your prisoner around.** An officer
+  who stood still and just changed which way they faced — clicking someone
+  across the room, or looking about — used to swing whoever they were
+  escorting round them a tile at a time. The person in custody now stays put
+  until the officer actually walks.
+- **Being marched off works no matter who got to the room first.** One player
+  in every room — whoever walked in first — could be stunned and cuffed and
+  taken into custody, and then simply would not move: the officer walked away
+  and left them standing there, frozen, until the cuffs came off. It was the
+  same player every time in a given room, which is what made it look like one
+  person's game was broken. Escorts now walk anyone.
+
+## 2026-09-07 — The shop, back to basics
+
+### Changed
+
+- **The shop is back to its classic layout.** Furni is sorted the way it always
+  was — Furni By Line, Furni By Item, the Game Shop, Wired, Badges, the Pet Shop
+  and the rest — instead of the Lines / Themes / Seasonal / Games tree from
+  August. The trade-off is stock: the thousands of extra pieces that came with
+  the full library are no longer on the shelves, so what you see is the classic
+  range again. Anything you already own is still yours and still places.
+- **Nothing costs Duckets.** Every price in the shop is in Coins. Items that
+  used to want Duckets — on their own or on top of Coins — now ask for the
+  whole amount in Coins instead.
+- **Clothes are sold in one place.** The shop no longer stocks clothing boxes;
+  the Clothing Store is where you buy what you wear, and it is untouched by
+  this change.
+- **The Jukebox moved to Builders › Corporations › Cafe.** Only its spot in the
+  shop changed — place one and it plays music exactly as it did before.
+- **The Furni tab lost a lot of clutter.** Silver VIP, Gold VIP, Event Staff,
+  the Badge Shop and the Duckets Shop are gone. Pet Horse and the Baby Pets
+  Shop now sit with the rest of the pets in the Pet Shop, and the Game Shop
+  moved to Staff.
+- **Furni by Holiday.** Christmas, Halloween, Easter, Valentine's, New Year and
+  Carnival each get a section in the Furni tab, with a page per year beneath
+  them — Halloween › 2011 through 2015, Christmas › 2012 through 2015, and so
+  on. Furni from a holiday that was never tied to a year sits on the holiday
+  itself. That is 815 pieces that used to be scattered through Furni By Line as
+  a flat list, including sixteen Halloween 2015 limited editions that no page
+  in the shop actually linked to.
+- **Wired moved to Staff**, alongside the Game Shop.
+- **Dead ends swept out.** Nineteen pages that opened onto nothing are gone —
+  four of them under Pet Horse — along with a page called Clothing that had two
+  pumpkins left on it after the clothing pull.
+- **Club and turf furni moved to Builders.** Everything the old Club pages sold
+  is now one Club page in Builders, under Cartier, and group furni is a Turfs
+  page above Bots. Bots stay in Builders too. The Exchange moved to Staff.
+
+## 2026-09-07 — The Clothing Store, social commands, phone notifications and melee
+
+### Added
+
+- **Throwing punches.** `:hit x` swings at whoever you have targeted. It only
+  connects if they are on one of the four tiles directly beside you — no
+  diagonals — or standing on your tile, and then it takes 3 to 5 health off
+  them; from anywhere else you swing and miss, in front of everyone. Either way
+  you turn aggressive, which cools off over about 45 seconds, and you wait three
+  seconds before you can swing again.
+- **Fighting stops at the zone line.** You can only throw a punch in an unsafe
+  zone, with one exception: two players who are both still aggressive can carry
+  on inside a safe zone until it runs out. Throwing a punch is what makes you
+  aggressive — being hit does not — so that takes both of you swinging, and a
+  real brawl can spill through a safe zone while someone who never swings back
+  cannot be chased into one. Nobody standing in a safe zone calmly can be
+  dragged into a fight.
+- **Passive means passive.** A player on a Passive Smoothie, or City Government
+  on duty, can neither throw a punch nor be hit by one. Run out of health and
+  you drop where you stand until staff patch you up.
+
+- **Your phone tells you things.** A banner slides in at the top of the phone
+  when something happens: a message, a friend request, an invite to a shared
+  album, a note shared with you, a story in the News, an event posted or moved.
+  Tap it to go to the app; it leaves on its own after a few seconds. Several
+  arriving at once stack, newest in front.
+- **Badges on the apps.** Every app that has something waiting carries a
+  number, and the phone button in the toolbar adds them all up so a closed
+  phone still says how much there is. A badge counts *things*, and a thing
+  clears when you open it — the conversation, the album, the note, the event,
+  the story. Glancing at an app clears nothing.
+- **Notification Center.** Tap the clock at the top of the phone to pull down
+  everything you have been told, newest first, with Mark read and Clear all.
+- **Event reminders.** Ten minutes before an event on the Calendar starts,
+  your phone says so.
+- **Settings › Notifications.** A switch per app, plus event reminders and
+  friends coming online — that last one is off to begin with, since it fires
+  all day and there is nothing to go back and read. Airplane mode silences
+  every banner while badges keep counting.
+- **Hug, kiss and bite.** `:hug x`, `:kiss x` and `:bite x` narrate the moment
+  to the room — "*Yavn wraps their arms around twist, giving them a big hug*" —
+  in their own bubble, so a friendly gesture never reads like a fight. You have
+  to be standing next to the person — no hugging across the room — and each one
+  has a five second cooldown, the same as `:slap`.
+- **Clothing Store.** Type `:zara` in any room to open it. Browse Head, Torso
+  and Legs, click a piece to see it on you (turn the mannequin with the
+  arrows), then buy what you like for credits. Bought pieces are worn out of
+  the store and appear in Choose Your Looks straight away.
+- **Limited editions.** The LTD tab sells numbered pieces while stock lasts.
+  Buying one puts a Clothing Token in your Backpack; use the token to unlock
+  the piece for good. Until then it is a normal backpack item.
+
+### Changed
+
+- **A slap now stings.** `:slap` used to be pure theatre. In an unsafe zone it
+  takes 1 health off and makes you aggressive, like any other attack — the
+  light end of fighting, against `:hit`'s 3 to 5. Inside a safe zone it stays
+  exactly what it was: a slap that hurts nobody.
+- **One reach for fighting.** `:slap` now needs you as close as `:hit` does —
+  their tile, or one directly beside you, no diagonals. It used to land from
+  anywhere in the square around you.
+- **Every piece of clothing has a real name.** The Clothing Store's 2,445
+  pieces were mostly showing the placeholder an import left behind — "Staff
+  3499" and the like. They now have proper descriptive names (Shortsweep,
+  Neonstreaks, Rollerskates, Cargoshorts), so you can search the shelf for
+  what a piece actually looks like.
+- **Shared albums fill up live.** Being invited to a shared album, or someone
+  adding photos to one you are in, now shows up in Photos straight away
+  instead of the next time you reopen the app.
+- **Everyone shops the same store.** Sellable clothing is no longer a staff
+  perk — staff buy pieces with credits from the Clothing Store like every
+  other player. Anything a staff member was wearing but had not bought is
+  swapped for a plain piece the next time they log in.
+- **Pieces, not costumes.** The store no longer sells whole outfits. Eighteen
+  costume bundles — the Santa Claus Suit, Mrs. Claus Outfit, the kimonos, the
+  dino onesie and the rest — are off the shelf, and every garment in them is
+  on sale on its own instead, twenty of them for the first time. Build the look
+  you want a piece at a time. Anything you already bought is still yours.
+- **The store shows your size first.** The shelf now lists unisex pieces plus
+  the ones cut for your avatar's gender, so you are not scrolling past clothes
+  that will not fit. A checkbox under the search bar brings the rest back when
+  you want a look at them, and tells you how many it is holding off.
+
+## 2026-09-06 — Hotel time and phone polish
+
+### Added
+
+- **Wallet app.** Opens on your Resident ID: your name, motto, birthday if
+  you have set one, Combat and Farming levels, and your job and gang when you
+  have them. It updates itself as those change.
+
+### Fixed
+
+- **A pale bar sat under the title of every hotel window.** Gone from the
+  Shop, Navigator, Inventory, Catalog, Camera, Groups, Avatar Editor and the
+  furniture windows.
+
+### Added
+
+- **Phone accessibility.** Settings › Accessibility: a Text Size slider,
+  Bold Text, Increase Contrast, Reduce Transparency, Switch Labels (I and O
+  on every switch) and Reduce Motion. A preview at the top shows the effect
+  as you change them. Yours alone, and only the phone changes.
+
+- **Phone wallpapers.** Settings › Wallpaper lets you pick one of six
+  built-in wallpapers or any photo you have taken, and your home screen wears
+  it right away. Yours alone, like Appearance.
+
+- **All-day events.** Staff can post a Calendar event as all-day. It sits in
+  the day's all-day row beside birthdays, in its colour, and opens like any
+  other event.
+
+### Changed
+
+- The Calendar's all-day row now stays pinned under the week strip while the
+  timeline scrolls, and the day title uses the short weekday so it no longer
+  wraps.
+
+- **Hotel messages pop up as a bubble, not a window.** Short notices from the
+  hotel ("That doesn't look like a YouTube link", "The queue is full", gang and
+  group errors, purchase problems) now appear as a quick bubble over your head
+  instead of a popup you have to close. Longer reports and kick notices still
+  open a window.
+
+- **Bare heads in the phone.** Player heads in Messages, Contacts, Photos,
+  Notes, News, threads and calls are now the plain sprite head, with no
+  coloured tile or outline behind them.
+
+- **The hotel runs on San Francisco time.** The phone's clock, Calendar,
+  Messages, Notes, News, Photos, chat timestamps and gang dates all show the
+  city's local time, wherever you are playing from.
+
+### Fixed
+
+- The switches in the News composer (Publish as Trina, Pin to top of Today)
+  now slide their knob when toggled instead of only changing colour.
+
+## 2026-09-06 — News byline
+
+### Added
+
+- **Stories can be published as Trina.** Staff writing a story can publish it
+  under the newsroom byline instead of their own name, and that is the default.
+  Readers see Trina; staff can still see who wrote it.
+
+### Changed
+
+- The Hotel category is gone from News. Existing Hotel stories now sit under
+  City Hall.
+
+## 2026-09-06 — Fixes
+
+### Changed
+
+- **Wanted stars glint.** Lit stars on the player and target HUDs catch the
+  light every few seconds; unlit ones stay still.
+
+### Fixed
+
+- **Profiles opened from the infostand showed the wrong details.** Opening a
+  player's profile from the infostand, an avatar menu, the phone or a group
+  list could show someone else's job, gang, birthday and staff mark. Every way
+  of opening a profile now shows the right player, the same as the HUD.
+- **Weather wind tile.** The compass no longer sits over the gusts line, and
+  with Celsius chosen wind and visibility read in km/h and km.
+- **Tunes** centres the "Playing on your phone" line.
+
+## 2026-09-06 — Gang Manage
+
+### Changed
+
+- **Gang › Manage reads like the roster.** Members now sit under their role
+  instead of in a separate list. Each role is a card: its controls on top,
+  its members underneath, with the role dropdown and Kick on each row.
+
+## 2026-09-06 — General settings
+
+### Added
+
+- **Clock and temperature settings on the phone.** Settings › General now has
+  two choices: a 12-hour or 24-hour clock, and Fahrenheit or Celsius. They
+  apply across the phone: the status bar, Calendar, News, Weather and the sky
+  preview. The defaults are 24-hour and Celsius.
+
+## 2026-09-06 — Environment
+
+### Added
+
+- **The sky behind rooms.** The black around a room now follows San
+  Francisco: dark blue in the day, warm at dusk, near-black with faint stars
+  at night, grey with drifting fog when the Weather app says fog, faint rain
+  when it rains. It always stays darker than the room, so it never gets in the
+  way of play. Turn it off under Settings › UI › Environment › Weather to get
+  the classic black back.
+
+## 2026-09-06 — Tunes
+
+### Added
+
+- **Staff can steer the station.** In Tunes, staff see a skip button next to
+  play and can remove any request from the queue; skipping asks once since it
+  moves the whole hotel on. Everyone can now remove their own queued request
+  to free their slot. If staff skip or remove your song, you get a short note.
+
+### Changed
+
+- **The Music app is now Tunes, with a new look.** A dark, streaming-style layout: a big
+  square cover, a green play button, and the queue as a simple list. The
+  home-screen tile is now black with green equaliser bars. Requesting a song
+  works exactly as before.
+
+## 2026-09-06 — News
+
+### Added
+
+- **A News app on the phone.** Hotel staff post stories about the city, with
+  a headline, a category and a featured picture, and everyone reads them in
+  the Today feed the moment they go up. The top story is the one staff have
+  pinned, or the newest. Pictures come from the hotel's own news image
+  library rather than uploads.
+
+## 2026-09-06 — Weather
+
+### Added
+
+- **A Weather app on the phone.** Open it for the real San Francisco's real
+  weather: the temperature right now, a short forecast, the next 24 hours,
+  ten days of highs and lows, and the details (UV, sunrise and sunset, wind,
+  feels like, humidity, visibility). The sky behind it changes with the
+  conditions, from morning fog to clear night. Everyone in the hotel sees the
+  same weather, refreshed every ten minutes.
+
 ## 2026-09-05 — Notes
 
 ### Added

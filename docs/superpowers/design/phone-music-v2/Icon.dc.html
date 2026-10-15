@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&amp;family=Silkscreen&amp;display=swap">
+  <style>
+    body { margin: 0; background: #5b6b7f; font-family: Ubuntu, sans-serif; }
+    a { color: #2bd66a; } a:hover { color: #6fe89a; }
+
+  .eq i { display:inline-block; width:3px; border-radius:1.5px; background:#2bd66a; animation: eq 1s ease-in-out infinite; }
+  .eq i:nth-child(2) { animation-delay:-.3s } .eq i:nth-child(3) { animation-delay:-.6s } .eq i:nth-child(4) { animation-delay:-.15s }
+  @keyframes eq { 0%,100% { height:4px } 50% { height:13px } }
+  @media (prefers-reduced-motion: reduce) { .eq i { animation:none; height:8px } }
+  </style>
+</helmet>
+<div style="display:inline-flex;padding:36px;background:#5b6b7f"><div style="display:flex;gap:26px;align-items:flex-end;padding:26px 30px;border-radius:20px;background:#5f5a4a;font-family:Ubuntu, 'Segoe UI', system-ui, sans-serif"><div style="display:flex;flex-direction:column;align-items:center;gap:10px"><div style="font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,.6)">NOW</div><div style="display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:60px;height:60px;border-radius:15px;background:linear-gradient(160deg, #fc586f, #fa2d55 55%, #d81e46);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.35)"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg></div><div style="font-family:Silkscreen,Ubuntu, 'Segoe UI', system-ui, sans-serif;font-size:9px;letter-spacing:1px;color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.5)">MUSIC</div></div></div><div style="display:flex;flex-direction:column;align-items:center;gap:10px"><div style="font-size:10px;font-weight:700;letter-spacing:1px;color:#2bd66a">PROPOSED</div><div style="display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:60px;height:60px;border-radius:15px;background:linear-gradient(160deg, #1f1f1f, #121212 60%, #0a0a0a);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.35)"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2bd66a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M5 14v4M9 8v10M13 11v7M17 5v13M21 12v6" stroke-width="2.6"/></svg></div><div style="font-family:Silkscreen,Ubuntu, 'Segoe UI', system-ui, sans-serif;font-size:9px;letter-spacing:1px;color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.5)">MUSIC</div></div></div><div style="display:flex;flex-direction:column;align-items:center;gap:10px"><div style="font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,.6)">ALT</div><div style="display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:60px;height:60px;border-radius:15px;background:linear-gradient(160deg, #3fe07a, #2bd66a 55%, #1fae52);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.35)"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0b1a10" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M5 14v4M9 8v10M13 11v7M17 5v13M21 12v6" stroke-width="2.6"/></svg></div><div style="font-family:Silkscreen,Ubuntu, 'Segoe UI', system-ui, sans-serif;font-size:9px;letter-spacing:1px;color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.5)">MUSIC</div></div></div></div></div>
+</x-dc>
+</body>
+</html>

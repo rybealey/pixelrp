@@ -1,0 +1,17 @@
+{
+ "infostand.button.pickup": "Pick Up",
+ "infostand.button.tools": "Tools",
+ "infostand.button.function": "Function",
+ "infostand.tools.position": "Position",
+ "infostand.tools.height": "Height",
+ "infostand.tools.opacity": "Opacity",
+ "infostand.tools.floor": "Floor",
+ "infostand.tools.ontop": "On top",
+ "avatareditor.title": "Change Your Outfit",
+ "catalog.title": "Furni Shop",
+ "catalog.quantity": "Quantity",
+ "inventory.furni.delete": "Delete",
+ "inventory.furni.delete.confirm.title": "Delete furni",
+ "inventory.furni.delete.confirm": "Delete all %count% of your %name%?\n\nThey are destroyed for good. You get nothing back and staff cannot return them.",
+ "inventory.furni.delete.confirm.button": "Delete"
+}

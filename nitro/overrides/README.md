@@ -1,3 +1,160 @@
 # Asset overrides
 
-Files here are rsynced over the server's git-ignored `nitro/assets/` tree on every beta deploy (same layout: `bundled/effect/…`, `gamedata/…`). Build effect bundles with `docker/nitro/make-badge-effect.py`.
+Files here are rsynced over the server's git-ignored `nitro/assets/` tree on
+every beta deploy (same layout: `bundled/effect/…`, `bundled/furniture/…`,
+`gamedata/…`). Build effect bundles with `docker/nitro/make-badge-effect.py`.
+
+Two directories, two different mechanisms:
+
+- **`bundled/`, `gamedata/`** — a plain overlay. A file here REPLACES the
+  server's file outright, which suits a bundle or a small custom file like
+  `EffectMap.json`.
+- **`gamedata-override/`** — flat `{key: text}` files whose keys REPLACE what
+  the shipped gamedata says. Merging deliberately cannot do that (its whole job
+  is protecting the official library), so renaming a shipped string lives here,
+  and putting a file in this directory is the deliberate act that says so.
+  `HabboAvatarActions.json` here sets what an action PREVENTS
+  (`{"Dance": {"prevents": ["usei"]}}` keeps a held handitem showing while
+  dancing) - nothing else about an action can be overridden.
+- **`gamedata-merge/`** — fragments, merged into the matching
+  `gamedata/<name>.json` on the server by
+  `docker/nitro/apply-gamedata-fragments.py` (a deploy step). This exists
+  because `FurnitureData.json` holds the whole 18k-entry official library and
+  lives only on the server: dropping a fragment into the overlay would wipe it.
+  Entries whose classname (or text key) is already present are left alone, so
+  the official library always wins and a re-run adds nothing.
+
+## Furniture catalog icons (`dcr/hof_furni/icons/`)
+
+The client fetches `dcr/hof_furni/icons/<classname>_icon.png` (a `*variant`
+becomes `<base>_<param>_icon.png`). Two sources, in this order:
+
+1. `docker/nitro/extract-furni-icons.py` crops the icon out of our own `.nitro`
+   bundles. Free, and it works for custom furni — but only when the bundle
+   actually contains an icon frame, and plenty do not.
+2. `habbo-downloader` for the rest:
+   ```bash
+   npx habbo-downloader -c ficons        # NOT "ficon" - the tool's table is wrong
+   ```
+   It writes `dcr/hof_furni/<classname>_icon.png` **flat**, while the client
+   wants them under `icons/`, so move them. The full set is ~18k files / 121 MB;
+   only ever commit the ones the server is actually missing.
+
+A missing icon is silent — the catalog just shows a blank tile — so the way to
+find them is to probe `<classname>_icon.png` for every classname in
+`FurnitureData.json`. As of 2026-09-08 that was 269 of 18,348 (1.5%), of which
+253 existed officially and 16 (Chess, TicTacToe, BattleShip, Poker, post.it,
+tile_cursor, floortile ...) have no icon anywhere and never will.
+
+Custom furniture ships as **four** things, and missing any one of them breaks
+something quietly:
+
+1. the `.nitro` bundle in `bundled/furniture/`;
+2. `<classname>_icon.png` in `dcr/hof_furni/icons/` — the client does NOT take
+   the icon from the bundle, even though the converter puts one there.
+   `renderer-config`'s `furni.asset.icon.url` is
+   `${hof.furni.url}/icons/%libname%%param%_icon.png`, a plain static PNG, so
+   without this file the shop shows a blank tile;
+3. its `FurnitureData.json` + `ExternalTexts.json` entries in `gamedata-merge/`;
+4. the `furniture` / `catalog_items` rows in an emulator SQL update.
+
+All four are generated together — see `docker/nitro/import-kasja.py`.
+
+Note: the prod deploy does not rsync this directory at all; its asset tree is
+maintained separately. That has to be resolved before any of this reaches prod.
+
+## Avatar libraries (`bundled/figure/`)
+
+`hh_human_item.nitro` is the handitem library — every item `:carry <id>` can put
+in an avatar's hand. It is an overlay file, so the copy here REPLACES the
+server's outright; convert a new one from its SWF with
+`node ./dist/Main.js --convert-swf` (see `docker/nitro/README.md`) and drop it
+in.
+
+**A handitem needs THREE things, not one.** The bundle, a `FigureMap` entry, and
+a `CarryItem` parameter — miss any one and it fails silently:
+
+1. the `.nitro` bundle holding `h_crr_ri_<part>_<dir>_<frame>`;
+2. `gamedata-merge/FigureMap.json` registering `{"id": <part>, "type": "ri"}`
+   under `hh_human_item`, or the client never asks for the asset;
+3. `gamedata-merge/HabboAvatarActions.json` adding `{"id": "<carry id>",
+   "value": "<part>"}` to `CarryItem` (and `UseItem` for the drink animation).
+
+**`:carry N` does not draw part N.** The renderer maps the id through
+`CarryItem`'s parameter list first, and that list covers only ~224 ids. Anything
+unmapped falls through to `default = 1` — the cup of water — so an unmapped
+handitem renders as a cup with the correct name beside it, which reads as
+"nothing happened" rather than as an error. `docker/nitro/gen-handitem-params.py`
+generates identity mappings for every part no existing parameter points at.
+
+**The bundle alone does not make a handitem reachable.** The client asks
+`FigureMap.json` which library provides part *N* before it fetches anything, so
+an id that is in the bundle but not in the map is simply never requested and
+`:carry <id>` renders nothing at all — no error, no missing-asset box. Any id a
+new library adds has to be registered too, as a `gamedata-merge/FigureMap.json`
+fragment listing `{"id": N, "type": "ri"}` under `hh_human_item`. To find what
+is missing, list the `ri`/`li` ids in the bundle's asset names
+(`h_std_ri_<id>_<dir>_<frame>`) and subtract the ids the map already has.
+
+**A new garment needs FIVE things**, all generated from Habbo's own data:
+
+1. the bundle in `bundled/figure/` — Habbo's Flash files stop in March 2022, so
+   anything newer only exists as a Unity bundle; convert it with
+   `docker/nitro/import-unity-figure.py <bundle> [...]`, which also does (2);
+2. its libraries in `gamedata-merge/FigureMap.json`, or the client never asks
+   for the bundle;
+3. its sets in `gamedata-merge/FigureData.json`, copied from Habbo's
+   `gamedata/figuredata/1` with their `hiddenLayers`, or nothing lists it;
+4. the same sets in `emulator/Config/figuredata.xml`, or saving a look strips
+   it — regenerate with `docker/nitro/figuredata-json-to-xml.py` against the
+   merged JSON and check the diff is only additions;
+5. a `catalog_clothing` row, or the Clothing Store does not sell it.
+
+Match libraries against Habbo by PART, not by name. Many old `jacket_U_*`
+libraries were re-released as `misc_U_*` / `pet_U_*` with the same part ids,
+and a name-only diff reports them missing when the hotel already has them.
+Held items and pets (`mc` / `mcl` / `mcr`, `pt` / `ptl` / `ptr`) are part types
+the stock renderer does not know - it skips any part whose type is not in its
+avatar geometry, silently. `client/src/api/avatar/ExtendAvatarStructure.ts`
+adds them at startup, before Nitro bootstraps. A held item still needs a home
+in the editor: give its set the set type it is worn like (a keychain is a
+belt, a sword a chest accessory) and keep its `mc*` parts. Pets have their own
+Companions tab, keyed on set type `pt`.
+
+The misc overlay `mco` (so far only Habbo's Dark Aura) is the same story: an
+aura drawn around the body, which `ExtendAvatarStructure.ts` puts in the
+geometry's `top` body part - the one layer that stays in front of the avatar at
+every rotation (`bottom` would hide it behind the body). Its set is a belt, like
+the held items.
+
+**A new set TYPE needs a second list too.** `client/src/api/avatar/FigureData.ts`
+(`savePartSetId` / `savePartSetColourId`) only keeps set types it names, and
+everything the editor and the store's try-on do goes through it - an unlisted
+type is dropped before it is drawn or saved, so the item "works" everywhere
+except on the avatar. That is how pets first shipped invisible.
+
+**Clients cache it for a week.** `renderer-config`'s `avatar.asset.url` ends in
+`?v=YYYYMMDD` and nginx serves the assets tree with `max-age=604800`, so
+replacing the file does nothing for anyone who already has it until that `v=`
+is bumped. That config is VPS-only — excluded from the deploy rsync — so it is
+a manual edit on the box, in `nitro/client/renderer-config.json`. A hard reload
+gets you the new file for testing without touching it.
+
+## Room planes (`bundled/generic/room.nitro`)
+
+A WHOLE copy of the server's `room.nitro` (every floor, wall and landscape
+style), so it replaces the server's file outright. Its one change: wall
+`99999`, the test wall only the furni shop's preview wears (178 kept it off
+the Spaces page), is `#36383b` instead of `#c6c3be` - the preview's dark grey
+wall (`CatalogViewProductWidgetView`'s `PREVIEW_WALL`).
+
+So if the server's `room.nitro` is ever regenerated or replaced, this copy
+still wins: take the new server file and make the same one change to it
+rather than deleting this. Only the colour number in `room.json` was edited,
+in place; `room.png` and everything else is byte for byte the server's.
+
+**Cached for a week, like the avatar libraries above.** `generic.asset.url`
+in the VPS-only `renderer-config.json` has no `?v=`, so a browser that
+already has the old file keeps it until its copy expires - a hard reload
+shows the new wall at once. Adding a `?v=` there makes it immediate for
+everyone.

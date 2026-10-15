@@ -39,6 +39,9 @@ services:
       # The Turnstile package's client ctor is typed `string`; a null secret
       # 500s if a request ever carries a cf-turnstile-response field.
       TURNSTILE_SECRET_KEY: ""
+      # Must match web's. Required: without it no asset pass is issued and
+      # nginx turns every game file away, so refuse to start instead.
+      ASSET_PASS_SECRET: ${ASSET_PASS_SECRET:?set ASSET_PASS_SECRET in the root .env (openssl rand -hex 32)}
     # No ./cms bind mount in prod: the image already contains `composer
     # install --no-dev` output and the built theme assets. Mounting the host
     # tree over /var/www/html would hide both (500 on every request) and hand
@@ -75,8 +78,12 @@ services:
   web:
     # Serve the CMS's public/ from the image via the cms container's volume,
     # not from a host checkout.
+    environment:
+      ASSET_PASS_SECRET: ${ASSET_PASS_SECRET:?set ASSET_PASS_SECRET in the root .env (openssl rand -hex 32)}
     volumes: !override
       - ./docker/web/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/web/asset-gate.conf:/etc/nginx/asset-gate.conf:ro
+      - ./docker/web/templates:/etc/nginx/templates:ro
       - ./nitro:/var/www/nitro-assets:ro
       - cms-public:/var/www/html/public:ro
       - gamedata:/var/www/gamedata:ro

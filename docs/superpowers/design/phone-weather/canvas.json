@@ -1,0 +1,63 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Now \u00b7 Fog"
+    },
+    {
+      "file": "Details.dc.html",
+      "x": 500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Scrolled \u00b7 Details"
+    },
+    {
+      "file": "Clear.dc.html",
+      "x": 1000,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Sky \u00b7 Clear day"
+    },
+    {
+      "file": "Night.dc.html",
+      "x": 1500,
+      "y": 0,
+      "w": 408,
+      "h": 772,
+      "title": "Sky \u00b7 Clear night"
+    },
+    {
+      "file": "Rain.dc.html",
+      "x": 0,
+      "y": 900,
+      "w": 408,
+      "h": 772,
+      "title": "Sky \u00b7 Rain"
+    },
+    {
+      "file": "Loading.dc.html",
+      "x": 500,
+      "y": 900,
+      "w": 408,
+      "h": 772,
+      "title": "State \u00b7 Loading"
+    },
+    {
+      "file": "Offline.dc.html",
+      "x": 1000,
+      "y": 900,
+      "w": 408,
+      "h": 772,
+      "title": "State \u00b7 Offline"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

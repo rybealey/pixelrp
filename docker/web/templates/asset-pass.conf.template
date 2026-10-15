@@ -1,0 +1,7 @@
+# pixelrp: the asset pass secret (docs/asset-protection-plan.md). The nginx
+# image's entrypoint runs envsubst over /etc/nginx/templates/*.template into
+# /etc/nginx/conf.d/ at every start, so the secret comes from the container's
+# environment (compose: ASSET_PASS_SECRET from the root .env) and is never in
+# the repo. Included by name from nginx.conf - not conf.d/*.conf, which would
+# also pull in the image's own default.conf server.
+map "" $asset_pass_secret { default "${ASSET_PASS_SECRET}"; }

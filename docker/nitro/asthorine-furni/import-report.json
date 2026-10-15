@@ -1,0 +1,25 @@
+{
+ "no_dims": [],
+ "no_icon": [],
+ "skipped": [
+  "asth_door10_1x1",
+  "asth_door1_1x1",
+  "asth_door1_1x2",
+  "asth_door2_1x1",
+  "asth_door2_1x2",
+  "asth_door3_1x1",
+  "asth_door4_1x1",
+  "asth_door5_1x1",
+  "asth_door8_1x1",
+  "asth_door8_1x2",
+  "asth_stonedoor1",
+  "asth_stonedoor1_1x4",
+  "asth_window1_1x1",
+  "asth_window2_1x1",
+  "asth_window3_1x1",
+  "asth_wooddoor1",
+  "asth_wooddoor1_1x4"
+ ],
+ "sit": [],
+ "walk": []
+}

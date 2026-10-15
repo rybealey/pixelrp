@@ -24,11 +24,11 @@ jobs:
       DEPLOY_PORT: ${{ secrets.DEPLOY_PORT || 22 }}
       DEPLOY_PATH: /opt/pixelrp-beta
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: true
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
 
@@ -86,6 +86,18 @@ jobs:
           git reset -q --hard origin/beta
           git submodule update --init emulator cms imager
           git -C emulator log --oneline -1
+          # Gamedata that cannot ship as a whole-file override: FurnitureData.json
+          # holds the entire official library and lives only here, so custom furni
+          # arrive as a fragment under nitro/assets/gamedata-merge/ (rsynced above)
+          # and are merged in. Existing classnames always win; a re-run adds nothing.
+          python3 docker/nitro/apply-gamedata-fragments.py
+          # The asset pass secret (docs/asset-protection-plan.md): made once,
+          # here on the box, and never leaves it - compose.prod.yaml refuses to
+          # start web or cms without it.
+          if ! grep -q '^ASSET_PASS_SECRET=.' .env; then
+            [ -z "$(tail -c1 .env)" ] || echo >> .env
+            printf 'ASSET_PASS_SECRET=%s\n' "$(openssl rand -hex 32)" >> .env
+          fi
           REMOTE
 
       - name: Apply database patches
@@ -158,6 +170,11 @@ jobs:
             sleep 5
           done
           echo "Beta emulator is READY."
+          # Leave the boot tail in the step log so a crash right after READY
+          # (the 2026-09-07 clothing store loop) can be read from here.
+          sleep 20
+          echo "--- emulator log tail ---"
+          timeout 20 docker logs --since "$started" --tail 60 "$cid" 2>&1 || true
           # Pick up bind-mounted nginx.conf changes (e.g. the /imaging/ route).
           # A single-file bind mount is pinned to the inode the container was
           # created with; `git reset --hard` replaces the file (new inode), so a

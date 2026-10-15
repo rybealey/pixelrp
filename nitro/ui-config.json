@@ -543,6 +543,13 @@
             "isAmbassadorOnly": false
         },
         {
+            "styleId": 39,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
             "styleId": 40,
             "minRank": 5,
             "isSystemStyle": false,
@@ -552,6 +559,594 @@
         {
             "styleId": 41,
             "minRank": 5,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 42,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 43,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 44,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 45,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 46,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 47,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 48,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 49,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 50,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 51,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 52,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 53,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 54,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 55,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 56,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 57,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 58,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 59,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 60,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 61,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 62,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 63,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 64,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 65,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 66,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 67,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 68,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 69,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 70,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 71,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 72,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 73,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 74,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 75,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 76,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 77,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 78,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 79,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 80,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 81,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 82,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 83,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 84,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 85,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 86,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 87,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 88,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 89,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 90,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 91,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 92,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 93,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 94,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 95,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 96,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 97,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 98,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 99,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 100,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 101,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 102,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 103,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 104,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 105,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 106,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 107,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 108,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 109,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 110,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 111,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 112,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 113,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 114,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 115,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 116,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 117,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 118,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 119,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 120,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 121,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 122,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 123,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 124,
+            "minRank": 0,
+            "isSystemStyle": false,
+            "isHcOnly": false,
+            "isAmbassadorOnly": false
+        },
+        {
+            "styleId": 143,
+            "minRank": 0,
             "isSystemStyle": false,
             "isHcOnly": false,
             "isAmbassadorOnly": false

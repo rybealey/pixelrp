@@ -1,0 +1,47 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1010,
+      "h": 630,
+      "title": "In the room \u00b7 fog at dusk"
+    },
+    {
+      "file": "Skies.dc.html",
+      "x": 1100,
+      "y": 0,
+      "w": 1440,
+      "h": 660,
+      "title": "Six skies"
+    },
+    {
+      "file": "TimeOfDay.dc.html",
+      "x": 0,
+      "y": 760,
+      "w": 1130,
+      "h": 330,
+      "title": "Clear sky through the day"
+    },
+    {
+      "file": "Settings.dc.html",
+      "x": 1200,
+      "y": 760,
+      "w": 632,
+      "h": 492,
+      "title": "Settings \u00b7 UI \u00b7 Environment (on)"
+    },
+    {
+      "file": "SettingsOff.dc.html",
+      "x": 1900,
+      "y": 760,
+      "w": 632,
+      "h": 492,
+      "title": "Settings \u00b7 UI \u00b7 Environment (off)"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
