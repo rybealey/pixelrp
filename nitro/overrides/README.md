@@ -140,6 +140,16 @@ is bumped. That config is VPS-only — excluded from the deploy rsync — so it 
 a manual edit on the box, in `nitro/client/renderer-config.json`. A hard reload
 gets you the new file for testing without touching it.
 
+## Camera effects (`c_images/Habbo-Stories/`)
+
+The camera's image effects (frames, overlays, the `_hrd`/`_mpl`/`_nrm` blends)
+are PNGs the renderer loads from `image.library.url` + `Habbo-Stories/<name>.png`
+for every enabled `camera.available.effects` entry without a `colorMatrix`
+(`RoomCameraWidgetManager`). A missing one is a 404 plus an unhandled promise
+rejection in the console, and the effect draws nothing. These are Habbo's own,
+from `images.habbo.com/c_images/Habbo-Stories/`. Prod's deploy does not copy
+this directory (see the note above), so prod needs them copied by hand.
+
 ## Room planes (`bundled/generic/room.nitro`)
 
 A WHOLE copy of the server's `room.nitro` (every floor, wall and landscape

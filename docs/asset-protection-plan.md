@@ -142,29 +142,56 @@ add `"pixelrp.co" "www.pixelrp.co"` once beta has been checked.
 ```
 (http.host in {"pixelrp.co" "www.pixelrp.co" "beta.pixelrp.co"})
 and cf.edge.server_port in {80 443}
+and http.request.method in {"GET" "HEAD"}
 and not starts_with(http.request.uri.path, "/nitro-assets/")
-and not starts_with(http.request.uri.path, "/webhooks/")
+and not starts_with(http.request.uri.path, "/gamedata/")
+and not starts_with(http.request.uri.path, "/assets/")
+and not starts_with(http.request.uri.path, "/build-housekeeping/")
 and not starts_with(http.request.uri.path, "/api/")
 and not starts_with(http.request.uri.path, "/imaging/")
+and not starts_with(http.request.uri.path, "/housekeeping/api/")
+and not starts_with(http.request.uri.path, "/game/asset-pass")
+and not starts_with(http.request.uri.path, "/home/")
 and not cf.client.bot
 ```
 
-Why each exclusion matters:
+The rule's principle is **challenge page loads, never what a loaded page
+fetches.** A challenge can only be solved by a page the browser navigates to.
+Cloudflare documents that it fails for any request expecting something other
+than HTML, so a fetch, an image or a script answered with a challenge is
+simply a `403`. Normally a page's subresources ride on the `cf_clearance` the
+page just earned. But a tab opened before the rule existed, or a game client
+left open past Challenge Passage, has no valid clearance, and every such
+request breaks. The first version of this rule broke the client's asset pass
+renewal exactly that way (`403` on `/game/asset-pass` in the console).
+
+Why each condition matters:
 
 - **`server_port`:** keeps the proxied `:2096` sockets out. A WebSocket upgrade
   cannot solve a challenge.
-- **`/nitro-assets/`:** Cloudflare documents that a challenge **fails for
-  fetch/XHR requests that expect non-HTML**, and every asset is one. A player
-  whose clearance lapsed would see the client die at the next lazy-loaded
-  bundle. Assets are locked at the origin instead (Phase 2), where the lifetime
-  is ours.
-- **`/webhooks/`:** the Stripe server-to-server webhook
-  (`/webhooks/diamonds-stripe`).
-- **`/api/`:** public JSON (online count and friends) that other sites may poll.
-  It already has Laravel throttles.
+- **`GET`/`HEAD` only:** every POST is either a form or a fetch from a page
+  that was itself challenged, and Laravel's CSRF token can only be had from
+  such a page. So a bot still cannot post a login, a purchase or a message
+  without first passing a challenge. This covers the Diamonds checkout, badge
+  purchase, the logo generator, the home editor's saves and the Stripe webhook.
+  The webhook is a server-to-server POST, excluded from CSRF and verified by
+  its Stripe signature.
+- **`/nitro-assets/`:** game files, locked at the origin instead (Phase 2),
+  where the lifetime is ours.
+- **`/gamedata/`, `/assets/`, `/build-housekeeping/`:** static files: uploaded
+  images, camera photos, badges, the CMS theme and the housekeeping build.
+  Nothing a scraper wants, and all of it loaded by pages rather than visited.
+- **`/api/`:** public JSON (online count and news images) that the client and
+  other sites fetch. It already has Laravel throttles.
 - **`/imaging/`:** avatar images that Discord and other sites embed.
+- **`/housekeeping/api/`, `/game/asset-pass`, `/home/`:** session-authenticated
+  GET fetches from the housekeeping panel, the game client and the home
+  editor. `/home/` also covers the public home pages, which is harmless.
 - **`cf.client.bot`:** verified search and preview crawlers (Google, Discord's
   link unfurler).
+
+**Adding a GET endpoint the page fetches** (rather than navigates to) means
+adding its prefix here, or it fails for anyone without clearance.
 
 **1c. Rate limiting rule.** The Free plan allows 1 rule, counted by IP, with a
 10 s period and a 10 s timeout.
