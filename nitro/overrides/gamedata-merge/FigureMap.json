@@ -1020,6 +1020,24 @@
      "type": "mco"
     }
    ]
+  },
+  {
+   "id": "hat_U_autumnberet2",
+   "revision": 0,
+   "parts": [
+    {
+     "id": 7544,
+     "type": "ha"
+    },
+    {
+     "id": 7545,
+     "type": "ha"
+    },
+    {
+     "id": 7546,
+     "type": "ha"
+    }
+   ]
   }
  ]
 }

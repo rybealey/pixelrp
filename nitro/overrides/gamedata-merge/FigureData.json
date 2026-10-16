@@ -1025,6 +1025,43 @@
        "partType": "hrb"
       }
      ]
+    },
+    {
+     "id": 6549,
+     "gender": "U",
+     "club": 0,
+     "colorable": true,
+     "selectable": true,
+     "preselectable": false,
+     "sellable": true,
+     "parts": [
+      {
+       "id": 7544,
+       "type": "ha",
+       "colorable": true,
+       "index": 0,
+       "colorindex": 1
+      },
+      {
+       "id": 7545,
+       "type": "ha",
+       "colorable": true,
+       "index": 1,
+       "colorindex": 2
+      },
+      {
+       "id": 7546,
+       "type": "ha",
+       "colorable": false,
+       "index": 2,
+       "colorindex": 0
+      }
+     ],
+     "hiddenLayers": [
+      {
+       "partType": "hrb"
+      }
+     ]
     }
    ]
   },
