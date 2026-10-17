@@ -229,7 +229,10 @@ jobs:
           REMOTE
 
       # The run (and the deployment screen) only turns green once the emulator
-      # is actually accepting players again.
+      # is actually accepting players again. Then the avatar imager is
+      # restarted on fresh gamedata - here rather than in a step of its own,
+      # because the deployment screen shows any step it does not know as
+      # "Backing up city data…".
       - name: Polishing pixels
         run: |
           ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
@@ -247,6 +250,56 @@ jobs:
             sleep 5
           done
           echo "Emulator is READY."
+          # The imager reads FigureData/FigureMap from web:8088 once, at startup,
+          # and keeps every render in its /cache volume for good, keyed by the
+          # figure string. `up -d` above only recreates it when its image or
+          # config changes, which a gamedata change is neither, so it stayed on
+          # whatever gamedata it booted with (on beta, 2026-10-17, it drew every
+          # Wulez set as a bare body). So every deploy restarts it on the
+          # gamedata web serves now and empties the cache. After `up -d`: it
+          # fetches from web at boot. Never fails the run - the hotel is up by
+          # now, and only /imaging/ would be stale.
+          COMPOSE="docker compose -f compose.yaml -f compose.prod.yaml"
+          # md5 of a render, fetched from inside the imager; fails until it answers.
+          render() {
+            $COMPOSE exec -T imager node -e "fetch('http://127.0.0.1:3030/?figure=' + process.argv[1])
+              .then(r => r.ok ? r.arrayBuffer() : Promise.reject(r.status))
+              .then(b => process.stdout.write(require('crypto').createHash('md5').update(Buffer.from(b)).digest('hex')))" "$1" < /dev/null
+          }
+          # Called behind ||, where set -e does not apply: every step that can
+          # fail returns explicitly.
+          refresh_imager() {
+            local deadline=$((SECONDS + 120)) shirt custom bare
+            until $COMPOSE exec -T web wget -q -O /dev/null http://127.0.0.1:8088/nitro-assets/assets/gamedata/FigureData.json < /dev/null; do
+              [ "$SECONDS" -lt "$deadline" ] || { echo "::error::web:8088 is not serving FigureData.json"; return 1; }
+              sleep 2
+            done
+            $COMPOSE up -d --no-deps --force-recreate imager < /dev/null || return 1
+            until render hd-180-1 > /dev/null 2>&1; do
+              if [ "$SECONDS" -ge "$deadline" ]; then
+                echo "::error::The imager did not answer a render within 120s"
+                $COMPOSE logs --tail 30 imager < /dev/null || true
+                return 1
+              fi
+              sleep 2
+            done
+            # After the restart, not before: the old process could still write a
+            # stale render until it stopped. The new one's renders are all fresh,
+            # so deleting a few of them too costs a re-render, nothing more.
+            $COMPOSE exec -T imager find /cache -mindepth 1 -delete < /dev/null || return 1
+            # The newest custom shirt must not draw as the bare body. Read from
+            # the tracked fragment pulled above: this deploy never lays
+            # nitro/overrides/ over nitro/assets/ the way beta's does.
+            shirt=$(python3 -c "import json; d = json.load(open('nitro/overrides/gamedata-merge/FigureData.json')); print(max(s['id'] for t in d['setTypes'] if t['type'] == 'ch' for s in t['sets'] if s.get('gender') in ('M', 'U')))") \
+              && custom=$(render "hd-180-1.ch-$shirt-1408") && bare=$(render hd-180-1) \
+              || { echo "::warning::Could not check the imager against the newest custom shirt"; return 0; }
+            if [ "$custom" = "$bare" ]; then
+              echo "::warning::/imaging/ draws custom shirt ch-$shirt as a bare body - stale imager gamedata, or a set prod's FigureData.json lacks?"
+            else
+              echo "Imager draws custom shirt ch-$shirt."
+            fi
+          }
+          refresh_imager || echo "::warning::The imager was not refreshed - /imaging/ may serve stale renders; the hotel itself is up"
           REMOTE
 
       # A deploy that dies between "stop emulator" and "restart" must not
