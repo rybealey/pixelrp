@@ -1,0 +1,24 @@
+{
+ "no_dims": [],
+ "no_icon": [],
+ "skipped": [
+  "ate_duvaresya1",
+  "ate_duvaresya4",
+  "ate_duvaresya5",
+  "ate_duvaresya6",
+  "ate_duvaresya7",
+  "ate_duvaresya8",
+  "ate_duvaresya9"
+ ],
+ "sit": [
+  "ate_biriksbircekyat",
+  "ate_cekyaatt",
+  "ate_sandalyekardesim",
+  "ate_lso_16",
+  "ate_lso_3"
+ ],
+ "walk": [
+  "ate_lso_26",
+  "ate_lso_27"
+ ]
+}
