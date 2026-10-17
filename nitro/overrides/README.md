@@ -133,12 +133,15 @@ everything the editor and the store's try-on do goes through it - an unlisted
 type is dropped before it is drawn or saved, so the item "works" everywhere
 except on the avatar. That is how pets first shipped invisible.
 
-**Clients cache it for a week.** `renderer-config`'s `avatar.asset.url` ends in
-`?v=YYYYMMDD` and nginx serves the assets tree with `max-age=604800`, so
-replacing the file does nothing for anyone who already has it until that `v=`
-is bumped. That config is VPS-only — excluded from the deploy rsync — so it is
-a manual edit on the box, in `nitro/client/renderer-config.json`. A hard reload
-gets you the new file for testing without touching it.
+**Clients cache it for a week.** nginx serves figure bundles with
+`private, max-age=604800`, so a browser keeps each one for a week and
+Cloudflare never holds them (a purge there does nothing). A changed bundle
+reaches players only under a new URL: the beta deploy sets
+`avatar.asset.url`'s `?v=` in the VPS-only `nitro/client/renderer-config.json`
+to the git tree hash of `bundled/figure/`
+(`docker/nitro/bump-figure-version.py`), so it changes exactly when a bundle
+does, and renderer-config itself is served no-store. Prod's deploy does not do
+this yet.
 
 ## Camera effects (`c_images/Habbo-Stories/`)
 

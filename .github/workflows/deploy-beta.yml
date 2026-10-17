@@ -91,6 +91,10 @@ jobs:
           # arrive as a fragment under nitro/assets/gamedata-merge/ (rsynced above)
           # and are merged in. Existing classnames always win; a re-run adds nothing.
           python3 docker/nitro/apply-gamedata-fragments.py
+          # Figure bundles are browser-cached for a week, so a changed bundle
+          # needs a new URL: ?v= follows the overrides' figure tree hash.
+          python3 docker/nitro/bump-figure-version.py nitro/client/renderer-config.json \
+            "$(git rev-parse --short=12 HEAD:nitro/overrides/bundled/figure)"
           # The asset pass secret (docs/asset-protection-plan.md): made once,
           # here on the box, and never leaves it - compose.prod.yaml refuses to
           # start web or cms without it.
