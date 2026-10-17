@@ -16,6 +16,15 @@ Two directories, two different mechanisms:
   `HabboAvatarActions.json` here sets what an action PREVENTS
   (`{"Dance": {"prevents": ["usei"]}}` keeps a held handitem showing while
   dancing) - nothing else about an action can be overridden.
+- **`gamedata-remove/`** — the way back out. Merging only adds, so an
+  entry already merged into the server's gamedata stays there even after its
+  fragment is gone, and the overrides rsync never deletes a bundle. A
+  `gamedata-remove/<import>.json` lists what to withdraw
+  (`{"FigureData.json": {"sets": [...]}, "FigureMap.json": {"libraries": [...]},
+  "bundled/figure": [...]}`); `apply-gamedata-fragments.py` drops it from the
+  server's gamedata and deletes the bundles before merging. Merging never
+  replaces an existing set either, so changing a set's parts after it shipped
+  needs a removal in one deploy and the new set in a later one.
 - **`gamedata-merge/`** — fragments, merged into the matching
   `gamedata/<name>.json` on the server by
   `docker/nitro/apply-gamedata-fragments.py` (a deploy step). This exists

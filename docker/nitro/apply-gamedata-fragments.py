@@ -39,6 +39,18 @@ in on the server, after the rsync and before the client is restarted:
                        CarryItem's params before it ever looks for a sprite, and
                        an unmapped id silently falls back to default = the cup.
 
+Merging only ever adds, so taking something back out needs its own channel:
+`gamedata-remove/*.json`, each a list of what one withdrawn import added -
+
+  {"FigureData.json": {"sets": [set ids]},
+   "FigureMap.json": {"libraries": [library ids]},
+   "bundled/figure": [library ids]}
+
+The sets and libraries are dropped from the server's merged gamedata and the
+bundles deleted from nitro/assets/bundled/figure (the overrides rsync never
+deletes). It runs before the merge, so a fragment that still lists something
+puts it straight back - take it out of the fragment too. Idempotent.
+
 There is a second directory, `gamedata-override/`, for the opposite case: keys
 that must REPLACE what the official gamedata already says. Merging cannot do
 that by design - it exists to protect the official library from being clobbered
@@ -53,7 +65,9 @@ import sys
 
 MERGE_DIR = 'nitro/assets/gamedata-merge'
 OVERRIDE_DIR = 'nitro/assets/gamedata-override'
+REMOVE_DIR = 'nitro/assets/gamedata-remove'
 TARGET_DIR = 'nitro/assets/gamedata'
+ASSET_DIR = 'nitro/assets'
 
 
 def load(path):
@@ -296,6 +310,48 @@ def apply_overrides():
             save(target_path, target)
         print('%s: %d keys overridden' % (name, changed))
 
+
+def apply_removals():
+    """Withdraw what a gamedata-remove/ list names (see the module docstring)."""
+    if not os.path.isdir(REMOVE_DIR):
+        return
+    for name in sorted(os.listdir(REMOVE_DIR)):
+        if not name.endswith('.json'):
+            continue
+        spec = load(os.path.join(REMOVE_DIR, name))
+        sets = {str(i) for i in (spec.get('FigureData.json') or {}).get('sets') or []}
+        path = os.path.join(TARGET_DIR, 'FigureData.json')
+        if sets and os.path.exists(path):
+            data, removed = load(path), 0
+            for set_type in data.get('setTypes') or []:
+                kept = [s for s in set_type.get('sets') or [] if str(s.get('id')) not in sets]
+                removed += len(set_type.get('sets') or []) - len(kept)
+                set_type['sets'] = kept
+            if removed:
+                save(path, data)
+            print('%s: FigureData.json: %d sets removed' % (name, removed))
+        libraries = set((spec.get('FigureMap.json') or {}).get('libraries') or [])
+        path = os.path.join(TARGET_DIR, 'FigureMap.json')
+        if libraries and os.path.exists(path):
+            data = load(path)
+            kept = [lib for lib in data.get('libraries') or [] if lib.get('id') not in libraries]
+            removed = len(data.get('libraries') or []) - len(kept)
+            if removed:
+                data['libraries'] = kept
+                save(path, data)
+            print('%s: FigureMap.json: %d libraries removed' % (name, removed))
+        for folder in ('bundled/figure',):
+            removed = 0
+            for lib in spec.get(folder) or []:
+                bundle = os.path.join(ASSET_DIR, folder, os.path.basename(lib) + '.nitro')
+                if os.path.exists(bundle):
+                    os.remove(bundle)
+                    removed += 1
+            if spec.get(folder):
+                print('%s: %s: %d bundles deleted' % (name, folder, removed))
+
+
+apply_removals()
 
 if not os.path.isdir(MERGE_DIR):
     print('no gamedata fragments to merge')

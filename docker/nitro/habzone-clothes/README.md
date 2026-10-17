@@ -1,5 +1,24 @@
 # Habzone clothing
 
+**Withdrawn on 2026-10-17.** Too many pieces drew wrongly on beta, so the
+whole import was taken back out: its bundles, FigureMap and FigureData entries,
+emulator/Config/figuredata.xml sets and shelf rows (migration 267). Beta's
+merged gamedata and asset tree lose them through
+`nitro/overrides/gamedata-remove/habzone-clothes.json`. The importer and
+`ids.csv` stay, so a later re-import gives every set the id it had (players
+keep what they bought in user_clothing). Before re-importing, see "What went
+wrong on beta" below.
+
+## What went wrong on beta
+
+The deploy merges gamedata fragments add-only: a set or library already on
+the server is never replaced. The first deploy put the import's sets on beta;
+the fixes after it changed their part ids, which reached the bundles (rsync
+overwrites them) but not beta's FigureData, which kept the first part ids. So
+beta's sets pointed at sprites the new bundles no longer had. A re-import must
+either keep every part id it ships the first time, or remove its entries
+(`gamedata-remove/`) and add them back in a later deploy.
+
 Custom clothing from a Habzone asset dump (habzone.lol, a Nitro hotel; its
 figure bundles and gamedata date from March 2024). Imported on 2026-10-17:
 1,738 libraries, 1,793 figure sets and 1,737 Clothing Store rows (migrations
