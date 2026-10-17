@@ -109,12 +109,27 @@ jobs:
             --exclude 'renderer-config.json' \
             --exclude 'ui-config.json' \
             client/dist/ vps:"$DEPLOY_PATH/nitro/client/"
+          # Repo-tracked asset overrides (nitro/overrides/, e.g. a custom effect
+          # bundle + the retargeted EffectMap.json) laid over the rsynced,
+          # git-ignored asset tree. No --delete: it only ever adds/replaces.
+          if [ -d nitro/overrides ]; then
+            rsync -az --info=stats2 nitro/overrides/ vps:"$DEPLOY_PATH/nitro/assets/"
+          fi
           ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
           set -euo pipefail
           cd "$DEPLOY_PATH"
           git pull -q origin main
-          git submodule update --init emulator cms
+          git submodule update --init emulator cms imager
           git -C emulator log --oneline -1
+          # Gamedata that cannot ship as a whole-file override: FurnitureData.json
+          # holds the entire official library and lives only here, so custom furni
+          # arrive as a fragment under nitro/assets/gamedata-merge/ (rsynced above)
+          # and are merged in. Existing classnames always win; a re-run adds nothing.
+          python3 docker/nitro/apply-gamedata-fragments.py
+          # Figure bundles are browser-cached for a week, so a changed bundle
+          # needs a new URL: ?v= follows the overrides' figure tree hash.
+          python3 docker/nitro/bump-figure-version.py nitro/client/renderer-config.json \
+            "$(git rev-parse --short=12 HEAD:nitro/overrides/bundled/figure)"
           # The asset pass secret (docs/asset-protection-plan.md): made once,
           # here on the box, and never leaves it - compose.prod.yaml refuses to
           # start web or cms without it.
@@ -166,7 +181,7 @@ jobs:
           ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
           set -euo pipefail
           cd "$DEPLOY_PATH"
-          docker compose -f compose.yaml -f compose.prod.yaml build emulator cms cms-scheduler 2>&1 | tail -3
+          docker compose -f compose.yaml -f compose.prod.yaml build emulator cms cms-scheduler imager 2>&1 | tail -3
           # CMS migrations run here, not in "Applying database patches": prod
           # has no ./cms bind mount, so the running container is the previous
           # image and does not contain migrations added by this deploy. A
