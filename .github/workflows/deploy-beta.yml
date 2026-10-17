@@ -194,6 +194,54 @@ jobs:
           $COMPOSE up -d --force-recreate web
           REMOTE
 
+      # The imager reads FigureData/FigureMap from web:8088 once, at startup,
+      # and keeps every render in its /cache volume for good, keyed by the
+      # figure string. A deploy that only merges new clothing changes neither
+      # its image nor its config, so `up -d` never recreated it: on 2026-10-17
+      # it still held the 10-15 gamedata and drew every Wulez set as a bare
+      # body. So every deploy restarts it on the freshly merged gamedata and
+      # empties the cache. After web's recreate: it fetches from web at boot.
+      - name: Refresh the beta imager
+        run: |
+          ssh vps "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$DEPLOY_PATH"
+          COMPOSE="docker compose -p pixelrp-beta -f compose.yaml -f compose.prod.yaml -f compose.beta.yaml"
+          # md5 of a render, fetched from inside the imager; fails until it answers.
+          render() {
+            $COMPOSE exec -T imager node -e "fetch('http://127.0.0.1:3030/?figure=' + process.argv[1])
+              .then(r => r.ok ? r.arrayBuffer() : Promise.reject(r.status))
+              .then(b => process.stdout.write(require('crypto').createHash('md5').update(Buffer.from(b)).digest('hex')))" "$1" < /dev/null
+          }
+          deadline=$((SECONDS + 120))
+          until $COMPOSE exec -T web wget -q -O /dev/null http://127.0.0.1:8088/nitro-assets/assets/gamedata/FigureData.json < /dev/null; do
+            [ "$SECONDS" -lt "$deadline" ] || { echo "::error::web:8088 is not serving FigureData.json"; exit 1; }
+            sleep 2
+          done
+          $COMPOSE up -d --no-deps --force-recreate imager < /dev/null
+          until render hd-180-1 > /dev/null 2>&1; do
+            if [ "$SECONDS" -ge "$deadline" ]; then
+              echo "::error::The beta imager did not answer a render within 120s"
+              $COMPOSE logs --tail 30 imager < /dev/null || true
+              exit 1
+            fi
+            sleep 2
+          done
+          # After the restart, not before: the old process could still write a
+          # stale render until it stopped. The new one's renders are all fresh,
+          # so deleting a few of them too costs a re-render, nothing more.
+          $COMPOSE exec -T imager find /cache -mindepth 1 -delete < /dev/null
+          # The newest custom shirt must not draw as the bare body: if it does,
+          # the imager is back on stale gamedata. Warn rather than fail - the
+          # hotel itself is up and fine by now.
+          shirt=$(python3 -c "import json; d = json.load(open('nitro/assets/gamedata-merge/FigureData.json')); print(max(s['id'] for t in d['setTypes'] if t['type'] == 'ch' for s in t['sets'] if s.get('gender') in ('M', 'U')))")
+          if [ "$(render "hd-180-1.ch-$shirt-1408")" = "$(render hd-180-1)" ]; then
+            echo "::warning::/imaging/ draws custom shirt ch-$shirt as a bare body - stale imager gamedata?"
+          else
+            echo "Imager draws custom shirt ch-$shirt."
+          fi
+          REMOTE
+
       # Cap the BuildKit cache so it can't balloon (it hit 54GB once because
       # nothing pruned it). No `if:` -> runs only on a successful deploy, so a
       # failed build keeps its cache for a fast retry. Never fails the deploy.
