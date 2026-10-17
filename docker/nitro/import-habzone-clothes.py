@@ -125,6 +125,7 @@ PRICE = 50
 COPY_SHARE = 0.9
 OWNED_ONLY_TYPES = {'hd'}
 SECONDARY = {'ls', 'rs', 'lc', 'rc', 'hrb'}
+FLIP = {'ls': 'rs', 'rs': 'ls', 'lc': 'rc', 'rc': 'lc', 'lh': 'rh', 'rh': 'lh'}
 NOTHING = object()
 SET_TYPE_ORDER = ['hr', 'hd', 'ch', 'lg', 'sh', 'ha', 'he', 'ea', 'fa', 'ca', 'wa', 'cc', 'cp']
 CATEGORY = {'hr': 'Head', 'ha': 'Head', 'he': 'Head', 'ea': 'Head', 'fa': 'Head', 'hd': 'Face',
@@ -205,9 +206,11 @@ def main():
                      if k not in parts)
     src_map = list(merged.items())
     owner = {}                                 # part -> the library the dump loads it from
+    loads = collections.defaultdict(list)      # part -> every library the dump loads for it
     for lib, parts in src_map:
         for k in parts:
             owner.setdefault(k, lib)
+            loads[k].append(lib)
     src_sets = [dict(s, type=t['type'])
                 for t in json.load(open(os.path.join(args.source, 'gamedata', 'FigureData.json')))['setTypes']
                 for s in t['sets']]
@@ -325,6 +328,19 @@ def main():
         bundles[lib] = (entries, key, data)
         lib_parts[lib] = mine
 
+    # A left part with no sprites of its own still draws: for a mirrored
+    # direction Nitro takes the right part's sprite under the same id (lc
+    # 10000428 is jacket_U_globocorazon's balloon in the other hand). Claimed
+    # once every part that is really drawn has been.
+    for lib, parts in candidates:
+        if lib not in bundles:
+            continue
+        drawn = drawn_parts(bundles[lib][2])
+        for k in parts:
+            if k not in claims and k not in drawn and (FLIP.get(k[0]), k[1]) in drawn:
+                claims[k] = lib
+                lib_parts[lib].append(k)
+
     # 4. resolve every part a set lists, the way the dump resolved it
     src_drawn = {}
 
@@ -360,11 +376,27 @@ def main():
         keys = [part_key(p['type'], p['id']) for p in s['parts']]
         if not any(k in claims for k in keys):
             continue
+        # Nitro loads every library the map lists for every part of the set,
+        # then looks each sprite up across all of them: a part its own
+        # library lacks still drew if another of those has it
+        # (shirt_F_collarjumpe1's jumper is in shirt_F_collarjumper).
+        loaded = list(dict.fromkeys(lib for k in keys for lib in loads.get(k, ())))
         parts, ok, have = [], True, set()
         for p, k in zip(s['parts'], keys):
             r = resolve(k)
             if r is NOTHING:
-                continue                       # the set looks as it did in the dump
+                lib = next((lib for lib in loaded if lib in bundles
+                            and ({k, (FLIP.get(k[0]), k[1])} & drawn_parts(bundles[lib][2]))), None)
+                kept = next((hotel_id(l.lower(), k) for l in loaded
+                             if l.lower() in hotel_libs and hotel_id(l.lower(), k)), None)
+                if lib:
+                    claims[k] = lib
+                    lib_parts[lib].append(k)
+                    r = ('claim', k)
+                elif kept:
+                    r = ('keep', kept)
+                else:
+                    continue                   # the set looks as it did in the dump
             if r is None:
                 if p['type'] in SECONDARY:
                     continue
@@ -425,12 +457,25 @@ def main():
             print('take\t%s\t%s' % (lib, ' '.join('%s-%s' % k for k in lib_parts[lib] if k in used)))
         return
 
-    # 5. ids
-    part_ids = {k: prior_parts[k] for k in used if k in prior_parts}
+    # 5. ids. One new id per dump id, whatever the part type: a shirt is ch,
+    # ls and rs all on 4031, and Nitro draws a mirrored direction's left
+    # sleeve with the right sleeve's sprite under the same id (rs_<ls id>),
+    # so ls and rs on two ids lose a sleeve facing left. A dump id an earlier
+    # run gave out keeps its lowest id, which no other dump id holds.
+    by_old = collections.defaultdict(list)
+    for k in used:
+        by_old[k[1]].append(k)
+    part_ids = {}
     next_part = max(list(prior_parts.values()) + [FIRST_PART - 1]) + 1
-    for k in sorted(used - set(part_ids), key=lambda k: (k[0], int(k[1]))):
-        part_ids[k] = next_part
-        next_part += 1
+    for old in sorted(by_old, key=int):
+        given = [prior_parts[k] for k in by_old[old] if k in prior_parts]
+        if given:
+            new = min(given)
+        else:
+            new = next_part
+            next_part += 1
+        for k in by_old[old]:
+            part_ids[k] = new
     resolved.sort(key=lambda s: (SET_TYPE_ORDER.index(s['type']), int(s['id'])))
     next_set = max(list(prior_sets.values()) + [FIRST_SET - 1]) + 1
     for s in resolved:
@@ -513,7 +558,9 @@ def main():
     # 7. FigureMap fragment
     fm = json.load(open(MAP_FRAGMENT))
     have = {lib['id'] for lib in fm['libraries']}
-    fm['libraries'].extend(e for e in map_entries if e['id'] not in have)
+    rewritten = {e['id']: e for e in map_entries}
+    fm['libraries'] = [rewritten.pop(lib['id'], lib) for lib in fm['libraries']]   # this import's own: rewritten
+    fm['libraries'].extend(e for e in rewritten.values() if e['id'] not in have)
     with open(MAP_FRAGMENT, 'w') as fh:
         json.dump(fm, fh, indent=1)
 
@@ -537,8 +584,11 @@ def main():
         if st is None:
             st = by_type[s['type']] = {'type': s['type'], 'sets': []}
             fd['setTypes'].append(st)
-        if all(x['id'] != s['new_id'] for x in st['sets']):
+        at = next((n for n, x in enumerate(st['sets']) if x['id'] == s['new_id']), None)
+        if at is None:
             st['sets'].append(json_set(s))
+        else:
+            st['sets'][at] = json_set(s)       # this import's own: rewritten
     with open(DATA_FRAGMENT, 'w') as fh:
         json.dump(fd, fh, indent=1)
 
@@ -546,15 +596,20 @@ def main():
     for set_type in SET_TYPE_ORDER:
         lines = []
         for s in resolved:
-            if s['type'] != set_type or ('<set id="%d"' % s['new_id']) in xml:
+            if s['type'] != set_type:
                 continue
             j = json_set(s)
-            lines.append('<set id="%d" gender="%s" club="0" colorable="%d" selectable="1" preselectable="0">'
-                         % (j['id'], j['gender'], j['colorable']))
+            block = ['<set id="%d" gender="%s" club="0" colorable="%d" selectable="1" preselectable="0">'
+                     % (j['id'], j['gender'], j['colorable'])]
             for p in j['parts']:
-                lines.append('<part id="%d" type="%s" colorable="%d" index="%d" colorindex="%d"/>'
+                block.append('<part id="%d" type="%s" colorable="%d" index="%d" colorindex="%d"/>'
                              % (p['id'], p['type'], p['colorable'], p['index'], p['colorindex']))
-            lines.append('</set>')
+            block.append('</set>')
+            existing = re.compile(r'<set id="%d" [^>]*>.*?</set>' % j['id'], re.S)
+            if existing.search(xml):           # this import's own: rewritten in place
+                xml = existing.sub(lambda _: '\n'.join(block), xml, count=1)
+            else:
+                lines.extend(block)
         if not lines:
             continue
         opening = xml.index('<settype type="%s"' % set_type)

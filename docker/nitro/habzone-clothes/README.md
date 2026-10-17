@@ -2,8 +2,8 @@
 
 Custom clothing from a Habzone asset dump (habzone.lol, a Nitro hotel; its
 figure bundles and gamedata date from March 2024). Imported on 2026-10-17:
-1,738 libraries, 1,792 figure sets and 1,736 Clothing Store rows (migrations
-264 and 265, the second adding acc_waist_F_per). See `docker/nitro/import-habzone-clothes.py` for what was taken and
+1,738 libraries, 1,793 figure sets and 1,737 Clothing Store rows (migrations
+264, 265 and 266; the last two add acc_waist_F_per and hair_F_leetttbeyh). See `docker/nitro/import-habzone-clothes.py` for what was taken and
 why.
 
 `ids.csv` maps every imported set and part from its Habzone id to its hotel
@@ -59,6 +59,31 @@ reads the scale, and fingerprints compare full-size sprites only.
 Browsers keep a figure bundle for a week, so a fix to a bundle that already
 shipped reaches players only once `avatar.asset.url`'s `?v=` is bumped in the
 server's renderer-config.json (or they hard-reload).
+
+## Render sweep (2026-10-17)
+
+Every imported set was rendered at all eight directions through the repo's
+imager (Nitro's avatar code) twice - once from the dump exactly as Habzone
+served it, once from ours - and the two images diffed. That found three more
+faults, all fixed in the importer:
+
+- **One id per dump id.** A shirt is ch, ls and rs all on one id, and for a
+  mirrored direction Nitro draws a left sleeve with the right sleeve's sprite
+  under the same id. Renumbering each part type separately lost a sleeve or
+  an arm facing left. Part ids are now shared per dump id; set ids, which is
+  what players own, did not change.
+- **Mirrored-only parts.** Some left parts have no sprites of their own and
+  only ever drew mirrored (jacket_U_globocorazon's second balloon). They were
+  dropped as drawing nothing; they are now kept.
+- **Parts drawn by a sibling library.** Nitro loads every library the map
+  lists for a set and finds each sprite across all of them, so a part its own
+  library lacks still drew if another of them had it. Those are now claimed
+  from the library that draws them.
+
+What still differs (46 of 1,793) is the dump's own id collisions: two of its
+libraries draw the same id, and Habzone showed whichever loaded first
+(hat_U_lion showed hat_U_panda, shirt_M_Rapto a plain crop top). Ours draws
+each library's own art.
 
 ## Stray sprites
 
