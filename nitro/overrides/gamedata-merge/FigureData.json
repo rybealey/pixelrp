@@ -4759,6 +4759,59 @@
        "colorindex": 1
       }
      ]
+    },
+    {
+     "id": 300762,
+     "gender": "U",
+     "club": 0,
+     "colorable": true,
+     "selectable": true,
+     "preselectable": false,
+     "sellable": true,
+     "parts": [
+      {
+       "id": 301030,
+       "type": "hd",
+       "colorable": true,
+       "index": 0,
+       "colorindex": 2
+      },
+      {
+       "id": 301030,
+       "type": "ey",
+       "colorable": true,
+       "index": 0,
+       "colorindex": 2
+      },
+      {
+       "id": 301030,
+       "type": "fc",
+       "colorable": true,
+       "index": 0,
+       "colorindex": 2
+      },
+      {
+       "id": 1,
+       "type": "bd",
+       "colorable": true,
+       "index": 1,
+       "colorindex": 1
+      },
+      {
+       "id": 1,
+       "type": "lh",
+       "colorable": true,
+       "index": 1,
+       "colorindex": 1
+      },
+      {
+       "id": 1,
+       "type": "rh",
+       "colorable": true,
+       "index": 1,
+       "colorindex": 1
+      }
+     ]
     }
    ]
   },

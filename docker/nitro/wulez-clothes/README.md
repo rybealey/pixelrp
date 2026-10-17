@@ -2,8 +2,9 @@
 
 Custom clothing from [Wulles/Wuco](https://github.com/Wulles/Wuco) ("Wulez
 Clothes", last updated 2021-01-05): retro clothing from HabboCity and other
-Brazilian hotels. Imported on 2026-10-16: 760 libraries, 762 figure sets and
-748 Clothing Store rows (migration 262). See
+Brazilian hotels. Imported on 2026-10-16: 761 libraries, 763 figure sets and
+749 Clothing Store rows (migrations 262 and 263, the second adding
+face_U_rise2). See
 `docker/nitro/import-wulez-clothes.py` for what was taken and why.
 
 `ids.csv` maps every imported set and part from its pack id to its hotel id.
@@ -12,9 +13,9 @@ items on some of the pack's numbers.
 
 ## Reproducing it
 
-Run this on a tree from before the import (parent `1e5c9a0b`). Once the
-pack's libraries are in `gamedata-merge/FigureMap.json`, the script counts
-them as the hotel's own and finds almost nothing left to take.
+The script can be re-run on the current tree. `ids.csv` tells it what it
+already imported, so those pieces keep their ids and anything new takes the
+next ones. Give each run a new migration number; it writes only the new rows.
 
 ```bash
 git clone --depth 1 https://github.com/Wulles/Wuco.git wuco

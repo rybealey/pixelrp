@@ -149,6 +149,7 @@ set,hair_F_melinda1,hr,990000480,300146
 set,hair_F_melinda2,hr,990000481,300147
 set,face_U_cyclreb,hd,987462871,300148
 set,face_U_rise1,hd,989999973,300149
+set,face_U_rise2,hd,990000447,300762
 set,Shirt_M_Tshirt_Tamme,ch,5593,300150
 set,shirt_F_spongebobshi,ch,6666,300151
 set,shirt_M_spongebobshi,ch,6667,300152
@@ -2168,6 +2169,9 @@ part,acc_print_U_guccihc,cp,5014,300235
 part,acc_chest_U_devilwings,ca,31755,301023
 part,acc_face_U_antiPween,fa,5200,300274
 part,acc_face_U_antiPween,fa,5201,300275
+part,face_U_rise2,hd,7875,301030
+part,face_U_rise2,ey,7875,301030
+part,face_U_rise2,fc,7875,301030
 part,jacket_M_PhilippPlein1,cc,5102,300262
 part,jacket_M_PhilippPlein1,lc,5102,300262
 part,jacket_M_PhilippPlein1,rc,5102,300262

@@ -11466,6 +11466,24 @@
      "type": "cc"
     }
    ]
+  },
+  {
+   "id": "face_U_rise2",
+   "revision": 0,
+   "parts": [
+    {
+     "id": 301030,
+     "type": "hd"
+    },
+    {
+     "id": 301030,
+     "type": "ey"
+    },
+    {
+     "id": 301030,
+     "type": "fc"
+    }
+   ]
   }
  ]
 }

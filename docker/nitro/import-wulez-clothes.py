@@ -50,7 +50,8 @@ Every pack set that draws at least one claimed part is imported. Each of its
 parts must resolve - to a claimed part (renumbered) or to a part the hotel
 already has (kept, e.g. a custom shirt on Habbo's sleeves). A sleeve, hand or
 hair-back part (ls/rs/lc/rc/hrb) nothing draws is dropped, as the client would
-draw nothing for it anyway; any other unresolvable part drops the set. A set
+draw nothing for it anyway; a body part nothing draws (face_U_rise2's body 2)
+stands on Habbo's body 1 instead; any other unresolvable part drops the set. A set
 identical to one already imported (same type, same parts) is not added twice,
 and a part a set lists twice is kept once - the emulator keys a set's parts on
 id-type with Dictionary.Add, so a repeat would stop it starting.
@@ -81,10 +82,12 @@ selected SWFs (docker/nitro/README.md). Run --list first to get that list.
 Twelve of the pack's SWFs have a broken document class and convert to empty
 bundles until it is rewritten (see docker/nitro/wulez-clothes/README.md).
 
-Re-running regenerates every output from scratch (ids are deterministic) but
-only ever APPENDS to the gamedata fragments and figuredata.xml if the set ids
-are not there yet. The migration file follows sql-updates-by-filename: once
-it has run anywhere, a change goes in a new number.
+Re-running is safe on the current tree. Whatever ids.csv says was imported
+keeps its ids and is not mistaken for the hotel's own; anything new takes the
+next ids in the block, and the gamedata fragments and figuredata.xml are only
+ever appended to. Give a re-run a new --migration number: it writes only the
+rows for what is new (263 added face_U_rise2), because an applied migration is
+never re-run (sql-updates-by-filename).
 """
 import argparse
 import collections
@@ -111,6 +114,10 @@ FIRST_PART = 300000
 PRICE = 50
 OWNED_ONLY_TYPES = {'hd'}
 SECONDARY = {'ls', 'rs', 'lc', 'rc', 'hrb'}
+# Body parts the pack's sets wear that nothing draws, not even the pack's own
+# hh_human_50_body: face_U_rise2 stands on body 2. Its twin face_U_rise1
+# stands on Habbo's body 1, and so does it here.
+BODY_SUBSTITUTES = {('bd', '2'): '1', ('lh', '2'): '1', ('rh', '2'): '1'}
 SET_TYPE_ORDER = ['hr', 'hd', 'ch', 'lg', 'sh', 'ha', 'he', 'ea', 'fa', 'ca', 'wa', 'cc', 'cp']
 
 # h_<action>_<part type>_<part id>_<direction>_<frame>, optionally behind the
@@ -184,14 +191,31 @@ def main():
     pack_map = list(merged.items())
     pack_sets = load_sets(os.path.join(args.wuco, WULEZ, 'gamedata', 'figuredata.xml'))
 
+    # what an earlier run already imported keeps its ids, and is not counted
+    # as the hotel's own when deciding what to take
+    prior_sets, prior_parts, prior_libs = {}, {}, set()
+    if os.path.exists(IDS_CSV):
+        for row in csv.DictReader(open(IDS_CSV)):
+            prior_libs.add(row['library'])
+            # the pack reuses set ids (912006 is two different shirts), so a
+            # set is known by its type and library too
+            if row['kind'] == 'set':
+                prior_sets[(row['type'], row['pack_id'], row['library'])] = int(row['hotel_id'])
+            else:
+                prior_parts[row['pack_id']] = int(row['hotel_id'])
+    ours = {str(i) for i in prior_sets.values()}
+
     hotel_libs = {lib.lower() for lib, _ in xml_map(args.habbo_figuremap)}
     hotel_parts = {p for _, parts in xml_map(args.habbo_figuremap) for p in parts}
     for lib in json.load(open(MAP_FRAGMENT))['libraries']:
+        if lib['id'] in prior_libs:
+            continue
         hotel_libs.add(lib['id'].lower())
         hotel_parts.update((p['type'], str(p['id'])) for p in lib.get('parts', []))
     hotel_xml = ET.parse(FIGUREDATA_XML).getroot()
-    hotel_parts.update((p.get('type'), p.get('id')) for p in hotel_xml.iter('part'))
-    hotel_set_ids = {s.get('id') for s in hotel_xml.iter('set')}
+    hotel_sets = [s for s in hotel_xml.iter('set') if s.get('id') not in ours]
+    hotel_parts.update((p.get('type'), p.get('id')) for s in hotel_sets for p in s.findall('part'))
+    hotel_set_ids = {s.get('id') for s in hotel_sets}
     habbo_2020 = {p for _, parts in xml_map(os.path.join(args.wuco, HABBO_2020)) for p in parts}
 
     # 1. libraries
@@ -237,6 +261,9 @@ def main():
         if s['type'] not in SET_TYPE_ORDER:
             dropped['set type the hotel does not have'] += 1
             continue
+        s = dict(s, parts=[dict(p, id=BODY_SUBSTITUTES[(p['type'], p['id'])])
+                           if (p['type'], p['id']) in BODY_SUBSTITUTES and (p['type'], p['id']) not in hotel_parts
+                           else p for p in s['parts']])
         keys = [(p['type'], p['id']) for p in s['parts']]
         if not any(k in claims for k in keys):
             continue
@@ -265,15 +292,27 @@ def main():
                        if owners[lib] == top)
         resolved.append(dict(s, parts=parts, library=library))
 
-    # 4. ids: parts used by an imported set, then sets, all deterministic
+    # 4. ids: parts used by an imported set, then sets, all deterministic. An
+    # id an earlier run gave out is kept (the live shelf and every saved look
+    # use it); anything new goes after the last one given out.
     used = {(p['type'], p['id']) for s in resolved for p in s['parts'] if (p['type'], p['id']) in claims}
-    part_ids = {}
-    for old in sorted({i for _, i in used}, key=int):
-        part_ids[old] = FIRST_PART + len(part_ids)
+    part_ids = {old: new for old, new in prior_parts.items() if old in {i for _, i in used}}
+    next_part = max(list(prior_parts.values()) + [FIRST_PART - 1]) + 1
+    for old in sorted({i for _, i in used} - set(part_ids), key=int):
+        part_ids[old] = next_part
+        next_part += 1
     resolved.sort(key=lambda s: (SET_TYPE_ORDER.index(s['type']), int(s['id'])))
-    for n, s in enumerate(resolved):
-        s['new_id'] = FIRST_SET + n
+    next_set = max(list(prior_sets.values()) + [FIRST_SET - 1]) + 1
+    for s in resolved:
+        key = (s['type'], s['id'], s['library'])
+        if key in prior_sets:
+            s['new_id'] = prior_sets[key]
+        else:
+            s['new_id'] = next_set
+            next_set += 1
         assert str(s['new_id']) not in hotel_set_ids
+    added = [s for s in resolved if (s['type'], s['id'], s['library']) not in prior_sets]
+    assert len({s['new_id'] for s in resolved}) == len(resolved)
 
     def new_part(p):
         k = (p['type'], p['id'])
@@ -378,6 +417,8 @@ def main():
         rows.setdefault((s['type'], base_of(s['library'])), []).append(s)
     shelf = []
     for (set_type, _), sets in rows.items():
+        if not any(s in added for s in sets):
+            continue                           # on the shelf since an earlier migration
         libs = list(dict.fromkeys(s['library'] for s in sets))
         shelf.append((','.join(libs), ','.join(str(s['new_id']) for s in sets),
                       0 if set_type in OWNED_ONLY_TYPES else PRICE))
@@ -396,17 +437,29 @@ def main():
     if args.migration:
         path = os.path.join(UPDATES, '%d_ClothingWulez.sql' % args.migration)
         with open(path, 'w') as fh:
-            fh.write(migration(shelf, len(libraries), len(resolved)))
+            fh.write(migration(shelf, len(libraries), len(resolved)) if not prior_sets else addendum(shelf))
         log('wrote', path)
 
     log('libraries: %d imported, %d skipped' % (len(libraries), len(skipped)))
     for lib, why in skipped:
         log('  skipped %-34s %s' % (lib, why))
-    log('sets: %d imported; dropped %s' % (len(resolved), dict(dropped)))
+    log('sets: %d imported (%d new this run); dropped %s' % (len(resolved), len(added), dict(dropped)))
     log('parts: %d renumbered' % len(part_ids))
     log('shelf rows: %d (%d at %d credits, %d owned-only)' % (
         len(shelf), sum(1 for r in shelf if r[2]), PRICE, sum(1 for r in shelf if not r[2])))
     log('genders:', dict(collections.Counter(gender_of(s['library']) for s in resolved)))
+
+
+def addendum(shelf):
+    names = ', '.join(name for name, _, _ in shelf)
+    return '''-- pixelrp: more of the Wulez clothing pack (262), added by a later run of
+-- docker/nitro/import-wulez-clothes.py: %s.
+-- Sets already imported keep their ids; these take the next ones in the
+-- pack's block. Same rules as 262: 50 credits, faces 0 and owned-only (staff
+-- wear every face regardless - FigureDataManager.ProcessFigure). A row whose
+-- name or first set some row already has is left alone.
+
+''' % names + migration(shelf, 0, 0).split('\n\n', 1)[1]
 
 
 def migration(shelf, libraries, sets):
