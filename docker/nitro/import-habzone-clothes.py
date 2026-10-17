@@ -90,8 +90,9 @@ Usage:
       --habbo-figuremap fm_0806.xml [--list | --migration 264]
 
 --list reports what would be taken and why the rest is not, and writes
-nothing. Re-running is safe: ids.csv keeps every id an earlier run gave out,
-and the migration holds only the new rows.
+nothing. Re-running is safe: ids.csv keeps every id an earlier run gave out
+(and what an earlier run imported is never re-judged a copy - it is on the
+shelf), the bundles are rewritten, and the migration holds only the new rows.
 """
 import argparse
 import collections
@@ -130,9 +131,11 @@ CATEGORY = {'hr': 'Head', 'ha': 'Head', 'he': 'Head', 'ea': 'Head', 'fa': 'Head'
             'ch': 'Torso', 'cp': 'Torso', 'cc': 'Torso', 'ca': 'Torso',
             'lg': 'Legs', 'sh': 'Legs', 'wa': 'Legs'}
 
-# h_<action>_<part type>_<part id>_<direction>_<frame>, optionally behind the
-# library's own name (spritesheet frames are <library>_h_std_...)
-SPRITE = re.compile(r'(h_[a-z]+_)([a-z]+)_(\d+)(_\d+_\d+)$')
+# <scale>_<action>_<part type>_<part id>_<direction>_<frame>, optionally behind
+# the library's own name (spritesheet frames are <library>_h_std_...). The
+# scale is h, or sh for the small avatar: the dump's spritesheets carry an
+# sh_ frame beside most h_ ones, and it must not be read as its h_ twin.
+SPRITE = re.compile(r'(?<![^_])((s?h)_[a-z]+_)([a-z]+)_(\d+)(_\d+_\d+)$')
 
 
 def log(*args):
@@ -170,19 +173,19 @@ def read_bundle(path):
     prints = collections.defaultdict(list)
     for name, frame in frames.items():
         m = SPRITE.search(name)
-        if not m or image is None:
+        if not m or m.group(2) != 'h' or image is None:
             continue
         r = frame['frame']
         crop = image.crop((r['x'], r['y'], r['x'] + r['w'], r['y'] + r['h']))
         if crop.getbbox() is None or r['w'] * r['h'] < 25:
             continue                           # blank or a few pixels: matches everything
         digest = hashlib.md5(crop.tobytes() + str(crop.size).encode()).hexdigest()[:16]
-        prints[(m.group(2), m.group(3))].append(m.group(1) + m.group(4) + ':' + digest)
+        prints[(m.group(3), m.group(4))].append(m.group(1) + m.group(5) + ':' + digest)
     return entries, key, data, prints
 
 
 def drawn_parts(data):
-    return {(m.group(2), m.group(3)) for m in map(SPRITE.match, data.get('assets') or {}) if m}
+    return {(m.group(3), m.group(4)) for m in map(SPRITE.match, data.get('assets') or {}) if m and m.group(2) == 'h'}
 
 
 def main():
@@ -312,7 +315,9 @@ def main():
                 copies[k] = target
         main_parts = [k for k in mine if k[0] not in SECONDARY and prints.get(k)] or \
                      [k for k in mine if prints.get(k)]
-        if main_parts and all(k in copies for k in main_parts):
+        # a library an earlier run imported stays: it is on the shelf, and
+        # someone may own it
+        if lib not in prior_libs and main_parts and all(k in copies for k in main_parts):
             skipped.append((lib, 'copy of %s-%s' % (main_parts[0][0], copies[main_parts[0]])))
             continue
         for k in mine:
@@ -374,7 +379,8 @@ def main():
             ok = False
         claimed = [p['resolved'][1] for p in parts if p['resolved'][0] == 'claim']
         main_claimed = [k for k in claimed if k[0] not in SECONDARY] or claimed
-        if ok and main_claimed and all(k in copies for k in main_claimed):
+        imported = any(key[:2] == (s['type'], str(s['id'])) for key in prior_sets)
+        if ok and not imported and main_claimed and all(k in copies for k in main_claimed):
             dropped['copy of a hotel garment'] += 1
             continue
         if not ok:
@@ -454,10 +460,10 @@ def main():
             m = SPRITE.search(name)
             if not m:
                 return name
-            k = (m.group(2), m.group(3))
+            k = (m.group(3), m.group(4))
             if k not in mine:
                 return None
-            return name[:m.start()] + '%s%s_%d%s' % (m.group(1), m.group(2), part_ids[k], m.group(4))
+            return name[:m.start()] + '%s%s_%d%s' % (m.group(1), m.group(3), part_ids[k], m.group(5))
 
         # a kept alias can draw another part's sprite; when that part is not
         # kept, its sprite stays under a name no avatar looks up

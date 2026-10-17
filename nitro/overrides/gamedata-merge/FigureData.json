@@ -62847,6 +62847,31 @@
        "colorindex": 0
       }
      ]
+    },
+    {
+     "id": 401791,
+     "gender": "F",
+     "club": 0,
+     "colorable": false,
+     "selectable": true,
+     "preselectable": false,
+     "sellable": true,
+     "parts": [
+      {
+       "id": 403538,
+       "type": "wa",
+       "colorable": false,
+       "index": 0,
+       "colorindex": 0
+      },
+      {
+       "id": 403539,
+       "type": "wa",
+       "colorable": false,
+       "index": 1,
+       "colorindex": 0
+      }
+     ]
     }
    ]
   },

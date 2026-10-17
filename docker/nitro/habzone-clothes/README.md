@@ -2,8 +2,8 @@
 
 Custom clothing from a Habzone asset dump (habzone.lol, a Nitro hotel; its
 figure bundles and gamedata date from March 2024). Imported on 2026-10-17:
-1,737 libraries, 1,791 figure sets and 1,735 Clothing Store rows (migration
-264). See `docker/nitro/import-habzone-clothes.py` for what was taken and
+1,738 libraries, 1,792 figure sets and 1,736 Clothing Store rows (migrations
+264 and 265, the second adding acc_waist_F_per). See `docker/nitro/import-habzone-clothes.py` for what was taken and
 why.
 
 `ids.csv` maps every imported set and part from its Habzone id to its hotel
@@ -45,6 +45,20 @@ python3 docker/nitro/import-habzone-clothes.py --source <dump root> --habbo-figu
 `<dump root>` holds `bundled/figure/` and `gamedata/` (FigureMap.json,
 FigureData.json, EffectMap.json). A re-run on the current tree changes
 nothing; give a run that finds more a new migration number.
+
+## Two sprite scales
+
+The dump's spritesheets hold each sprite twice: `h_std_ch_4031_2_0` for the
+full-size avatar and `sh_std_ch_4031_2_0` for the small one. The first
+import's frame renaming read the `h_std_...` inside `sh_std_...` and dropped
+the `s`, so in 323 bundles a small frame overwrote its full-size twin: shirts
+drew only their sleeves and hairs a few stray strands, on the avatar and in
+the store. Fixed the same day; ids did not change. The sprite pattern now
+reads the scale, and fingerprints compare full-size sprites only.
+
+Browsers keep a figure bundle for a week, so a fix to a bundle that already
+shipped reaches players only once `avatar.asset.url`'s `?v=` is bumped in the
+server's renderer-config.json (or they hard-reload).
 
 ## Stray sprites
 

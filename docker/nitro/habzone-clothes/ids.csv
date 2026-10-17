@@ -1529,6 +1529,7 @@ set,bsstonino_U_cinturavalentino,wa,61156452,401526
 set,bsstonino_U_cinturazucca,wa,61156469,401527
 set,bsstonino_U_cinturaoscura,wa,61156484,401528
 set,bsstonino_U_cinturacuore,wa,61156491,401529
+set,acc_waist_F_per,wa,800001176,401791
 set,acc_waist_U_hipbaa,wa,800001183,401530
 set,acc_wibbo_U_armybelt,wa,800001189,401531
 set,acc_waist_U_chan,wa,800001713,401532
@@ -4312,6 +4313,8 @@ part,acc_print_U_superman,cp,6679,400853
 part,acc_print_U_thrashe,cp,5000,400832
 part,acc_print_U_thrashe,cp,5001,400833
 part,acc_print_U_vipgls,cp,6012,400848
+part,acc_waist_F_per,wa,9555,403538
+part,acc_waist_F_per,wa,9556,403539
 part,acc_waist_U_hipbaa,wa,5033,403496
 part,acc_waist_U_hipbaa,wa,5034,403497
 part,acc_wibbo_U_armybelt,wa,9119,403498

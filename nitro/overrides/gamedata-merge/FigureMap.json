@@ -36058,6 +36058,20 @@
      "type": "lg"
     }
    ]
+  },
+  {
+   "id": "acc_waist_F_per",
+   "revision": 0,
+   "parts": [
+    {
+     "id": 403538,
+     "type": "wa"
+    },
+    {
+     "id": 403539,
+     "type": "wa"
+    }
+   ]
   }
  ]
 }
