@@ -2,7 +2,9 @@
 
 Files here are rsynced over the server's git-ignored `nitro/assets/` tree on
 every beta deploy (same layout: `bundled/effect/…`, `bundled/furniture/…`,
-`gamedata/…`). Build effect bundles with `docker/nitro/make-badge-effect.py`.
+`gamedata/…`). Build effect bundles with `docker/nitro/make-badge-effect.py`
+(a badge from an image) or `docker/nitro/make-police-beacon.py` (the police
+beacon, effect 639, drawn in code).
 
 Two directories, two different mechanisms:
 
