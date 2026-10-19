@@ -24,7 +24,7 @@ Use a NEW library name for every rebuild (VapeSmoke2, ...): bundles are cached
 for a week and their URL carries no version; EffectMap.json is no-store.
 
 Usage:
-  python3 docker/nitro/make-vape-smoke.py --lib VapeSmoke2
+  python3 docker/nitro/make-vape-smoke.py --lib VapeSmoke3
 """
 import argparse, json, math, pathlib, struct, sys, zlib
 
@@ -39,11 +39,11 @@ BEHIND = {7}
 
 # The puff over time: distance out, rise, size and opacity. Frame 0 is the
 # first burst at the lips; from the middle on its lobes drift apart as it fades.
-DIST = [0.5, 2.0, 4.0, 6.4, 8.8, 11.0, 13.0, 14.8, 16.4, 17.8]
-RISE = [0.0, 0.8, 2.0, 3.8, 6.0, 8.4, 11.0, 13.6, 16.2, 18.8]
-SIZE = [1.2, 2.6, 4.0, 5.3, 6.4, 7.3, 8.0, 8.6, 9.1, 9.5]   # a big puff, about a head wide at the end (Twist, 2026-10-20)
+DIST = [0.5, 2.6, 5.4, 8.4, 11.2, 13.6, 15.8, 17.6, 19.2, 20.6]
+RISE = [0.0, 1.0, 2.6, 4.8, 7.4, 10.2, 13.2, 16.2, 19.2, 22.2]
+SIZE = [1.6, 3.6, 5.6, 7.4, 8.8, 9.9, 10.8, 11.4, 11.9, 12.2]   # big clouds, wider than the head at the end (Twist, 2026-10-20)
 SPREAD = [1.0, 1.0, 1.0, 1.0, 1.05, 1.12, 1.22, 1.34, 1.48, 1.64]
-ALPHA = [200, 225, 235, 235, 230, 215, 190, 155, 115, 75]
+ALPHA = [140, 155, 160, 158, 150, 138, 120, 98, 72, 45]   # see-through: the room shows through it (Twist)
 LEAD_REPEATS = 12                         # nothing for ~1 s first: the vape is at the mouth (the client raises it)
 REPEATS = [2, 2, 2, 3, 3, 3, 3, 3, 3, 3]   # avatar animation steps (~82 ms) per frame: ~2.2 s
 TAIL_REPEATS = 60                         # then nothing, ~5 s - the emulator takes it off long before
@@ -54,8 +54,9 @@ SHADES = [(255, 255, 255), (236, 237, 243), (214, 215, 224), (191, 192, 204)]
 RIM = (163, 165, 180)
 
 # The cloud as overlapping lobes (dx, dy up, radius), in units of its size:
-# a big middle, two shoulders and two smaller lobes on top.
-LOBES = [(0.0, 0.0, 1.0), (-0.85, -0.2, 0.72), (0.85, -0.15, 0.75), (-0.35, 0.62, 0.68), (0.42, 0.58, 0.64)]
+# a big middle, two shoulders, two smaller lobes on top and a billow out each side.
+LOBES = [(0.0, 0.0, 1.0), (-0.85, -0.2, 0.72), (0.85, -0.15, 0.75), (-0.35, 0.62, 0.68), (0.42, 0.58, 0.64),
+         (-1.4, 0.1, 0.5), (1.35, 0.3, 0.52)]
 
 def puff(direction, frame):
     """One frame for one direction: (left, top-above-feet, rows) or None when empty."""

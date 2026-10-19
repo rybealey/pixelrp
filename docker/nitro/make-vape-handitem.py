@@ -60,8 +60,11 @@ TIP_RADIUS = 1.25          # the mouthpiece a little narrower, blunt at the end
 # touched the nose (Twist, 2026-10-20). Lowered this many pixels it is on the lips.
 RAISED_DROP = 2
 # Held, the lolly's body sits on top of the fist with only its stick inside, so
-# the pen stood on the hand rather than in it. Lowered this many pixels it is gripped.
-HELD_DROP = 3
+# the pen stood on the hand - and the bit of fist under it looked like a thin,
+# pinching hand (Twist, 2026-10-20). Lowered this many pixels it runs through
+# the fist the way Habbo's own pencil (part 230) and paintbrush (142) do: the
+# fist behind its lower half, a little of it showing below.
+HELD_DROP = 7
 
 # Zones along the vape, 0 at the hand and 1 at the mouthpiece.
 def zone(u):
