@@ -27,7 +27,7 @@ nobody keeps a cached library without it.
 Usage:
   python3 docker/nitro/make-vape-handitem.py
 """
-import io, json, pathlib, re, struct, sys, zlib
+import io, json, math, pathlib, re, struct, sys, zlib
 
 from PIL import Image
 
@@ -56,6 +56,12 @@ CREAM = [hx('#fff8e6'), hx('#fff1c9'), hx('#ffe2a6'), hx('#e0a868')]
 
 RADIUS = 1.45              # half the pen's width inside its outline: 3 px across
 TIP_RADIUS = 1.25          # the mouthpiece a little narrower, blunt at the end
+# Raised, the lolly's top end sits higher than a mouth: at its line the pen
+# touched the nose (Twist, 2026-10-20). Lowered this many pixels it is on the lips.
+RAISED_DROP = 2
+# Held, the lolly's body sits on top of the fist with only its stick inside, so
+# the pen stood on the hand rather than in it. Lowered this many pixels it is gripped.
+HELD_DROP = 3
 
 # Zones along the vape, 0 at the hand and 1 at the mouthpiece.
 def zone(u):
@@ -81,13 +87,39 @@ def axis(img):
     far = max(body, key=lambda p: (p[0] - sx) ** 2 + (p[1] - sy) ** 2)
     return (near[0] + 0.5, near[1] + 0.5), (far[0] + 0.5, far[1] + 0.5)
 
-def pen(img):
-    """The vape as a slim pen along the lolly's line, on a canvas padded by 2 px a side.
-    Seen end-on (raised, facing the viewer) only its orange base shows, at the lips."""
-    line = axis(img)
+def upright(img):
+    """Held: straight up the middle of the lolly's body, bottom (the fist) to top - the lolly
+    leans a little with its stick, and a pen leaning that way looked wonky (Twist, 2026-10-20)."""
+    px = img.load()
+    body = [(x, y) for y in range(img.height) for x in range(img.width) if px[x, y][3] and px[x, y][:3] in PINKS]
+    if not body:
+        return None
+    cx = math.floor((min(x for x, _ in body) + max(x for x, _ in body) + 1) / 2) + 0.5
+    return (cx, max(y for _, y in body) + 0.5), (cx, min(y for _, y in body) + 0.5)
+
+# Directions a 3 px pen draws as an even pixel stair: flat, 2:1, 1:1, 1:2 and
+# upright, either way. A line between them steps unevenly and looks bent.
+CLEAN_ANGLES = [math.atan2(sy * a, sx * b) for a, b in ((0, 1), (1, 2), (1, 1), (2, 1), (1, 0)) for sx in (1, -1) for sy in (1, -1)]
+
+def snapped(line):
+    """Raised: the lolly's line turned to the nearest clean angle about its mouth end, which stays on the lips."""
+    (ax, ay), (bx, by) = line
+    bx, by = math.floor(bx) + 0.5, math.floor(by) + 0.5
+    angle = math.atan2(by - ay, bx - ax)
+    best = min(CLEAN_ANGLES, key=lambda c: abs(math.atan2(math.sin(angle - c), math.cos(angle - c))))
+    length = math.hypot(bx - ax, by - ay)
+    return (bx - length * math.cos(best), by - length * math.sin(best)), (bx, by)
+
+def pen(img, held):
+    """The vape as a slim pen, on a canvas padded by 3 px a side: upright when held, along the
+    lolly's line (squared to a clean angle) when raised. Seen end-on (raised, facing the viewer)
+    only its orange base shows, at the lips."""
+    line = upright(img) if held else axis(img)
     if not line:
         return img.copy(), 0
-    pad = 2
+    if not held and math.dist(*line) >= 4:
+        line = snapped(line)
+    pad = 3
     w, h = img.width + 2 * pad, img.height + 2 * pad
     (ax, ay), (bx, by) = line
     ax, ay, bx, by = ax + pad, ay + pad, bx + pad, by + pad
@@ -123,6 +155,11 @@ def pen(img):
                 side = n / r                  # +1 on the lit side, -1 in shadow
                 shade = 0 if side > 0.55 else 1 if side > 0.0 else 2 if side > -0.6 else 3
                 inside[(x, y)] = zone(u)[shade]
+        # a lone pixel sticking out of an end reads as a bent tip: drop it
+        for _ in range(2):
+            lone = [p for p in inside if sum((p[0] + ex, p[1] + ey) in inside for ex, ey in ((1, 0), (-1, 0), (0, 1), (0, -1))) < 2]
+            for p in lone:
+                del inside[p]
     out = Image.new('RGBA', (w, h), (0, 0, 0, 0))
     o = out.load()
     for p, c in inside.items():
@@ -167,9 +204,18 @@ def build_library():
         return img.transpose(Image.FLIP_LEFT_RIGHT) if a.get('flipH') else img
 
     mine = re.compile(rf'^h_(crr|drk)_ri_{PART}_\d_\d+$')
+    old = []
     for key in [k for k in assets if mine.match(k)]:
         del assets[key]
-        frames.pop(f'{lib}_{key}', None)
+        fr = frames.pop(f'{lib}_{key}', None)
+        if fr:
+            old.append(fr['frame'])
+    # A rebuild: the last build's strip is the bottom of the sheet - cut it off
+    # rather than leave it there under a new one.
+    if old:
+        strip_top = min(f['y'] for f in old)
+        if all(f['frame']['y'] + f['frame']['h'] <= strip_top for f in frames.values()):
+            sheet = sheet.crop((0, 0, sheet.width, strip_top))
 
     new = []
     for action in ('crr', 'drk'):
@@ -182,12 +228,13 @@ def build_library():
                 continue
             a.pop('source', None)
             a.pop('flipH', None)
-            img, pad = pen(picture(src))
+            img, pad = pen(picture(src), held=(action == 'crr'))
             bbox = img.getbbox()
             img = img.crop(bbox)
             # an asset draws its top-left at (-x, y above the feet): padding and cropping move it
             a['x'] -= bbox[0] - pad
             a['y'] -= bbox[1] - pad
+            a['y'] -= RAISED_DROP if action == 'drk' else HELD_DROP
             new.append((dst, a, img))
 
     strip_w = sum(img.width for _, _, img in new)

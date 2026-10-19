@@ -24,7 +24,7 @@ Use a NEW library name for every rebuild (VapeSmoke2, ...): bundles are cached
 for a week and their URL carries no version; EffectMap.json is no-store.
 
 Usage:
-  python3 docker/nitro/make-vape-smoke.py --lib VapeSmoke1
+  python3 docker/nitro/make-vape-smoke.py --lib VapeSmoke2
 """
 import argparse, json, math, pathlib, struct, sys, zlib
 
@@ -38,10 +38,10 @@ DRIFT = {0: (0.55, 1.2), 1: (1.0, 0.55), 2: (0.75, 0.6), 3: (0.95, 0.6), 4: (-0.
 BEHIND = {7}
 
 # The puff over time: distance out, rise, size and opacity. Frame 0 is the
-# first wisp at the lips; from the middle on its lobes drift apart as it fades.
-DIST = [0.5, 1.6, 3.2, 5.0, 6.8, 8.6, 10.2, 11.6, 12.8, 13.8]
-RISE = [0.0, 0.6, 1.6, 3.0, 4.8, 6.8, 9.0, 11.2, 13.4, 15.6]
-SIZE = [0.9, 1.6, 2.4, 3.1, 3.8, 4.4, 4.9, 5.3, 5.6, 5.8]
+# first burst at the lips; from the middle on its lobes drift apart as it fades.
+DIST = [0.5, 2.0, 4.0, 6.4, 8.8, 11.0, 13.0, 14.8, 16.4, 17.8]
+RISE = [0.0, 0.8, 2.0, 3.8, 6.0, 8.4, 11.0, 13.6, 16.2, 18.8]
+SIZE = [1.2, 2.6, 4.0, 5.3, 6.4, 7.3, 8.0, 8.6, 9.1, 9.5]   # a big puff, about a head wide at the end (Twist, 2026-10-20)
 SPREAD = [1.0, 1.0, 1.0, 1.0, 1.05, 1.12, 1.22, 1.34, 1.48, 1.64]
 ALPHA = [200, 225, 235, 235, 230, 215, 190, 155, 115, 75]
 LEAD_REPEATS = 12                         # nothing for ~1 s first: the vape is at the mouth (the client raises it)
@@ -63,7 +63,7 @@ def puff(direction, frame):
     fx, up = DRIFT[direction]
     sign = (fx > 0) - (fx < 0)
     cx = mx + fx * DIST[frame] + sign * 1.0
-    cy = my + RISE[frame] * (up / 0.6 if up > 0.6 else 1.0)
+    cy = my + RISE[frame] * max(1.0, up / 0.6) ** 0.6
     r, s = SIZE[frame], SPREAD[frame]
     parts = [(cx + ox * r * s, cy + oy * r * s, rr * r) for ox, oy, rr in (LOBES if frame >= 2 else LOBES[:1])]
     x0, x1 = math.floor(cx - 3 * r) - 1, math.ceil(cx + 3 * r) + 1
