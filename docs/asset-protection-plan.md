@@ -10,7 +10,10 @@ phased plan to close the gap. Observations are from 2026-10-15.
   client). Each box's secret is made by its deploy workflow on first run.
 - **Phase 0 logging:** built in, now per account instead of per IP.
 - **Phase 1:** dashboard steps, below.
-- **Phase 3:** waits on a week of Phase 0 data.
+- **Phase 3:** the daily furni allowance (item 1) is built, sized from two
+  weeks of the host proxy's logs (2026-10-06 to 10-20). So is the browser
+  guard pause (item 5). The nightly detector and the deny map are not built
+  yet.
 
 ## TL;DR
 
@@ -212,19 +215,21 @@ asset.
 
 **CMS** (`cms/`):
 
-1. **`App\Support\AssetPass::issue(User $user): array`.** Returns three cookies.
+1. **`App\Support\AssetPass::issue(User $user): array`.** Returns four cookies.
    - Values:
      - `prp_ap_u` = user id;
      - `prp_ap_e` = expiry, unix time, now + 24 h;
-     - `prp_ap_s` = signature:
+     - `prp_ap_t` = tier: `staff` at `min_staff_rank` and above, otherwise
+       `player` (Phase 3's furni allowance);
+     - `prp_ap_s` = signature over the other three, space-separated:
 
        ```php
-       rtrim(strtr(base64_encode(md5("{$exp}{$uid} {$secret}", true)), '+/', '-_'), '=')
+       rtrim(strtr(base64_encode(md5("{$exp} {$uid} {$tier} {$secret}", true)), '+/', '-_'), '=')
        ```
    - Attributes: `Path=/nitro-assets/` (so the CMS never receives them),
      `Secure`, `HttpOnly`, `SameSite=Lax`, host-only.
    - The secret is `ASSET_PASS_SECRET`, with a different value on beta and prod.
-2. **`EncryptCookies::$except`:** add the three names. Without this, Laravel
+2. **`EncryptCookies::$except`:** add the four names. Without this, Laravel
    encrypts the values and nginx sees ciphertext, so every file returns 403.
 3. **`NitroController`:** attach `AssetPass::issue()` to the `/game` response.
    The cookies land before the iframe asks for `index.html`.
@@ -272,7 +277,7 @@ emulator change.
 
    ```nginx
    secure_link     $cookie_prp_ap_s,$cookie_prp_ap_e;
-   secure_link_md5 "$secure_link_expires$cookie_prp_ap_u $asset_pass_secret";
+   secure_link_md5 "$secure_link_expires $cookie_prp_ap_u $cookie_prp_ap_t $asset_pass_secret";
    if ($secure_link = "")  { return 403; }   # missing or forged
    if ($secure_link = "0") { return 403; }   # expired
    ```
@@ -311,15 +316,38 @@ emulator change.
 
 ### Phase 3: per-account limit and detection
 
-1. **Rate limit, nginx.** Key the limit on the verified user id:
-   `limit_req_zone $cookie_prp_ap_u zone=assets_user:10m rate=<p99>r/s;`, then
-   `limit_req zone=assets_user burst=<Phase 0 max burst> nodelay;` in the
-   protected locations.
-   - The rewrite-phase `if` (the gate) runs **before** `limit_req`, so only a
-     verified id is ever a key.
-   - Return `429`.
-2. **Logging.** Add `$cookie_prp_ap_u` to `assets.log`, so every file is now
-   attributed to an account.
+1. **Daily furni allowance, nginx + njs (built).** Each non-staff account may
+   fetch **2,000 different furni files a day** (UTC). After that, new furni
+   files answer `429` until midnight.
+   - **What the logs showed.** Two weeks of the host proxy's access log
+     (2026-10-06 to 10-20), with IPv6 grouped by /64:
+     - The heaviest real day was about **300 different furni files**, staff
+       included.
+     - Clothing was **2,000 to 4,800 a day**, most of the ~3,800 libraries,
+       because the wardrobe loads them as it scrolls.
+     - Entering a busy room fired up to **1,100 requests in 10 s**.
+   - **Why it counts furni only.** A request-rate limit (`limit_req`) can't
+     tell those room-entry bursts from a scraper. A clothing count would catch
+     ordinary wardrobe use. Furni (~22,900 files) is where a copy stands out:
+     2,000 is about 7× the heaviest real day, and a full copy takes one account
+     more than a week.
+   - **What counts.** Only *different* files count. A file the account already
+     fetched today is free, so reloads, cleared caches and a second tab cost
+     nothing. Files already fetched keep loading after the allowance runs out,
+     and clothing is never limited.
+   - **Staff.** Staff (`min_staff_rank` and up) carry `prp_ap_t=staff` and have
+     no allowance, so shop and import work is never cut off. The tier is
+     signed, so a player can't set it.
+   - **How it works.** `docker/web/njs/asset-limit.js`, run through
+     `js_set $asset_furni_over` in its own `bundled/furniture/` location,
+     right after the gate's `if`s. Only a verified pass is ever counted.
+   - **Where the counts live.** Two `js_shared_dict_zone`s: one entry per
+     account per file per day, and one count per account per day. They are in
+     memory, so they start over whenever the web container is recreated (every
+     beta deploy).
+2. **Logging (built).** `assets.log` carries `$cookie_prp_ap_u` and
+   `$cookie_prp_ap_t`, so every file is attributed to an account and its tier,
+   and a refused furni file logs as `429`.
 3. **Nightly detector.** A script (cron on the box, or `docker/nitro/`)
    counts distinct `bundled/furniture/*` and `bundled/figure/*` per user per
    day. Above the threshold (Phase 0 max × 5, expected around 2,000 furni), it
@@ -329,6 +357,32 @@ emulator change.
      and `if ($asset_denied) { return 403; }` in the gate.
    - Adding a line and reloading nginx cuts an account off instantly.
    - Banning them in the CMS stops new passes.
+5. **Browser guard pause (built).** The client's browser guard (DevTools
+   opened, or an automated browser) already sends the player back to the
+   website, and the emulator writes it in `rp_browser_guard_log`. For
+   **30 minutes** after the latest catch (`ASSET_GUARD_PAUSE_MINUTES`), the
+   whole account gets no game file at all.
+   - **Why.** The guard only watches the game page. The pass cookies are sent
+     by any page on the site, so without this a script pasted into DevTools on
+     the website could carry on downloading where the game left off.
+   - **CMS.** `App\Support\AssetPause` reads the log. A guard row is per
+     character; the pause is per account (`COALESCE(parent_id, id)`, as the
+     pass is). Staff are never paused.
+     - `/game` shows the ordinary "Connection lost" screen and issues no
+       ticket or pass. It never says why, so a player isn't told what was
+       caught.
+     - `/game/asset-pass` answers `403` with no cookies.
+     - `GET /api/internal/asset-pauses` lists `<account> <unix end>` per
+       line. It needs the asset pass secret in `X-Asset-Pass-Secret`.
+   - **nginx.**
+     - `js_periodic` asks that route every 10 s, from inside the container,
+       and keeps the list in the `asset_paused` dict.
+     - The gate answers `403` to a paused account, whatever page asks.
+     - An answer that doesn't come leaves the last list standing.
+     - `location ~ /api/internal/` lets only `127.0.0.1` through, so the
+       public never reaches the route.
+   - **The limit.** The report comes from the client, so a player who blocks
+     it is never paused. It can only ever pause the reporting account itself.
 
 ### Phase 4: optional, later
 
@@ -358,11 +412,11 @@ emulator change.
 3. **Phase 2** on beta.
    - `curl` `FigureMap.json`:
      - without cookies → `403`;
-     - with the three `prp_ap_*` cookies copied from a logged-in browser →
+     - with the four `prp_ap_*` cookies copied from a logged-in browser →
        `200`;
      - with a forged `prp_ap_s` or an edited `prp_ap_u` → `403`;
      - with a copied pass the next day → `403` (expired).
-   - In the game's DevTools, `fetch('/game/asset-pass')` → `204` with three
+   - In the game's DevTools, `fetch('/game/asset-pass')` → `204` with four
      fresh `Set-Cookie`s. The client makes the same call by itself every
      30 min.
    - Log in and play: a busy room, the catalog, the avatar editor, a pet, an
@@ -370,9 +424,17 @@ emulator change.
    - The imager still renders (`/imaging/?figure=…`).
    - Logged out: the Rare Values icons and profile badges still show.
    - From another origin: `fetch()` of a `.nitro` is blocked by CORS.
-4. **Phase 3** with thresholds from Phase 0.
-   - Run a scripted pull of 3,000 furni with a copied pass → `429`s, then the
-     detector flags it the next night.
+4. **Phase 3** on beta.
+   - Run a scripted pull of 3,000 furni with a copied player pass → `200` for
+     the first 2,000 different files, then `429`. Re-fetching one of the first
+     2,000 is still `200`, and so is a figure bundle.
+   - The same pull with a staff pass → all `200`.
+   - A player pass with `prp_ap_t` edited to `staff` → `403`.
+   - The detector flags the pull the next night (once it is built).
+   - Press F12 in the game as a player. The guard sends you to the website,
+     and `/game` then shows "Connection lost". A copied pass gets `403` on
+     every file within 10 s. After 30 minutes it all loads again. A staff
+     account is never paused.
    - A deny-map entry → instant `403`.
 5. **Prod** arrives with the next `main` promotion.
    - Its deploy creates prod's own secret.
