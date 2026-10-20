@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Furni whose double click does nothing, or never reaches all of its states.
+"""Furni whose double click does nothing at all.
 
 A plain furni (interaction_type 'default') double-clicks through
 InteractorGenericSwitch, which cycles extra_data 0, 1, ... up to
@@ -8,19 +8,24 @@ count is only ever as good as whoever wrote the row: the full library import
 (31) never set it, so ~3,900 Habbo furni took the column's default; the Habbo
 sync (85) and Kasja (84) importers wrote 1 for everything; and the pack
 importers counted animations, which misses state 0 when it has no animation of
-its own. The bundle is what the client actually draws, so the bundle decides.
+its own.
 
 Reads a dump of the furniture table and the asset tree, and prints a migration
-that RAISES each plain furni's count to the states its bundle draws. It never
-lowers one: a higher count only costs a click that looks like nothing, while
-a lower one somebody set on purpose could hide a state the server uses.
+giving each plain furni stuck at 0 or 1 the states its bundle draws. A count
+of 2 or more is somebody's decision and is left alone, and so is any count
+staff set in the Function tool (the dump below leaves those rows out): an
+animation is not always a click state. 287 raised those too and 289 had to put
+211 back - the Washing Machine draws its cats moving, the same cats still and
+its door shut, and is clicked between two of them (click_states).
 
 Run on the VPS from the checkout, against the database it is meant for:
 
     docker exec pixelrp-beta-db-1 sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD" pixelrp -B -e \\
-        "SELECT item_name, type, sprite_id, interaction_type, interaction_modes_count FROM furniture"' \\
+        "SELECT item_name, type, sprite_id, interaction_type, interaction_modes_count FROM furniture
+          WHERE id NOT IN (SELECT definition_id FROM rp_furni_function_log
+                            WHERE field = \\"interaction_modes_count\\")"' \\
         > /tmp/furniture.tsv
-    python3 docker/nitro/fix-furni-state-counts.py /tmp/furniture.tsv > 287_FurniStateCounts.sql
+    python3 docker/nitro/fix-furni-state-counts.py /tmp/furniture.tsv > NNN_FurniStateCounts.sql
 
 The count itself is furni_bundle.click_modes - the same rule the importers
 use, which also says which bundles it leaves at 1 and why. Rows with any other
@@ -89,27 +94,25 @@ def main():
     names = classnames()
     # Keyed on (sprite_id, type), the pair the client finds the bundle by, so
     # every row drawing the same art gets the same count.
+    plain = [row for row in rows if row['interaction_type'].lower() in ('default', '')]
+    # Art that somebody has already given a count of 2+ on any row is theirs:
+    # a duplicate row stuck at 1 waits for the same decision, not the bundle's.
+    decided = {(int(row['sprite_id']), row['type']) for row in plain
+               if int(row['interaction_modes_count']) > 1}
     raise_to = {}
-    for row in rows:
-        if row['interaction_type'].lower() not in ('default', ''):
-            continue
+    for row in plain:
         key = (int(row['sprite_id']), row['type'])
+        if key in decided:
+            continue
         classname = names.get((row['type'], key[0]))
         modes = bundle_modes(classname.split('*')[0]) if classname else None
         # 0 and 1 both mean "no click", so a furni with one state is left be.
-        if modes and modes > max(1, int(row['interaction_modes_count'])):
+        if modes and modes > 1:
             raise_to.setdefault(key, (classname, modes))
 
-    print("""-- Furni whose double click did nothing, or stopped short of its states.
---
--- A plain furni (interaction_type 'default') double-clicks through
--- InteractorGenericSwitch, which cycles 0, 1, ... up to
--- interaction_modes_count - 1 and returns at once when the count is 1. The
--- counts came from imports that never read the art: 31_FullFurniLibrary never
--- set one, 84 (Kasja) and 85 (Habbo sync) wrote 1 for everything. So the
--- Washing Machine (hygge_c25_washer, three states: door open with the cat,
--- the cat still, door shut) toggled only the cat and its door never shut, and
--- most of the rest could not be clicked at all.
+    print("""-- Plain furni whose double click did nothing: a count of 0 or 1 that was
+-- never set (interaction_type 'default' double-clicks through
+-- InteractorGenericSwitch, which returns at once when the count is 1).
 --
 -- Each count below is the states the furni's own bundle draws - 0, then every
 -- state from 1 up until the first gap - from
@@ -118,8 +121,8 @@ def main():
 --
 -- Keyed on sprite_id and type - the pair the client finds a furni's bundle by,
 -- and indexed - rather than item_name, which is latin1 and matched without
--- case. The classname is there to read, not joined on. Idempotent, plain furni
--- only, and it never lowers a count.
+-- case. The classname is there to read, not joined on. Idempotent, and only
+-- a count of 0 or 1 is touched.
 DROP TEMPORARY TABLE IF EXISTS _furni_states;
 CREATE TEMPORARY TABLE _furni_states (
     sprite_id INT NOT NULL, type VARCHAR(4) NOT NULL, classname VARCHAR(255) NOT NULL,
@@ -132,7 +135,7 @@ INSERT INTO _furni_states (sprite_id, type, classname, modes) VALUES""" % len(ra
   JOIN _furni_states s ON s.sprite_id = f.sprite_id AND s.type = f.type
    SET f.`interaction_modes_count` = s.modes
  WHERE LOWER(f.`interaction_type`) IN ('default', '')
-   AND f.`interaction_modes_count` < s.modes;
+   AND f.`interaction_modes_count` <= 1;
 DROP TEMPORARY TABLE _furni_states;""")
     print('%d furni raised' % len(raise_to), file=sys.stderr)
 
