@@ -144,6 +144,7 @@ services:
     volumes:
       - ./docker/web/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./docker/web/asset-gate.conf:/etc/nginx/asset-gate.conf:ro
+      - ./docker/web/njs:/etc/nginx/njs:ro
       - ./docker/web/templates:/etc/nginx/templates:ro
       - ./cms:/var/www/html:ro
       - ./nitro:/var/www/nitro-assets:ro
