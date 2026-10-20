@@ -10,6 +10,7 @@ hotel's furni into a folder on your computer:
 - the shop's layout: its tabs, categories and pages, in order, with their
   icons and the furni on each page
 - the site's furni list (`FurnitureData.json`)
+- if ticked: clothing, avatar effects and chat bubbles, each in its own folder
 
 It finds everything the way the game does, from the site's own settings and
 furni list, so it works on any site running the standard Nitro client.
@@ -64,12 +65,27 @@ catalogue/<icon>.png             the shop's tab and page icons
 _shop.json, _shop.txt            the shop's layout, as recorded
 lines/<line>/                    if ticked: a copy of each furni file and its
                                  icons, sorted by furni line
+clothing/<library>.nitro         if ticked: every clothing file, plus the
+                                 site's _FigureMap.json and _FigureData.json
+effects/<library>.nitro          if ticked: every avatar effect, plus the
+                                 site's _EffectMap.json
+chat-bubbles/                    if ticked: each chat bubble's pictures
+                                 (bubble_<number>_<part>.png or .gif) and
+                                 _bubbles.css, the rules that draw them
 _FurnitureData.json              the site's furni list: names, sizes, sit/lay
 _failed.txt                      anything still missing, and why
 ```
 
 The `furniture/` and `icons/` folders match PixelRP's own layout
 (`nitro/overrides/bundled/furniture/` and `nitro/overrides/dcr/hof_furni/icons/`).
+
+Clothing and effects are found like furni, from the site's lists
+(`FigureMap.json`, `EffectMap.json`) and address templates; on PixelRP they
+live in `nitro/overrides/bundled/figure/` and `bundled/effect/`. Chat bubbles
+aren't game files: the site's stylesheet draws them (`.chat-bubble.bubble-37`
+and so on), so the script reads the game page's stylesheets for every
+`bubble-<number>` rule and saves the pictures those rules use, whether they're
+separate files or written into the stylesheet itself.
 
 `lines/` is for browsing: each furni file sits next to its icons in its line's
 folder. A furni whose colours are in several lines is copied into each. The

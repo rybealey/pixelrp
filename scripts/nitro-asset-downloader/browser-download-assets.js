@@ -36,6 +36,13 @@
  *                                     pages, in order, with their furni  }
  *   lines/<line>/<name>.nitro, ..._icon.png  if ticked: a copy of each furni
  *                                     file and icon in a folder per furni line
+ *   clothing/<library>.nitro          if ticked: every clothing file, with the
+ *     _FigureMap.json, _FigureData.json  site's clothing lists
+ *   effects/<library>.nitro           if ticked: every avatar effect, with the
+ *     _EffectMap.json                   site's effect list
+ *   chat-bubbles/bubble_<n>_<part>.png  if ticked: the chat bubbles' pictures
+ *     _bubbles.css                      (.gif when they are), and the style
+ *                                       rules that draw them
  *   _FurnitureData.json               the site's furni list (names, sizes, sit/lay)
  *   _failed.txt                       anything still missing, and why
  * Names that differ only in capital letters get "~2" on the second, as Mac and
@@ -306,6 +313,65 @@
     // names: those icons are learned from the shop as recording sees them.
     const POSTER = 'poster';
 
+    // Chat bubbles aren't game files: the site's stylesheet draws them, a
+    // style per number (.chat-bubble.bubble-37, its .pointer, ...), with
+    // pictures that are either files or written into the stylesheet itself
+    // (data: addresses). Every rule naming a bubble-<number> with a picture
+    // in it is collected from every stylesheet on the game page - one from
+    // another site can't be read in place, so it is fetched and read.
+    const BUBBLE = /bubble-(\d+)/;
+    const CSS_URL = /url\(\s*(['"]?)(.*?)\1\s*\)/g;
+
+    const findBubbles = async (view, warnings) =>
+    {
+        const rules = [];
+
+        const walk = async (list, base) =>
+        {
+            for(const rule of list)
+            {
+                if(rule.styleSheet) await readSheet(rule.styleSheet); // @import
+
+                if(rule.selectorText && BUBBLE.test(rule.selectorText) && rule.cssText.includes('url(')) rules.push({ selector: rule.selectorText, text: rule.cssText, base });
+
+                if(rule.cssRules) await walk(rule.cssRules, base); // @media, @supports, nesting
+            }
+        };
+
+        const readSheet = async sheet =>
+        {
+            let list = null;
+
+            try { list = sheet.cssRules; }
+            catch {}
+
+            if(!list && sheet.href)
+            {
+                try
+                {
+                    const { response, bytes } = await fetchBytes(sheet.href);
+
+                    if(!response.ok) throw new Error(`HTTP ${ response.status }`);
+
+                    const copy = new CSSStyleSheet({ baseURL: sheet.href });
+
+                    copy.replaceSync(new TextDecoder().decode(bytes));
+                    list = copy.cssRules;
+                }
+                catch(error)
+                {
+                    warnings.push(`Couldn't read the stylesheet ${ sheet.href } (${ error?.message ?? error }). Chat bubbles drawn only there are missing.`);
+                }
+            }
+
+            if(list) await walk(list, (sheet.href ?? view.document.baseURI));
+        };
+
+        for(const sheet of [ ...view.document.styleSheets, ...(view.document.adoptedStyleSheets ?? []) ]) await readSheet(sheet);
+
+        return rules;
+    };
+
     const loadCatalog = async settings =>
     {
         const toUrl = text => new URL(text, settings.base).href;
@@ -313,16 +379,32 @@
         const furniTemplate = settings.get('furni.asset.url');
         const iconTemplate = settings.get('furni.asset.icon.url');
         const badgeTemplate = settings.get('badge.asset.url');
+        const figuremapUrl = settings.get('avatar.figuremap.url');
+        const clothingTemplate = settings.get('avatar.asset.url');
+        const effectmapUrl = settings.get('avatar.effectmap.url');
+        const effectTemplate = settings.get('avatar.asset.effect.url');
         const warnings = [];
 
         if(!furnidataUrl) throw new Error('The site\'s settings have no furnidata.url.');
+
+        // The clothing and effect lists, as the game reads them: FigureMap.json
+        // names every clothing library, EffectMap.json every effect's. A list
+        // that won't load is reported, and that part is left out.
+        const optionalJson = (address, what) => readJson(toUrl(address)).catch(error =>
+        {
+            warnings.push(`${ error.message } No ${ what } can be saved.`);
+
+            return null;
+        });
 
         // Badges have no list of their own; the texts name each one
         // (badge_name_<code>, badge_desc_<code>). A texts file that won't load
         // is reported, and the badges named only there are left out.
         const textsUrls = (badgeTemplate ? [].concat(settings.get('external.texts.url') ?? []) : []);
-        const [ furnidata, ...texts ] = await Promise.all([
+        const [ furnidata, figuremap, effectmap, ...texts ] = await Promise.all([
             readJson(toUrl(furnidataUrl)),
+            ((figuremapUrl && clothingTemplate) ? optionalJson(figuremapUrl, 'clothing') : null),
+            ((effectmapUrl && effectTemplate) ? optionalJson(effectmapUrl, 'effects') : null),
             ...textsUrls.map(textsUrl => readJson(toUrl(textsUrl)).catch(error =>
             {
                 warnings.push(`${ error.message } Badges named only there are missing.`);
@@ -463,12 +545,85 @@
             return { kind: 'badge', name: code, url, path: claim('badges', safeName(code), extensionOf(url, '.gif')) };
         });
 
+        // A clothing or effect library's address is its template with
+        // %libname% and %revision% filled in, as the game builds it. The lists
+        // themselves (`list`) are saved beside the files, whatever the name
+        // filter - an import needs them.
+        const libraryItems = (kind, folder, template, entries, lists) =>
+        {
+            const items = new Map();
+
+            for(const { name, revision } of entries)
+            {
+                if(!name || items.has(name)) continue;
+
+                items.set(name, { kind, name, url: toUrl(template.replace(/%libname%/gi, name).replace(/%revision%/gi, revision)), path: claim(folder, safeName(name), '.nitro') });
+            }
+
+            const all = [ ...items.values() ];
+
+            for(const [ file, address ] of lists) if(address) all.push({ kind, name: file, list: true, url: toUrl(address), path: `${ folder }/${ file }` });
+
+            return all;
+        };
+
+        const clothing = (figuremap ? libraryItems('clothing', 'clothing', clothingTemplate,
+            [].concat(figuremap.libraries ?? []).map(library => ({ name: String(library?.id ?? '').trim(), revision: String(library?.revision ?? '') })),
+            [ [ '_FigureMap.json', figuremapUrl ], [ '_FigureData.json', settings.get('avatar.figuredata.url') ] ]) : []);
+
+        const effects = (effectmap ? libraryItems('effect', 'effects', effectTemplate,
+            [].concat(effectmap.effects ?? []).map(effect => ({ name: String(effect?.lib ?? '').trim(), revision: String(effect?.revision ?? '') })),
+            [ [ '_EffectMap.json', effectmapUrl ] ]) : []);
+
+        // Each bubble picture once, named by its style number and the part of
+        // the bubble its rule draws (bubble_37_pointer.png). The rules
+        // themselves, pointing at those files, are kept for _bubbles.css: they
+        // say how each picture is cut and stretched around the text.
+        const bubbleRules = await findBubbles(settings.view, warnings).catch(error =>
+        {
+            warnings.push(`Couldn't read the page's stylesheets (${ error?.message ?? error }). No chat bubbles can be saved.`);
+
+            return [];
+        });
+        const bubblePictures = new Map();
+        const bubbleStyles = new Set();
+
+        const bubbleCss = bubbleRules.map(({ selector, text, base }) =>
+        {
+            const match = BUBBLE.exec(selector);
+            const part = ((selector.slice(match.index + match[0].length).split(',')[0].match(/[a-z0-9_-]+/gi) ?? []).join('-') || 'background');
+
+            bubbleStyles.add(match[1]);
+
+            return text.replace(CSS_URL, (whole, quote, address) =>
+            {
+                let url;
+
+                try { url = new URL(address, base).href; }
+                catch { return whole; }
+
+                if(!bubblePictures.has(url))
+                {
+                    const type = /^data:image\/([a-z0-9.+-]+)/i.exec(url)?.[1].toLowerCase();
+                    const extension = (type ? `.${ ({ 'svg+xml': 'svg', jpeg: 'jpg' })[type] ?? type }` : (url.startsWith('data:') ? '.png' : extensionOf(url, '.png')));
+                    const name = `bubble_${ match[1] }_${ part }`;
+
+                    bubblePictures.set(url, { kind: 'bubble', name, url, path: claim('chat-bubbles', safeName(name), extension) });
+                }
+
+                return `url("${ bubblePictures.get(url).path.slice(13) }")`; // the path without chat-bubbles/
+            });
+        });
+
         return {
             furnidata,
             furni: [ ...furni.values() ],
             icons: [ ...icons.values() ],
             extraIcons,
             badges,
+            clothing,
+            effects,
+            bubbles: { items: [ ...bubblePictures.values() ], css: bubbleCss, styles: bubbleStyles.size },
             lines: [ ...lines ].map(([ name, members ]) => ({ name, count: members.size })).sort((a, b) => a.name.localeCompare(b.name)),
             libraryOf,
             matchIcon,
@@ -581,6 +736,9 @@
 
     // ------------------------------------------------------------ the run
 
+    // What a run fetches, and each kind's label in the progress list.
+    const KINDS = [ [ 'furni', 'Furni' ], [ 'icon', 'Icons' ], [ 'badge', 'Badges' ], [ 'page', 'Shop icons' ], [ 'clothing', 'Clothing' ], [ 'effect', 'Effects' ], [ 'bubble', 'Chat bubbles' ] ];
+
     class FetchFailed extends Error
     {
         constructor(status, message)
@@ -594,7 +752,7 @@
     const createRun = (root, want, onChange) =>
     {
         const controller = new AbortController();
-        const stats = { furni: { total: 0, saved: 0, skipped: 0, failed: 0 }, icon: { total: 0, saved: 0, skipped: 0, failed: 0 }, badge: { total: 0, saved: 0, skipped: 0, failed: 0 }, page: { total: 0, saved: 0, skipped: 0, failed: 0 } };
+        const stats = Object.fromEntries(KINDS.map(([ kind ]) => [ kind, { total: 0, saved: 0, skipped: 0, failed: 0 } ]));
         const failures = [];
         const attempted = new Set();
         const dirs = new Map(); // folders made this run
@@ -951,11 +1109,19 @@
                     <label><input class="save" type="checkbox" name="nitro" checked> Furni files (.nitro)</label>
                     <label><input class="save" type="checkbox" name="icons" checked> Furni icons</label>
                     <label><input class="save" type="checkbox" name="sprites" checked> Sprites unpacked from each .nitro</label>
-                    <label><input class="save" type="checkbox" name="badges" checked> Badges</label>
                     <label><input class="save" type="checkbox" name="layout" checked> Shop layout - the recorded categories, in order, with their icons</label>
                     <label><input class="save" type="checkbox" name="lines"> Also a copy of each furni file and icon in a folder per furni line</label>
                 </div>
                 <input class="filter" type="text" placeholder="Only names containing&hellip; (comma-separated)">
+            </div>
+            <div class="card">
+                <div class="section">3. Also save</div>
+                <div class="saves">
+                    <label><input class="save" type="checkbox" name="badges" checked> Badges</label>
+                    <label><input class="save" type="checkbox" name="clothing"> Clothing - every clothing file, in its own folder</label>
+                    <label><input class="save" type="checkbox" name="effects"> Effects - every avatar effect, in its own folder</label>
+                    <label><input class="save" type="checkbox" name="bubbles"> Chat bubbles - their pictures and the style rules that draw them</label>
+                </div>
             </div>
             <div class="plan"></div>
             <div class="buttons"><button class="go" disabled>Choose folder and start</button><button class="stop" disabled>Stop</button></div>
@@ -1002,7 +1168,7 @@
             return true;
         };
         const furni = item => (picked(item) && named(item));
-        const want = { nitro: boxes.nitro.checked, icons: boxes.icons.checked, sprites: boxes.sprites.checked, badges: boxes.badges.checked, layout: (boxes.layout.checked && (pages.size > 0)), lines: (boxes.lines.checked && (boxes.nitro.checked || boxes.icons.checked)) };
+        const want = { nitro: boxes.nitro.checked, icons: boxes.icons.checked, sprites: boxes.sprites.checked, badges: boxes.badges.checked, layout: (boxes.layout.checked && (pages.size > 0)), lines: (boxes.lines.checked && (boxes.nitro.checked || boxes.icons.checked)), clothing: boxes.clothing.checked, effects: boxes.effects.checked, bubbles: boxes.bubbles.checked };
         const linesFrom = ((from === 'lines') ? new Set(pickedLines) : null);
 
         // The line folders an item is copied into: all its lines, or only the
@@ -1015,7 +1181,10 @@
                 ...((want.nitro || want.sprites) ? catalog.furni.filter(furni) : []),
                 ...(want.icons ? [ ...catalog.icons, ...catalog.extraIcons.values() ].filter(furni) : []),
                 ...(want.badges ? catalog.badges.filter(named) : []),
-                ...(want.layout ? pageIcons() : [])
+                ...(want.layout ? pageIcons() : []),
+                ...(want.clothing ? catalog.clothing.filter(item => (item.list || named(item))) : []),
+                ...(want.effects ? catalog.effects.filter(item => (item.list || named(item))) : []),
+                ...(want.bubbles ? catalog.bubbles.items.filter(named) : [])
             ]
         };
     };
@@ -1030,7 +1199,13 @@
 
         const sorted = (want.lines ? ` Furni files and icons are also copied into a folder per line (${ plural(new Set(items.flatMap(want.linesOf)).size, 'line') }).` : '');
 
-        $('.plan').textContent = `Will fetch ${ plural(count('furni'), 'furni', 'furni') }, ${ plural(count('icon'), 'icon') }, ${ plural(count('badge'), 'badge') }${ layout }.${ sorted }`;
+        const extras = [
+            (want.clothing ? `, ${ plural(count('clothing'), 'clothing file') }` : ''),
+            (want.effects ? `, ${ plural(count('effect'), 'effect file') }` : ''),
+            (want.bubbles ? `, ${ plural(count('bubble'), 'chat bubble picture') }` : '')
+        ].join('');
+
+        $('.plan').textContent = `Will fetch ${ plural(count('furni'), 'furni', 'furni') }, ${ plural(count('icon'), 'icon') }, ${ plural(count('badge'), 'badge') }${ extras }${ layout }.${ sorted }`;
         $('.go').disabled = ((!items.length && !want.layout) || !!current || !!browser);
         queueSave();
     };
@@ -1648,7 +1823,7 @@
 
         if(!current) return;
 
-        const lines = [ [ 'Furni', current.stats.furni ], [ 'Icons', current.stats.icon ], [ 'Badges', current.stats.badge ], [ 'Shop icons', current.stats.page ] ]
+        const lines = KINDS.map(([ kind, label ]) => [ label, current.stats[kind] ])
             .filter(([ , stat ]) => stat.total)
             .map(([ label, stat ]) =>
             {
@@ -1869,6 +2044,8 @@
 
             if(want.layout) await saveLayout(current);
 
+            if(want.bubbles && catalog.bubbles.css.length) await current.write('chat-bubbles/_bubbles.css', `/* The chat bubble rules from ${ catalog.host }, pointing at the pictures beside this file. */\n\n${ catalog.bubbles.css.join('\n\n') }\n`);
+
             await current.start(items);
         }
         catch(error)
@@ -1895,7 +2072,7 @@
         {
             catalog = result;
             restoreChoices();
-            $('.status').textContent = `${ catalog.host }: ${ plural(catalog.furni.length, 'furni', 'furni') } in ${ plural(catalog.lines.length, 'line') }, ${ plural(catalog.icons.length, 'icon') }, ${ plural(catalog.badges.length, 'badge') }.`;
+            $('.status').textContent = `${ catalog.host }: ${ plural(catalog.furni.length, 'furni', 'furni') } in ${ plural(catalog.lines.length, 'line') }, ${ plural(catalog.icons.length, 'icon') }, ${ plural(catalog.badges.length, 'badge') }, ${ plural(catalog.clothing.filter(item => !item.list).length, 'clothing file') }, ${ plural(catalog.effects.filter(item => !item.list).length, 'effect') }, ${ plural(catalog.bubbles.styles, 'chat bubble style') }.`;
             $('.error').textContent = catalog.warnings.join('\n');
             renderLines();
             showLineCount();
