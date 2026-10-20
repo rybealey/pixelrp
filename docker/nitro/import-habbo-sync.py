@@ -38,6 +38,9 @@ import struct
 import sys
 import zlib
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import furni_bundle as fb
+
 SCRATCH = sys.argv[1] if len(sys.argv) > 1 else '.'
 CONVERTED = os.path.expanduser('~/Documents/Personal/Projects/Games/nitro-converter/assets/bundled/furniture')
 ICONS_SRC = os.path.join(SCRATCH, 'hdl/resource/dcr/hof_furni')
@@ -78,6 +81,13 @@ def swf_stack_height(classname):
                 return float(m.group(1))
         i += length
     return None
+
+
+def bundle_modes(classname):
+    """interaction_modes_count from the converted bundle's own states - writing
+    1 for every row left all of 85's furni impossible to click (fixed by 287)."""
+    path = os.path.join(CONVERTED, classname.split('*')[0] + '.nitro')
+    return fb.read_furni(path)['modes'] if os.path.exists(path) else 1
 
 
 def pretty(classname, name):
@@ -125,6 +135,7 @@ for n, classname in enumerate(sorted(set(wanted))):
         'x': int(f.get('xdim') or 1), 'y': int(f.get('ydim') or 1),
         'z': z if z is not None else 0.0,
         'sit': bool(f.get('cansiton')), 'walk': bool(f.get('canstandon')),
+        'modes': bundle_modes(classname),
         'rare': bool(f.get('rare')),
         'desc': f.get('description') or f.get('name') or classname,
         'furnidata': f, 'kind': kind,
@@ -240,9 +251,9 @@ SET @h26  := %d;
             '`allow_trade`,`allow_marketplace_sell`,`allow_gift`,`allow_inventory_stack`,'
             '`interaction_type`,`behaviour_data`,`interaction_modes_count`,`is_rare`) VALUES\n')
     o.write(',\n'.join(
-        "    (%d,%s,%s,'%s',%d,%d,%s,'1','%d','%d',%d,'0','1','0','1','1','default',0,1,'%d')"
+        "    (%d,%s,%s,'%s',%d,%d,%s,'1','%d','%d',%d,'0','1','0','1','1','default',0,%d,'%d')"
         % (r['id'], esc(r['classname']), esc(r['name']), r['type'], r['x'], r['y'], r['z'],
-           r['sit'], r['walk'], r['sprite'], r['rare'])
+           r['sit'], r['walk'], r['sprite'], r['modes'], r['rare'])
         for r in rows) + ';\n\n')
 
     page_expr = {'nft': '@nft', 'wired_addons': '@waddons', 'wired_effects': '@wfx',

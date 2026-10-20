@@ -30,7 +30,7 @@ and emits everything the hotel needs to sell and draw them:
 
 Unlike the Kasja SWFs these are already .nitro bundles, so the furni's own
 definition is read from the bundle JSON: logic.model.dimensions for x/y/z, the
-64-size visualization's animation count for interaction_modes_count. Alongside
+states its 64-size visualization draws for interaction_modes_count. Alongside
 each folder the download carries an _items.json - the source hotel's catalog
 export - which supplies the display name and description where it has one.
 
@@ -290,7 +290,7 @@ DELETE FROM `furniture` WHERE `id` BETWEEN %d AND %d;
     o.write(',\n'.join(lines) + ';\n')
 
     o.write('\n-- Furniture. id == sprite_id, the convention every custom line here follows;\n'
-            '-- interaction_modes_count is the bundle\'s own animation count, so a furni\n'
+            '-- interaction_modes_count is the states the bundle draws, so a furni\n'
             '-- with states cycles through them on double-click.\n')
     for batch in chunks(rows, ROWS_PER_INSERT):
         o.write('INSERT INTO `furniture` (`id`,`item_name`,`public_name`,`type`,`width`,`length`,'

@@ -118,6 +118,38 @@ def common_prefix(classnames):
     return prefix[:prefix.rindex('_') + 1] if '_' in prefix else ''
 
 
+# Logic types whose double click is a plain state change. The rest - clothing,
+# crackable eggs, sound blocks, dice - do something else on a click, and
+# furniture_multiheight changes height per state, which a count alone does not
+# give it: avatars would stand on the taller table at the old height.
+SWITCHED_BY_CLICK = ('furniture_multistate', 'furniture_basic')
+
+
+def click_modes(data, classname):
+    """interaction_modes_count for a plain ('default') furni, from its bundle:
+    state 0, then every state from 1 up until the first gap.
+
+    State 0 needs no animation of its own - with none, every layer simply draws
+    frame 0 - so a bundle whose only animation is 1 still has two states, and
+    counting its animations (1) left a furni that could not be clicked at all.
+    Counting stops at the first gap because the server cycles 0, 1, 2 ... in
+    order; ids past a gap (100, 101, 1234 - states the server sets itself, like
+    a toilet's flush) would put blank clicks in the cycle. Transitions are not
+    states. Wired boxes (wf_*) are not switched by hand.
+    """
+    if classname.startswith('wf_') or data.get('logicType') not in SWITCHED_BY_CLICK:
+        return 1
+    vis64 = next((v for v in data.get('visualizations') or [] if v.get('size') == 64), {})
+    ids = set()
+    for key, animation in (vis64.get('animations') or {}).items():
+        if 'transitionTo' not in animation and 'transitionFrom' not in animation and key.isdigit():
+            ids.add(int(key))
+    n = 1
+    while n in ids:
+        n += 1
+    return n
+
+
 def read_furni(path):
     entries = bundle_entries(path)
     json_name = next(k for k in entries if k.endswith('.json'))
@@ -125,7 +157,6 @@ def read_furni(path):
     data = json.loads(inflate(entries[json_name]))
     model = (data.get('logic') or {}).get('model') or {}
     dims = model.get('dimensions') or {}
-    vis64 = next((v for v in data.get('visualizations') or [] if v.get('size') == 64), {})
     frames = (data.get('spritesheet') or {}).get('frames') or {}
     icon = next((k for k in frames if k.endswith('_icon_a')), None) \
         or next((k for k in frames if '_icon_' in k), None)
@@ -136,7 +167,7 @@ def read_furni(path):
         'y': int(float(dims.get('y', 1) or 1)),
         'z': float(dims.get('z', 1.0) if dims.get('z') is not None else 1.0),
         'has_dims': bool(dims),
-        'modes': max(1, len(vis64.get('animations') or {})),
+        'modes': click_modes(data, os.path.basename(path)[:-len('.nitro')]),
         'icon_frame': frames.get(icon) if icon else None,
     }
 

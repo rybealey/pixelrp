@@ -769,7 +769,7 @@ VALUES
             % (page, parent, esc(caption), order) for page, parent, caption, order in pages) + ';\n')
 
     o.write('\n-- Furniture. id == sprite_id, the convention every custom line here follows;\n'
-            "-- interaction_modes_count is the bundle's own animation count.\n")
+            "-- interaction_modes_count is the states the bundle draws.\n")
     for batch in chunks(rows, ROWS_PER_INSERT):
         o.write('INSERT INTO `furniture` (`id`,`item_name`,`public_name`,`type`,`width`,`length`,'
                 '`stack_height`,`can_stack`,`can_sit`,`is_walkable`,`sprite_id`,`allow_recycle`,'
