@@ -10,9 +10,10 @@
  * Use it in Chrome, Edge, Brave or Arc - Safari and Firefox can't save into a
  * folder.
  *   1. Open the site's game page (log in first if the site needs it).
- *   2. Cmd+Option+I, then the Console tab. Paste this whole file and press
- *      Enter. If Chrome blocks the paste, type "allow pasting" first. To keep
- *      it handy, save it once under Sources > Snippets and run it from there.
+ *   2. F12 (Cmd+Option+I on a Mac), then the Console tab. Paste this whole
+ *      file and press Enter. If Chrome blocks the paste, type "allow pasting"
+ *      first. To keep it handy, save it once under Sources > Snippets and run
+ *      it from there.
  *   3. In the panel that appears, choose which furni:
  *        All furni
  *        Furni lines I pick - every furni in the lines you tick (each furni's
@@ -30,14 +31,22 @@
  *   sprites/<name>/<sprite>.png       every sprite cut out of the furni's sheet,
  *   sprites/<name>/_spritesheet.png   and the whole sheet
  *   badges/<code>.gif                 every badge named in the site's texts
+ *   catalogue/<icon>.png              the shop's tab and page icons      } from
+ *   _shop.json, _shop.txt             the shop's tabs, categories and    } recording
+ *                                     pages, in order, with their furni  }
+ *   lines/<line>/<name>.nitro, ..._icon.png  if ticked: a copy of each furni
+ *                                     file and icon in a folder per furni line
+ *   _FurnitureData.json               the site's furni list (names, sizes, sit/lay)
  *   _failed.txt                       anything still missing, and why
  * Names that differ only in capital letters get "~2" on the second, as Mac and
  * Windows folders treat them as the same file.
  *
  * Picking the same folder again skips what is already there, so a stopped or
- * interrupted run carries on where it left off. The panel also remembers its
- * choices for each site in this browser - the mode, picked lines, recorded
- * shop items, ticks and name filter - so a reload or a fresh paste keeps them.
+ * interrupted run carries on where it left off; the shop pages already in its
+ * _shop.json are kept, so a shop can be recorded one tab at a time. The panel
+ * also remembers its choices for each site in this browser - the mode, picked
+ * lines, recorded shop items and pages, ticks and name filter - so a reload or
+ * a fresh paste keeps them.
  *
  * Recording sees what the shop draws: a bundle's furni (which have no icon of
  * their own on the page) are not picked up.
@@ -268,6 +277,10 @@
 
     const safeName = name => (String(name).replace(/[\\/:*?"<>|\u0000-\u001f]/g, '_').replace(/^\.+$/, '_') || '_');
 
+    // A furni line as a folder name - Windows won't make one that ends in a
+    // dot or a space.
+    const lineFolder = line => (safeName(line).replace(/[. ]+$/, '') || '_');
+
     const lastSegment = address =>
     {
         const last = new URL(address).pathname.split('/').pop();
@@ -451,6 +464,7 @@
         });
 
         return {
+            furnidata,
             furni: [ ...furni.values() ],
             icons: [ ...icons.values() ],
             extraIcons,
@@ -467,10 +481,11 @@
     // ------------------------------------------------------------ .nitro files
 
     // A .nitro is: a 16-bit file count, then per file a 16-bit name length, the
-    // name, a 32-bit data length and the zlib-packed data (big-endian) - one
-    // JSON, and the sprite sheet, which the game takes to be whichever file is
-    // not the JSON.
-    const inflate = async bytes => new Uint8Array(await new Response(new Blob([ bytes ]).stream().pipeThrough(new DecompressionStream('deflate'))).arrayBuffer());
+    // name, a 32-bit data length and the packed data (big-endian) - one JSON,
+    // and the sprite sheet, which the game takes to be whichever file is not
+    // the JSON. The data is zlib-packed, or gzip-packed by some converters
+    // (it starts 1f 8b); the game reads both.
+    const inflate = async bytes => new Uint8Array(await new Response(new Blob([ bytes ]).stream().pipeThrough(new DecompressionStream(((bytes[0] === 0x1f) && (bytes[1] === 0x8b)) ? 'gzip' : 'deflate'))).arrayBuffer());
 
     const unpackNitro = async bytes =>
     {
@@ -579,7 +594,7 @@
     const createRun = (root, want, onChange) =>
     {
         const controller = new AbortController();
-        const stats = { furni: { total: 0, saved: 0, skipped: 0, failed: 0 }, icon: { total: 0, saved: 0, skipped: 0, failed: 0 }, badge: { total: 0, saved: 0, skipped: 0, failed: 0 } };
+        const stats = { furni: { total: 0, saved: 0, skipped: 0, failed: 0 }, icon: { total: 0, saved: 0, skipped: 0, failed: 0 }, badge: { total: 0, saved: 0, skipped: 0, failed: 0 }, page: { total: 0, saved: 0, skipped: 0, failed: 0 } };
         const failures = [];
         const attempted = new Set();
         const dirs = new Map(); // folders made this run
@@ -712,28 +727,73 @@
             }
         };
 
+        // With "a copy in a folder per furni line" ticked, each furni file and
+        // icon is also copied into lines/<line>/ for every line it is in. The
+        // copy is made from the saved file, so sorting an earlier download
+        // fetches nothing again.
+        const lineCopies = async item =>
+        {
+            if(!want.lines || ((item.kind === 'furni') && !want.nitro)) return [];
+
+            const file = item.path.slice(item.path.lastIndexOf('/') + 1);
+            const copies = [];
+
+            for(const line of want.linesOf(item))
+            {
+                const path = `lines/${ lineFolder(line) }/${ file }`;
+
+                if(!(await existing(path))) copies.push(path);
+            }
+
+            return copies;
+        };
+
         const fetchItem = async item =>
         {
             if(item.kind !== 'furni')
             {
-                if(await existing(item.path)) return 'skipped';
+                const local = await existing(item.path);
+                const copies = await lineCopies(item);
 
-                await write(item.path, await download(item.url));
+                if(local && !copies.length) return 'skipped';
+
+                const data = (local ?? await download(item.url));
+
+                if(!local) await write(item.path, data);
+
+                for(const path of copies) await write(path, data);
 
                 return 'saved';
             }
 
             const local = await existing(item.path);
+            const copies = await lineCopies(item);
             const needNitro = (want.nitro && !local);
             const needSprites = (want.sprites && !(await existing(`${ item.spriteDir }/_spritesheet.png`)));
 
-            if(!needNitro && !needSprites) return 'skipped';
+            if(!needNitro && !needSprites && !copies.length) return 'skipped';
 
             const bytes = (local ? new Uint8Array(await local.arrayBuffer()) : await download(item.url));
 
             if(needNitro) await write(item.path, bytes);
 
-            if(needSprites) for(const sprite of await cutSprites(await unpackNitro(bytes))) await write(`${ item.spriteDir }/${ sprite.name }`, sprite.data);
+            for(const path of copies) await write(path, bytes);
+
+            if(needSprites)
+            {
+                let sprites;
+
+                try
+                {
+                    sprites = await cutSprites(await unpackNitro(bytes));
+                }
+                catch(error)
+                {
+                    throw new Error(`${ want.nitro ? 'the .nitro is saved, but ' : '' }its sprites couldn't be cut out (${ error?.message ?? error })`);
+                }
+
+                for(const sprite of sprites) await write(`${ item.spriteDir }/${ sprite.name }`, sprite.data);
+            }
 
             return 'saved';
         };
@@ -750,6 +810,9 @@
             if(rows.length) await write('_failed.txt', `kind\tname\treason\taddress\n${ rows.join('\n') }\n`);
             else if(old) await root.removeEntry('_failed.txt').catch(() => {});
         };
+
+        run.existing = existing;
+        run.write = write;
 
         run.start = async items =>
         {
@@ -889,6 +952,8 @@
                     <label><input class="save" type="checkbox" name="icons" checked> Furni icons</label>
                     <label><input class="save" type="checkbox" name="sprites" checked> Sprites unpacked from each .nitro</label>
                     <label><input class="save" type="checkbox" name="badges" checked> Badges</label>
+                    <label><input class="save" type="checkbox" name="layout" checked> Shop layout - the recorded categories, in order, with their icons</label>
+                    <label><input class="save" type="checkbox" name="lines"> Also a copy of each furni file and icon in a folder per furni line</label>
                 </div>
                 <input class="filter" type="text" placeholder="Only names containing&hellip; (comma-separated)">
             </div>
@@ -904,6 +969,7 @@
     const plural = (value, one, many = `${ one }s`) => `${ number(value) } ${ (value === 1) ? one : many }`;
     const pickedLines = new Set();
     const recorded = new Set(); // furni class names the shop has shown while recording
+    const pages = new Map(); // the shop's pages seen while recording, by pathKey: { path, furni }
 
     let catalog = null;
     let current = null;
@@ -936,14 +1002,20 @@
             return true;
         };
         const furni = item => (picked(item) && named(item));
-        const want = { nitro: boxes.nitro.checked, icons: boxes.icons.checked, sprites: boxes.sprites.checked, badges: boxes.badges.checked };
+        const want = { nitro: boxes.nitro.checked, icons: boxes.icons.checked, sprites: boxes.sprites.checked, badges: boxes.badges.checked, layout: (boxes.layout.checked && (pages.size > 0)), lines: (boxes.lines.checked && (boxes.nitro.checked || boxes.icons.checked)) };
+        const linesFrom = ((from === 'lines') ? new Set(pickedLines) : null);
+
+        // The line folders an item is copied into: all its lines, or only the
+        // picked ones when furni are chosen by line.
+        want.linesOf = item => [ ...(item.lines ?? []) ].filter(line => (!linesFrom || linesFrom.has(line)));
 
         return {
             want,
             items: [
                 ...((want.nitro || want.sprites) ? catalog.furni.filter(furni) : []),
                 ...(want.icons ? [ ...catalog.icons, ...catalog.extraIcons.values() ].filter(furni) : []),
-                ...(want.badges ? catalog.badges.filter(named) : [])
+                ...(want.badges ? catalog.badges.filter(named) : []),
+                ...(want.layout ? pageIcons() : [])
             ]
         };
     };
@@ -952,11 +1024,14 @@
     {
         if(!catalog) return;
 
-        const { items } = selection();
+        const { want, items } = selection();
         const count = kind => items.filter(item => (item.kind === kind)).length;
+        const layout = (want.layout ? `, and the shop's layout (${ plural(pages.size, 'page') }, ${ plural(count('page'), 'icon') })` : '');
 
-        $('.plan').textContent = `Will fetch ${ plural(count('furni'), 'furni', 'furni') }, ${ plural(count('icon'), 'icon') }, ${ plural(count('badge'), 'badge') }.`;
-        $('.go').disabled = (!items.length || !!current || !!browser);
+        const sorted = (want.lines ? ` Furni files and icons are also copied into a folder per line (${ plural(new Set(items.flatMap(want.linesOf)).size, 'line') }).` : '');
+
+        $('.plan').textContent = `Will fetch ${ plural(count('furni'), 'furni', 'furni') }, ${ plural(count('icon'), 'icon') }, ${ plural(count('badge'), 'badge') }${ layout }.${ sorted }`;
+        $('.go').disabled = ((!items.length && !want.layout) || !!current || !!browser);
         queueSave();
     };
 
@@ -998,6 +1073,14 @@
             }));
         }
         catch {}
+
+        // A big shop's pages can outgrow the browser's storage: they are kept
+        // on their own, so the rest is saved either way.
+        try
+        {
+            localStorage.setItem(`${ storageKey() }:pages`, JSON.stringify([ ...pages.values() ]));
+        }
+        catch {}
     };
 
     const queueSave = () =>
@@ -1008,9 +1091,15 @@
     const restoreChoices = () =>
     {
         let saved = null;
+        let savedPages = null;
 
         try { saved = JSON.parse(localStorage.getItem(storageKey()) ?? 'null'); }
         catch {}
+
+        try { savedPages = JSON.parse(localStorage.getItem(`${ storageKey() }:pages`) ?? 'null'); }
+        catch {}
+
+        for(const page of [].concat(savedPages ?? [])) if(isPage(page)) pages.set(pathKey(page.path), page);
 
         if(saved?.v !== 1) return;
 
@@ -1028,7 +1117,7 @@
 
         if(SOURCES.includes(saved.source)) shadow.querySelector(`input[name=source][value=${ saved.source }]`).checked = true;
 
-        if(recorded.size) browseNote = 'Kept from last time - press Clear to start over.';
+        if(recorded.size || pages.size) browseNote = 'Kept from last time - press Clear to start over.';
     };
 
     addEventListener('pagehide', () => { if(saveQueued) saveChoices(); });
@@ -1089,6 +1178,142 @@
     // trades) are left alone.
     const SHOP = '.nitro-catalog';
 
+    // The shop's page list is a tree of .nitro-catalog-navigation-section
+    // blocks, each a row (.layout-grid-item) followed, when open, by its
+    // sub-sections. The rows on the way down to the page on screen are marked
+    // active, as is the open tab above the list.
+    const SECTION = '.nitro-catalog-navigation-section';
+    const TABS = '.nitro-card-tabs';
+    const PICTURES = '[style*="url("], img[src]';
+
+    const rowOf = section => ([ ...section.children ].find(child => child.classList.contains('layout-grid-item')) ?? null);
+    const labelOf = section => (rowOf(section)?.textContent ?? '').trim();
+    const tabLabelOf = tab => tab.textContent.trim();
+    const childrenOf = section => [ ...section.children ].filter(child => (child.matches(SECTION) && rowOf(child)));
+    const topSectionsOf = shop => (shop ? [ ...shop.querySelectorAll(SECTION) ].filter(section => (!section.parentElement?.closest(SECTION) && rowOf(section))) : []);
+
+    // Rows sharing a label are told apart by their order.
+    const keysOf = (elements, label = labelOf) =>
+    {
+        const seen = new Map();
+
+        return elements.map(element =>
+        {
+            const name = label(element);
+            const index = (seen.get(name) ?? 0);
+
+            seen.set(name, (index + 1));
+
+            return { label: name, index };
+        });
+    };
+
+    const addressesOf = element => ((element.tagName === 'IMG')
+        ? [ element.getAttribute('src') ]
+        : [ ...element.style.backgroundImage.matchAll(/url\((['"]?)(.*?)\1\)/g) ].map(match => match[2]));
+
+    // A tab's or row's icon, as a full address.
+    const iconOf = (element, base) =>
+    {
+        const picture = element?.querySelector(PICTURES);
+        const address = (picture ? addressesOf(picture)[0] : null);
+
+        if(!address || address.startsWith('data:')) return null;
+
+        try { return new URL(address, base).href; }
+        catch { return null; }
+    };
+
+    // Where the shop is: the open tab, then each open row down to the page on
+    // screen - each with its name, its place among its neighbours (`at`), its
+    // icon, and `n` to tell apart neighbours with the same name.
+    const openPathOf = (shop, base) =>
+    {
+        const path = [];
+        const tabs = [ ...shop.querySelectorAll(`${ TABS } .nav-item`) ];
+        const tabAt = tabs.findIndex(tab => tab.classList.contains('active'));
+
+        if(tabAt >= 0) path.push({ name: tabLabelOf(tabs[tabAt]), n: keysOf(tabs, tabLabelOf)[tabAt].index, at: tabAt, icon: iconOf(tabs[tabAt], base) });
+
+        for(let list = topSectionsOf(shop); ;)
+        {
+            const at = list.findIndex(section => rowOf(section).classList.contains('active'));
+
+            if(at < 0) break;
+
+            path.push({ name: labelOf(list[at]), n: keysOf(list)[at].index, at, icon: iconOf(rowOf(list[at]), base) });
+            list = childrenOf(list[at]);
+        }
+
+        return path;
+    };
+
+    const pathKey = path => JSON.stringify(path.map(step => [ step.name, step.n ]));
+
+    const isPage = page => (Array.isArray(page?.path) && (page.path.length > 0) && page.path.every(step => (typeof step?.name === 'string')) && Array.isArray(page.furni));
+
+    // The page on screen: its furni in the order shown (a poster learned from
+    // the shop by its own name - the furni list calls them all "poster"), and
+    // a fingerprint of its text and furni, which changes when a clicked page
+    // has arrived.
+    const pageOf = (shop, base) =>
+    {
+        const furni = new Set();
+
+        for(const element of shop.querySelectorAll(PICTURES))
+        {
+            if(element.closest(`${ SECTION }, ${ TABS }`)) continue;
+
+            for(const address of addressesOf(element))
+            {
+                const icon = catalog.matchIcon(address, base);
+
+                if(icon) for(const name of (catalog.extraIcons.has(icon.url) ? [ icon.name ] : icon.classNames)) furni.add(name);
+            }
+        }
+
+        const copy = shop.cloneNode(true);
+
+        for(const part of copy.querySelectorAll(`${ SECTION }, ${ TABS }`)) part.remove();
+
+        return { furni: [ ...furni ], signature: `${ copy.textContent }|${ [ ...furni ].join(',') }` };
+    };
+
+    // Adds a page, or the furni on it not seen there before. Says whether
+    // anything was new.
+    const addPage = (path, furni) =>
+    {
+        const key = pathKey(path);
+        const page = pages.get(key);
+
+        if(!page)
+        {
+            pages.set(key, { path, furni });
+
+            return true;
+        }
+
+        const seen = new Set(page.furni);
+        const fresh = furni.filter(name => !seen.has(name));
+
+        page.path = path; // its latest place and icon
+        page.furni.push(...fresh);
+
+        return (fresh.length > 0);
+    };
+
+    const iconFileOf = address => `catalogue/${ safeName(lastSegment(address)) }`;
+
+    // Each recorded tab's and page's icon, once.
+    const pageIcons = () =>
+    {
+        const icons = new Map();
+
+        for(const page of pages.values()) for(const step of page.path) if(step.icon && !icons.has(step.icon)) icons.set(step.icon, { kind: 'page', name: step.name, url: step.icon, path: iconFileOf(step.icon) });
+
+        return [ ...icons.values() ];
+    };
+
     const gameDocument = () =>
     {
         try { return (catalog?.view.document ?? null); }
@@ -1113,7 +1338,7 @@
         else if(recording) hint = (shopOpen ? ' Keep clicking through the shop pages you want.' : ' Open the shop in the game.');
         else if(!recorded.size) hint = ' Open a section of the game\'s shop and press Auto-browse, or press Start recording and click through the pages yourself.';
 
-        $('.shop-note').textContent = `${ plural(recorded.size, 'shop item') } recorded.${ hint }`;
+        $('.shop-note').textContent = `${ plural(recorded.size, 'shop item') } recorded${ pages.size ? ` on ${ plural(pages.size, 'page') }` : '' }.${ hint }`;
     };
 
     const startRecording = () =>
@@ -1131,6 +1356,9 @@
         }
 
         let timer = null;
+        let openKey = null; // the page the shop's list has open
+        let staleSignature = null; // what the shop showed when that page was clicked
+        let lastSignature = null;
 
         const scan = () =>
         {
@@ -1142,13 +1370,9 @@
 
             for(const shop of shops)
             {
-                for(const element of shop.querySelectorAll('[style*="url("], img[src]'))
+                for(const element of shop.querySelectorAll(PICTURES))
                 {
-                    const addresses = ((element.tagName === 'IMG')
-                        ? [ element.getAttribute('src') ]
-                        : [ ...element.style.backgroundImage.matchAll(/url\((['"]?)(.*?)\1\)/g) ].map(match => match[2]));
-
-                    for(const address of addresses)
+                    for(const address of addressesOf(element))
                     {
                         const icon = catalog.matchIcon(address, doc.baseURI);
 
@@ -1163,6 +1387,31 @@
                         }
                     }
                 }
+            }
+
+            // The page on screen goes under the row the list has open - once it
+            // has changed since that row was clicked, so the last page, still
+            // showing while the new one loads, isn't put there too.
+            if(shops.length)
+            {
+                const path = openPathOf(shops[0], doc.baseURI);
+                const key = pathKey(path);
+                const page = pageOf(shops[0], doc.baseURI);
+
+                if(key !== openKey)
+                {
+                    openKey = key;
+                    staleSignature = lastSignature;
+                }
+
+                lastSignature = page.signature;
+
+                if(path.length && (page.signature !== staleSignature) && addPage(path, page.furni)) added++;
+            }
+            else
+            {
+                openKey = null;
+                lastSignature = null;
             }
 
             shopOpen = (shops.length > 0);
@@ -1198,13 +1447,9 @@
 
     // Clicks through the shop's page list the way a person would, one page at
     // a time and at least SETTINGS.browseDelay apart, recording as it goes.
-    // Nitro's page list is a tree of .nitro-catalog-navigation-section blocks,
-    // each a row (.layout-grid-item) followed, when open, by its sub-sections.
     // It starts from the section that is open, or covers the whole tab if none
     // is. The shop redraws the list after every click, so each row is found
     // again by the labels on the way down to it.
-    const SECTION = '.nitro-catalog-navigation-section';
-
     const autoBrowse = async () =>
     {
         const doc = gameDocument();
@@ -1224,32 +1469,7 @@
 
         if(startedRecording && !startRecording()) return;
 
-        const rowOf = section => ([ ...section.children ].find(child => child.classList.contains('layout-grid-item')) ?? null);
-        const labelOf = section => (rowOf(section)?.textContent ?? '').trim();
-        const childrenOf = section => [ ...section.children ].filter(child => (child.matches(SECTION) && rowOf(child)));
-
-        const topSections = () =>
-        {
-            const shop = shopNow();
-
-            return (shop ? [ ...shop.querySelectorAll(SECTION) ].filter(section => (!section.parentElement?.closest(SECTION) && rowOf(section))) : []);
-        };
-
-        // Rows sharing a label are told apart by their order.
-        const keysOf = sections =>
-        {
-            const seen = new Map();
-
-            return sections.map(section =>
-            {
-                const label = labelOf(section);
-                const index = (seen.get(label) ?? 0);
-
-                seen.set(label, (index + 1));
-
-                return { label, index };
-            });
-        };
+        const topSections = () => topSectionsOf(shopNow());
 
         const find = path =>
         {
@@ -1280,7 +1500,7 @@
 
             for(const section of copy.querySelectorAll(SECTION)) section.remove();
 
-            const pictures = [ ...copy.querySelectorAll('[style*="url("], img[src]') ].map(element => ((element.tagName === 'IMG') ? element.getAttribute('src') : element.style.backgroundImage));
+            const pictures = [ ...copy.querySelectorAll(PICTURES) ].map(element => ((element.tagName === 'IMG') ? element.getAttribute('src') : element.style.backgroundImage));
 
             return `${ copy.textContent }|${ pictures.join('|') }`;
         };
@@ -1428,7 +1648,7 @@
 
         if(!current) return;
 
-        const lines = [ [ 'Furni', current.stats.furni ], [ 'Icons', current.stats.icon ], [ 'Badges', current.stats.badge ] ]
+        const lines = [ [ 'Furni', current.stats.furni ], [ 'Icons', current.stats.icon ], [ 'Badges', current.stats.badge ], [ 'Shop icons', current.stats.page ] ]
             .filter(([ , stat ]) => stat.total)
             .map(([ label, stat ]) =>
             {
@@ -1460,6 +1680,64 @@
         $('.stop').disabled = !busy;
         showShop();
         showPlan();
+    };
+
+    // ---- the shop's layout
+
+    // In order: a tab first, then down each branch, a page before its
+    // sub-pages - by each step's place among its neighbours.
+    const comparePaths = (a, b) =>
+    {
+        for(let i = 0; i < Math.min(a.length, b.length); i++)
+        {
+            const difference = (((a[i].at ?? 0) - (b[i].at ?? 0)) || ((a[i].n ?? 0) - (b[i].n ?? 0)) || a[i].name.localeCompare(b[i].name));
+
+            if(difference) return difference;
+        }
+
+        return (a.length - b.length);
+    };
+
+    // _shop.json lists every recorded page in shop order: its path from the
+    // tab down (each step's name, place, icon address and icon file in
+    // catalogue/) and its furni in the order the page shows them. Pages
+    // already in the folder's _shop.json from an earlier recording are kept,
+    // so a shop can be recorded one tab at a time. _shop.txt is the same as an
+    // outline to read.
+    const saveLayout = async run =>
+    {
+        const all = new Map();
+        const old = await run.existing('_shop.json');
+
+        if(old)
+        {
+            try { for(const page of [].concat(JSON.parse(await old.text())?.pages ?? [])) if(isPage(page)) all.set(pathKey(page.path), page); }
+            catch {}
+        }
+
+        for(const [ key, page ] of pages) all.set(key, { path: page.path.map(step => ({ ...step, file: (step.icon ? iconFileOf(step.icon) : null) })), furni: page.furni });
+
+        const sorted = [ ...all.values() ].sort((a, b) => comparePaths(a.path, b.path));
+        const outline = [];
+        const written = new Set();
+
+        // A category that was never opened itself still gets its line, from
+        // the pages under it.
+        for(const page of sorted)
+        {
+            page.path.forEach((step, depth) =>
+            {
+                const key = pathKey(page.path.slice(0, (depth + 1)));
+
+                if(written.has(key)) return;
+
+                written.add(key);
+                outline.push(`${ '    '.repeat(depth) }${ step.name }${ (depth === (page.path.length - 1)) ? ` - ${ plural(page.furni.length, 'furni', 'furni') }` : '' }`);
+            });
+        }
+
+        await run.write('_shop.json', JSON.stringify({ site: catalog.host, saved: new Date().toISOString(), pages: sorted }, null, 1));
+        await run.write('_shop.txt', `The shop of ${ catalog.host }: ${ plural(sorted.length, 'page') }\n\n${ outline.join('\n') }\n`);
     };
 
     // ---- moving the panel (pointer capture keeps the drag going over the game's frame)
@@ -1534,6 +1812,7 @@
     $('.shop-clear').addEventListener('click', () =>
     {
         recorded.clear();
+        pages.clear();
         browseNote = '';
         showShop();
         showPlan();
@@ -1584,6 +1863,12 @@
 
         try
         {
+            // The site's furni list goes in every time: it has the names, sizes
+            // and sit/lay settings the furni files don't.
+            await current.write('_FurnitureData.json', JSON.stringify(catalog.furnidata));
+
+            if(want.layout) await saveLayout(current);
+
             await current.start(items);
         }
         catch(error)
