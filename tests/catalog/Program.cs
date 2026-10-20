@@ -99,4 +99,24 @@ root.MinimumRank = 9;
 Check(!CatalogLookup.IsShoppable(index, shelf, 5, 0), "An ancestor the chain DOES reach still gates the link");
 root.MinimumRank = 0;
 
-Console.WriteLine("Catalog regressions passed: identity, permissions, reasons, missing offers, moves, duplicates, selection and both shelf rules.");
+// IsBuyable - can this player BUY here? Purchase, gifting, the search box and
+// the Buy link ask it. Staff (5+) get exactly the old answers; below that line
+// (Builders, since the shop opened to them) every ancestor must be in rank AND
+// switched on, so stock the shop hides cannot be searched up or sent for.
+// The fixture's root is switched off, like Staff > Wired's section on beta.
+Check(CatalogLookup.IsBuyable(index, shelf, 5, 0), "Staff still buy under a switched-off section");
+Check(!CatalogLookup.IsBuyable(index, shelf, 2, 0), "A Builder cannot buy under a switched-off section");
+Check(Find(rank: 2) == null && Status(rank: 2) == CatalogLocateStatus.NotReachable, "...and gets no Buy link to it");
+root.Enabled = true;
+Check(CatalogLookup.IsBuyable(index, shelf, 2, 0), "A Builder buys from a shelf whose sections are all on");
+Check(Find(rank: 2) == chair, "...and the Buy link finds it");
+root.MinimumRank = 5;
+Check(CatalogLookup.IsOpenable(shelf, 2, 0), "A rank-1 shelf under a staff section passes the leaf test alone");
+Check(!CatalogLookup.IsBuyable(index, shelf, 2, 0), "...but a Builder cannot buy it: the section above is staff");
+root.MinimumRank = 0;
+root.Enabled = false;
+shelf.ParentId = 404;
+Check(CatalogLookup.IsBuyable(index, shelf, 2, 0), "A missing parent is no gate below the staff line either");
+shelf.ParentId = 1;
+
+Console.WriteLine("Catalog regressions passed: identity, permissions, reasons, missing offers, moves, duplicates, selection and all three shelf rules.");
