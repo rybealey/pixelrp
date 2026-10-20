@@ -5,7 +5,7 @@ Browsers keep a figure bundle for a week (nginx: private, max-age=604800),
 and Cloudflare never holds them, so a purge there does nothing. A fix to a
 bundle that already shipped reaches a player only when the bundle's URL
 changes - the ?v= on avatar.asset.url. renderer-config.json itself is served
-no-store, so a new ?v= takes effect on the next load.
+no-cache (revalidated every load), so a new ?v= takes effect on the next load.
 
 The beta deploy runs this with the git tree hash of
 nitro/overrides/bundled/figure: it changes exactly when a bundle does.
