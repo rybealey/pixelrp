@@ -22,7 +22,9 @@ How the joins disappear:
 
 Both rotations are the same picture, never mirrored: a mirror would swap the
 light and dark sides and a turned cube would show in a wall. The light side is
-the right, as the 2x1 in its first rotation.
+the left, as the 2x1 turned to run down-right (how it stood on the cubes in the
+first test), and the bricks are its bricks: two a tile, half a brick on each
+row, the light line on the right of each joint.
 
 Pure Python (no Pillow on the dev Mac).
 
@@ -35,13 +37,14 @@ import argparse, json, math, pathlib, struct, sys, zlib
 REPO = pathlib.Path(__file__).resolve().parents[2]
 NAME = 'white_brick_cube'
 SIZE = 64            # T = SIZE // 2 px per tile edge and per height unit
-ICON_T = 12          # the shop icon is the same cube drawn at T 12 (26x26)
+ICON_T = 16          # the shop icon is the same cube drawn at T 16 (34x34; at 12 the bricks blur)
 
-# Greys from bsstonino_furni706: top, its highlight and mortar; left side (dark);
-# right side (light). State 0 white, state 1 grey.
+# Greys from bsstonino_furni706 as it stands turned (its long side running
+# down-right): top, its highlight and mortar; left side (light); right side
+# (dark). State 0 white, state 1 grey.
 PALETTE = {
-    0: dict(top=233, top_hi=246, top_mo=177, L=190, L_hi=219, L_mo=161, R=219, R_hi=244, R_mo=180),
-    1: dict(top=181, top_hi=224, top_mo=71, L=121, L_hi=158, L_mo=58, R=158, R_hi=219, R_mo=73),
+    0: dict(top=233, top_hi=246, top_mo=177, L=219, L_hi=244, L_mo=180, R=190, R_hi=219, R_mo=161),
+    1: dict(top=181, top_hi=224, top_mo=71, L=158, L_hi=219, L_mo=73, R=121, R_hi=158, R_mo=58),
 }
 OUTLINE = (0, 0, 0, 255)
 LAYERS = [('outline', -1010), ('fill', None), ('tip', -2100)]   # layer id = index = a, b, c
@@ -55,29 +58,35 @@ def grey(v):
 def colour(face, wx, wy, wz, state, T):
     """A face pixel's colour, from where it is in the room - never from the cube."""
     p = PALETTE[state]
+    brick = T // 2                               # brick length along a side, and row height
     if face == 'top':
-        # two strips of bricks a tile, running along x, staggered half a brick;
-        # A and B step 1 per screen column
+        # the 2x1's top: narrow strips of short bricks running along x, each
+        # strip half a brick on from the next, a light line past each joint.
+        # A and B step 1 per screen column, 2T a tile.
         A = math.floor((wx + 0.5) * 2 * T)
         B = math.floor((wy + 0.5) * 2 * T)
-        if B % T in (0, 1):
+        strip = T // 2                           # 4 strips a tile
+        if B % strip in (0, 1):
             return grey(p['top_mo'])
-        joint = (T // 2 + T * ((B // T) % 2)) % (2 * T)
-        if (A - joint) % (2 * T) in (0, 1):
+        # joints line up with the left side's top row where the two meet
+        at = (A - T // 4 - (T // 2) * ((B // strip) % 2)) % T
+        if at in (0, 1):
             return grey(p['top_mo'])
-        return grey(p['top_hi'] if B % T in (2, 3) else p['top'])
+        return grey(p['top_hi'] if at in (2, 3) else p['top'])
     h = math.floor(wz * T)                       # height in px, 0 at the bottom
-    course = (h // (T // 2)) % 2
+    row = (h // brick) % 2                       # 2 rows a cube - an even count, so the stagger carries on
     if face == 'L':                              # faces +y, runs along x
-        col, joint, key = math.floor((wx + 0.5) * T) % T, T // 4, 'L'
-    else:                                        # faces +x, runs along y
-        col, joint, key = (T - 1 - math.floor((wy + 0.5) * T)) % T, 3 * T // 4, 'R'
-    joint = (joint + (T // 2) * course) % T      # one brick a tile, half a brick on
-    if h % (T // 2) == 0 or col == joint:
-        return grey(p[key + '_mo'])
-    if col == (joint - 1) % T:                   # the 2x1's light line left of a joint
-        return grey(p[key + '_hi'])
-    return grey(p[key])
+        col = math.floor((wx + 0.5) * T) % T
+    else:                                        # faces +x, runs along y; col grows with screen x
+        col = (T - 1 - math.floor((wy + 0.5) * T)) % T
+    # joints every brick, half a brick on each row; the same on both sides, so
+    # at the front corner each row's brick wraps round from one side to the other
+    at = (col - T // 8 - (T // 4) * row) % brick
+    if h % brick == 0 or at == 0:
+        return grey(p[face + '_mo'])
+    if at == 1 or (at == 2 and h % brick == 1):  # the 2x1's light line right of a joint, a step wider at its foot
+        return grey(p[face + '_hi'])
+    return grey(p[face])
 
 
 def hit(sx, sy, box, T):
