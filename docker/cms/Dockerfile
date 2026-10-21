@@ -25,6 +25,12 @@ RUN apk add --no-cache icu-dev libzip-dev libpng-dev libjpeg-turbo-dev freetype-
  && docker-php-ext-configure gd --with-jpeg --with-freetype \
  && docker-php-ext-install pdo_mysql bcmath intl zip gd exif sockets \
  && apk del .build-deps
+# pixelrp: production PHP settings, OPcache and an FPM pool sized for the box
+# (docker/cms/php/). The image ran with no php.ini and 5 workers.
+RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+COPY docker/cms/php/pixelrp.ini /usr/local/etc/php/conf.d/zz-pixelrp.ini
+COPY docker/cms/php/fpm-pool.conf /usr/local/etc/php-fpm.d/zz-pixelrp.conf
+ENV PHP_FPM_MAX_CHILDREN=8
 WORKDIR /var/www/html
 COPY --from=vendor /app .
 COPY --from=assets /app/public/build ./public/build

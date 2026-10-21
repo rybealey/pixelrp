@@ -220,9 +220,12 @@ jobs:
           printf "UPDATE website_settings SET value='%s' WHERE \`key\`='theme';\n" "$theme" | dbsql
           echo "website_settings.theme is now: $(echo "SELECT value FROM website_settings WHERE \`key\`='theme';" | dbsql)"
           docker compose -f compose.yaml -f compose.prod.yaml up -d < /dev/null
-          # Config/route/view caches are baked per-image; drop anything the old
-          # container left in the mounted storage volume.
-          docker compose -f compose.yaml -f compose.prod.yaml exec -T cms php artisan optimize:clear < /dev/null
+          # Drop what the old container left in the mounted storage volume, and
+          # the app cache - settings were just changed in SQL (the theme above,
+          # migrations) - then build Laravel's caches again straight away:
+          # cleared and left that way, every request ran uncached until the
+          # container next restarted (docker/cms/entrypoint.sh builds them then).
+          docker compose -f compose.yaml -f compose.prod.yaml exec -T cms sh -c 'php artisan optimize:clear && { php artisan optimize || { echo "::warning::artisan optimize failed - the CMS runs without Laravel caches"; php artisan optimize:clear; }; } && chown -R www-data:www-data bootstrap/cache storage/framework/views' < /dev/null
           # A recreated cms container starts without /changelog — re-seed it.
           docker compose -f compose.yaml -f compose.prod.yaml exec -T cms mkdir -p /changelog
           docker compose -f compose.yaml -f compose.prod.yaml cp CHANGELOG.md cms:/changelog/CHANGELOG.md

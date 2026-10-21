@@ -21,6 +21,10 @@ networks:
 
 services:
   db:
+    # The same flags as compose.yaml, plus beta's own small footprint: it shares
+    # the 4 GB box with prod, so docker/db/pixelrp.cnf's 512M buffer pool is
+    # prod's alone, and performance_schema (~150 MB) is off here.
+    command: --sql-mode=NO_ENGINE_SUBSTITUTION --character-set-server=utf8mb4 --innodb-buffer-pool-size=128M --performance-schema=OFF
     networks:
       pixelrp:
         ipv4_address: 172.29.0.10
@@ -38,6 +42,9 @@ services:
       # Must match THIS project's subnet or Laravel refuses the forwarded
       # headers and every visitor collapses into one IP bucket.
       TRUSTED_PROXIES: "172.29.0.0/16"
+      # Half prod's php-fpm workers (docker/cms/php/fpm-pool.conf): beta
+      # shares the 4 GB box.
+      PHP_FPM_MAX_CHILDREN: "4"
     networks:
       pixelrp:
         ipv4_address: 172.29.0.20

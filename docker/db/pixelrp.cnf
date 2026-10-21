@@ -1,0 +1,18 @@
+# pixelrp: MySQL settings, mounted into every hotel's db container
+# (compose.yaml). Sized for the 4 GB VPS, which runs prod AND beta - two of
+# every service. Beta overrides the memory-hungry ones down in its command
+# (compose.beta.yaml).
+[mysqld]
+# The data and indexes MySQL keeps in memory. The stock 128M is far below the
+# hot set (users, items in loaded rooms, rp_*), so reads went to disk.
+innodb_buffer_pool_size = 512M
+innodb_redo_log_capacity = 256M
+
+# Binary logs: nothing replicates from them and backups are mysqldumps
+# (deploy.yml), so keep 3 days rather than the stock 30.
+binlog_expire_logs_seconds = 259200
+
+# Queries over a second, so the slow ones can be found and indexed.
+slow_query_log = ON
+long_query_time = 1
+slow_query_log_file = /var/lib/mysql/slow.log

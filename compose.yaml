@@ -31,6 +31,7 @@ services:
       - dbdata:/var/lib/mysql
       - ./emulator/Resources/SQLs/Original Database.sql:/docker-entrypoint-initdb.d/01-plusemu.sql:ro
       - ./docker/db/create-bot-user.sh:/docker-entrypoint-initdb.d/02-bot-user.sh:ro
+      - ./docker/db/pixelrp.cnf:/etc/mysql/conf.d/pixelrp.cnf:ro
     ports:
       - "127.0.0.1:3306:3306"
     networks:
