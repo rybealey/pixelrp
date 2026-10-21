@@ -6,7 +6,7 @@
     "Password": "${DB_PASSWORD}",
     "Name": "${DB_NAME}",
     "MinimumPoolSize": 5,
-    "MaximumPoolSize": 25
+    "MaximumPoolSize": 50
   },
   "Nitro": { "Hostname": "0.0.0.0", "Port": ${NITRO_PORT}, "Name": "Nitro" },
   "Rcon": {
