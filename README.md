@@ -3,8 +3,9 @@
 A Habbo retro hotel: [PlusEMU](https://github.com/rybealey/PlusEMU) (C#/.NET 7
 emulator, Nitro-native fork) + [Atom CMS](https://github.com/rybealey/atomcms)
 (Laravel 13, adapted to PlusEMU via its `plus` emulator driver) + the Nitro
-HTML5 client, all under Docker Compose. Standard hotel today; roleplay features
-come later as feature branches on the emulator fork.
+HTML5 client, all under Docker Compose - a roleplay city: jobs and
+corporations, gangs, police and jail, a bank, a phone and a gym, built into the
+emulator, the client and the CMS.
 
 ## Architecture
 
@@ -13,9 +14,13 @@ come later as feature branches on the emulator fork.
 | `db` | mysql:8.0 | Shared DB: PlusEMU schema + CMS tables | 172.28.0.10 (dev host port 3306) |
 | `emulator` | .NET 7 (built from `emulator/`) | Game server; Nitro WebSocket :2096, RCON :30001 (internal, IP-allowlisted) | 172.28.0.30 |
 | `cms` | php:8.5-fpm-alpine (built from `cms/`) | Atom CMS, `EMULATOR_DRIVER=plus` | 172.28.0.20 |
-| `web` | nginx:1.27-alpine | CMS vhost, Nitro client + assets at `/nitro-assets/`, `/ws` WebSocket proxy | 172.28.0.40, dev http://localhost:8080 |
+| `cms-scheduler` | same image as `cms` | Laravel's scheduler (`schedule:work`): Discord sync, log pruning | — |
+| `web` | nginx:1.27-alpine | CMS vhost, Nitro client + assets at `/nitro-assets/` (behind the asset pass), `/ws` WebSocket proxy | 172.28.0.40, dev http://localhost:8080 |
+| `imager` | built from `docker/imager/` | Avatar images at `/imaging/`, drawn from the hotel's own figure data | 172.28.0.50 |
+| `bot` | built from `bot/` | The in-hotel AI bot, logged in over the game socket | — |
 
-`emulator/` and `cms/` are git submodules (branch `pixelrp` on each fork).
+`emulator/`, `cms/`, `client/` and `imager/` are git submodules (see
+`.gitmodules`).
 
 ## Prerequisites
 
@@ -66,7 +71,8 @@ docker compose exec cms php artisan test -c phpunit.plus.xml
 Production = the same stack plus [compose.prod.yaml](compose.prod.yaml). The
 VPS's host nginx terminates TLS with the Cloudflare origin certs
 (`/etc/ssl/pixelrp/`) and proxies `https://pixelrp.co` → `127.0.0.1:8080`
-(our `web`) and `wss://pixelrp.co:2096` → `127.0.0.1:2096` (our `emulator`).
+(our `web`) and `wss://pixelrp.co:2096` → `127.0.0.1:12096` (our `emulator`,
+published on 12096 because the host nginx owns 2096).
 All container ports stay loopback-bound. The Nitro client uses
 `nitro/renderer-config.prod.json` (socket.url `wss://pixelrp.co:2096`).
 
@@ -86,7 +92,7 @@ cp cms/.env.example cms/.env
 #    compression, dangling sprite aliases) documented in docker/nitro/README.md.
 #    rsync -az nitro/ root@<vps>:/opt/pixelrp/nitro/
 cp nitro/renderer-config.prod.json nitro/client/renderer-config.json   # wss endpoint
-cp nitro/ui-config.json nitro/client/ui-config.json                    # blanked promo widgets
+cp nitro/ui-config.prod.json nitro/client/ui-config.json               # blanked promo widgets, prod URLs
 
 # 3. Host nginx (TLS edge)
 cp docker/host/pixelrp.nginx.conf /etc/nginx/sites-enabled/pixelrp
@@ -109,9 +115,6 @@ Pre-cutover checks: a spoofed `X-Forwarded-For` must **not** change the
 
 ## Known limitations
 
-- Catalog icons / badge images are not populated (`image.library.url` /
-  `hof.furni.url` asset trees) — cosmetic; room, avatar, and furniture
-  rendering are unaffected.
 - The emulator upstream is dormant (last upstream commit Apr 2024) and builds
   on EOL .NET 7 images — self-maintained from here.
 - `sendGift`/`forwardUser`-style RCON calls that PlusEMU cannot express

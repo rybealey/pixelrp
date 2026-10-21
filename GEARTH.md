@@ -1,6 +1,7 @@
 # Packet injection (G-Earth) — what we defend and what we should
 
-Assessed 9 September 2026 against `beta`.
+Assessed 9 September 2026 against `beta`; updated 21 October 2026 for the
+packet limits, the Builder rank and the handshake clean-up.
 
 G-Earth is a man-in-the-middle proxy. It sees every packet the client sends and
 can forge any packet a logged-in session is *allowed* to send. The one thing it
@@ -13,19 +14,31 @@ A button the client does not draw is still a packet anyone can send.
 
 ## What exists today
 
-Three layers, all in [`PacketManager`](emulator/Communication/Packets/PacketManager.cs).
+Four layers, all in [`PacketManager`](emulator/Communication/Packets/PacketManager.cs).
 
-**1. Handshake gate.** Packets sent before authentication are dropped unless the
-handler is marked `[NoAuthenticationRequired]` — 7 of them: client hello,
-version check, SSO ticket, pong, unique id, and the two key-exchange packets.
+**1. Packet limits.** Every packet comes out of a per-connection budget before
+any handler runs, before log in too
+([`PacketLimits`](emulator/Communication/Packets/PacketLimits.cs), applied by
+`PacketBudget`): a token bucket per packet type and one for everything a
+connection sends together, with tighter buckets on chat and commands, buying,
+moving money and the catalog search. A packet over budget is dropped; a
+connection that keeps going far over it is disconnected and written to
+`rp_packet_flood_log`, which the housekeeping player page shows. Walking is
+never limited - it belongs to the movement system.
 
-**2. `[StaffOnly]` / `[VipOnly]` attributes.** 56 and 7 handlers respectively.
-Checked *before the handler runs*, and a rejection logs a warning naming the
-user, id and rank. Current coverage includes the whole catalog
-(`PurchaseFromCatalogEvent` among them), builders-club placement, the camera and
-photo publishing.
+**2. Handshake gate.** Packets sent before authentication are dropped unless the
+handler is marked `[NoAuthenticationRequired]` — 5 of them: client hello,
+version check, SSO ticket, pong and unique id. (The Flash-era key exchange is
+gone: Nitro never sent it.)
 
-**3. Handlers that refuse outright.** `ChangeMottoEvent` is a deliberate no-op:
+**3. `[StaffOnly]` / `[BuilderOnly]` / `[VipOnly]` attributes.** 10, 42 and 7
+handlers respectively. Checked *before the handler runs*, and a rejection logs a
+warning naming the user, id and rank. `[BuilderOnly]` opens from the Builder
+rank up and covers the Furni Shop (`PurchaseFromCatalogEvent` among it), the
+navigator and the Function tool; `[VipOnly]` covers the camera and photo
+publishing.
+
+**4. Handlers that refuse outright.** `ChangeMottoEvent` is a deliberate no-op:
 the motto is RP-managed, the client no longer offers an editor, and an injected
 packet rewrites nothing.
 
@@ -52,20 +65,15 @@ the highest-value target here, and there is presently nothing to gain from it.
 
 ## Gaps worth closing
 
-**1. There is no packet-level rate limiting.** Flood control exists for chat
-only. Every other handler runs as fast as a session can send. Two consequences:
+**1. Enumeration is slower, not closed.** The per-user lookups
+(`RpGetUserRegionEvent`, `RpGetUserCorpEvent`, `RpGetUserGangEvent`,
+`RpGetBirthdayEvent`) now come out of the default packet budget - 10 a second
+per lookup - so the user table can still be walked, only slower. The data is
+low-value (it is all shown on profiles); a tighter limit in `PacketLimits` is a
+one-line change if that ever matters.
 
-- *Enumeration.* The per-user lookups (`RpGetUserRegionEvent`,
-  `RpGetUserCorpEvent`, `RpGetUserGangEvent`, `RpGetBirthdayEvent`) are one
-  indexed query each with no ceiling, so the whole user table can be walked.
-  The data is low-value — it is all shown on profiles — but the walk is free.
-- *Self-inflicted load.* Any write handler is a database DoS vector from a
-  single authenticated session.
-
-This is the largest structural gap and it lives in one file.
-
-**2. `[StaffOnly]` is applied by hand.** 56 handlers carry it; nothing fails if
-the 57th does not. The attribute should go on at the same moment as the header
+**2. The rank attributes are applied by hand.** 59 handlers carry one; nothing
+fails if the next one does not. The attribute should go on at the same moment as the header
 constant, and ideally the build should say so when it does not.
 
 **3. Authorisation style is inconsistent.** Attributes, `room.CheckRights`,
@@ -82,13 +90,11 @@ it true.
 
 ## Suggested next steps
 
-- Add a per-session rate limiter to `PacketManager` — a token bucket keyed on
-  handler type, generous by default and tight on the lookup packets.
 - A CI check that fails the build when a handler in a staff-only namespace has
-  no `[StaffOnly]`. It pairs naturally with a duplicate-packet-id check: both
+  no `[StaffOnly]` or `[BuilderOnly]`. It pairs naturally with a duplicate-packet-id check: both
   catch problems that compile cleanly and only surface at runtime, which is how
   two outages happened on 8 September.
 - Keep the free catalog in mind when pricing returns. The day items cost
   something again, `PurchaseFromCatalogEvent` becomes the highest-value forgery
-  target in the hotel, and its `[StaffOnly]` gate is what currently stands in
+  target in the hotel, and its `[BuilderOnly]` gate is what currently stands in
   the way.

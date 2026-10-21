@@ -291,8 +291,8 @@ jobs:
             # so deleting a few of them too costs a re-render, nothing more.
             $COMPOSE exec -T imager find /cache -mindepth 1 -delete < /dev/null || return 1
             # The newest custom shirt must not draw as the bare body. Read from
-            # the tracked fragment pulled above: this deploy never lays
-            # nitro/overrides/ over nitro/assets/ the way beta's does.
+            # the tracked fragment in the checkout pulled above (the same
+            # nitro/overrides/ the asset upload synced into nitro/assets/).
             shirt=$(python3 -c "import json; d = json.load(open('nitro/overrides/gamedata-merge/FigureData.json')); print(max(s['id'] for t in d['setTypes'] if t['type'] == 'ch' for s in t['sets'] if s.get('gender') in ('M', 'U')))") \
               && custom=$(render "hd-180-1.ch-$shirt-1408") && bare=$(render hd-180-1) \
               || { echo "::warning::Could not check the imager against the newest custom shirt"; return 0; }

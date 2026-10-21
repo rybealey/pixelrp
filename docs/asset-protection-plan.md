@@ -218,9 +218,11 @@ asset.
 1. **`App\Support\AssetPass::issue(User $user): array`.** Returns four cookies.
    - Values:
      - `prp_ap_u` = user id;
-     - `prp_ap_e` = expiry, unix time, now + 24 h;
-     - `prp_ap_t` = tier: `staff` at `min_staff_rank` and above, otherwise
-       `player` (Phase 3's furni allowance);
+     - `prp_ap_e` = expiry, unix time, now + 1 h (`ASSET_PASS_TTL`; it was
+       24 h until October 2026);
+     - `prp_ap_t` = tier: `staff` for Developers only
+       (`AssetPass::UNLIMITED_RANK`), otherwise `player` (Phase 3's furni
+       allowance);
      - `prp_ap_s` = signature over the other three, space-separated:
 
        ```php
@@ -246,9 +248,9 @@ asset.
 fetch('/game/asset-pass', { credentials: 'same-origin' })
 ```
 
-It lives in `src/api/assets/AssetPassRefresh.ts` and runs every **30 min**. The pass outlives any session shorter than 24 h
-without it, and the refresher covers longer ones. There is no packet and no
-emulator change.
+It lives in `src/api/assets/AssetPassRefresh.ts` and runs every **30 min**,
+half the pass's 1 h lifetime, retrying every 5 min if a renewal fails and at
+once when the tab comes back. There is no packet and no emulator change.
 
 **nginx** (`docker/web/`):
 
@@ -335,8 +337,9 @@ emulator change.
      fetched today is free, so reloads, cleared caches and a second tab cost
      nothing. Files already fetched keep loading after the allowance runs out,
      and clothing is never limited.
-   - **Staff.** Staff (`min_staff_rank` and up) carry `prp_ap_t=staff` and have
-     no allowance, so shop and import work is never cut off. The tier is
+   - **Staff.** Developers (`AssetPass::UNLIMITED_RANK`) carry
+     `prp_ap_t=staff` and have no allowance, so import work is never cut off;
+     every other rank, staff included, gets the allowance. The tier is
      signed, so a player can't set it.
    - **How it works.** `docker/web/njs/asset-limit.js`, run through
      `js_set $asset_furni_over` in its own `bundled/furniture/` location,
@@ -415,7 +418,7 @@ emulator change.
      - with the four `prp_ap_*` cookies copied from a logged-in browser →
        `200`;
      - with a forged `prp_ap_s` or an edited `prp_ap_u` → `403`;
-     - with a copied pass the next day → `403` (expired).
+     - with a copied pass an hour later → `403` (expired).
    - In the game's DevTools, `fetch('/game/asset-pass')` → `204` with four
      fresh `Set-Cookie`s. The client makes the same call by itself every
      30 min.
