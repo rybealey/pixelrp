@@ -150,6 +150,102 @@ def click_modes(data, classname):
     return n
 
 
+LAYER_LETTERS = 'abcdefghijklmnopqrstuvwxyz'
+
+
+def click_states(entries, classname, count=None):
+    """The states a click should go through, from the art: of 0 .. count - 1
+    (count defaults to click_modes), the ones that show something new.
+
+    A look is not always a click state. Two kinds of state are dropped:
+    - one that draws exactly what the state before it draws, still - the same
+      pictures in the same places the same way round, in every direction - so
+      the click to it shows nothing; often a count running past the end of
+      the art, where a state falls back to frame 0. The last state goes too if
+      it looks like state 0. A look that comes round again later stays (a pipe
+      that grows, then shrinks back);
+    - the Washing Machine's: a furni of three looks - one moving, the same
+      stopped on its first frame, and one other still - clicks between the
+      moving one and the other, never the stopped copy. A stopped look is left
+      everywhere else: a speaker's or a wind chime's only 'off', a lamp's
+      steady colours beside its flashing one.
+    Fewer than two states left means nothing is dropped.
+    """
+    import hashlib
+
+    import numpy as np
+    from PIL import Image
+
+    data = json.loads(inflate(entries[next(k for k in entries if k.endswith('.json'))]))
+    top = count if count else click_modes(data, classname)
+    every = list(range(top))
+    vis = next((v for v in data.get('visualizations') or [] if v.get('size') == 64), None)
+    png = next((k for k in entries if k.endswith('.png')), None)
+    if top < 2 or data.get('logicType') != 'furniture_multistate' or not vis or not png:
+        return every
+    sheet = Image.open(io.BytesIO(inflate(entries[png]))).convert('RGBA')
+    frames = {(k[:-4] if k.endswith('.png') else k): v
+              for k, v in ((data.get('spritesheet') or {}).get('frames') or {}).items()}
+    assets = data.get('assets') or {}
+    dirs = sorted(int(d) for d in (vis.get('directions') or {'2': {}}))
+    layers = int(vis.get('layerCount') or 1)
+    anims = vis.get('animations') or {}
+    hashes = {}
+
+    def picture(name):
+        # an asset can borrow another's picture and still sit elsewhere or flipped
+        own = assets.get(name) or {}
+        src, hops = name, 0
+        while (assets.get(src) or {}).get('source') and hops < 5:
+            src, hops = assets[src]['source'], hops + 1
+        frame = frames.get(classname + '_' + src) or frames.get(src)
+        digest = None
+        if frame:
+            r = frame.get('frame') or {}
+            key = (r.get('x'), r.get('y'), r.get('w'), r.get('h'))
+            if key not in hashes:
+                pixels = np.array(sheet.crop((r['x'], r['y'], r['x'] + r['w'], r['y'] + r['h'])))
+                pixels[pixels[..., 3] == 0] = 0          # what a clear pixel holds is not seen
+                hashes[key] = hashlib.blake2b(pixels.tobytes() + bytes(str(pixels.shape), 'ascii'),
+                                              digest_size=8).hexdigest()
+            digest = hashes[key]
+        return digest, bool(own.get('flipH')), int(own.get('x', 0) or 0), int(own.get('y', 0) or 0)
+
+    def look(state):
+        """Per layer: every look the state's animation shows, and the one it starts on."""
+        layer_anims = (anims.get(str(state)) or {}).get('layers') or {}
+        out = []
+        for layer in range(layers):
+            seq = []
+            for sequence in ((layer_anims.get(str(layer)) or {}).get('frameSequences') or {}).values():
+                for f in (sequence.get('frames') or {}).values():
+                    seq.append((int(f.get('id', 0)), int(f.get('x', 0) or 0), int(f.get('y', 0) or 0)))
+            shown = [(tuple(picture('%s_64_%s_%d_%d' % (classname, LAYER_LETTERS[layer], d, f))
+                            for d in dirs), x, y) for f, x, y in (seq or [(0, 0, 0)])]
+            out.append((frozenset(shown), shown[0]))
+        return out
+
+    looks = [look(s) for s in every]
+    moving = {s for s in every if any(len(shown) > 1 for shown, _ in looks[s])}
+    first = [[start for _, start in looks[s]] for s in every]
+
+    def alike(s, t):
+        return s not in moving and t not in moving and first[s] == first[t]
+
+    # a click to a state that looks just like the one before it shows nothing;
+    # a look coming round again later is fine (a pipe that grows, then shrinks)
+    keep = []
+    for s in every:
+        if not keep or not alike(s, keep[-1]):
+            keep.append(s)
+    while len(keep) > 1 and alike(keep[-1], 0):
+        keep.pop()                                # the last click back to 0 shows nothing
+    stopped = [s for s in keep if s and s not in moving and any(t in moving and first[t] == first[s] for t in keep)]
+    if len(keep) == 3 and len([s for s in keep if s in moving]) == 1 and len(stopped) == 1:
+        keep.remove(stopped[0])
+    return keep if len(keep) >= 2 else every
+
+
 def read_furni(path):
     entries = bundle_entries(path)
     json_name = next(k for k in entries if k.endswith('.json'))

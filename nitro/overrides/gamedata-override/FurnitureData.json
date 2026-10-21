@@ -9134,5 +9134,6361 @@
  "yang_d41_sheep": {
   "name": "Sheep",
   "description": "Sheep"
+ },
+ "01_caterbody": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "02_caterbody": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "02_caterhead": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "05_drawer": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Birthday_duck": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_BC1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_BC2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_BE1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_BE2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_CR3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_JA1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_JA2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_NO1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_NO2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_OR2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_RG1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_RG2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_RS1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_RS2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_VE1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_VE2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_VI1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Bouton_VI2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "BurroAfron": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Chase_classic_chaleiraclassica": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Christmas_counter": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "CocaCola_Fridge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "CocaCola_Pinball": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Coussin_feerique_Marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "DIY_a028_LuckyLantern": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "DalleMinimalisteBleue_Zhynk": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "DalleMinimalisteGlaciale_Zhynk": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "DalleMinimalisteJaune_Zhynk": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "DalleMinimalisteOrange_Zhynk": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "DalleMinimalisteRouge_Zhynk": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "DalleMinimalisteVerte_Zhynk": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "DalleMinimalisteViolette_Zhynk": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Dalle_pastel_clair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Dalle_x_o": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "El_Vego": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Elly_nft_h25_gingerbreadsofa": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Faction_Bunny": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Faction_Duck": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Glycine_feerique_Marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HMleeuw1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_01": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_02": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_03": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_04": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_05": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_06": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_07": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_08": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_09": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_10": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_11": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_12": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_13": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_14": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_15": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_16": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_17": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_18": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_19": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_20": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_21": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_23": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_24": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_25": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_26": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_27": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_28": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_29": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_30": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_31": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_32": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_33": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_34": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_35": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_36": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_37": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_38": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_39": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_40": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_41": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_42": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_43": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_45": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_46": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_47": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_48": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_49": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_50": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_51": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_52": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_53": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_54": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_55": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_56": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_57": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_58": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_60": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_61": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_62": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_65": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_66": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_FL25_67": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_bluefloor": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_bluevine": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_icetree": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_01": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_02": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_03": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_04": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_05": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_06": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_07": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_08": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_09": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_10": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_11": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_12": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_13": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_14": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_15": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_16": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_17": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_18": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_19": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_20": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_21": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_22": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_23": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_24": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_25": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_loveadv_26": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habblet_mossblue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habbox_Dalle_Rue_bleu1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habbox_Dalle_Rue_jaun1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habbox_Dalle_Rue_mult1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habbox_Dalle_Rue_oran1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habbox_Dalle_Rue_rose1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habbox_Dalle_Rue_roug1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Habbox_Dalle_Rue_vert1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Hare_Animal": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Blanc_Bleu": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Blanc_Bleuciel": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Blanc_Jaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Blanc_Orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Blanc_Rose": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Blanc_Rouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Blanc_Vert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Brun_Bleu": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Brun_Bleuciel": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Brun_Jaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Brun_Orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Brun_Rose": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Brun_Rouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "HboxDalDiag_Brun_Vert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Ice_counter": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Ja_dalleflech": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Lamp_Phy": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Minimirroir_feerique_Marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Nawloh_Poubelle_City": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Or_dalleflech": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Planchewood_feerique_Marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*0": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*10": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*11": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*12": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*13": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*14": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*15": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*16": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*17": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*18": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*19": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*20": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*5": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*6": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*7": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*8": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Recoloured_Plant*9": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Adega_Regazaa": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Alarme_Alerta": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Barril_de_Carvalho": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Barril_refinado": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Biombo_de_uvas": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Carrinho_F1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Colecao_Formula1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Compressor": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Conhaque": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Ferramentas_de_oficina": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Fonte_De_vinho": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Grande_Barril": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Maleta_Regazza": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Mesa_de_Pnel": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Motor_de_carro": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Plaquinha_Regazza": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Pnel_de_luxo": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Prensa_industrial": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Tonel_de_metal": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Trono_Regazza": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_Vinho_taca": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_chaves_ferramentas": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Regazza_piso_Industrial": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "SS_train_5": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Seawood_gianteye": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Smashed_Room_O_Matic": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Black_s": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Blue_s": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Cyan": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Cyan_s": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Green_s": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Grey": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Grey_s": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Orange_s": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Pink": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Pink_s": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Purple": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Purple_s": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Red": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Red_s": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_White": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_White_s": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "TOOL_GlassFloor_Yellow_s": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Tablebois_feerique_Marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Tortoise_Tortue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Tulipe_feerique_Marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Vanilla_Coke_Gumball_Machine": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Arvore_enfeitada": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Barreira_de_Neve": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Biscoitinho": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Bloco_Cristal_G": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Boneco_de_neve_Magico": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Cabra_Mistica": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Cervo_Real": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Conifera_Natalina": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Cristais_da_Fonte": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Cristal_Verdadeiro": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Danca_Da_Neve": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Duend_de_natal": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Estrela_de_Cristal": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Iceberg": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Janela_casa_natalina": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Janela_casa_natalina2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Janela_de_Cristal": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Janelinha_Cristal": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Lua_de_Cristal": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Mamute_Congelado": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Muralha_Cristal": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Musa_natalina": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Parede_Coniferas": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Parede_Cristal_P": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Parede_pinheiro": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Parede_rocha_nevada": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Pequeno_Gnomo": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Pilar_Cristal_G": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Pilar_Cristal_P": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Pinguim_congelado": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Pinguins_Tematicos": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Piso_Flocos": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Piso_Gramado_Baixo": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Piso_Madeira_Natalina": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Piso_Neve_Enfeitada": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Piso_Neve_da_praia": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Piso_Xadre_Elevado": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Piso_grama_congelada": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Piso_neve_da_floresta": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Piso_pedrinhas": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Piso_tapete_de_Grama": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Porta_Casa_Natalina": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Porta_casa_natalina02": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Portao_de_cristal": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Presente_decorado": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Presente_especial": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Presente_grande": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Rochas_decoradas": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Saco_Vazio": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Saco_de_presentes": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Telhado_Casa_Natalina": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Teto_Casa_Natalina02": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Teto_Cristal_G": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Teto_Cristal_M": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Teto_Cristal_P": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Torre_de_CristalM": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Torre_de_CristalP": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Trenor_Encantado": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Trenor_da_Realeza": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Ursinho_de_presente": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_Urso_Polar": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_enfeites_de_Cristais": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_piso_Gelido": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_piso_Grama_alta": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_piso_Xadrez_Nevado": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_sofa_Ursinho_natalino": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Wniverso_torre_de_CristalG": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yv_Comp_Neg_Blanc_Bleu": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yv_Comp_Neg_Blanc_Jaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yv_Comp_Neg_Blanc_Noir": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yv_Comp_Neg_Blanc_Rouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yv_Comp_Neg_Blanc_Vert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yv_Comp_Neg_Noir_Blanc": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yv_Comp_Neg_Noir_Bleu": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yv_Comp_Neg_Noir_Jaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yv_Comp_Neg_Noir_Noir": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yv_Comp_Neg_Noir_Vert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yv_Comp_Pos_Blanc_Blanc": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yv_Comp_Pos_Noir_Noir_test": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yv_Comp_Pos_Noir_Rouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Astronomie_Cabletourne": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dal_Num_Bla_Bleu": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dal_Num_Bla_Jaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dal_Num_Bla_Orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dal_Num_Bla_Rose": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dal_Num_Bla_Rouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dal_Num_Bla_Vert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dal_Num_Mar_Bleu": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dal_Num_Mar_Cyan": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dal_Num_Mar_Jaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dal_Num_Mar_Orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dal_Num_Mar_Rose": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dal_Num_Mar_Rouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dal_Num_Mar_Vert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Blanc_Blanc": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Blanc_BleuC": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Blanc_BleuF": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Blanc_Jaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Blanc_Mcolor": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Blanc_Noir": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Blanc_Orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Blanc_Rose": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Blanc_Rouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Blanc_Vert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Blanc_Violet": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_BlueCyan": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_CleanBlanc": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_CleanBleu": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_CleanJaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_CleanNoir": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_CleanOrange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_CleanRed": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_CleanRose": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_CleanVert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Maron_Blanc": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Maron_BleuC": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Maron_BleuF": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Maron_Jaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Maron_Mcolor": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Maron_Noir": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Maron_Orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Maron_Rose": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Maron_Rouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Maron_Vert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Maron_Violet": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Pink": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Purple": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Red": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_White": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_DallePress_Yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_B_AllColor": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_B_Bleu": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_B_Cyan": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_B_Jaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_B_Orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_B_Rose": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_B_Rouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_B_Vert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_M_AllColor": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_M_Bleu": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_M_Cyan": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_M_Jaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_M_Orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_M_Rose": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_M_Rouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Poite_M_Vert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Rue_bleu1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Rue_jaun1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Rue_mult1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Rue_oran1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Rue_rose1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Rue_roug1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Dalle_Rue_vert1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Amplif": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Amplif2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Batterie": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_BoiteCarton": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Bonbone": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Clou": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Door1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Door2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Drapeau": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Etagere": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Exhaust": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_GrosCoffre": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Huile1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Huile2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Interupteur": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_Garage_Stereo": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_11": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_12": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_13": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_14": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_15": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_16": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_17": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_18": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_5": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_6": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_7": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_8": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff_9": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_LevierOnOff__10": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_RectangleDalle_MArc": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_fleche_PanoBlanc": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_fleche_PanoNoir": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_fleche_blanc": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_fleche_noir": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_fleche_poteau1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess5_fleche_poteau2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Bl_Ble_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Bl_Cya_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Bl_Jau_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Bl_Ora_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Bl_Ros_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Bl_Rou_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Bl_Ver_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Ma_Ble_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Ma_Cya_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Ma_Jau_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Ma_Ora_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Ma_Ros_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Ma_Rou_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "Yvess_Ma_Ver_Dal_Star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "adon_cain": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ads_blu_roses": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "afrank_cain": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "aisha_figure_blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "aisha_figure_green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "aisha_figure_red": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "aisha_figure_yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "aisha_pot": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "alien_pinkpyramid": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "amorous_sheep": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "baby_kinderwagen": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "baby_stewie": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "baby_strik": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bar_hubau": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bday10_duckballoon": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bday_c18_laurens_teddy": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bed_feerique_Marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bed_hubau_one": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bed_hubau_two": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bench_hubau": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bgry_marble": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bl_balwired": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bl_box": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bl_dalleflech": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bl_dallering": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bl_porteverr": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bleu1_dallefleche": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "bleu_dallefleche": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "blondea_cain": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "boite_bois": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "boite_outils2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "box_bd": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "box_gd": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "box_lb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "button_1rood": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cables": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cain_cabinephone": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cain_ccouch": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cain_hdog": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cain_miniarmydog": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cain_minibicycle": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cain_minibike": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cain_minicar": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cain_minijetski": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cain_minimotocycle": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cain_minipuff": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cain_miniseat": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cain_miniservicecar": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cain_wbench": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "candado_chococat": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "candado_hello_kitty": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "candado_keroppi": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "candado_kuromi": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "candado_melody": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*10": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*11": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*12": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*13": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*14": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*15": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*16": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*17": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*18": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*19": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*20": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*21": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*22": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*23": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*24": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*25": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*26": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*27": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*28": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*29": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*30": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*31": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*32": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*33": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*34": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*35": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*36": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*37": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*38": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*39": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*40": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*41": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*42": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*43": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*44": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*45": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*46": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*47": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*48": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*49": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*5": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*50": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*51": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*52": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*53": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*54": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*55": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*56": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*57": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*58": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*59": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*6": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*60": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*61": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*62": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*63": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*64": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*65": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*66": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*67": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*68": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*69": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*7": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*70": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*71": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*72": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*73": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*74": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*75": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*76": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*77": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*78": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*79": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*8": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*80": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "carpet_polar*9": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "case_colore": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_5001_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_5001_coffee_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_5001_minibar": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_5001_sofa": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_5001_sound_system": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_5001_stool": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_5001_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_acoustic_foam": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_acoustic_pad": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_aquarium": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_aquatic_divider": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_arcade": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_bass": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_batman_begins_poster": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_beach_view": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_black_traffic_light": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_board": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_bookshelf": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_boom_box": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_cd": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_center": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_christmas_lights": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_christmas_tree": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_city_view": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_cocacola_neon_sign": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_coke_cd_player": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_coke_cooler": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_coke_machine": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_comet_curtain": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_congas": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_coral_mood_light": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_corner_piece": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_cow_pattern_bean_bag_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_curtain": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_cushion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_dance_floor": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_darts": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_decompression_chamber": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_dell_couch": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_deluxe_aquarium": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_diner_seating": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_diner_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_disco_lights": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_disco_poster": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_diva_marquee": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_diving_suit": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_dj_console": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_dj_stand": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_doc_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_dorm_light": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_dryer": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_ea_batman_poster": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_equipment_rack": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_fireplace": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_fish_porthole": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_fishy": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_fortune_teller": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_funhouse_mirror": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_funky_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_furry_rug": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_futuristic_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_gear_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_gold_record": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_grey_traffic_light": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_grunge_couch": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_guitar": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_happy_holidays_poster": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_heart_poster": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_hologram": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_infinite_jukebox": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_instant_bookshelf": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_instant_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_james_stool": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_jukebox": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_kitchen_cabinet": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_kitchen_sink": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_lawn_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_leopard_couch": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_life_preserver": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_lighthouse_aquarium": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_lighthouse_buoy": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_messy_box": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_messy_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_microphone": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_mixer": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_molten_magma_lamp": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_ocean_floor_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_old_fridge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_oven": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_oyster_couch": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_parasol_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_path": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_piano": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_plasma_lamp": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_plasma_screen": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_platinum_record": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_playa_marquee": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_pop_art_poster": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_potted_plant": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_premier_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_premier_coffee_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_premier_minibar": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_premier_sofa": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_premier_stereo": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_premier_stool": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_premier_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_premiere_light": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_promo_poster": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_psychedelic_carpet": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_public_lumos": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_recycling_bin": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_redcouch": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_refrigerator": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_res_o_scanner": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_retro_keyboard": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_retro_speaker": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_retro_tv": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_robot_dog": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_robot_lamp": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_robot_sculpture": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_royal_throne": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_sampler_rack": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_santa_picture": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_scrap_metal_carpet": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_sea_sponge_barrier": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_separator_color": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_shark_portal": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_sleepover": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_spider_web": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_star_rug": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_straw_mat": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_street_styles": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_stylish_couch": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_submarine": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_surf_board": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_tatami_mat": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_teleporter": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_tinted_separator": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_tire_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_top_40_chart": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_torch": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_totem": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_trash_can": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_treasure_chest": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_trophy_case": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_tropical_poster": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_trumpet": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_tulip": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_tv": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_vanilla_coke_machine": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_vanilla_coke_shelf": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_vanilla_coke_table_test": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_vball_machine": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_victorian_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_victorian_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_vintage_amp": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_wallshelf": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_wardrobe_trunk": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_washer": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_winter_view": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cc_zebra_couch": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_banquetaclassica": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_blocoazuldepedra": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_blocodecorado1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_blocodecorado2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_bonecaerika": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_bordaazul": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_bordaazul2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_bordaazul3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_brincoscharlotte": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_cadeiraclassica": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_caixaclassica": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_caixinhaclassica": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_casadebonecas": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_casadepassaros": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_detalheazul3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_detalheazul4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_detalheclassico": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_detalheclassico2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_espelhoclassico": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_lamparina": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_mesaazulclassica": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_molduraclassica": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_pilarclassico": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_pilarclassico2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_pilarclassico3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_sombrinha": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_vasoazul": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_vestidoclassico": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chase_classic_xicaraclassica": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chevalet_feerique_Marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "chia_negg_pot": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "christmas_halfblock": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cookie_legopersontrophy1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cookie_legopersontrophy2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cookie_legopersontrophy3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cool_negg": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "country_sack": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "crew_dark_color_tile_1x2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "crew_dark_color_tile_1x3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "crystaltileachromatic": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "crystaltileblack": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "crystaltileblue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "crystaltilegreen": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "crystaltilepurple": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "crystaltilered": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "crystaltileyellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cstm_f25_miffy_turtle_pillow02": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cstm_r25_wired_3_0_trofee": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cstm_s25_trophy_bear_bronze": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cstm_s25_trophy_bear_gold": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cstm_s25_trophy_bear_silver": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cstm_scifi_vloer_1x1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cstm_tokyo_glass_door": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cstm_trophy_hammer_bronze": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cstm_trophy_hammer_gold": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cstm_trophy_hammer_silver": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cuadrodeverano": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cube_light_5001": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cybunny_figure_blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cybunny_figure_green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cybunny_figure_red": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "cybunny_figure_yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "da_rondbleub": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "da_rondbleuu": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "da_rondbluee": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "da_rondjaunb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "da_rondjaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "da_rondoranb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "da_rondorang": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "da_rondroseb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "da_rondrosee": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "da_rondrougb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "da_rondrouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "da_rondvertb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "da_rondvertt": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "dalle_2x2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "dalle_3x3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "dalle_3x3_bronze": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "dalle_4x4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "dalle_4x4_bronze": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "dalle_bonze_pastel": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "dalle_bronze_couleur_vive": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "dalle_couleur_vive": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "dalle_noir_blanche": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "dalle_numero": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "dalle_numero_noir": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "dalle_pastel_sombre": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "darigan_lupe_figure_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "devil_shoyru_figure_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "diagonalpedra_kdh_25": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "duckbanana_hubbe_luckbot": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "duckdorminhoco_hubbe_luckbot": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "duckgordo_hubbe_luckbot": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "duckladrao_hubbe_luckbot": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "duckvaidosa_hubbe_luckbot": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "easter_c25_easter_pineapple": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "easter_c25_party_pineapple": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "easter_c25_party_yukka": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eend_05": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_01": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_02": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_03": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_04": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_05": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_06": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_07": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_09": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_10": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_11": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_12": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_13": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_14": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_15": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_16": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_17": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_18": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_19": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_20": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_21": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_22": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_23": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_24": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_25": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_26": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_27": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_28": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_29": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_30": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_31": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_32": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eradogelo_habblet_33": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "estanteria_medica": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "estatualibertad": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "events_prijs_aapje1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "events_prijs_hellokitty": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "events_prijs_panda": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "events_prijs_pikachu": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "events_prijs_poliwag": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eyeball_lamp": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eyrie_figure_blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eyrie_figure_green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eyrie_figure_red": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "eyrie_figure_yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "fball_sweatshoes": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "flecha_walkon": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "flwrpwr_01": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "flwrpwr_02": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "flwrpwr_03": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "furry_negg": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "gala_marble": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "galaxy_beark_trax": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "gong": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "grarrl_negg": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habblet_bluerock": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habblet_bluerock2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habblet_bluewaterfall": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habblet_classicteapot_25": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_autumn_bucket_hay": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_blue_plane": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_01": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_02": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_03": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_04": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_05": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_06": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_07": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_08": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_09": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_10": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_11": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_12": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_13": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_14": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_15": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_16": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_17": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_18": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_19": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_20": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_21": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_aguas": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_chs": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_coins": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_pedregulhos": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_egypte_pegadaar": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_finley_fenetre_tokyo2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_hancar_michi": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_mini_cloud": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_public_c19_1x1red": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_public_c19_1x1yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_public_c19_petalpatch": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_public_c19_petalpsml": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_bedblue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_books": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_candle": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_chairblue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_chairpink": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_clock": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_cratechairdark": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_cratechairligh": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_cushion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_kintsugia": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_kintsugib": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_mantelbooks": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_mantelclock": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_patchsofaoran": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_patchsofapink": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_photo": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_resintableblue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_resintableoran": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_rosedresser": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_rugblue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_rugred": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_scrapbooka": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_scrapbookb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_tabledark": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_tablelight": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_recycler_tree": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_red_plane": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_shone_botte_beige": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_shone_botte_jaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_shone_botte_rose": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habbox_shone_botte_rouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habboxfr_c19_rainpressuretile": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habcrush_c23_boutiqueplant": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habcrush_c23_wallvine": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habcrush_c25_greenpicnicblank": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habcrush_c25_greenpicnicpillow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habcrush_c25_purppicnicblank": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "habcrush_c25_purppicnicpillow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "halloweenRIO25_gargula": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "halloween_schalter": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hamtaru_1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "happy_negg": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hausoffashion_trophy": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hb_invisbl": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hbox_switch_2_1_1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hbox_switch_2_2_1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hbox_switch_2_3_1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hbox_switch_2_4_1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hbox_switch_2_4_2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hbox_switch_2_4_3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hbox_switch_2_5_1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hbox_switch_2_5_2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hbox_switch_2_5_3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hbox_switch_2_6_1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hbox_switch_4_1_1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hbox_switch_4_2_1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hc15_club_display": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hc_bleuu_levier1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hc_jaune_levier1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hc_orang_levier1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hc_rosee_levier1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hc_rouge_levier1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hcity_coivble": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hcity_coivrou": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hcity_comjaun": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hcity_comroug": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hcrush_c23_netcafeplant": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hcrush_c23_netcafeplant2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hcrush_c23_netcafetable": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hlive_r24_shtrdl_xmascat": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hlive_r24_shtrdl_xmasdeer": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hlive_r24_shtrdl_xmasfox": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hlive_r24_shtrdl_xmasowl": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hotel_sheep": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hpnk_marble": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hub_au_divi1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hub_au_divi2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hub_au_divi3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "hubbe_lovelock_infinitylove": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "huis_kapstok": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "huis_tissuebox": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "huis_wasmachine": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "invisible_tile": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ipixxel_arrow_floor": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ipixxel_arrowdown_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ipixxel_arrowdown_green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ipixxel_arrowdown_orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ipixxel_arrowdown_purple": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ipixxel_arrowdown_red": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ipixxel_arrowdown_white": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ipixxel_arrowdown_yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ja_balwired": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ja_box": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ja_dallering": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ja_dallerngb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ja_porteverr": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "jone_dallefleche": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "kleine_metalen_constructie": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "kougra_figure_blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "kougra_figure_green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "kougra_figure_red": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "kougra_figure_yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lamp2_hubau": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lamp_hubau": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lanterne_feerique_Marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lava_lamp": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lb_arrowplate": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lb_box": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lb_floor_switch1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lb_maze": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lb_ringplate": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lb_rondorang": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "leuchtball1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "leuchtball2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "leuchtball3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "leuchtball4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "leuchtball5": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "leuchtball6": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "leuchtball7": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "leuchtball9": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "leviernothen_jaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "leviernothen_orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "leviernothen_rouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "leviernothen_vert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "leviernothen_violet": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "library17_bar1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "library17_bar2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "library17_door1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "library17_door2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "library17_plant": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "library17_shelves10": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "library17_shelves6": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "library17_shelves8": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lipe_r22_goldenhand": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "livefurni19_husky": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "livefurni20_hospitalpillar": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "livefurni20_hospitalplate": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "living_boxes1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lupe_figure_blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lupe_figure_green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lupe_figure_red": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "lupe_figure_yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mansion_hw23_displaystand": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mansion_hw23_dragon": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mansion_hw23_egg": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mansion_hw23_pillow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mesa_hardfrank_preta": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mini_memorial_alex_nav": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mini_van_hubbe2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "miroir_hollywood4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "miroir_hollywood_2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_armchair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_bed": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_bedgirl": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_carpet": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_cat": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_creamrolls": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_creature": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_floor": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_light": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_smalltable": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_sofa": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_sofa1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_sofagirl": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_teaplant1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_teaplant2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_teaplant3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_teaplant4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_teaset": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_vanity": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_wall": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_walldecor": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_c17_window": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_clowndoor": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_pumpkin": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_pumpkin2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_pumpkin3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_pumpkin4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "monsterseyes_rope": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mu_bleu": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mu_jaun": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mu_oran": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mu_rose": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mu_roug": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mu_vert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "mybobba_crew_dark_color_tile": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "natur_schalter": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "near_tiles_memorygame": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "neopet_crate": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "newdic2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "numeric_colour_tile_0": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "numeric_colour_tile_1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "numeric_colour_tile_2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "numeric_colour_tile_3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "numeric_colour_tile_4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "numeric_colour_tile_5": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "numeric_colour_tile_6": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "numeric_colour_tile_7": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "numeric_colour_tile_8": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "numeric_colour_tile_9": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "one_way_marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "or_balwired": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "or_dallering": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "or_dallerngb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "or_porteverr": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orange_dallefleche": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orien_bijzetfl": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orien_placem": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orien_sausje": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orien_stoel_klein": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orien_tafel_gr": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "oriental_vloer01": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orientala19r_bench": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orientala19r_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orientala19r_duck": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orientala19r_grass": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orientala19r_lamp": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orientala19r_lion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orientala19r_rflower": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orientala19r_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orientala19r_tree": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orientala19r_wlily": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orientala19r_yflower": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "orientl_poster": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bb1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bb2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bb3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bb4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bb5": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bb6": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bb8": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bear_rug1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bear_rug2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bear_rug3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bear_rug4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bonsai1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bonsai2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_bonsai3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_hween_bunny": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_hween_cactus": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_hween_duck1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_hween_duck2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_hween_pine": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_hween_pumpkin": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_hween_yukka": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_bar": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_bartable": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_bear": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_bed_one": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_bed_two": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_bench": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_bunny": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_candle": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_croco": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_div": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_div_crn": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_duck_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_duck_blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_duck_green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_duck_purple": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_duck_red": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_gate": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_lamp": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_shelve": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_stool": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_table_small": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_pirate_treasuremap": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_tv_blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_tv_green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_tv_orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_tv_purple": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c24_tv_yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_ann_balloon": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_bambooplant": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_bath_tile_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_bath_tile_orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_bjuice_machine": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_blackfriday_bonsai": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_blackfriday_poster": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_blackfriday_tv": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_bonsai_red": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_bonsai_yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_cabin_barrel": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_cabin_barreltable": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_cabin_cabinet": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_cabin_keg": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_chair_gift": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_choco_bunny": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_clawgame": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_clover": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dinobasket": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_doormat_bobba": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dpolyfon_bar": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dpolyfon_bed": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dpolyfon_bed_one": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dpolyfon_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dpolyfon_fireplace": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dpolyfon_shelves": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dpolyfon_sofa": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dpolyfon_sofachair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dpolyfon_stand_z": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dpolyfon_tabl_smth": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dpolyfon_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dpolyfon_table_m": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_dpolyfon_table_s": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_duckgift": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_durector": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_easter_chocoegg": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_easter_globe": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_easterscreen": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_fishfridge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_funky_bubblejuice": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_funkygift": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_funtastic": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_goldfish": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_heartsofa_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_heartsofa_blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_heartsofa_green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_heartsofa_pink": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_heartsofa_white": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_heartsofa_yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_lucky_duck": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_poster_blackknots": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_poster_bonniecvl": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_poster_origins": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_poster_submarine": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_prizetrophy_anniv": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_prizetrophy_star": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_pub_lamp": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_telebox_orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_tile_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_tile_bobba": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_tile_duck": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_tile_orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_turntable_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_turntable_blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_turntable_brown": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_turntable_grey": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_turntable_orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_turntable_purple": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_turntable_red": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_turntable_vintage": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_val_davestatue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_val_heart_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_val_heart_blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_val_heart_green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_val_heart_pink": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_val_heart_white": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_c25_val_heart_yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_doormat": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_garland1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_garland2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_garland3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_garland4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_garland5": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_ph_box": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_stocking1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_stocking2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_stocking3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_stocking4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origins_stocking5": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "origns_bb7": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "overige_fiets_blauw": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "paint_gold_neopets": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "paint_silver_neopets": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "patofuente": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "pirate_aisha_figure_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "piso_nevado": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "pixar_alien": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "pixar_bal": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "pixel_clock_baby": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "plant_c15_tee": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "plushie_kougra_figure_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "polar_bear": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "prideflagaromantic": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "prideflagasexual": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "prideflagbisexual": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "prideflaggay": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "prideflaginclusive": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "prideflaglesbian": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "prideflagnonbinary": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "prideflagpansexual": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "prideflagrainbow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "prideflagtrans": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rainbow_eyrie_figure_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rainbowtile": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rainbowtile2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rare_eend": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rav_holo_switch1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rav_holo_switch2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rg_balwired": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rg_box": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rg_dalleflech": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rg_dallering": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rg_dallerngb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rice_paper_divider": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rip_sheep": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "risesnowball": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ro_balwired": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ro_box": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ro_dalleflech": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ro_dallering": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ro_dallerngb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ro_porteverr": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rondintable_feerique_Marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "roof_sofa": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "roof_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rooftop17_bar": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rooftop17_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rooftop17_flag": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rooftop17_pod": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rooftop17_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rooftop7_crn": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_barchair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_barside": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_div": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_floor3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_glow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_hanglight": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_plant": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_pool": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_sofa": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_stairs": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_stairside": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_table1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_table2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_wallbl1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_wallbl2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_wallbl3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_wallcrnr": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_walltl": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_walltr1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_hbct_walltr2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_lobby_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_lobby_flower": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_lobby_roommatic": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_lobby_sofa": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_lobby_table": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_lobby_watermatic": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "room_roof15_sofa1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rose_dallefleche": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rouge_dallefleche": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rs_porteverr": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rumble_bob": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_bench": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_bento1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_bento2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_bowl": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_dango": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_halfboard": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_hangingchair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_onigiri": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_pillow1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_pillow2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_plant1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_plant2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_ramen": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_shinto": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_sign": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_slate": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_stand": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_stool1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_stool2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_swing": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_table1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_table2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_tray1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_tray2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_window1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_window2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "rylai_japan_window3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c21_hellokitty_catrug": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c21_hellokitty_cushion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c21_hellokitty_plushy": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c21_hellokitty_seat": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_badtz_clock": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_badtz_desk": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_badtz_lamp": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_badtz_plushy": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_chococat_cushion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_chococat_desk": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_chococat_drawer": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_chococat_mirror": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_chococat_plushy": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_keroppi_leaf": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_keroppi_plushy": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_mymelody_flower": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_mymelody_plushy": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_mymelody_vase": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_twinstar_cloud": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_twinstar_moon": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_twinstar_plushy": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sanrio_c22_twinstar_stars": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "setmagie_feerique_Marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sfx_furni_bongo": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sfx_furni_fire": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sfx_furni_toilet": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shadow_VIP23_butler": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shadow_VIP23_carpet": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shadow_VIP23_chair": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shadow_VIP23_curtain": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shadow_VIP23_desk": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shadow_VIP23_dice": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shadow_VIP23_gate": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shadow_VIP23_gatecrn": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shadow_VIP23_mocha": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shadow_VIP23_roller": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shadow_VIP23_sofa": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shadow_VIP23_sofathrone": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shadow_VIP23_throne": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shone_coivjau": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shone_coivver": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shone_combleu": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shone_comvert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shoyru_figure_blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shoyru_figure_green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shoyru_figure_red": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "shoyru_figure_yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sick_teddy": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "small_chair_hubau": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "small_table_hubau": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "snowballm": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "snowstorm_snowblock01": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "solarium_flpwr": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "space_lift_off": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "spongebobslak": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "stealth_cybunny_figure_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "stone_negg": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sun_chair1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sun_chairsunny": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "sun_table1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tab_chair_bnjwt": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "table_hubau": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tabouretrondin_feerique_Marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "teddy_briaa": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "teddy_deat": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "theire_feerique_Marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tile_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tile_blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tile_cian": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tile_green": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tile_orange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tile_pink": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tile_purple": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tile_redisa": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tile_white": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tile_yellow": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tokyo_c18_fla1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "tp_arropointw": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "traficllight_marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "trash_cain": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "vbunn": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ve_balwired": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ve_box": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ve_dalleflech": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ve_dallering": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ve_dallerngb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "ve_porteverr": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "vert_dallefleche": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "vinilo_gorillaz": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "vinilo_kiss": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "vinilo_pinkfloyd": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "vinilo_queen": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "vinilo_rollingstones": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "vinilo_tameimpala": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "vinilo_vaporwave": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "w19_cleanwash": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wasmachine": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_acidever": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_acidevrb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_arrow_tile_dark_crew": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_arrow_tile_light_crew": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_arrowplate_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_arrowplate_white": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_dragbal1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_dragbal2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_dragbal3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_dragbal4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_dragbal5": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_dragbal6": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_dragbal7": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_firegate_blue": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_firegate_purple": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_firegteb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_floor_switchs": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_floor_switchw": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_game_hubcountbl": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_game_hubcountgd": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_glasdoo8": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_glassdoo2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_glassdoo3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_glassdoo4": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_glassdoo5": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_glassdoo6": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_glassdoo7": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_glassdoor_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_hub_count2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_jetseaub": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_pressureplate_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_pressureplate_white": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_ringplate_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_ringplate_white": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_switch_black": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_switch_white": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_touw1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_touw2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wf_touw3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wgard_bench_plain": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wgard_div_2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wgard_div_3_crnr2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wgardn_bench": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wibbotybo_buzzerbleu1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wibbotybo_buzzerbleu2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wibbotybo_buzzerjaune": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wibbotybo_buzzerorange": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wibbotybo_buzzerrose": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wibbotybo_buzzerrouge": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wibbotybo_buzzervert": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wibbotybo_buzzerviolet": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "window_feerique_marion": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wiredextras_pfeilplatte1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "wooden_speaker": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "xm0611_firewood": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "xmas13_toyblock5": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "xmas13_toyblock6": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "xmas14_lights3": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "xmas_c15_sheep": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "youtube_jukebox": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_1x1zemn": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_LTDCAT": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_basamak": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_biras": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_cit": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_duvars": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_duvarskolons": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_floor": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_hali": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_kenarlik": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_kolons": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_koltk": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_komurarb": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_sallanan": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_velet": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_velet2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yufex_xmas_c25_zemins": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "yv_flech_1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "zombie1": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "zombie2": {
+  "furniline": "customs",
+  "category": "customs"
+ },
+ "zombie3": {
+  "furniline": "customs",
+  "category": "customs"
  }
 }

@@ -171,14 +171,17 @@ def merge_texts(fragment, target):
 
 
 def override_furnituredata(fragment, target):
-    """FurnitureData.json override: {classname: {"name": ..., "description": ...}}.
+    """FurnitureData.json override: {classname: {"name": ..., "description": ...,
+    "furniline": ..., "category": ...}}.
 
-    Renames furnitypes in place - only those two fields, only on entries whose
+    Changes furnitypes in place - only those text fields, only on entries whose
     classname is listed, whichever of room or wall items they are. It is the
     one way to rename a furni the merge has already put on the server: the
     merge leaves an entry that exists alone by design, so a changed name in a
     fragment never arrives. The shop reads the catalog row's name; rooms,
-    backpacks and the infostand read these.
+    backpacks and the infostand read these. The furni line and category are
+    labels anyone opening the file can read (the Zipto shop furni went out as
+    'zipto' and are 'customs' like every other custom pack).
     """
     changed = 0
     for kind in ('roomitemtypes', 'wallitemtypes'):
@@ -186,7 +189,7 @@ def override_furnituredata(fragment, target):
             want = fragment.get(entry.get('classname'))
             if not isinstance(want, dict):
                 continue
-            for field in ('name', 'description'):
+            for field in ('name', 'description', 'furniline', 'category'):
                 if isinstance(want.get(field), str) and entry.get(field) != want[field]:
                     entry[field] = want[field]
                     changed += 1

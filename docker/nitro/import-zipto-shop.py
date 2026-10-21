@@ -599,12 +599,12 @@ for p in pages:
 # ---- gamedata ------------------------------------------------------------------
 
 furnitype = [{
-    'id': r['id'], 'classname': r['classname'], 'revision': 0, 'category': 'zipto',
+    'id': r['id'], 'classname': r['classname'], 'revision': 0, 'category': 'customs',
     'defaultdir': r['defaultdir'], 'xdim': r['x'], 'ydim': r['y'], 'partcolors': r['partcolors'],
     'name': r['name'], 'description': r['desc'], 'adurl': '', 'offerid': -1, 'buyout': False,
     'rentofferid': -1, 'rentbuyout': False, 'bc': False, 'excludeddynamic': False, 'customparams': '',
     'specialtype': 1, 'canstandon': r['walk'], 'cansiton': r['sit'], 'canlayon': r['lay'],
-    'furniline': 'zipto',
+    'furniline': 'customs',
 } for r in rows]
 texts = {}
 for r in rows:
