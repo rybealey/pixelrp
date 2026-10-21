@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shop Planner</title>
+<style>
+:root {
+  --bg: #f3f3f5; --panel: #ffffff; --line: #e2e4e8; --text: #1f2328; --muted: #6a7078;
+  --accent: #e8743b; --accent-soft: #fff4ec; --pixel: #3b6fd8; --pixel-soft: #e9f0fd;
+  --zipto: #2f8f4e; --zipto-soft: #e7f5ec; --new: #8a5cc7; --new-soft: #f2ecfb; --tile: #eceef1; --warn: #b26b00;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17191c; --panel: #1f2226; --line: #31353b; --text: #e6e8eb; --muted: #9aa1a9;
+    --accent: #f0915f; --accent-soft: #3a2a20; --pixel: #7ea2f0; --pixel-soft: #1e2a40;
+    --zipto: #5cc07f; --zipto-soft: #1f3327; --new: #b892ea; --new-soft: #2b2338; --tile: #2a2e33; --warn: #e0a64a;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--bg); color: var(--text); font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center;
+  padding: 8px 14px; background: var(--panel); border-bottom: 1px solid var(--line); }
+header h1 { font-size: 14px; margin: 0; }
+header .grow { flex: 1; }
+.legend { display: inline-flex; gap: 8px; color: var(--muted); }
+input[type=search], input[type=text] { font: inherit; color: var(--text); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 4px; padding: 4px 8px; }
+input[type=search] { width: 210px; }
+button { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line);
+  border-radius: 4px; padding: 3px 9px; cursor: pointer; }
+button:hover { border-color: var(--muted); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.layout { display: grid; grid-template-columns: 320px 1fr; height: calc(100% - 46px); }
+nav { overflow: auto; border-right: 1px solid var(--line); background: var(--panel); padding: 6px 0 40px; }
+.row { display: flex; align-items: center; gap: 4px; padding: 2px 8px 2px 0; cursor: pointer; white-space: nowrap; }
+.row:hover { background: var(--bg); }
+.row.on { background: var(--accent-soft); color: var(--accent); }
+.row.drop { outline: 2px dashed var(--accent); outline-offset: -2px; }
+.row .tw { width: 16px; text-align: center; color: var(--muted); flex: none; }
+.row img { width: 18px; height: 18px; object-fit: contain; flex: none; image-rendering: pixelated; }
+.row .nm { overflow: hidden; text-overflow: ellipsis; }
+.row .c { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; padding-left: 6px; }
+.row.tab .nm { font-weight: 700; }
+.row.heading .nm { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.row.hidden .nm { opacity: .5; text-decoration: line-through; }
+.dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.dot.pixel { background: var(--pixel); } .dot.zipto { background: var(--zipto); } .dot.new { background: var(--new); }
+main { overflow: auto; padding: 12px 16px 80px; }
+.crumbs { color: var(--muted); margin-bottom: 4px; }
+.crumbs a { color: inherit; cursor: pointer; text-decoration: none; }
+.crumbs a:hover { color: var(--accent); }
+.head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+.head h2 { font-size: 16px; margin: 0; }
+.head .c { color: var(--muted); }
+.badge { font-size: 11px; border-radius: 3px; padding: 1px 6px; }
+.badge.pixel { background: var(--pixel-soft); color: var(--pixel); }
+.badge.zipto { background: var(--zipto-soft); color: var(--zipto); }
+.badge.new { background: var(--new-soft); color: var(--new); }
+.badge.warn { color: var(--warn); }
+.section { margin: 14px 0 6px; font-weight: 600; color: var(--muted); }
+.cards { display: grid; gap: 8px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 5px; }
+.card.sel { border-color: var(--accent); }
+.card .ch { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; padding: 6px 10px; }
+.card .ch img.pi { width: 22px; height: 22px; object-fit: contain; image-rendering: pixelated; }
+.card .t { font-weight: 600; cursor: pointer; }
+.card .t:hover { color: var(--accent); }
+.card .raw { color: var(--muted); font-size: 11px; }
+.card .c { color: var(--muted); }
+.card .grow { flex: 1; }
+.strip { display: flex; flex-wrap: wrap; gap: 3px; padding: 0 10px 8px; }
+.it { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: var(--tile); border-radius: 3px; position: relative; }
+.it img { max-width: 38px; max-height: 38px; image-rendering: pixelated; }
+.it.z { box-shadow: inset 0 -3px 0 var(--zipto); }
+.grid { display: flex; flex-wrap: wrap; gap: 4px; }
+.grid .it { width: 52px; height: 52px; }
+.grid .it img { max-width: 50px; max-height: 50px; }
+.bar { position: sticky; bottom: 0; display: none; gap: 8px; align-items: center; flex-wrap: wrap; padding: 8px 12px;
+  background: var(--panel); border: 1px solid var(--accent); border-radius: 6px; margin-top: 12px; box-shadow: 0 -4px 16px rgba(0,0,0,.08); }
+.bar.on { display: flex; }
+.bar input { width: 320px; }
+.joined { padding: 4px 10px 8px; color: var(--muted); }
+.joined b { color: var(--text); }
+.outline { white-space: pre; font: 12px/1.5 ui-monospace, Consolas, monospace; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 5px; padding: 10px 14px; overflow: auto; }
+.hint { color: var(--muted); max-width: 900px; margin: 0 0 10px; }
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; height: auto; }
+  nav { max-height: 260px; border-right: 0; border-bottom: 1px solid var(--line); }
+  input[type=search], .bar input { width: 100%; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Shop Planner</h1>
+  <span class="legend"><span class="badge pixel">Pixel</span><span class="badge zipto">Zipto</span><span class="badge new">New folder</span></span>
+  <span class="grow"></span>
+  <input type="search" id="q" placeholder="Find a page or set">
+  <button id="outline">Outline</button>
+  <button id="export" class="primary" title="Save the map to a file for the import">Export map</button>
+  <button id="load">Load map</button>
+  <button id="reset" title="Back to the proposal">Reset</button>
+  <input type="file" id="file" accept=".json" hidden>
+</header>
+<div class="layout">
+  <nav id="tree"></nav>
+  <main id="main"></main>
+</div>
+<datalist id="folders"></datalist>
+<script>
+const DATA = /*DATA*/null;
+const KEY = 'shop-planner-v1';
+const BASE = {};
+DATA.nodes.forEach(n => { BASE[n.id] = n; });
+let state = { edits: {}, added: [] };
+try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && s.edits) state = s; } catch (e) {}
+// folders renamed since the last build: saved edits follow them to their new ids
+(function () {
+  const A = DATA.aliases || {}, to = id => A[id] || id, edits = {};
+  Object.entries(state.edits).forEach(([id, e]) => {
+    if (e.parent) e.parent = to(e.parent);
+    if (e.merge) e.merge = to(e.merge);
+    edits[to(id)] = Object.assign(edits[to(id)] || {}, e);
+  });
+  state.edits = edits;
+  state.added.forEach(a => { if (a.parent) a.parent = to(a.parent); });
+})();
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// the tree as edited: base nodes, then the edits laid over them
+let N = {}, kids = {};
+function rebuild() {
+  N = {};
+  DATA.nodes.forEach(b => { N[b.id] = Object.assign({}, b, state.edits[b.id] || {}); });
+  state.added.forEach(a => { N[a.id] = Object.assign({ kind: 'page', src: 'new', order: 0, items: [] }, a, state.edits[a.id] || {}); });
+  // a page moved into a folder that is no longer there goes back where it started
+  Object.values(N).forEach(n => { if (n.parent && (!N[n.parent] || N[n.parent].dropped) && BASE[n.id]) n.parent = BASE[n.id].parent; });
+  kids = {};
+  Object.values(N).forEach(n => { if (n.dropped || n.merge) return; const p = n.parent || '#'; (kids[p] = kids[p] || []).push(n.id); });
+  Object.keys(kids).forEach(p => kids[p].sort((a, b) => sortKey(N[a], p) < sortKey(N[b], p) ? -1 : 1));
+}
+function inCustoms(id) { let n = N[id]; while (n) { if (n.id === DATA.customs) return true; n = N[n.parent]; } return false; }
+function sortKey(n, parentId) {
+  // Customs reads A-Z all the way down, its category folders too
+  if (parentId !== '#' && inCustoms(parentId)) return n.name.toLowerCase();
+  return String(n.order).padStart(6, '0') + n.name.toLowerCase();
+}
+function joinedTo(id) { return Object.values(N).filter(n => n.merge === id && !n.dropped); }
+function ownItems(id) { let its = N[id].items.slice(); joinedTo(id).forEach(j => { its = its.concat(j.items.map(i => i.concat(['z']))); }); return its; }
+const totals = {};
+function total(id) {
+  if (totals[id] !== undefined) return totals[id];
+  let t = ownItems(id).reduce((s, i) => s + (i[2] || 1), 0);
+  (kids[id] || []).forEach(k => { t += total(k); });
+  return (totals[id] = t);
+}
+function path(id) { const out = []; let n = N[id]; while (n) { out.unshift(n); n = N[n.parent]; } return out; }
+function pathText(id) { return path(id).map(n => n.name).join(' > '); }
+function iconOf(n) {
+  if (n.icon) return n.icon;
+  const first = ownItems(n.id).find(i => i[3]) || (kids[n.id] || []).map(k => ownItems(k).find(i => i[3])).find(Boolean);
+  return first ? first[3] : '';
+}
+
+let current = DATA.customs;
+const open = new Set([DATA.customs]);
+
+function rowHtml(id, depth) {
+  const n = N[id], has = (kids[id] || []).length;
+  const isOpen = open.has(id);
+  const cls = ['row', n.kind, id === current ? 'on' : '', n.hidden ? 'hidden' : ''].join(' ');
+  const icon = iconOf(n);
+  let html = `<div class="${cls}" data-id="${esc(id)}" style="padding-left:${depth * 14}px">
+    <span class="tw" data-tw="${esc(id)}">${has ? (isOpen ? '&#9662;' : '&#9656;') : ''}</span>
+    ${n.kind === 'heading' ? '' : `<span class="dot ${n.src}"></span>`}${icon ? `<img src="${icon}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">` : ''}
+    <span class="nm">${esc(n.name)}${n.mirror && N[n.mirror] ? ` <span class="c">&#8618; ${esc(pathText(n.mirror))}</span>` : ''}</span>${n.kind === 'heading' ? '' : `<span class="c">${total(n.mirror && N[n.mirror] ? n.mirror : id).toLocaleString()}</span>`}</div>`;
+  if (has && isOpen) html += kids[id].map(k => rowHtml(k, depth + 1)).join('');
+  return html;
+}
+function renderTree() {
+  for (const k in totals) delete totals[k];
+  document.getElementById('tree').innerHTML = (kids['#'] || []).map(id => rowHtml(id, 0)).join('');
+}
+function strip(its, max) {
+  return its.slice(0, max).map(i => `<div class="it${i[5] ? ' z' : ''}" title="${esc(i[0] + '\n' + i[1] + (i[2] > 1 ? '\n' + i[2] + ' colours' : ''))}">${i[3] ? `<img loading="lazy" src="${i[3]}" alt="" onerror="this.remove()">` : ''}</div>`).join('');
+}
+function cardHtml(id) {
+  const n = N[id], sub = (kids[id] || []).length, its = ownItems(id), joined = joinedTo(id);
+  const icon = iconOf(n);
+  return `<div class="card" data-card="${esc(id)}" draggable="true">
+    <div class="ch"><input type="checkbox" data-pick="${esc(id)}">${icon ? `<img class="pi" src="${icon}" alt="" onerror="this.style.visibility='hidden'">` : ''}
+      <span class="t" data-open="${esc(id)}">${esc(n.name)}</span>${n.raw ? `<span class="raw">${esc(n.raw)}</span>` : ''}
+      <span class="badge ${n.src}">${n.src === 'pixel' ? 'Pixel' : n.src === 'zipto' ? 'Zipto' : 'New folder'}</span>
+      ${joined.length ? `<span class="badge zipto">+ ${joined.map(j => esc(j.name)).join(', ')}</span>` : ''}
+      ${n.hidden ? '<span class="badge warn">hidden</span>' : ''}${n.note ? `<span class="badge warn">${esc(n.note)}</span>` : ''}
+      <span class="grow"></span><span class="c">${total(id).toLocaleString()} furni${sub ? ` &middot; ${sub} inside` : ''}</span></div>
+    ${its.length ? `<div class="strip">${strip(its, 22)}</div>` : ''}
+  </div>`;
+}
+function renderMain() {
+  const n = N[current];
+  if (!n) { current = DATA.customs; return renderMain(); }
+  const crumbs = path(current).slice(0, -1).map(p => `<a data-open="${esc(p.id)}">${esc(p.name)}</a>`).join(' &rsaquo; ');
+  const its = ownItems(current), joined = joinedTo(current);
+  document.getElementById('main').innerHTML = `
+    <div class="crumbs">${crumbs || '&nbsp;'}</div>
+    <div class="head"><h2>${esc(n.name)}</h2><span class="badge ${n.src}">${n.src === 'pixel' ? 'Pixel' : n.src === 'zipto' ? 'Zipto' : 'New folder'}</span>
+      <span class="c">${total(current).toLocaleString()} furni</span>
+      <button data-act="rename">Rename</button><button data-act="newfolder">New folder inside</button>
+      ${n.kind !== 'tab' ? '<button data-act="moveme">Move this…</button>' : ''}
+      ${n.src === 'zipto' && !n.merge ? '<button data-act="mergeme">Merge into…</button>' : ''}</div>
+    ${current === DATA.customs ? '<p class="hint">Drag a card onto a folder in the tree to move it, or tick cards and use the bar at the bottom. Customs reads A-Z inside its folders. Nothing changes in the shop until the import runs.</p>' : ''}
+    ${n.mirror && N[n.mirror] ? `<p class="hint">This is a <b>mirror</b>: it holds no furni of its own. The shop shows <a data-open="${esc(n.mirror)}" style="cursor:pointer;text-decoration:underline">${esc(pathText(n.mirror))}</a> here as well, so its pages appear in both places. Moving or renaming those pages changes both.</p>
+      <div class="section">Shown here from ${esc(pathText(n.mirror))} (${(kids[n.mirror] || []).length})</div><div class="cards">${(kids[n.mirror] || []).map(cardHtml).join('')}</div>` : ''}
+    ${joined.length ? `<div class="joined">Joined to this page: ${joined.map(j => `<b>${esc(j.name)}</b> (${j.items.length}) <button data-unmerge="${esc(j.id)}">Separate</button>`).join(' ')}</div>` : ''}
+    ${its.length ? `<div class="section">Furni on this page (${its.length})</div><div class="grid">${strip(its, its.length > 240 ? 240 : its.length)}</div>${its.length > 240 ? '<p class="hint">Showing 240 - the rest are on the page too.</p>' : ''}` : ''}
+    ${(kids[current] || []).length ? `<div class="section">Inside (${kids[current].length})</div><div class="cards">${kids[current].map(cardHtml).join('')}</div>` : ''}
+    <div class="bar" id="bar"><b id="nsel"></b> <input type="text" id="dest" list="folders" placeholder="Folder to move them into (type to search)">
+      <button class="primary" data-act="movesel">Move</button><button data-act="mergesel" title="Their furni join that page">Merge into it</button><button data-act="clearsel">Clear</button></div>`;
+  document.getElementById('main').scrollTop = 0;
+  updateBar();
+}
+function render() { rebuild(); renderTree(); renderMain(); fillFolders(); }
+function fillFolders() {
+  document.getElementById('folders').innerHTML = Object.keys(N).filter(id => !N[id].dropped && !N[id].merge && N[id].kind !== 'heading')
+    .map(id => `<option value="${esc(pathText(id))}">`).join('');
+}
+function idByPath(text) { return Object.keys(N).find(id => !N[id].dropped && pathText(id) === text.trim()); }
+function selected() { return [...document.querySelectorAll('[data-pick]:checked')].map(c => c.dataset.pick); }
+function updateBar() {
+  const s = selected(), bar = document.getElementById('bar');
+  if (!bar) return;
+  bar.classList.toggle('on', s.length > 0);
+  document.getElementById('nsel').textContent = s.length + ' selected';
+  document.querySelectorAll('.card').forEach(c => c.classList.toggle('sel', s.includes(c.dataset.card)));
+}
+function isInside(id, target) { let n = N[target]; while (n) { if (n.id === id) return true; n = N[n.parent]; } return false; }
+function edit(id, change) {
+  if (state.added.find(a => a.id === id)) Object.assign(state.added.find(a => a.id === id), change);
+  else state.edits[id] = Object.assign(state.edits[id] || {}, change);
+}
+function moveTo(ids, target) {
+  ids = ids.filter(id => id !== target && !isInside(id, target));
+  ids.forEach(id => edit(id, { parent: target, merge: null }));
+  save(); open.add(target); render();
+}
+function mergeInto(ids, target) {
+  if (N[target].kind === 'tab') return alert('Pick a page to merge into, not a tab.');
+  ids.filter(id => id !== target && !isInside(id, target) && N[id].src === 'zipto').forEach(id => edit(id, { merge: target, parent: N[target].parent }));
+  save(); render();
+}
+
+document.addEventListener('click', e => {
+  const tw = e.target.closest('[data-tw]');
+  if (tw) { const id = tw.dataset.tw; if (open.has(id)) open.delete(id); else open.add(id); renderTree(); return; }
+  const row = e.target.closest('.row');
+  if (row) { current = row.dataset.id; open.add(current); renderTree(); renderMain(); return; }
+  const o = e.target.closest('[data-open]');
+  if (o) { current = o.dataset.open; path(current).forEach(p => open.add(p.id)); renderTree(); renderMain(); return; }
+  const um = e.target.closest('[data-unmerge]');
+  if (um) { const id = um.dataset.unmerge; edit(id, { merge: null, parent: N[N[id].merge].parent }); save(); render(); return; }
+  const a = e.target.closest('[data-act]');
+  if (!a) return;
+  const act = a.dataset.act;
+  if (act === 'rename') {
+    const name = prompt('New name', N[current].name);
+    if (name && name.trim()) { edit(current, { name: name.trim() }); save(); render(); }
+  } else if (act === 'newfolder') {
+    const name = prompt('Name of the new folder inside ' + N[current].name);
+    if (name && name.trim()) {
+      const id = 'n:' + Date.now();
+      state.added.push({ id, name: name.trim(), parent: current, kind: 'page', src: 'new', order: 0, items: [] });
+      save(); open.add(current); render();
+    }
+  } else if (act === 'moveme') {
+    const dest = prompt('Move "' + N[current].name + '" into which folder? (type its path, e.g. Builders > Customs > Themes)');
+    const target = dest && idByPath(dest);
+    if (dest && !target) alert('No folder at "' + dest + '"');
+    if (target) moveTo([current], target);
+  } else if (act === 'mergeme') {
+    const dest = prompt('Merge "' + N[current].name + '" into which page? (its path)');
+    const target = dest && idByPath(dest);
+    if (dest && !target) alert('No page at "' + dest + '"');
+    if (target) { const me = current; current = target; mergeInto([me], target); }
+  } else if (act === 'movesel' || act === 'mergesel') {
+    const target = idByPath(document.getElementById('dest').value || '');
+    if (!target) return alert('Pick a folder from the list.');
+    if (act === 'movesel') moveTo(selected(), target); else mergeInto(selected(), target);
+  } else if (act === 'clearsel') {
+    document.querySelectorAll('[data-pick]:checked').forEach(c => { c.checked = false; }); updateBar();
+  }
+});
+document.addEventListener('change', e => { if (e.target.dataset.pick !== undefined) updateBar(); });
+
+// drag a card onto a folder in the tree
+let dragging = null;
+document.addEventListener('dragstart', e => {
+  const c = e.target.closest('.card'); if (!c) return;
+  const sel = selected();
+  dragging = sel.includes(c.dataset.card) ? sel : [c.dataset.card];
+  e.dataTransfer.setData('text/plain', dragging.join(','));
+});
+document.addEventListener('dragover', e => { const r = e.target.closest('.row'); if (r && dragging) { e.preventDefault(); r.classList.add('drop'); } });
+document.addEventListener('dragleave', e => { const r = e.target.closest('.row'); if (r) r.classList.remove('drop'); });
+document.addEventListener('drop', e => {
+  const r = e.target.closest('.row'); if (!r || !dragging) return;
+  e.preventDefault(); r.classList.remove('drop');
+  const ids = dragging; dragging = null; moveTo(ids, r.dataset.id);
+});
+
+let timer;
+document.getElementById('q').addEventListener('input', e => {
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    const q = e.target.value.trim().toLowerCase();
+    if (q.length < 2) return renderMain();
+    const hits = Object.keys(N).filter(id => !N[id].dropped && (N[id].name.toLowerCase().includes(q) || (N[id].raw || '').toLowerCase().includes(q)));
+    document.getElementById('main').innerHTML = `<div class="head"><h2>Find: ${esc(q)}</h2><span class="c">${hits.length}</span></div>` +
+      hits.slice(0, 60).map(id => `<div class="crumbs">${esc(pathText(N[id].merge || N[id].parent || id))}${N[id].merge ? ' (merged)' : ''}</div>${cardHtml(id)}`).join('');
+  }, 200);
+});
+document.getElementById('outline').addEventListener('click', () => {
+  const lines = [];
+  const walk = (id, d) => {
+    const n = N[id];
+    if (n.kind !== 'heading') lines.push('  '.repeat(d) + n.name + '  (' + total(id).toLocaleString() + ')' + (joinedTo(id).length ? '  + ' + joinedTo(id).map(j => j.name).join(', ') : ''));
+    else lines.push('  '.repeat(d) + '-- ' + n.name.toUpperCase() + ' --');
+    (kids[id] || []).forEach(k => walk(k, d + 1));
+  };
+  (kids['#'] || []).forEach(id => walk(id, 0));
+  document.getElementById('main').innerHTML = `<div class="head"><h2>Whole shop</h2><button data-open="${esc(DATA.customs)}">Back</button></div><div class="outline">${esc(lines.join('\n'))}</div>`;
+});
+document.getElementById('export').addEventListener('click', () => {
+  const out = Object.values(N).filter(n => !n.dropped).map(n => ({ id: n.id, name: n.name, parent: n.parent || null, kind: n.kind,
+    src: n.src, page: n.page || null, merge: n.merge || null, path: pathText(n.id) }));
+  const blob = new Blob([JSON.stringify({ saved: new Date().toISOString(), edits: state, nodes: out }, null, 1)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'shop-plan.json'; a.click();
+});
+document.getElementById('load').addEventListener('click', () => document.getElementById('file').click());
+document.getElementById('file').addEventListener('change', async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try { const d = JSON.parse(await f.text()); if (d.edits && d.edits.edits) { state = d.edits; save(); render(); } else alert('Not a shop plan file.'); }
+  catch (err) { alert('That file could not be read: ' + err.message); }
+});
+document.getElementById('reset').addEventListener('click', () => {
+  if (confirm('Throw away your changes and go back to the proposal?')) { state = { edits: {}, added: [] }; save(); render(); }
+});
+rebuild();
+path(DATA.customs).forEach(p => open.add(p.id));
+render();
+</script>
+</body>
+</html>
