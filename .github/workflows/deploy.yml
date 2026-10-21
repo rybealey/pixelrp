@@ -300,6 +300,13 @@ jobs:
             fi
           }
           refresh_imager || echo "::warning::The imager was not refreshed - /imaging/ may serve stale renders; the hotel itself is up"
+          # Pick up nginx.conf / asset-gate.conf changes, as deploy-beta.yml
+          # does. A single-file bind mount is pinned to the inode the container
+          # was created with and `git pull` replaces the file, so a long-running
+          # web kept serving the OLD config - a fix to the asset gate never
+          # reached prod. Last, so cms, the emulator and the imager (which reads
+          # web:8088 as it starts) are already up.
+          docker compose -f compose.yaml -f compose.prod.yaml up -d --force-recreate web < /dev/null
           REMOTE
 
       # A deploy that dies between "stop emulator" and "restart" must not

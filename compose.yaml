@@ -147,7 +147,12 @@ services:
       - ./docker/web/njs:/etc/nginx/njs:ro
       - ./docker/web/templates:/etc/nginx/templates:ro
       - ./cms:/var/www/html:ro
-      - ./nitro:/var/www/nitro-assets:ro
+      # Only what the game loads. overrides/ - the repo's copy of every
+      # custom bundle - is synced into assets/ by the deploys; served from
+      # here as well, it went round the furni allowance, which counts
+      # assets/bundled/furniture/ alone (njs/asset-limit.js).
+      - ./nitro/assets:/var/www/nitro-assets/assets:ro
+      - ./nitro/client:/var/www/nitro-assets/client:ro
       - gamedata:/var/www/gamedata:ro
     ports:
       - "127.0.0.1:${HTTP_PORT}:80"

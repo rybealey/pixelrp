@@ -85,7 +85,9 @@ services:
       - ./docker/web/asset-gate.conf:/etc/nginx/asset-gate.conf:ro
       - ./docker/web/njs:/etc/nginx/njs:ro
       - ./docker/web/templates:/etc/nginx/templates:ro
-      - ./nitro:/var/www/nitro-assets:ro
+      # assets/ and client/ alone - see compose.yaml.
+      - ./nitro/assets:/var/www/nitro-assets/assets:ro
+      - ./nitro/client:/var/www/nitro-assets/client:ro
       - cms-public:/var/www/html/public:ro
       - gamedata:/var/www/gamedata:ro
     restart: unless-stopped
