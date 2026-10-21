@@ -25,8 +25,14 @@ and volumes. Staff-only (rank ≥ 5, enforced at SSO login via
 
 To refresh beta's data from prod (accounts, rooms, catalog — run on the VPS):
 
-    bash /opt/pixelrp-beta/docker/beta/refresh-from-prod.sh          # DB only
-    bash /opt/pixelrp-beta/docker/beta/refresh-from-prod.sh --assets # DB + game assets
+    bash /opt/pixelrp-beta/docker/beta/refresh-from-prod.sh              # DB only
+    bash /opt/pixelrp-beta/docker/beta/refresh-from-prod.sh --assets     # DB + game assets
+    bash /opt/pixelrp-beta/docker/beta/refresh-from-prod.sh --scrub-only # login secrets only
+
+Everyone signs in to beta with their own password, so password hashes come
+across. Nothing else that signs anybody in does: 2FA secrets and recovery
+codes, "keep me logged in" tokens, password resets and API tokens are all
+cleared. Staff who use 2FA set it up again on beta after a refresh.
 
 ## One-time VPS setup
 
