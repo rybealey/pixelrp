@@ -11,10 +11,6 @@ RUN composer install --no-dev --no-interaction --ignore-platform-req=ext-* --opt
 FROM node:22-alpine AS assets
 WORKDIR /app
 COPY cms/ .
-# The Filament housekeeping theme's CSS does
-# `@import "../../../../vendor/filament/filament/resources/css/theme.css"`, so
-# the asset build needs Composer's output present — hence vendor stage first.
-COPY --from=vendor /app/vendor ./vendor
 # build:pixelrp must stay first on this line: deploy-beta.yml reads the theme
 # name from it. build:housekeeping is the React housekeeping panel.
 RUN npm ci && npm run build:pixelrp && npm run build:housekeeping
