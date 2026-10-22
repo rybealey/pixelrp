@@ -126,10 +126,12 @@ jobs:
           # arrive as a fragment under nitro/assets/gamedata-merge/ (rsynced above)
           # and are merged in. Existing classnames always win; a re-run adds nothing.
           python3 docker/nitro/apply-gamedata-fragments.py
-          # Figure bundles are browser-cached for a week, so a changed bundle
-          # needs a new URL: ?v= follows the overrides' figure tree hash.
-          python3 docker/nitro/bump-figure-version.py nitro/client/renderer-config.json \
-            "$(git rev-parse --short=12 HEAD:nitro/overrides/bundled/figure)"
+          # Addresses that change exactly when the file does: each clothing and
+          # effect bundle's ?v= is its own hash (FigureMap/EffectMap revision),
+          # and each gamedata URL's ?v= the file's hash, so browsers keep what
+          # has not changed - a round trip a file for a far-away player. After
+          # the merge above, which changes the files hashed here.
+          python3 docker/nitro/version-assets.py nitro/client/renderer-config.json
           # The asset pass secret (docs/asset-protection-plan.md): made once,
           # here on the box, and never leaves it - compose.prod.yaml refuses to
           # start web or cms without it.

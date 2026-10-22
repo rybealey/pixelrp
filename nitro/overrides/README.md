@@ -147,12 +147,12 @@ except on the avatar. That is how pets first shipped invisible.
 **Clients cache it for a week.** nginx serves figure bundles with
 `private, max-age=604800`, so a browser keeps each one for a week and
 Cloudflare never holds them (a purge there does nothing). A changed bundle
-reaches players only under a new URL: the beta deploy sets
-`avatar.asset.url`'s `?v=` in the VPS-only `nitro/client/renderer-config.json`
-to the git tree hash of `bundled/figure/`
-(`docker/nitro/bump-figure-version.py`), so it changes exactly when a bundle
-does, and renderer-config itself is served no-store. Prod's deploy does not do
-this yet.
+reaches players only under a new URL: the deploy gives each library in the
+server's `FigureMap.json` a `revision` made from its bundle's hash, and points
+`avatar.asset.url` in the VPS-only `nitro/client/renderer-config.json` at
+`?v=%revision%` (`docker/nitro/version-assets.py`; effects the same through
+`EffectMap.json`). Only a changed bundle gets a new address, and
+renderer-config itself is revalidated on every load.
 
 ## Camera effects (`c_images/Habbo-Stories/`)
 
