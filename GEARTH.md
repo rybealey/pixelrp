@@ -23,8 +23,11 @@ any handler runs, before log in too
 connection sends together, with tighter buckets on chat and commands, buying,
 moving money and the catalog search. A packet over budget is dropped; a
 connection that keeps going far over it is disconnected and written to
-`rp_packet_flood_log`, which the housekeeping player page shows. Walking is
-never limited - it belongs to the movement system.
+`rp_packet_flood_log`, which the housekeeping player page shows. What a click
+on a player asks for (turning to look, badges, partner, gang, group, pet info,
+the HUD target) keeps only its own bucket: it takes nothing from the total and
+is never counted towards a flood. Walking is never limited - it belongs to the
+movement system.
 
 **2. Handshake gate.** Packets sent before authentication are dropped unless the
 handler is marked `[NoAuthenticationRequired]` — 5 of them: client hello,
