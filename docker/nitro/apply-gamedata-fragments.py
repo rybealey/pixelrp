@@ -240,12 +240,20 @@ ACTION_FIELDS = {'prevents'}
 
 
 def override_actions(fragment, target):
-    """HabboAvatarActions.json override: {action id: {"prevents": [state, ...]}}.
+    """HabboAvatarActions.json override: {action id: {"prevents": [state, ...],
+    "types": {type id: {"animated": bool}}}}.
 
     Replaces what an action stops from showing at the same time - Dance
     preventing "cri" is why a held handitem vanished while dancing (Twist,
     2026-10-15: dancing keeps showing it). Only ACTION_FIELDS, as a list of
     action states; an unknown action is reported and skipped, never invented.
+
+    "types" sets the animated flag of an effect the action already lists. The
+    renderer redraws an avatar wearing an animated effect about twelve times a
+    second for as long as it is worn; the bot (187) and City Government (102)
+    badges are one still picture (make-badge-effect.py), and flagged animated
+    they kept every bot and every on-duty staff member redrawing while standing
+    still. An unknown type id is reported and skipped, never invented.
     """
     changed = 0
     by_id = {a.get('id'): a for a in (target.get('actions') or [])}
@@ -255,6 +263,17 @@ def override_actions(fragment, target):
             print('HabboAvatarActions.json override: no action %r, skipped' % action_id)
             continue
         for field, value in fields.items():
+            if field == 'types' and isinstance(value, dict):
+                types = {str(t.get('id')): t for t in (entry.get('types') or [])}
+                for type_id, flags in value.items():
+                    kind = types.get(str(type_id))
+                    if kind is None or not isinstance(flags, dict) or set(flags) != {'animated'}                             or not isinstance(flags['animated'], bool):
+                        print('HabboAvatarActions.json override: %s: no type %s, or not {"animated": bool}, skipped' % (action_id, type_id))
+                        continue
+                    if kind.get('animated') != flags['animated']:
+                        kind['animated'] = flags['animated']
+                        changed += 1
+                continue
             if field not in ACTION_FIELDS or not isinstance(value, list)                     or any(not isinstance(state, str) for state in value):
                 print('HabboAvatarActions.json override: %s: %r is not a field it may set, skipped' % (action_id, field))
                 continue

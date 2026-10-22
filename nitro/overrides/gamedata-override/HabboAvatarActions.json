@@ -1,3 +1,17 @@
 {
-  "Dance": { "prevents": ["usei"] }
+  "Dance": {
+    "prevents": [
+      "usei"
+    ]
+  },
+  "AvatarEffect": {
+    "types": {
+      "187": {
+        "animated": false
+      },
+      "102": {
+        "animated": false
+      }
+    }
+  }
 }
