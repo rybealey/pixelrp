@@ -87,7 +87,8 @@ The shelf
 One catalog_clothing row per garment, named after its library; a male and a
 female library of one garment share a row, and a library holding several
 different pieces is one row per piece. Every row is PRICE credits and sold in
-the Clothing Store - faces too, on its Head tab (since 2026-10-22).
+the Clothing Store, except faces (hd): those rows are 0, owned-only - the
+store has no face shelf (257, 304).
 
 Usage:
   python3 docker/nitro/import-nitro-clothes.py --figures <folder> \\
@@ -129,7 +130,7 @@ WULEZ_IDS = os.path.join(REPO, 'docker', 'nitro', 'wulez-clothes', 'ids.csv')
 
 PRICE = 50
 COPY_SHARE = 0.9
-OWNED_ONLY_TYPES = set()                   # every piece is sold (2026-10-22)
+OWNED_ONLY_TYPES = {'hd'}                  # faces are never sold in the store
 SECONDARY = {'ls', 'rs', 'lc', 'rc', 'hrb'}
 FLIP = {'ls': 'rs', 'rs': 'ls', 'lc': 'rc', 'rc': 'lc', 'lh': 'rh', 'rh': 'lh'}
 NOTHING = object()
@@ -786,8 +787,8 @@ def migration(shelf, libraries, sets, rerun, args):
 --
 -- Same rules as 262: gender follows the library's file name, a garment
 -- shipping as a male and a female library is one row, rows are named after
--- their libraries, %d credits. A row whose name or first set some row
--- already has is left alone.''' % (args.about, libraries, sets, args.first_id, ids, PRICE)
+-- their libraries, %d credits; faces 0 and owned-only (the store sells no
+-- faces). A row whose name or first set some row already has is left alone.''' % (args.about, libraries, sets, args.first_id, ids, PRICE)
     if rerun:
         head = '''-- pixelrp: more of %s (see the first %s migration),
 -- added by a later run of docker/nitro/import-nitro-clothes.py. Sets already

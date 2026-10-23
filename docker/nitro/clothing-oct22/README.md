@@ -3,9 +3,10 @@
 Custom clothing from another retro hotel's figure folder (`~/Downloads/clothing`
 on 2026-10-22): 4,449 `.nitro` figure bundles with that hotel's
 `_FigureMap.json` and `_FigureData.json`. Imported on 2026-10-22: 1,015
-libraries, 1,018 figure sets and 983 Clothing Store rows, all at 50 credits
-(migration 303). Every piece is sellable in the store, the one face included
-- its Head tab lists faces since this import.
+libraries, 1,018 figure sets and 983 Clothing Store rows (migration 303),
+every one at 50 credits except the one face, `face_U_bratzkobyface`: faces
+are not sold in the store, so 304 put it at 0, owned-only, like every other
+face.
 
 `ids.csv` maps every imported set and part from its source id to its hotel id,
 in the block from 500000 (Wulez is 300000 up; the withdrawn Habzone import
