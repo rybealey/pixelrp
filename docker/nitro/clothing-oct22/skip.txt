@@ -1,0 +1,11 @@
+# Libraries the Oct 22 import leaves out. Each draws less in the hotel than it
+# did in the source hotel: two of the source's libraries draw the same part id,
+# and the source showed whichever its renderer loaded first (render sweep,
+# 2026-10-22).
+shirt_M_IchishirtM1      # its torso is shirt_F_IchishirtF1's overlay under the same id - draws bare
+shirt_F_IchishirtF1      # the other half of that pair
+shoes_U_meowtfip         # sh 2575 is also Habbo's shoes_U_meowtfit - draws no shoe
+jacket_U_nftumbrella2    # he 6970 is also Habbo's misc_U_nftumbrella2 - loses its rain cloud
+acc_chest_U_weaws        # ca 2584 drew from another library; its own is empty
+acc_face_U_CruzInvertida # drew another library's mask at most directions
+hair_U_wasteprimadonna   # the source showed a rainbow hair under these ids, ours a black one

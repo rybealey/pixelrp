@@ -22,7 +22,7 @@ either keep every part id it ships the first time, or remove its entries
 Custom clothing from a Habzone asset dump (habzone.lol, a Nitro hotel; its
 figure bundles and gamedata date from March 2024). Imported on 2026-10-17:
 1,738 libraries, 1,793 figure sets and 1,737 Clothing Store rows (migrations
-264, 265 and 266; the last two add acc_waist_F_per and hair_F_leetttbeyh). See `docker/nitro/import-habzone-clothes.py` for what was taken and
+264, 265 and 266; the last two add acc_waist_F_per and hair_F_leetttbeyh). See `docker/nitro/import-nitro-clothes.py` (then import-habzone-clothes.py) for what was taken and
 why.
 
 `ids.csv` maps every imported set and part from its Habzone id to its hotel
@@ -55,10 +55,10 @@ the sprite fingerprints.
 curl -o fm_0806.xml https://images.habbo.com/gordon/flash-assets-PRODUCTION-202608061512-663981953/figuremap.xml
 
 # what would be taken, and why the rest is not
-python3 docker/nitro/import-habzone-clothes.py --source <dump root> --habbo-figuremap fm_0806.xml --list
+python3 docker/nitro/import-nitro-clothes.py --figures <dump>/bundled/figure --figuremap <dump>/gamedata/FigureMap.json --figuredata <dump>/gamedata/FigureData.json --effectmap <dump>/gamedata/EffectMap.json --ids docker/nitro/habzone-clothes/ids.csv --first-id 400000 --name ClothingHabzone --about "the Habzone asset dump" --habbo-figuremap fm_0806.xml --list
 
 # write the bundles, gamedata fragments, figuredata.xml and migration
-python3 docker/nitro/import-habzone-clothes.py --source <dump root> --habbo-figuremap fm_0806.xml --migration 264
+python3 docker/nitro/import-nitro-clothes.py --figures <dump>/bundled/figure --figuremap <dump>/gamedata/FigureMap.json --figuredata <dump>/gamedata/FigureData.json --effectmap <dump>/gamedata/EffectMap.json --ids docker/nitro/habzone-clothes/ids.csv --first-id 400000 --name ClothingHabzone --about "the Habzone asset dump" --habbo-figuremap fm_0806.xml --migration 264
 ```
 
 `<dump root>` holds `bundled/figure/` and `gamedata/` (FigureMap.json,
